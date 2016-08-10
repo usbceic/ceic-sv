@@ -1,0 +1,29 @@
+<RCC>
+  <qresource prefix="arrows">
+    <file>end_arrow.png</file>
+    <file>next_arrow.png</file>
+    <file>prev_arrow.png</file>
+    <file>top_arrow.png</file>
+    <file>down_arrow.png</file>
+  </qresource>
+  <qresource prefix="fonts">
+    <file>../fonts/OpenSans-Bold.ttf</file>
+  </qresource>
+  <qresource prefix="others">
+    <file>cancel.png</file>
+    <file>check.png</file>
+    <file>trash.png</file>
+  </qresource>
+  <qresource prefix="users">
+    <file>default.svg</file>
+    <file>default.png</file>
+  </qresource>
+  <qresource prefix="logo">
+    <file>Logo 64x64.png</file>
+    <file>Logo 128x128.png</file>
+    <file>Logo 544x544.png</file>
+  </qresource>
+  <qresource prefix="inventory">
+    <file>no_item.png</file>
+  </qresource>
+</RCC>
