@@ -1,1 +1,4 @@
-Carlos Serrada\nChristian Oliveros\nJosé Acevedo\nDavid Cabeza\n
+Carlos Serrada
+Christian Oliveros
+José Acevedo
+David Cabeza\n
