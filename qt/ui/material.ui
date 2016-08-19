@@ -304,6 +304,8 @@
     border: 1px solid dimgray;
     border-radius: 3px;
     padding: 0.1em 0em 0.1em 0.7em;
+    font-size: 11pt;
+    font-weight: normal;
 }
 
 /*Configuración del estilo de todos los DataTimeEdit cuando se desplegan*/
@@ -9205,7 +9207,7 @@ QComboBox QAbstractItemView {
                     <property name="sizeHint" stdset="0">
                      <size>
                       <width>50</width>
-                      <height>37</height>
+                      <height>38</height>
                      </size>
                     </property>
                    </spacer>
