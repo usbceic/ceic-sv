@@ -1,0 +1,327 @@
+/*#########################################################
+##                        MainWindow                     ##
+###########################################################*/
+
+/*Configurar el color de fondo de la ventana*/
+#centralwidget{
+     background-color: rgb(12, 158, 255);
+}
+
+/*Configurar estilo por defecto del boton de nombre de usuario*/
+#userBn0 {
+    background-color: transparent;
+    border-style: outset;
+    border-width: 0px;
+    border-radius: 4px;
+    border-color: transparent;
+    min-width: 6em;
+    min-height: 1em;
+    padding: 1px;
+    color: white;
+}
+
+/*Configurar estilo del boton de nombre de usuario cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
+#userBn0:pressed, #userBn0::hover {
+    background-color: rgb(22, 129, 222);
+    border-style: inset;
+}
+
+/*########################################################
+##                       MenuBar                        ##
+##########################################################*/
+
+#MenuBar {
+    background-color:  rgb(238, 238, 238);
+    padding: -6px;
+    min-width: 5em;
+ }
+
+#home, #sales, #inventory, #querys, #clients, #users, #configure{
+    background-color: transparent;
+    border-style: outset;
+    border-width: 1px;
+    border-radius: 15px;
+    border-color: transparent;
+    min-width: 3em;
+    padding: 2px;
+}
+
+#home:hover, #sales:hover, #inventory:hover, #querys:hover, #clients:hover, #users:hover, #configure:hover, #home:pressed, #sales:pressed, #inventory:pressed, #querys:pressed, #clients:pressed, #users:pressed, #configure:pressed{
+    background-color: rgb(215, 215, 215);
+}
+
+/*########################################################
+##                      MainStacked                     ##
+##########################################################*/
+
+/*Colorea páginas del stacked principal*/
+#page0, #page1, #page2, #page3, #page4, #page5, #page6 {
+    background-color: rgb(248, 248, 248);
+}
+
+/*Configurar el estilo de los subStacked*/
+#subStacked0, #subStacked1, #subStacked2, #subStacked3, #subStacked4, #subStacked5, #subStacked6, #subStacked7, #subStacked8, #subStacked9, #subStacked10, #subStacked11 {
+    border: 0px solid dimgray;
+    padding: 0px;
+}
+
+/*Colorear páginas los subStacked*/
+#page7, #page8, #page9, #page10, #page11, #page12, #page13, #page14, #page15, #page16, #page17, #page18, #page19, #page20, #page21, #page22, #page23, #page24, #page25, #page26, #page27, #page28, #page29, #page30, #page31, #page32, #page33, #page34, #page35, #page36, #page37 {
+    background-color:  rgb(238, 238, 238);
+}
+
+/***********************************
+* GroupBox
+***********************************/
+
+/*Configurar el estilo de los groupBox*/
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox5, #groupBox6 {
+   background-color:  rgb(238, 238, 238);
+   border: 0px solid dimgray;
+   padding: 1px;
+}
+
+/***********************************
+* Arrows
+***********************************/
+
+/*Configurar el estilo por defecto de las flechas de movimiento de los  subStacked*/
+#arrow0, #arrow1, #arrow2, #arrow3, #arrow4, #arrow5, #arrow6, #arrow7, #arrow8, #arrow9, #arrow10, #arrow11, #arrow12, #arrow13, #arrow14, #arrow15, #arrow16, #arrow17, #arrow18, #arrow19, #arrow20, #arrow21, #arrow22, #arrow23, #arrow24, #arrow25, #arrow26, #arrow27, #arrow28, #arrow29, #arrow30, #arrow31, #arrow32, #arrow33, #arrow34, #arrow35, #arrow36, #arrow37, #arrow38, #arrow39, #arrow40, #arrow41, #arrow42, #arrow43, #arrow44, #arrow45, #arrow46, #arrow47 {
+     background-color:  rgb(238, 238, 238);
+     border-style: outset;
+     border-width: 1px;
+     border-radius: 10px;
+     border-color: transparent;
+     min-width: 2em;
+     padding: 2px;
+}
+
+/*Configurar el estilo de las flechas de movimiento de los subStacked cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
+#arrow0:hover, #arrow1:hover, #arrow2:hover, #arrow3:hover, #arrow4:hover, #arrow5:hover, #arrow6:hover, #arrow7:hover, #arrow8:hover, #arrow9:hover, #arrow10:hover, #arrow11:hover, #arrow12:hover, #arrow13:hover, #arrow14:hover, #arrow15:hover, #arrow16:hover, #arrow17:hover, #arrow18:hover, #arrow19:hover, #arrow20:hover, #arrow21:hover, #arrow22:hover, #arrow23:hover, #arrow24:hover, #arrow25:hover, #arrow26:hover, #arrow27:hover, #arrow28:hover, #arrow29:hover, #arrow30:hover, #arrow31:hover, #arrow32:hover, #arrow33:hover, #arrow34:hover, #arrow35:hover, #arrow36:hover, #arrow37:hover, #arrow38:hover, #arrow39:hover, #arrow40:hover, #arrow41:hover, #arrow42:hover, #arrow43:hover, #arrow44:hover, #arrow45:hover, #arrow46:hover, #arrow47:hover, #arrow0:pressed, #arrow1:pressed, #arrow2:pressed, #arrow3:pressed, #arrow4:pressed, #arrow5:pressed, #arrow6:pressed, #arrow7:pressed, #arrow8:pressed, #arrow9:pressed, #arrow10:pressed, #arrow11:pressed, #arrow12:pressed, #arrow13:pressed, #arrow14:pressed, #arrow15:pressed, #arrow16:pressed, #arrow17:pressed, #arrow18:pressed, #arrow19:pressed, #arrow20:pressed, #arrow21:pressed, #arrow22:pressed, #arrow23:pressed, #arrow24:pressed, #arrow25:pressed, #arrow26:pressed, #arrow27:pressed, #arrow28:pressed, #arrow29:pressed, #arrow30:pressed, #arrow31:pressed, #arrow32:pressed, #arrow33:pressed, #arrow34:pressed, #arrow35:pressed, #arrow36:pressed, #arrow37:pressed, #arrow38:pressed, #arrow39:pressed, #arrow40:pressed, #arrow41:pressed, #arrow42:pressed, #arrow43:pressed, #arrow44:pressed, #arrow45:pressed, #arrow46:pressed, #arrow47:pressed{
+    background-color: rgb(225, 225, 225);
+}
+
+/*Configurar el estilo por defecto de las flechas de movimiento de las tablas*/
+#arrow48, #arrow49, #arrow50, #arrow51, #arrow52, #arrow53, #arrow54, #arrow55, #arrow56, #arrow57, #arrow58, #arrow59, #arrow60, #arrow61, #arrow62, #arrow63, #arrow64, #arrow65, #arrow66, #arrow67, #arrow68, #arrow69, #arrow70, #arrow71, #arrow72, #arrow73, #arrow74, #arrow75, #arrow76, #arrow77, #arrow78, #arrow79, #arrow80, #arrow81, #arrow82, #arrow83, #arrow84, #arrow85, #arrow86, #arrow87, #arrow88, #arrow89, #arrow90, #arrow91{
+     background-color:  rgb(238, 238, 238);
+     border-style: outset;
+     border-width: 1px;
+     border-radius: 10px;
+     border-color: transparent;
+     min-width: 1.5em;
+     min-height: 1.5em;
+     padding: 1.5px;
+}
+
+
+/*Configurar el estilo de las flechas de movimiento de las tablas cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
+#arrow48:hover, #arrow49:hover, #arrow50:hover, #arrow51:hover, #arrow52:hover, #arrow53:hover, #arrow54:hover, #arrow55:hover, #arrow56:hover, #arrow57:hover, #arrow58:hover, #arrow59:hover, #arrow60:hover, #arrow61:hover, #arrow62:hover, #arrow63:hover, #arrow64:hover, #arrow65:hover, #arrow66:hover, #arrow67:hover, #arrow68:hover, #arrow69:hover, #arrow70:hover, #arrow71:hover, #arrow72:hover, #arrow73:hover, #arrow74:hover, #arrow75:hover, #arrow76:hover, #arrow77:hover, #arrow78:hover, #arrow79:hover, #arrow48:pressed, #arrow49:pressed, #arrow50:pressed, #arrow51:pressed, #arrow52:pressed, #arrow53:pressed, #arrow54:pressed, #arrow55:pressed, #arrow56:pressed, #arrow57:pressed, #arrow58:pressed, #arrow59:pressed, #arrow60:pressed, #arrow61:pressed, #arrow62:pressed, #arrow63:pressed, #arrow64:pressed, #arrow65:pressed, #arrow66:pressed, #arrow67:pressed, #arrow68:pressed, #arrow69:pressed, #arrow70:pressed, #arrow71:pressed, #arrow72:pressed, #arrow73:pressed, #arrow74:pressed, #arrow75:pressed, #arrow76:pressed, #arrow77:pressed, #arrow78:pressed, #arrow79:pressed, #arrow80:hover, #arrow81:hover, #arrow82:hover, #arrow83:hover, #arrow84:hover, #arrow85:hover, #arrow86:hover, #arrow87:hover, #arrow88:hover, #arrow89:hover, #arrow90:hover, #arrow91:hover, #arrow80:pressed, #arrow81:pressed, #arrow82:pressed, #arrow83:pressed, #arrow84:pressed, #arrow85:pressed, #arrow86:pressed, #arrow87:pressed, #arrow88:pressed, #arrow89:pressed, #arrow90:pressed, #arrow91:pressed{
+    background-color: rgb(225, 225, 225);
+}
+
+/***********************************
+* Botones especiales
+***********************************/
+
+/*Configurar estilo por defecto de los botones de productos en la lista de  Top 10 y Nuevos*/
+#popularItem0, #popularItem1, #popularItem2, #popularItem3, #popularItem4, #popularItem5, #popularItem6, #popularItem7, #popularItem8, #popularItem9, #newItem0, #newItem1, #newItem2, #newItem3, #newItem4, #newItem5, #newItem6, #newItem7, #newItem8, #newItem9{
+    background-color: white;
+    border-style: outset;
+    border-width: 1px;
+    border-color: dimgray;
+    min-width: 48px;
+    min-height: 48px;
+}
+
+/*Configurar estilo de los botones de productos en la lista de  Top 10 y Nuevos cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
+#popularItem0:hover, #popularItem1:hover, #popularItem2:hover, #popularItem3:hover, #popularItem4:hover, #popularItem5:hover, #popularItem6:hover, #popularItem7:hover, #popularItem8:hover, #popularItem9:hover, #popularItem0:pressed, #popularItem1:pressed, #popularItem2:pressed, #popularItem3:pressed, #popularItem4:pressed, #popularItem5:pressed, #popularItem6:pressed, #popularItem7:pressed, #popularItem8:pressed, #popularItem9:pressed, #newItem0:hover, #newItem1:hover, #newItem2:hover, #newItem3:hover, #newItem4:hover, #newItem5:hover, #newItem6:hover, #newItem7:hover, #newItem8:hover, #newItem9:hover, #newItem0:pressed, #newItem1:pressed, #newItem2:pressed, #newItem3:pressed, #newItem4:pressed, #newItem5:pressed, #newItem6:pressed, #newItem7:pressed, #newItem8:pressed, #newItem9:pressed{
+    background-color: rgb(225, 225, 225);
+    border-style: inset;
+}
+
+
+/*Configurar el estilo por defecto de las imagenes de productos estaticos restantes en la interfáz*/
+#selectedItem0, #selectedItem1, #selectedItem2{
+    background-color: white;
+    border-style: outset;
+    border-width: 1px;
+    border-color: dimgray;
+    min-width: 48px;
+    min-height: 48px;
+}
+
+/*Configurar el estilo de las imagenes de productos estaticos restantes en la interfáz cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
+#selectedItem0:hover, #selectedItem1:hover, #selectedItem2:hover, #selectedItem0:pressed, #selectedItem1:pressed, #selectedItem2:pressed{
+    background-color: rgb(225, 225, 225);
+    border-style: inset;
+}
+
+/**************************************
+* Botones de cancelación/confirmación
+**************************************/
+
+/*Configurar el estilo por defecto de las botones de aplicar, aceptar, cancelar...*/
+#pbutton0, #pbutton1, #pbutton2, #pbutton3, #pbutton4, #pbutton5, #pbutton6, #pbutton7, #pbutton8, #pbutton9, #pbutton10, #pbutton11, #pbutton12, #pbutton13, #pbutton14, #pbutton15, #pbutton16, #pbutton17, #pbutton18, #pbutton19, #pbutton20, #pbutton21, #pbutton22, #pbutton23, #pbutton24, #pbutton25, #pbutton26, #pbutton27, #pbutton28{
+    background-color: rgb(248, 248, 248);
+    border-style: outset;
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: dimgray;
+    min-width: 5em;
+    padding: 4px;
+}
+
+/*Configurar el estilo de las botones de aplicar, aceptar, cancelar... cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
+#pbutton0:hover, #pbutton1:hover, #pbutton2:hover, #pbutton3:hover, #pbutton4:hover, #pbutton5:hover, #pbutton6:hover, #pbutton7:hover, #pbutton8:hover, #pbutton9:hover, #pbutton10:hover, #pbutton11:hover, #pbutton12:hover, #pbutton13:hover, #pbutton14:hover, #pbutton15:hover, #pbutton16:hover, #pbutton17:hover, #pbutton18:hover, #pbutton19:hover, #pbutton20:hover, #pbutton21:hover, #pbutton22:hover, #pbutton23:hover,#pbutton24:hover, #pbutton25:hover, #pbutton26:hover, #pbutton27:hover, #pbutton28:hover, #pbutton0:pressed, #pbutton1:pressed, #pbutton2:pressed, #pbutton3:pressed, #pbutton4:pressed, #pbutton5:pressed, #pbutton6:pressed, #pbutton7:pressed, #pbutton8:pressed, #pbutton9:pressed, #pbutton10:pressed, #pbutton11:pressed, #pbutton12:pressed, #pbutton13:pressed, #pbutton14:pressed, #pbutton15:pressed, #pbutton16:pressed, #pbutton17:pressed, #pbutton18:pressed, #pbutton19:pressed, #pbutton20:pressed, #pbutton21:pressed, #pbutton22:pressed, #pbutton23:pressed, #pbutton24:pressed, #pbutton25:pressed, #pbutton26:pressed, #pbutton27:pressed, #pbutton28:pressed{
+    background-color: rgb(240, 240, 240);
+    border-style: inset;
+}
+
+/***********************************
+* Otros Botones
+***********************************/
+
+/* Configuración por defecto de los botones para cambiar el color de la GUI*/
+#blackGUI, #blueGUI, #fuchsiaGUI, #greenGUI, #orangeGUI, #purpleGUI, #redGUI, #yellowGUI{
+     background-color: transparent;
+     border-width: 1px;
+     border-radius: 10px;
+     border-color: transparent;
+     min-width: 32px;
+     min-height: 32px;
+     padding: 1px;
+}
+
+#blackGUI:hover, #blueGUI:hover, #fuchsiaGUI:hover, #greenGUI:hover, #orangeGUI:hover, #purpleGUI:hover, #redGUI:hover, #yellowGUI:hover, #blackGUI:pressed, #blueGUI:pressed, #fuchsiaGUI:pressed, #greenGUI:pressed, #orangeGUI:pressed, #purpleGUI:pressed, #redGUI:pressed, #yellowGUI:pressed{
+     background-color: rgb(225, 225, 225);
+}
+
+/***********************************
+* LineEdit
+***********************************/
+
+/*Configuración del estilo de todos los line edit*/
+#lineE0, #lineE1, #lineE2, #lineE3, #lineE4, #lineE5, #lineE6, #lineE7, #lineE8, #lineE9, #lineE10, #lineE11, #lineE12, #lineE13, #lineE14, #lineE15, #lineE16, #lineE17, #lineE18, #lineE19, #lineE20, #lineE21, #lineE22, #lineE23, #lineE24, #lineE25, #lineE26, #lineE27, #lineE28, #lineE29, #lineE30, #lineE31, #lineE32, #lineE33, #lineE34, #lineE35, #lineE36, #lineE37, #lineE38, #lineE39, #lineE40, #lineE41, #lineE42, #lineE43, #lineE44, #lineE45, #lineE46, #lineE47, #lineE48, #lineE49, #lineE50, #lineE51, #lineE52, #lineE53, #lineE54, #lineE55, #lineE56, #lineE57, #lineE58, #lineE59, #lineE60, #lineE61, #lineE62, #lineE63, #lineE64, #lineE65, #lineE66, #lineE67, #lineE68, #lineE69, #lineE70, #lineE71, #lineE72, #lineE73, #lineE74, #lineE75, #lineE76, #lineE77, #lineE78, #lineE79, #lineE80, #lineE81, #lineE82, #lineE83, #lineE84, #lineE85, #lineE86, #lineE87, #lineE88, #lineE89, #lineE90{
+    border-style: outset;
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: dimgray;
+    min-width: 5.5em;
+    padding: 2px;
+}
+
+/*Configuración del estilo de todos los line edit en modo de solo lectura*/
+#lineE0[readOnly="true"], #lineE1[readOnly="true"], #lineE2[readOnly="true"], #lineE3[readOnly="true"], #lineE4[readOnly="true"], #lineE5[readOnly="true"], #lineE6[readOnly="true"], #lineE7[readOnly="true"], #lineE8[readOnly="true"], #lineE9[readOnly="true"], #lineE10[readOnly="true"], #lineE11[readOnly="true"], #lineE12[readOnly="true"], #lineE13[readOnly="true"], #lineE14[readOnly="true"], #lineE15[readOnly="true"], #lineE16[readOnly="true"], #lineE17[readOnly="true"], #lineE18[readOnly="true"], #lineE19[readOnly="true"], #lineE20[readOnly="true"], #lineE21[readOnly="true"], #lineE22[readOnly="true"], #lineE23[readOnly="true"], #lineE24[readOnly="true"], #lineE25[readOnly="true"], #lineE26[readOnly="true"], #lineE27[readOnly="true"], #lineE28[readOnly="true"], #lineE29[readOnly="true"], #lineE30[readOnly="true"], #lineE31[readOnly="true"], #lineE32[readOnly="true"], #lineE33[readOnly="true"], #lineE34[readOnly="true"], #lineE35[readOnly="true"], #lineE36[readOnly="true"], #lineE37[readOnly="true"], #lineE38[readOnly="true"], #lineE39[readOnly="true"], #lineE40[readOnly="true"], #lineE41[readOnly="true"], #lineE42[readOnly="true"], #lineE43[readOnly="true"], #lineE44[readOnly="true"], #lineE45[readOnly="true"], #lineE46[readOnly="true"], #lineE47[readOnly="true"], #lineE48[readOnly="true"], #lineE49[readOnly="true"], #lineE50[readOnly="true"], #lineE51[readOnly="true"], #lineE52[readOnly="true"], #lineE53[readOnly="true"], #lineE54[readOnly="true"], #lineE55[readOnly="true"], #lineE56[readOnly="true"], #lineE57[readOnly="true"], #lineE58[readOnly="true"], #lineE59[readOnly="true"], #lineE60[readOnly="true"], #lineE61[readOnly="true"], #lineE62[readOnly="true"], #lineE63[readOnly="true"], #lineE64[readOnly="true"], #lineE65[readOnly="true"], #lineE66[readOnly="true"], #lineE67[readOnly="true"], #lineE68[readOnly="true"], #lineE69[readOnly="true"], #lineE70[readOnly="true"], #lineE71[readOnly="true"], #lineE72[readOnly="true"], #lineE73[readOnly="true"], #lineE74[readOnly="true"], #lineE75[readOnly="true"], #lineE76[readOnly="true"], #lineE77[readOnly="true"], #lineE78[readOnly="true"], #lineE79[readOnly="true"], #lineE80[readOnly="true"], #lineE81[readOnly="true"], #lineE82[readOnly="true"], #lineE83[readOnly="true"], #lineE84[readOnly="true"], #lineE85[readOnly="true"], #lineE86[readOnly="true"], #lineE87[readOnly="true"], #lineE88[readOnly="true"], #lineE89[readOnly="true"], #lineE90[readOnly="true"]{
+    color: black;
+}
+
+/***********************************
+* ComboBox
+***********************************/
+
+/*Configuración del estilo por defecto de todos los comboBox*/
+#cbox0, #cbox1, #cbox2, #cbox3, #cbox4, #cbox5, #cbox6, #cbox7, #cbox8, #cbox9, #cbox10, #cbox11, #cbox12, #cbox13, #cbox14, #cbox15{
+    color: black;
+    border: 1px solid dimgray;
+    border-radius: 3px;
+    padding: 1px 1px 1px 4px;
+    min-width: 9em;
+}
+
+/*Configuración del estilo de todos los comboBox cuando estan en uso*/
+#cbox0::on, #cbox1::on, #cbox2::on, #cbox3::on, #cbox4::on, #cbox5::on, #cbox6::on, #cbox7::on, #cbox8::on, #cbox9::on, #cbox10::on, #cbox11::on, #cbox12::on, #cbox13::on, #cbox14::on, #cbox15::on{
+    padding-top: 10px;
+    padding-left: 4px;
+}
+
+/*Configuración del estilo de todos los comboBox cuando se despliegan*/
+#cbox0::drop-down, #cbox1::drop-down, #cbox2::drop-down, #cbox3::drop-down, #cbox4::drop-down, #cbox5::drop-down, #cbox6::drop-down, #cbox7::drop-down, #cbox8::drop-down, #cbox9::drop-down, #cbox10::drop-down, #cbox11::drop-down, #cbox12::drop-down, #cbox13::drop-down, #cbox14::drop-down, #cbox15::drop-down{
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+    border-left-width: 1px;
+    border-left-color: darkgray;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+/*Configuración del estilo de la flecha de todos los comboBox*/
+#cbox0::down-arrow, #cbox1::down-arrow, #cbox2::down-arrow, #cbox3::down-arrow, #cbox4::down-arrow, #cbox5::down-arrow, #cbox6::down-arrow, #cbox7::down-arrow, #cbox8::down-arrow, #cbox9::down-arrow, #cbox10::down-arrow, #cbox11::down-arrow, #cbox12::down-arrow, #cbox13::down-arrow, #cbox14::down-arrow, #cbox15::down-arrow{
+    image: url(:/arrows/down_arrow);
+}
+
+/*Configuración del estilo de la flecha de todos los comboBox cuando se despliegan*/
+#cbox0::drop-arrow::on, #cbox1::drop-arrow::on, #cbox2::drop-arrow::on, #cbox3::drop-arrow::on, #cbox4::drop-arrow::on, #cbox5::drop-arrow::on, #cbox6::drop-arrow::on, #cbox7::drop-arrow::on, #cbox8::drop-arrow::on, #cbox9::drop-arrow::on, #cbox10::drop-arrow::on, #cbox11::drop-arrow::on, #cbox12::drop-arrow::on, #cbox13::drop-arrow::on, #cbox14::drop-arrow::on, #cbox15::drop-arrow::on{
+    top: 1px;
+    left: 1px;
+}
+
+/*Configuración del estilo del menu desplegado de todos los comboBox*/
+#cbox0 QAbstractItemView, #cbox1 QAbstractItemView, #cbox2 QAbstractItemView, #cbox3 QAbstractItemView, #cbox4 QAbstractItemView, #cbox5 QAbstractItemView, #cbox6 QAbstractItemView, #cbox7 QAbstractItemView, #cbox8 QAbstractItemView, #cbox9 QAbstractItemView, #cbox10 QAbstractItemView, #cbox11 QAbstractItemView, #cbox12 QAbstractItemView, #cbox13 QAbstractItemView, #cbox14 QAbstractItemView, #cbox15 QAbstractItemView{
+    border: 1px solid dimgray;
+    border-radius: 3px;
+    padding: 1px 6px 1px 1px;
+    min-width: 14em;
+    selection-background-color: dimgray;
+}
+
+/***********************************
+* DataTimeEdit
+***********************************/
+
+/*Configuración del estilo por defecto de todos los DataTimeEdit*/
+#dtE0, #dtE1{
+    border: 1px solid dimgray;
+    border-radius: 3px;
+    padding: 0.1em 0em 0.1em 0.7em;
+}
+
+/*Configuración del estilo de todos los DataTimeEdit cuando se desplegan*/
+#dtE0::drop-down, #dtE1::drop-down{
+    background-color: white;
+    border-radius: 2px;
+    border-left: 1px solid dimgray;
+    padding: 0.5em;
+}
+
+/*Configuración del estilo por defecto de la flecha de todos los DataTimeEdit*/
+#dtE0::down-arrow, #dtE1::down-arrow{
+    image: url(:/arrows/down_arrow);
+    border-color: transparent;
+}
+
+/*Configuración del estilo por defecto del calendario de todos los DataTimeEdit*/
+#dtE0 QWidget#qt_calendar_navigationbar, #dtE1 QWidget#qt_calendar_navigationbar{
+     background-color: rgb(245,245,245);
+     min-height:2em;
+     border: 1px solid dimgray;
+     border-bottom: transparent;
+}
+
+/*Configuración del estilo de los botones de los calendarios de todos los DataTimeEdit*/
+#dtE0 QToolButton, #dtE1 QToolButton{
+     color: black;
+     background-color: rgb(245,245,245);
+     border-style: outset;
+     border-color: transparent;
+     border-top:  1px solid dimgray;
+     min-width: 5em;
+     selection-background-color: rgb(245,245,245);
+}
+
+/*Configuración del estilo de la vista del panel de los calendarios de todos los DataTimeEdit*/
+#dtE0 QAbstractItemView, #dtE1 QAbstractItemView {
+     selection-background-color: rgb(245,245,245);
+     min-height:8em;
+     selection-color: black;
+}
+
+/*Configuración del estilo de la tabla de los calendarios de todos los DataTimeEdit*/
+#dtE0 QTableView, #dtE1 QTableView{
+    border: 1px solid dimgray;
+    border-radius: 4px;
+    padding: 2px 2px 2px 2x;
+    min-height:8em;
+    selection-background-color:rgb(245,245,245);
+}

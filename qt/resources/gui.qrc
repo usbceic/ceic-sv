@@ -1,29 +1,40 @@
 <RCC>
   <qresource prefix="arrows">
-    <file>end_arrow.png</file>
-    <file>next_arrow.png</file>
-    <file>prev_arrow.png</file>
-    <file>top_arrow.png</file>
-    <file>down_arrow.png</file>
+    <file alias="next_arrow2">../images/next_arrow2.png</file>
+    <file alias="prev_arrow2">../images/prev_arrow2.png</file>
+    <file alias="end_arrow">../images/end_arrow.png</file>
+    <file alias="top_arrow">../images/top_arrow.png</file>
+    <file alias="prev_arrow">../images/prev_arrow.png</file>
+    <file alias="next_arrow">../images/next_arrow.png</file>
+    <file alias="down_arrow">../images/down_arrow.png</file>
   </qresource>
-  <qresource prefix="fonts">
-    <file>../fonts/OpenSans-Bold.ttf</file>
-  </qresource>
-  <qresource prefix="others">
-    <file>cancel.png</file>
-    <file>check.png</file>
-    <file>trash.png</file>
-  </qresource>
-  <qresource prefix="users">
-    <file>default.svg</file>
-    <file>default.png</file>
+  <qresource prefix="color">
+    <file alias="black">../images/black.png</file>
+    <file alias="fuchsia">../images/fuchsia.png</file>
+    <file alias="purple">../images/purple.png</file>
+    <file alias="blue">../images/blue.png</file>
+    <file alias="yellow">../images/yellow.png</file>
+    <file alias="orange">../images/orange.png</file>
+    <file alias="green">../images/green.png</file>
+    <file alias="red">../images/red.png</file>
   </qresource>
   <qresource prefix="logo">
-    <file>Logo 64x64.png</file>
-    <file>Logo 128x128.png</file>
-    <file>Logo 544x544.png</file>
+    <file alias="logo">../images/logo.png</file>
+    <file alias="logo-white">../images/logo-white.png</file>
   </qresource>
-  <qresource prefix="inventory">
-    <file>no_item.png</file>
+  <qresource prefix="menubar">
+    <file alias="tools">../images/tools.png</file>
+    <file alias="cash">../images/cash.png</file>
+    <file alias="sale">../images/sales.png</file>
+    <file alias="querys">../images/querys.png</file>
+    <file alias="clients">../images/clients.png</file>
+    <file alias="inventory">../images/inventory.png</file>
+    <file alias="users">../images/users.png</file>
+  </qresource>
+  <qresource prefix="buttons">
+    <file alias="cross">../images/cross.png</file>
+    <file alias="cancel">../images/cancel.png</file>
+    <file alias="check">../images/check.png</file>
+    <file alias="trash">../images/trash.png</file>
   </qresource>
 </RCC>
