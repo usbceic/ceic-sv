@@ -889,7 +889,7 @@
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="page0">
            <widget class="QGroupBox" name="groupBox0">
@@ -4712,7 +4712,7 @@ QComboBox QAbstractItemView {
                 </widget>
                </item>
                <item>
-                <widget class="QTableWidget" name="invoiceTable">
+                <widget class="QTableWidget" name="table11">
                  <property name="styleSheet">
                   <string notr="true">QTableWidget::item:selected{
 	background-color: whitesmoke;
@@ -6654,6 +6654,9 @@ QComboBox QAbstractItemView {
                       <property name="text">
                        <string>Agregar</string>
                       </property>
+                      <property name="checked">
+                       <bool>false</bool>
+                      </property>
                      </widget>
                     </item>
                     <item row="0" column="2">
@@ -7879,14 +7882,14 @@ QComboBox QAbstractItemView {
               <x>150</x>
               <y>260</y>
               <width>601</width>
-              <height>281</height>
+              <height>271</height>
              </rect>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="page13">
              <layout class="QGridLayout" name="gridLayout_12">
@@ -7985,7 +7988,7 @@ QComboBox QAbstractItemView {
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTableWidget" name="productTable">
+                   <widget class="QTableWidget" name="table0">
                     <property name="styleSheet">
                      <string notr="true">QTableWidget::item:selected{
 	background-color: whitesmoke;
@@ -8058,20 +8061,32 @@ QComboBox QAbstractItemView {
                      <property name="text">
                       <string>Precio</string>
                      </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                     </property>
                     </column>
                     <column>
                      <property name="text">
                       <string>Categoría</string>
+                     </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
                      </property>
                     </column>
                     <column>
                      <property name="text">
                       <string>Cant</string>
                      </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                     </property>
                     </column>
                     <column>
                      <property name="text">
                       <string>Lotes</string>
+                     </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
                      </property>
                     </column>
                    </widget>
@@ -8312,7 +8327,7 @@ QComboBox QAbstractItemView {
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTableWidget" name="productTable_3">
+                   <widget class="QTableWidget" name="table1">
                     <property name="styleSheet">
                      <string notr="true">QTableWidget::item:selected{
 	background-color: whitesmoke;
@@ -8330,6 +8345,12 @@ QComboBox QAbstractItemView {
                     </property>
                     <property name="editTriggers">
                      <set>QAbstractItemView::NoEditTriggers</set>
+                    </property>
+                    <property name="tabKeyNavigation">
+                     <bool>false</bool>
+                    </property>
+                    <property name="showDropIndicator" stdset="0">
+                     <bool>false</bool>
                     </property>
                     <property name="dragEnabled">
                      <bool>false</bool>
@@ -8359,7 +8380,7 @@ QComboBox QAbstractItemView {
                      <bool>true</bool>
                     </property>
                     <property name="cornerButtonEnabled">
-                     <bool>false</bool>
+                     <bool>true</bool>
                     </property>
                     <attribute name="horizontalHeaderCascadingSectionResizes">
                      <bool>true</bool>
@@ -8376,6 +8397,31 @@ QComboBox QAbstractItemView {
                     <attribute name="verticalHeaderStretchLastSection">
                      <bool>false</bool>
                     </attribute>
+                    <row>
+                     <property name="text">
+                      <string>1</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>2</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>3</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>4</string>
+                     </property>
+                    </row>
+                    <row>
+                     <property name="text">
+                      <string>5</string>
+                     </property>
+                    </row>
                     <column>
                      <property name="text">
                       <string>Producto</string>
@@ -8385,15 +8431,24 @@ QComboBox QAbstractItemView {
                      <property name="text">
                       <string>Precio</string>
                      </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                     </property>
                     </column>
                     <column>
                      <property name="text">
                       <string>Cant</string>
                      </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                     </property>
                     </column>
                     <column>
                      <property name="text">
                       <string>Lotes</string>
+                     </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
                      </property>
                     </column>
                    </widget>
@@ -8634,7 +8689,7 @@ QComboBox QAbstractItemView {
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTableWidget" name="productTable_2">
+                   <widget class="QTableWidget" name="table2">
                     <property name="styleSheet">
                      <string notr="true">QTableWidget::item:selected{
 	background-color: whitesmoke;
@@ -10338,7 +10393,7 @@ QComboBox QAbstractItemView {
                   <item>
                    <layout class="QGridLayout" name="gridLayout_21">
                     <item row="0" column="0">
-                     <widget class="QTableWidget" name="tableWidget">
+                     <widget class="QTableWidget" name="table3">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                         <horstretch>0</horstretch>
@@ -10680,7 +10735,7 @@ QComboBox QAbstractItemView {
                   <item>
                    <layout class="QGridLayout" name="gridLayout_26">
                     <item row="0" column="0">
-                     <widget class="QTableWidget" name="tableWidget_2">
+                     <widget class="QTableWidget" name="table4">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                         <horstretch>0</horstretch>
@@ -11017,7 +11072,7 @@ QComboBox QAbstractItemView {
                   <item>
                    <layout class="QGridLayout" name="gridLayout_46">
                     <item row="0" column="0">
-                     <widget class="QTableWidget" name="tableWidget_3">
+                     <widget class="QTableWidget" name="table5">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                         <horstretch>0</horstretch>
@@ -12754,7 +12809,7 @@ QComboBox QAbstractItemView {
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTableWidget" name="tableWidget_9">
+                   <widget class="QTableWidget" name="table7">
                     <property name="styleSheet">
                      <string notr="true">QTableWidget::item:selected{
 	background-color: whitesmoke;
@@ -13069,7 +13124,7 @@ QComboBox QAbstractItemView {
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTableWidget" name="tableWidget_5">
+                   <widget class="QTableWidget" name="table6">
                     <property name="styleSheet">
                      <string notr="true">QTableWidget::item:selected{
 	background-color: whitesmoke;
@@ -14809,7 +14864,7 @@ QComboBox QAbstractItemView {
              <string notr="true"/>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="page30">
              <layout class="QGridLayout" name="gridLayout_106">
@@ -14906,7 +14961,7 @@ QComboBox QAbstractItemView {
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTableWidget" name="tableWidget_6">
+                   <widget class="QTableWidget" name="table8">
                     <property name="styleSheet">
                      <string notr="true">QTableWidget::item:selected{
 	background-color: whitesmoke;
@@ -15221,7 +15276,7 @@ QComboBox QAbstractItemView {
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTableWidget" name="tableWidget_7">
+                   <widget class="QTableWidget" name="table9">
                     <property name="styleSheet">
                      <string notr="true">QTableWidget::item:selected{
 	background-color: whitesmoke;
@@ -15536,7 +15591,7 @@ QComboBox QAbstractItemView {
                    </widget>
                   </item>
                   <item>
-                   <widget class="QTableWidget" name="tableWidget_8">
+                   <widget class="QTableWidget" name="table10">
                     <property name="styleSheet">
                      <string notr="true">QTableWidget::item:selected{
 	background-color: whitesmoke;
