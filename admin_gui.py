@@ -84,7 +84,7 @@ class sistema_window(QMainWindow, form_class, QWidget):
         self.setupUi(self)
 
         # Manejador de la base de datos
-        self.DB = DBManager("carlos", "curtis", True)
+        self.DB = DBManager("sistema_ventas", "hola", True)
 
         #---------------------------------------------------------------------------------------------------------------------------
         # Listas necesarias para algunos métodos útiles
