@@ -25,6 +25,40 @@ from psycopg2 import connect
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 ####################################################################################################################################
+## CONSTANTES:
+####################################################################################################################################
+
+#-----------------------------------------------------------------------------------------------------------------------------------
+# Tablas
+#-----------------------------------------------------------------------------------------------------------------------------------
+
+# Nombre de la tabla de productos
+productsTable = "products"
+
+# Columnas de la tabla de productos
+productsColumns = """productID SERIAL PRIMARY KEY,
+                    name text,
+                    cost numeric,
+                    category text,
+                    remaining integer DEFAULT 0,
+                    remainingLots integer DEFAULT 0,
+                    available boolean DEFAULT false"""
+
+# Nombre de la tabla de lotes
+lotsTable = "lots"
+
+# Columnas de la tabla de lotes
+lotsColumns = """lotID SERIAL PRIMARY KEY,
+                productID integer,
+                adquisition date,
+                category text,
+                cost numeric,
+                expiration date,
+                provider text,
+                quantity integer DEFAULT 0,
+                available boolean DEFAULT false"""
+
+####################################################################################################################################
 ## MANEJADOR DE LA BASE DE DATOS:
 ####################################################################################################################################
 
@@ -43,33 +77,16 @@ class DBManager:
 
         # Modalidad de primer inicio del programa
         if firstInit:
-            self.createTableProducts()
+            self.createTable(productsTable, productsColumns)    # Tabla que registra cada producto diferente en el inventario
+            self.createTable(lotsTable, lotsColumns)            # Tabla que registra cada lote adquirido
 
             # Pruebas de correctitud (Borrar luego)
-            self.createProduct("hola", 10.85)
-            self.createProduct("pedro", 10.85)
-            self.createProduct("Dos Partes", 10.85)
-            self.createProduct("Tres Partes :D", 10.85)
+            self.createProduct("Dona", 499.99)
+            self.createProduct("Pizza", 699.99)
+            #print(self.getProducts(onlyAvailables = False))
+            #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
+            #print(self.getItemInfo(productsTable, ["name"]))
 
-            print (self.getProduct(onlyAvailables = False))
-            print (self.getProductInfo(onlyAvailables = False))
-            print (self.getProductByNameOrID(productID = 2, onlyAvailables = False))
-            print (self.getProductByNameOrID(name = "Dos", onlyAvailables = False))
-            print (self.getProductByNameOrID(name = "Partes", onlyAvailables = False))
-            print (self.getProductByNameOrID(name = " ", onlyAvailables = False))
-            print (self.getProductByNameOrID(name = "Dos Partes", onlyAvailables = False))
-            print (self.getProductByNameOrID(name = "partes", onlyAvailables = False))
-            print (self.getProductByNameOrID(name = "partes", caseInsensitive= True, onlyAvailables = False))
-
-            print("")
-            print (self.getProductByNameOrID(productID = 2, onlyAvailables = False))
-            self.updateProduct(2, "Juan", 1000.1, True)
-            print (self.getProductByNameOrID(productID = 2))
-
-            print("")
-            print (self.getProductByNameOrID(productID = 4, onlyAvailables = False))
-            self.deleteProduct(4)
-            print (self.getProductByNameOrID(productID = 4, onlyAvailables = False))
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Destructor de la clase
@@ -89,60 +106,60 @@ class DBManager:
     # Métodos de control de la base de datos
     #-------------------------------------------------------------------------------------------------------------------------------
 
-    # Cierra Sesion de Bases de Datos
+    # Cierra sesion en la base de datos
     def closeDB(self):
         self._cur.close() # Cerrar el pipe
         self._con.close() # Cerrar la connexion
 
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Métodos de control del inventario
-    #-------------------------------------------------------------------------------------------------------------------------------
+    # Crear una tabla en la base de datos
+    def createTable(self, table, columns):
+        action = "CREATE TABLE " + table + "(" + columns + ")"
 
-    # Crear tabla de products
-    def createTableProducts(self):
-        action = """CREATE TABLE products (
-                    category text,
-                    cost numeric,
-                    expiration date,
-                    lotID integer,
-                    name text,
-                    productID SERIAL PRIMARY KEY,
-                    remaining integer DEFAULT 0,
-                    remainingLots integer DEFAULT 0,
-                    available boolean DEFAULT false
-        )"""
-
-        # Cuidado si no se quiere dropear la tabla si ya existe
+        # Se intenta crear una tabla nueva
         try:
             self._cur.execute(action)
+            print("Se ha creado la tabla " + table + " correctamente.")
+
+        # Si no se puedo posiblemente ya existe
         except:
-            print("Tabla ya existente, se intentará eliminar y crear una nueva")
-            self.dropTableProducts()
+            print("La tabla " + table + " ya existe, se intentará eliminar y crear una nueva")
+            # Se elimina
+            self.dropTable(table)
+
+            # Se intenta crear de nuevo
             try:
                 self._cur.execute(action)
-            except:
-                print("ERROR: No se pudo crear la tabla")
+                print("Se ha creado la tabla " + table + " correctamente.")
 
-    # Eliminar tabla de products
-    def dropTableProducts(self):
-        print("Eliminando tabla: products")
-        self._cur.execute("DROP TABLE products")
+            # Si no se puede hay algún error grabe en la base de datos
+            except: print("ERROR: No se pudo crear la tabla " + table)
+
+    # Eliminar una tabla en la base de datos
+    def dropTable(self, table):
+        print("Eliminando tabla: " + table)
+        self._cur.execute("DROP TABLE " + table)
+
+    # Obtener informacion personalizada de una tabla (Recomendado para productos y lotes)
+    def getItemInfo(self, table, params = [], mode = 0):
+        action = "SELECT "
+        if len(params) == 0: action += "*"
+        else:
+            for i in range(len(params)):
+                if i > 0: action += ", "
+                action += params[i]
+        action += " FROM " + table
+        if mode == 1: action += " WHERE available = true"
+        if mode == 2: action += " WHERE available = false"
+        self._cur.execute(action)
+        return self._cur.fetchall()
+
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Métodos de control de los productos (INVENTARIO)
+    #-------------------------------------------------------------------------------------------------------------------------------
 
     # Crear producto
-    def createProduct(self, name, cost):
-        self._cur.execute("INSERT INTO products(name, cost) VALUES (\'" + name +"\',\'" + str(cost)+ "\')" )
-
-    # Obtener el productID y el nombre de los productos
-    def getProduct(self, onlyAvailables = True):
-        if onlyAvailables: self._cur.execute("SELECT productID, name FROM products WHERE available = true")
-        else: self._cur.execute("SELECT productID, name FROM products")
-        return self._cur.fetchall()
-
-    # Obtener toda la información de los productos
-    def getProductInfo(self, onlyAvailables = True):
-        if onlyAvailables: self._cur.execute("SELECT * FROM products WHERE available = true")
-        else: self._cur.execute("SELECT * FROM products")
-        return self._cur.fetchall()
+    def createProduct(self, name, cost, category):
+        self._cur.execute("INSERT INTO products(name, cost, category) VALUES (\'" + name +"\',\'" + str(cost)+ "\',\'" category +"\')")
 
     # Buscar producto por nombre o por el productID
     def getProductByNameOrID(self, name = None, productID = None, caseInsensitive = False, onlyAvailables = True):
@@ -182,6 +199,22 @@ class DBManager:
         action = "DELETE FROM products WHERE productID = " + str(productID)
         self._cur.execute(action)
 
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Métodos de control de los lotes de productos (INVENTARIO)
+    #-------------------------------------------------------------------------------------------------------------------------------
+
+    # Crear producto
+    def createLot(self, productID, cost):
+        self._cur.execute("INSERT INTO products(productID, cost) VALUES (\'" + int(productID) +"\',\'" + str(cost)+ "\')" )
+
+    # Obtener el productID y el nombre de los productos
+    def getLots(self, onlyAvailables = True):
+        if onlyAvailables: self._cur.execute("SELECT productID, cost FROM lots WHERE available = true")
+        else: self._cur.execute("SELECT productID, cost FROM lots")
+        return self._cur.fetchall()
+
 ####################################################################################################################################
 ## FIN :)
 ####################################################################################################################################
+
+
