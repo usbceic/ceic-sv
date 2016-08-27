@@ -158,8 +158,8 @@ class DBManager:
     #-------------------------------------------------------------------------------------------------------------------------------
 
     # Crear producto
-    def createProduct(self, name, cost, category):
-        self._cur.execute("INSERT INTO products(name, cost, category) VALUES (\'" + name +"\',\'" + str(cost)+ "\',\'" category +"\')")
+    def createProduct(self, name, cost, category = ""):
+        self._cur.execute("INSERT INTO products(name, cost, category) VALUES (\'" + name +"\',\'" + str(cost)+ "\',\'" + category +"\')")
 
     # Buscar producto por nombre o por el productID
     def getProductByNameOrID(self, name = None, productID = None, caseInsensitive = False, onlyAvailables = True):
