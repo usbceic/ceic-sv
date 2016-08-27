@@ -181,6 +181,7 @@ class sistema_window(QMainWindow, form_class, QWidget):
         LEmodel.setStringList(itemsList)
         LEcompleter = QCompleter()
         LEcompleter.setModel(LEmodel)
+        LEcompleter.setCaseSensitivity(Qt.CaseInsensitive)
         for lineE in listLE:
             if numValidator: lineE.setValidator(QIntValidator(0, 100000000))
             lineE.setCompleter(LEcompleter)
