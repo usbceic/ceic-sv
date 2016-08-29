@@ -43,6 +43,7 @@ productsColumns = """productID SERIAL PRIMARY KEY,
                     category text,
                     remaining integer DEFAULT 0,
                     remainingLots integer DEFAULT 0,
+                    currentLot integer DEFAULT 0,
                     available boolean DEFAULT false"""
 
 # Nombre de la tabla de lotes General, para especifica de producto ver lots_ID
@@ -104,7 +105,8 @@ class DBManager:
             self.updateLot(2, 2, quantity=100, available=True)
             print(self.getLots(False))
             print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
-            self.updateLot(2, 2, available=False)
+            #self.updateLot(2, 2, available=False)
+            self.deleteLot(2, 2)
             print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
             #print(self.getProducts(onlyAvailables = False))
             #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
@@ -387,6 +389,29 @@ class DBManager:
     	kwargs = kwargs + (lotID,)
 
     	self._cur.execute(action, kwargs)
+
+    # Borrar lote
+    def deleteLot(self, productID, lotID):
+    	self._cur.execute("SELECT quantity, available FROM " + lotsTable + str(productID) + " WHERE lotID = %s", (lotID,) )
+    	preChange = self._cur.fetchall()[0]
+
+    	if preChange[1]:
+    		actionProduct = """
+    		UPDATE products SET 
+    			remaining = remaining + %s, 
+    			remainingLots = remainingLots-1,
+    			currentLot = 
+    			CASE WHEN currentLot = %s THEN
+    				0
+    			ELSE
+    				currentLot
+    			END
+    		WHERE productID = %s;
+    		"""
+    		self._cur.execute(actionProduct, (-preChange[0], lotID, productID))
+
+    	action = "DELETE FROM " + lotsTable + str(productID) + " WHERE lotID = %s"
+    	self._cur.execute(action, (lotID,))
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Métodos de control de LOGIN
