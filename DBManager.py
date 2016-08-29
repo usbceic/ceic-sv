@@ -216,7 +216,7 @@ class DBManager:
         return self._cur.fetchall()
 
     # Actualizar información de un producto
-    def updateProduct(self, productID, name = None, price = None, available = None):
+    def updateProduct(self, productID, name = None, price = None, currentLot =None, available = None):
         if name is None and price is None and available is None: return
 
         kwargs = ()
@@ -231,8 +231,13 @@ class DBManager:
             action = action + " price = %s"
             kwargs = kwargs + (price,)
 
+        if currentLot is not None:
+        	if name is not None or price is not None: action = action + ","
+        	action = action + " currentLot = %s"
+        	kwargs = kwargs + (currentLot,)
+
         if available is not None:
-            if name is not None or price is not None: action = action + ","
+            if name is not None or price is not None or currentLot is not None: action = action + ","
             action = action + " available = %s"
             kwargs = kwargs + (available,)
 
@@ -327,13 +332,15 @@ class DBManager:
     			kwargs = kwargs + (available,)
     			if preChange[1] and not available:
     				changeRequired = True
-    				actionProduct = actionProduct + " remainingLots = remainingLots-1,"
+    				actionProduct = actionProduct + " currentLot = CASE WHEN currentLot = %s THEN 0 ELSE currentLot END,  remainingLots = remainingLots-1,"
+    				kwargsProduct = kwargsProduct + (lotID,)
     				if quantity is None:
     					actionProduct = actionProduct + "remaining = remaining + %s"
     					kwargsProduct = kwargsProduct + (-preChange[0],)
     			elif not preChange[1] and available:
     				changeRequired = True
-    				actionProduct = actionProduct + " remainingLots = remainingLots+1,"
+    				actionProduct = actionProduct + " currentLot = CASE WHEN currentLot = 0 THEN %s ELSE currentLot END,  remainingLots = remainingLots+1,"
+    				kwargsProduct = kwargsProduct + (lotID,)
     				if quantity is None:
     					actionProduct = actionProduct + "remaining = remaining + %s"
     					kwargsProduct = kwargsProduct + (preChange[0],)
