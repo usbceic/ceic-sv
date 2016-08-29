@@ -101,6 +101,11 @@ class DBManager:
             self.createLot(2, 1.5, 5, adquisitionDate=datetime.date(1998, 8,15).isoformat())
             print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
             print(self.getLots(False))
+            self.updateLot(2, 2, quantity=100, available=True)
+            print(self.getLots(False))
+            print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
+            self.updateLot(2, 2, available=False)
+            print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
             #print(self.getProducts(onlyAvailables = False))
             #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
             #print(self.getItemInfo(productsTable, ["name"]))
@@ -294,14 +299,94 @@ class DBManager:
     	self._cur.execute(action)
     	productIDs = self._cur.fetchall()
     	resp = {}
-    	for product in productIDs:
-    		resp[product[0]] = self.getLotsInfoByProductID(product[0], onlyAvailables)
+    	for productID in productIDs:
+    		resp[productID[0]] = self.getLotsInfoByProductID(productID[0], onlyAvailables)
     	return resp
     	
 
     # Cambiar informacion de un lote
-    def updateLot(self, productID, lotID,cost=None, quantity=None, category=None, provider=None, adquisitionDate=None, expirationDate=None, available=None):
-    	pass
+    def updateLot(self, productID, lotID, cost=None, quantity=None, category=None, provider=None, adquisitionDate=None, perishable = None, expirationDate=None, available=None):
+    	if cost is None and quantity is None and category is None \
+    		and provider is None and adquisitionDate is None \
+    		and expirationDate is None and available is None:
+    		return
+
+    	action = "UPDATE " + lotsTable + str(productID) + " SET"
+    	kwargs = ()
+
+    	if quantity is not None or available is not None:
+    		self._cur.execute("SELECT quantity, available FROM " + lotsTable + str(productID) + " WHERE lotID = %s", (lotID,) )
+    		preChange = self._cur.fetchall()[0]
+    		kwargsProduct = ()
+    		actionProduct = "UPDATE products SET "
+    		changeRequired =  False
+    		if available is not None:
+    			action = action + " available = %s,"
+    			kwargs = kwargs + (available,)
+    			if preChange[1] and not available:
+    				changeRequired = True
+    				actionProduct = actionProduct + " remainingLots = remainingLots-1,"
+    				if quantity is None:
+    					actionProduct = actionProduct + "remaining = remaining + %s"
+    					kwargsProduct = kwargsProduct + (-preChange[0],)
+    			elif not preChange[1] and available:
+    				changeRequired = True
+    				actionProduct = actionProduct + " remainingLots = remainingLots+1,"
+    				if quantity is None:
+    					actionProduct = actionProduct + "remaining = remaining + %s"
+    					kwargsProduct = kwargsProduct + (preChange[0],)
+
+    		if quantity is not None:
+    			action = action + " quantity = %s,"
+    			kwargs = kwargs + (quantity,)
+    			if preChange[1]:
+    				changeRequired = True
+    				actionProduct = actionProduct + "remaining = remaining + %s"
+    				if available is not None and not available:
+    					kwargsProduct = kwargsProduct + (-preChange[0],)
+    				else:
+    					kwargsProduct = kwargsProduct + (quantity-preChange[0],)
+    			elif not preChange[1] and available is not None and available:
+    				changeRequired = True
+    				actionProduct = actionProduct + "remaining = remaining + %s"
+    				kwargsProduct = kwargsProduct + (quantity,)
+
+    		if changeRequired:
+	    		actionProduct = actionProduct + " WHERE productID = %s"
+	    		kwargsProduct = kwargsProduct + (productID,)
+	    		self._cur.execute(actionProduct, kwargsProduct)
+
+    	
+
+    	if cost is not None:
+    		action = action + " cost = %s,"
+    		kwargs = kwargs + (cost,)
+
+    	if category is not None:
+    		action = action + " category = %s,"
+    		kwargs = kwargs + (category,)
+
+    	if provider is not None:
+    		action = action + " provider = %s,"
+    		kwargs = kwargs + (provider,)
+
+    	if adquisitionDate is not None:
+    		action = action + " adquisition = %s,"
+    		kwargs = kwargs + (adquisitionDate,)
+
+    	if perishable is not None and expirationDate is None:
+    		action = action + " perishable = %s,"
+    		kwargs = kwargs + (perishable,)
+
+
+    	if expirationDate is not None:
+    		action = action + " perishable = True, expiration = %s,"
+    		kwargs = kwargs + (expirationDate,)
+
+    	action = action[:len(action)-1] + " WHERE lotId = %s"
+    	kwargs = kwargs + (lotID,)
+
+    	self._cur.execute(action, kwargs)
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Métodos de control de LOGIN
@@ -311,8 +396,11 @@ class DBManager:
     	action = "INSERT INTO login(username, password) VALUES(%s,%s)"
     	try:
     		self._cur.execute(action, (username, password))
+    		print("Usuario " + username + " ha sido creado")
+    		return True
     	except:
-    		print("Usuario ya existente")
+    		print("Usuario " + username + " ya existente")
+    		return False
 
     def checkUser(self, username, password):
     	action = "SELECT username FROM login WHERE username = %s AND password = %s"
