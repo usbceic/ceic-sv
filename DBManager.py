@@ -108,6 +108,8 @@ class DBManager:
             #self.updateLot(2, 2, available=False)
             self.deleteLot(2, 2)
             print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
+            self.createLot(2, 1.5, 5, adquisitionDate=datetime.date(1998, 8,15).isoformat(), expirationDate=datetime.date(1998, 8,30).isoformat())
+            print(self.getExpiredLotsOfProduct(2))
             #print(self.getProducts(onlyAvailables = False))
             #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
             #print(self.getItemInfo(productsTable, ["name"]))
@@ -419,6 +421,18 @@ class DBManager:
 
     	action = "DELETE FROM " + lotsTable + str(productID) + " WHERE lotID = %s"
     	self._cur.execute(action, (lotID,))
+
+
+    # Buscar lotes vencidos de un producto o que estan cerca de vencerse
+    def getExpiredLotsOfProduct(self, productID, nearFutureDate=None):
+    	action = "SELECT * FROM " + lotsTable + str(productID) + " WHERE perishable AND (expiration <= now()"
+    	kwargs = ()
+    	if nearFutureDate is not None:
+    		action = action + " OR expiration <= %s"
+    		kwargs = kwargs + (nearFutureDate,)
+    	action = action + ")"
+    	self._cur.execute(action, kwargs)
+    	return self._cur.fetchall()
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Métodos de control de LOGIN
