@@ -323,5 +323,6 @@ class DBManager:
 ## FIN :)
 ####################################################################################################################################
 
-
-DBManager("sistema_ventas", "hola", True)
+# Pruebas de archivo
+if __name__ == '__main__':
+	DBManager("sistema_ventas", "hola", True)
