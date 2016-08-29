@@ -21,6 +21,7 @@
 ## MODÚLOS:
 ####################################################################################################################################
 
+import datetime
 from psycopg2 import connect
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
@@ -38,26 +39,30 @@ productsTable = "products"
 # Columnas de la tabla de productos
 productsColumns = """productID SERIAL PRIMARY KEY,
                     name text,
-                    cost numeric,
+                    price numeric,
                     category text,
                     remaining integer DEFAULT 0,
                     remainingLots integer DEFAULT 0,
                     available boolean DEFAULT false"""
 
-# Nombre de la tabla de lotes
-lotsTable = "lots"
+# Nombre de la tabla de lotes General, para especifica de producto ver lots_ID
+lotsTable = "lots_"
 
-# Columnas de la tabla de lotes
+# Columnas de la tabla de lotes especificos de un producto
 lotsColumns = """lotID SERIAL PRIMARY KEY,
-                productID integer,
-                adquisition date,
-                category text,
-                cost numeric,
-                expiration date,
-                provider text,
-                quantity integer DEFAULT 0,
+				cost numeric,
+				quantity integer,
+				category text,
+                adquisition date DEFAULT now(),                
+                provider text, 
+                perishable boolean DEFAULT false,
+                expiration date,               
                 available boolean DEFAULT false"""
 
+loginTable = "login"
+
+loginColumns = """username text CONSTRAINT must_be_different UNIQUE,
+				password text NOT NULL"""
 ####################################################################################################################################
 ## MANEJADOR DE LA BASE DE DATOS:
 ####################################################################################################################################
@@ -78,11 +83,24 @@ class DBManager:
         # Modalidad de primer inicio del programa
         if firstInit:
             self.createTable(productsTable, productsColumns)    # Tabla que registra cada producto diferente en el inventario
-            self.createTable(lotsTable, lotsColumns)            # Tabla que registra cada lote adquirido
+            self.createTable(loginTable, loginColumns)
+
+            #Pruebas de Usuario
+            self.createUser("Hola","hola")
+            print(self.checkUser("Hola", "a"))
+            print(self.checkUser("Hola", "hola"))
 
             # Pruebas de correctitud (Borrar luego)
             self.createProduct("Dona", 499.99)
             self.createProduct("Pizza", 699.99)
+            self.createProduct("Memes", 100000000)
+            print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
+            self.deleteProduct(1)
+            print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
+            self.createLot(2, 10.5, 50, adquisitionDate=datetime.datetime.now().date().isoformat())
+            self.createLot(2, 1.5, 5, adquisitionDate=datetime.date(1998, 8,15).isoformat())
+            print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
+            print(self.getLots(False))
             #print(self.getProducts(onlyAvailables = False))
             #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
             #print(self.getItemInfo(productsTable, ["name"]))
@@ -158,63 +176,152 @@ class DBManager:
     #-------------------------------------------------------------------------------------------------------------------------------
 
     # Crear producto
-    def createProduct(self, name, cost, category = ""):
-        self._cur.execute("INSERT INTO products(name, cost, category) VALUES (\'" + name +"\',\'" + str(cost)+ "\',\'" + category +"\')")
+    def createProduct(self, name, price, category = ""):
+    	# Crear row de producto en tabla prodructs
+        self._cur.execute("INSERT INTO products(name, price, category) VALUES (%s,%s,%s) RETURNING productID",(name, price, category))
+        # Crear la tabla lots_(serial de producto) para guardar los lotes relacionados a producto
+        self.createTable(lotsTable+str(self._cur.fetchall()[0][0]), lotsColumns)
 
     # Buscar producto por nombre o por el productID
     def getProductByNameOrID(self, name = None, productID = None, caseInsensitive = False, onlyAvailables = True):
         action = """SELECT * FROM products WHERE"""
+        kwargs = ()
 
         if productID is None and name is None: return []
+
         if onlyAvailables: action = action + " available = true AND ("
-        if productID is not None: action = action + " productID = %d" %productID
+
+        if productID is not None: 
+        	action = action + " productID = %s"
+        	kwargs = kwargs + (productID,)
+
         if name is not None:
             if productID is not None: action = action + " OR"
-            action = action + " name SIMILAR TO '%{}%'".format(name)
-            if caseInsensitive: action = action + " OR LOWER(name) SIMILAR TO '%{}%'".format(name.lower())
+            action = action + " name SIMILAR TO %s"
+            kwargs = kwargs + (name,)
+            if caseInsensitive: 
+            	action = action + " OR LOWER(name) SIMILAR TO %s"
+            	kwargs = kwargs + (name.lower(),)
+
         if onlyAvailables: action = action + " )"
 
-        self._cur.execute(action)
+        self._cur.execute(action, kwargs)
         return self._cur.fetchall()
 
     # Actualizar información de un producto
-    def updateProduct(self, productID, name = None, cost = None, available = None):
-        if name is None and cost is None and available is None: return
+    def updateProduct(self, productID, name = None, price = None, available = None):
+        if name is None and price is None and available is None: return
 
+        kwargs = ()
         action = "UPDATE products SET"
-        if name is not None: action = action + " name = '{}'".format(name)
-        if cost is not None:
-            if name is not None: action = action + ","
-            action = action + " cost = " + str(cost)
-        if available is not None:
-            if name is not None or cost is not None: action = action + ","
-            action = action + " available = " + str(available)
 
-        action = action + " WHERE productID = %d" %productID
-        self._cur.execute(action)
+        if name is not None: 
+        	action = action + " name = %s"
+        	kwargs = kwargs + (name,)
+
+        if price is not None:
+            if name is not None: action = action + ","
+            action = action + " price = %s"
+            kwargs = kwargs + (price,)
+
+        if available is not None:
+            if name is not None or price is not None: action = action + ","
+            action = action + " available = %s"
+            kwargs = kwargs + (available,)
+
+        action = action + " WHERE productID = %s"
+        kwargs = kwargs + (productID,)
+        self._cur.execute(action,kwargs)
 
     # Eliminar un producto
     def deleteProduct(self, productID):
         print("Eliminando producto: " + str(productID))
-        action = "DELETE FROM products WHERE productID = " + str(productID)
-        self._cur.execute(action)
+        try:
+        	print("Eliminando la tabla de lotes relacionada con producto: " + str(productID))
+        	self.dropTable(lotsTable+str(productID))
+        except:
+        	print("Tabla no existia o ID de producto invalido")
+        action = "DELETE FROM products WHERE productID = %s"
+        kwargs = (productID,)
+        self._cur.execute(action,kwargs)
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Métodos de control de los lotes de productos (INVENTARIO)
     #-------------------------------------------------------------------------------------------------------------------------------
 
-    # Crear producto
-    def createLot(self, productID, cost):
-        self._cur.execute("INSERT INTO products(productID, cost) VALUES (\'" + int(productID) +"\',\'" + str(cost)+ "\')" )
+    # Crear Lote
+    def createLot(self, productID, cost, quantity, category = "", provider="", adquisitionDate=None, expirationDate=None):
+    	if quantity == 0:
+    		print("Error, no se pueden añadir lotes vacios")
+    		return
+
+    	kwargs = (cost, quantity, category, provider)
+    	action = "INSERT INTO " + lotsTable + str(productID) + "(cost, quantity, category, provider"
+    	
+    	if adquisitionDate is not None:
+    		action = action + ", adquisition"
+
+    	if expirationDate is not None:
+    		action = action + ", perishable, expiration"
+
+    	action = action +") VALUES (%s,%s,%s,%s"
+    	
+    	if adquisitionDate is not None:
+    		action = action + ",%s"
+    		kwargs = kwargs + (adquisitionDate,)
+
+    	if expirationDate is not None:
+    		action = action + ",true,%s"
+    		kwargs = kwargs + (expirationDate,)
+
+    	action = action + ")"
+
+        self._cur.execute(action, kwargs)
+
+    # Obtener toda la info de los lotes asociados a un producto
+    def getLotsInfoByProductID(self, productID, onlyAvailables = True):
+     	action = "SELECT * FROM " + lotsTable +str(productID)
+     	if onlyAvailables:
+     		action = action + "WHERE available = true"
+     	self._cur.execute(action)
+     	return self._cur.fetchall()
 
     # Obtener el productID y el nombre de los productos
     def getLots(self, onlyAvailables = True):
-        if onlyAvailables: self._cur.execute("SELECT productID, cost FROM lots WHERE available = true")
-        else: self._cur.execute("SELECT productID, cost FROM lots")
-        return self._cur.fetchall()
+    	action = "SELECT productID FROM products"
+    	if onlyAvailables:
+    		action = action + " WHERE available = true"
+    	self._cur.execute(action)
+    	productIDs = self._cur.fetchall()
+    	resp = {}
+    	for product in productIDs:
+    		resp[product[0]] = self.getLotsInfoByProductID(product[0], onlyAvailables)
+    	return resp
+    	
+
+    # Cambiar informacion de un lote
+    def updateLot(self, productID, lotID,cost=None, quantity=None, category=None, provider=None, adquisitionDate=None, expirationDate=None, available=None):
+    	pass
+
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Métodos de control de LOGIN
+    #-------------------------------------------------------------------------------------------------------------------------------
+
+    def createUser(self, username, password):
+    	action = "INSERT INTO login(username, password) VALUES(%s,%s)"
+    	try:
+    		self._cur.execute(action, (username, password))
+    	except:
+    		print("Usuario ya existente")
+
+    def checkUser(self, username, password):
+    	action = "SELECT username FROM login WHERE username = %s AND password = %s"
+    	self._cur.execute(action, (username, password))
+    	return (len(self._cur.fetchall()) != 0)
 
 ####################################################################################################################################
 ## FIN :)
 ####################################################################################################################################
 
 
+DBManager("sistema_ventas", "hola", True)
