@@ -105,7 +105,6 @@ class DBManager:
             self.updateLot(2, 2, quantity=100, available=True)
             print(self.getLots(False))
             print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
-            #self.updateLot(2, 2, available=False)
             self.deleteLot(2, 2)
             print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
             self.createLot(2, 1.5, 5, adquisitionDate=datetime.date(1998, 8,15).isoformat(), expirationDate=datetime.date(1998, 8,30).isoformat())
