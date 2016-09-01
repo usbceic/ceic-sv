@@ -103,11 +103,12 @@ class DBManager:
 
             #Pruebas de Usuario
             self.createUser("Hola","hola","PRIVATE SNAFU")
-            print(self.obtainUsersInfo())
+            self.createUser("Test2","test2","Soy Prueba")
+            print(self.obtainUsersInfo(orderByLastLogin=True))
             print(self.checkUser("Hola", "a"))
-            print(self.obtainUsersInfo())
+            print(self.obtainUsersInfo(orderByLastLogin=True))
             print(self.checkUser("Hola", "hola"))
-            print(self.obtainUsersInfo())
+            print(self.obtainUsersInfo(orderByLastLogin=True))
 
             # Pruebas de correctitud (Borrar luego)
             self.createProduct("Dona", 499.99)
@@ -503,9 +504,18 @@ class DBManager:
     	print("Borrando usuario: " + str(username))
     	self._cur.execute(action, (username,))
 
-    # Obtener lista de usuarios, sus permisos y ultimo login
-    def obtainUsersInfo(self):
-    	action = "SELECT username, permissionsMask, lastLogin FROM login"
+    # Obtener lista de usuarios, sus permisos y ultimo login. Ordenado por nombre por Default
+    def obtainUsersInfo(self, orderByLastLogin=False, descendentingOrderLastLogin=False):
+    	action = "SELECT username, name, permissionsMask, lastLogin FROM login ORDER by"
+    	
+    	if orderByLastLogin:
+    		action = action + " lastLogin"
+    		if descendentingOrderLastLogin:
+    			action = action + " DESC"
+    		action = action + ","
+
+    	action = action + " name"
+
     	self._cur.execute(action)
     	return self._cur.fetchall()
 ####################################################################################################################################
