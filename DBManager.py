@@ -60,10 +60,23 @@ lotsColumns = """lotID SERIAL PRIMARY KEY,
                 expiration date,               
                 available boolean DEFAULT false"""
 
+# Nombre de la tabla de servicios
+servicesTable = "services"
+
+# Columnas de la tabla de productos
+servicesColumns = """serviceID SERIAL PRIMARY KEY,
+                    name text,
+                    price numeric,
+                    category text,
+                    available boolean DEFAULT false"""
+
 loginTable = "login"
 
 loginColumns = """username text CONSTRAINT must_be_different UNIQUE,
-				password text NOT NULL"""
+				password text NOT NULL,
+				name text NOT NULL,
+				permissionsMask integer NOT NULL,
+				lastLogin timestamp DEFAULT now()"""
 ####################################################################################################################################
 ## MANEJADOR DE LA BASE DE DATOS:
 ####################################################################################################################################
@@ -84,12 +97,17 @@ class DBManager:
         # Modalidad de primer inicio del programa
         if firstInit:
             self.createTable(productsTable, productsColumns)    # Tabla que registra cada producto diferente en el inventario
-            self.createTable(loginTable, loginColumns)
+            self.createTable(servicesTable, servicesColumns)	# Tabla de servicios
+            self.createTable(loginTable, loginColumns)			# Tabla de Login
+
 
             #Pruebas de Usuario
-            self.createUser("Hola","hola")
+            self.createUser("Hola","hola","PRIVATE SNAFU")
+            print(self.obtainUsersInfo())
             print(self.checkUser("Hola", "a"))
+            print(self.obtainUsersInfo())
             print(self.checkUser("Hola", "hola"))
+            print(self.obtainUsersInfo())
 
             # Pruebas de correctitud (Borrar luego)
             self.createProduct("Dona", 499.99)
@@ -157,7 +175,7 @@ class DBManager:
                 self._cur.execute(action)
                 print("Se ha creado la tabla " + table + " correctamente.")
 
-            # Si no se puede hay algún error grabe en la base de datos
+            # Si no se puede hay algún error grave en la base de datos
             except: print("ERROR: No se pudo crear la tabla " + table)
 
     # Eliminar una tabla en la base de datos
@@ -437,21 +455,59 @@ class DBManager:
     # Métodos de control de LOGIN
     #-------------------------------------------------------------------------------------------------------------------------------
 
-    def createUser(self, username, password):
-    	action = "INSERT INTO login(username, password) VALUES(%s,%s)"
+    # Crear usuario
+    def createUser(self, username, password, name, permissionsMask=0):
+    	action = "INSERT INTO login(username, password, name, permissionsMask) VALUES(%s,%s,%s,%s)"
     	try:
-    		self._cur.execute(action, (username, password))
+    		self._cur.execute(action, (username, password, name, permissionsMask))
     		print("Usuario " + username + " ha sido creado")
     		return True
     	except:
     		print("Usuario " + username + " ya existente")
     		return False
 
+    # Verificar identidad de persona entrando a usuario
     def checkUser(self, username, password):
-    	action = "SELECT username FROM login WHERE username = %s AND password = %s"
+    	action = "UPDATE login SET lastLogin = now() WHERE username = %s AND password = %s RETURNING name, permissionsMask"
     	self._cur.execute(action, (username, password))
-    	return (len(self._cur.fetchall()) != 0)
+    	resp = self._cur.fetchall()
+    	if len(resp) != 0:
+    		return resp[0]
+    	return None
 
+    # Modificar Usuario
+    def modifyUser(self, username, password=None, name=None, permissionsMask=None):
+    	if password is None and name is None and permissionsMask is None:
+    		return
+    	action = "UPDATE login SET"
+    	kwargs = ()
+    	if password is not None:
+    		action = action + " password = %s,"
+    		kwargs = kwargs + (password,)
+
+    	if name is not None:
+    		action = action + " name = %s,"
+    		kwargs = kwargs + (name,)
+
+    	if permissionsMask is not None:
+    		action = action + " permissionsMask = %s,"
+    		kwargs = kwargs + (permissionsMask,)
+
+    	action = action[:len(action)-1] + " WHERE username = %s"
+    	kwargs = kwargs + (username,)
+    	self._cur.execute(action, kwargs)
+
+    # Borrar Usuario
+    def deleteUser(self, username):
+    	action = "DELETE FROM login WHERE username = %s"
+    	print("Borrando usuario: " + str(username))
+    	self._cur.execute(action, (username,))
+
+    # Obtener lista de usuarios, sus permisos y ultimo login
+    def obtainUsersInfo(self):
+    	action = "SELECT username, permissionsMask, lastLogin FROM login"
+    	self._cur.execute(action)
+    	return self._cur.fetchall()
 ####################################################################################################################################
 ## FIN :)
 ####################################################################################################################################
