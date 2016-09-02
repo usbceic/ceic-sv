@@ -452,6 +452,55 @@ class DBManager:
     	self._cur.execute(action, kwargs)
     	return self._cur.fetchall()
 
+	#-------------------------------------------------------------------------------------------------------------------------------
+    # Métodos de control de SERVICIOS
+    #-------------------------------------------------------------------------------------------------------------------------------
+
+    # Crear un nuevo servicio
+    def createService(self, name, price, category="", available=False):
+    	action = "INSERT INTO services(name,price,category,available) VALUES (%s,%s,%s,%s)"
+    	self._cur.execute(action,(name, price, category, available))
+
+    # Obtener informacion de todos los servicios
+    def servicesInfo(self, onlyAvailables=True):
+    	action = "SELECT * FROM services"
+    	if onlyAvailables:
+    		action = action + " WHERE available = true"
+		self._cur.execute(action)
+		return self._cur.fetchall()
+
+	# Modificar un servicio
+	def updateService(self, serviceID, name=None, price=None, category=None, available=None):
+		if name is None and price is None and category is None and available is None:
+			return
+
+		action = "UPDATE services SET"
+		kwargs = ()
+
+		if name is not None:
+			action = action + " name = %s,"
+			kwargs = kwargs + (name,)
+
+		if price is not None:
+			action = action + " price = %s,"
+			kwargs = kwargs + (price,)
+
+		if category is not None:
+			action = action + " category = %s,"
+			kwargs = kwargs + (category,)
+
+		if available is not None:
+			action = action + " available = %s,"
+			kwargs = kwargs + (available,)
+
+		action = action[:len(action)-1] + " WHERE serviceID = %s"
+    	kwargs = kwargs + (serviceID,)
+    	self._cur.execute(action, kwargs)
+
+    # Borrar un servicio
+    def deleteService(self, serviceID):
+    	action = "DELETE FROM services WHERE serviceID = %s"
+    	self._cur.execute(action, (serviceID,))
     #-------------------------------------------------------------------------------------------------------------------------------
     # Métodos de control de LOGIN
     #-------------------------------------------------------------------------------------------------------------------------------
