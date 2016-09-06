@@ -72,7 +72,7 @@ servicesColumns = """serviceID SERIAL PRIMARY KEY,
 
 loginTable = "login"
 
-loginColumns = """username text CONSTRAINT must_be_different UNIQUE,
+loginColumns = """username text CONSTRAINT must_be_different_username UNIQUE,
 				password text NOT NULL,
 				name text NOT NULL,
 				permissionsMask integer NOT NULL,
@@ -80,14 +80,14 @@ loginColumns = """username text CONSTRAINT must_be_different UNIQUE,
 
 clientsTable = "clients"
 
-clientsColumns = """ID integer CONSTRAINT must_be_different UNIQUE,
+clientsColumns = """ID integer CONSTRAINT must_be_different_ID UNIQUE,
 					name text NOT NULL,
 					lastName text NOT NULL,
 					phone text NOT NULL,
 					balance numeric DEFAULT 0,
 					debtPermission boolean DEFAULT false,
-					lastSeen date DEFAULT now()
-					"""
+					lastSeen date DEFAULT now()"""
+
 ####################################################################################################################################
 ## MANEJADOR DE LA BASE DE DATOS:
 ####################################################################################################################################
