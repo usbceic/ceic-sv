@@ -77,6 +77,17 @@ loginColumns = """username text CONSTRAINT must_be_different UNIQUE,
 				name text NOT NULL,
 				permissionsMask integer NOT NULL,
 				lastLogin timestamp DEFAULT now()"""
+
+clientsTable = "clients"
+
+clientsColumns = """ID integer CONSTRAINT must_be_different UNIQUE,
+					name text NOT NULL,
+					lastName text NOT NULL,
+					phone text NOT NULL,
+					balance numeric DEFAULT 0,
+					debtPermission boolean DEFAULT false,
+					lastSeen date DEFAULT now()
+					"""
 ####################################################################################################################################
 ## MANEJADOR DE LA BASE DE DATOS:
 ####################################################################################################################################
@@ -99,7 +110,7 @@ class DBManager:
             self.createTable(productsTable, productsColumns)    # Tabla que registra cada producto diferente en el inventario
             self.createTable(servicesTable, servicesColumns)	# Tabla de servicios
             self.createTable(loginTable, loginColumns)			# Tabla de Login
-
+            self.createTable(clientsTable, clientsColumns)		# Tabla de clientes
 
             #Pruebas de Usuario
             self.createUser("Hola","hola","PRIVATE SNAFU")
@@ -312,7 +323,7 @@ class DBManager:
 
     # Obtener toda la info de los lotes asociados a un producto
     def getLotsInfoByProductID(self, productID, onlyAvailables = True):
-     	action = "SELECT * FROM " + lotsTable +str(productID)
+     	action = "SELECT * FROM " + lotsTable + str(productID)
      	if onlyAvailables:
      		action = action + "WHERE available = true"
      	self._cur.execute(action)
@@ -501,6 +512,7 @@ class DBManager:
     def deleteService(self, serviceID):
     	action = "DELETE FROM services WHERE serviceID = %s"
     	self._cur.execute(action, (serviceID,))
+
     #-------------------------------------------------------------------------------------------------------------------------------
     # Métodos de control de LOGIN
     #-------------------------------------------------------------------------------------------------------------------------------
@@ -526,7 +538,7 @@ class DBManager:
     	return None
 
     # Modificar Usuario
-    def modifyUser(self, username, password=None, name=None, permissionsMask=None):
+    def updateUser(self, username, password=None, name=None, permissionsMask=None):
     	if password is None and name is None and permissionsMask is None:
     		return
     	action = "UPDATE login SET"
@@ -567,6 +579,11 @@ class DBManager:
 
     	self._cur.execute(action)
     	return self._cur.fetchall()
+
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Métodos de control de CLIENTS
+    #-------------------------------------------------------------------------------------------------------------------------------
+
 ####################################################################################################################################
 ## FIN :)
 ####################################################################################################################################
