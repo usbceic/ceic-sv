@@ -607,7 +607,14 @@ class DBManager:
     	self._cur.execute(action)
     	return self._cur.fetchall()
 
-    # Obtener nombre y correo de usuario por username
+    # Obtener informacion de usuario por username
+    def getUserBasicInfo(self, username):
+    	action = "SELECT name, email, permissionsMask, lastLogin FROM login WHERE username = %s"
+    	self._cur.execute(action, (username,))
+    	if len(resp) != 0:
+    		return resp[0]
+    	return None
+
     #-------------------------------------------------------------------------------------------------------------------------------
     # Métodos de control de CLIENTS
     #-------------------------------------------------------------------------------------------------------------------------------
