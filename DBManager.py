@@ -73,6 +73,16 @@ servicesColumns = """serviceID SERIAL PRIMARY KEY,
 # Nombre de la tabla de operaciones de caja
 registerOpTable = "registerOp"
 
+# Columna de la tabla de operaciones de caja
+registerOpColumns = """opID SERIAL PRIMARY KEY,
+						username text REFERENCES login(username),
+						type integer NOT NULL,
+						IDReferenced integer,
+						quantity integer,
+						opBalance numeric DEFAULT 0,
+						totalBalance numeric NOT NULL,
+						recorded timestamp DEFAULT now()"""
+
 loginTable = "login"
 
 loginColumns = """username text CONSTRAINT must_be_different_username UNIQUE,
@@ -80,6 +90,7 @@ loginColumns = """username text CONSTRAINT must_be_different_username UNIQUE,
 				name text NOT NULL,
 				email text NOT NULL,
 				permissionsMask integer NOT NULL,
+				description text,
 				lastLogin timestamp DEFAULT now()"""
 
 clientsTable = "clients"
@@ -111,10 +122,10 @@ class DBManager:
 
         # Modalidad de primer inicio del programa
         if firstInit:
-            self.createTable(productsTable, productsColumns)    # Tabla que registra cada producto diferente en el inventario
-            self.createTable(servicesTable, servicesColumns)	# Tabla de servicios
-            self.createTable(loginTable, loginColumns)			# Tabla de Login
-            self.createTable(clientsTable, clientsColumns)		# Tabla de clientes
+            self.createTable(productsTable, productsColumns, True)    # Tabla que registra cada producto diferente en el inventario
+            self.createTable(servicesTable, servicesColumns, True)	# Tabla de servicios
+            self.createTable(loginTable, loginColumns, True)			# Tabla de Login
+            self.createTable(clientsTable, clientsColumns, True)		# Tabla de clientes
 
             #Pruebas de Usuario
             self.createUser("Hola","hola","PRIVATE SNAFU","coreoCaliente@gmail.com")
@@ -181,21 +192,33 @@ class DBManager:
         self._cur.close() # Cerrar el pipe
         self._con.close() # Cerrar la connexion
 
+    # Verifica si una tabla ya existe
+    def tableExists(self, table):
+    	action = "SELECT to_regclass(%s)"
+    	self._cur.execute(action, ("public." + table,))
+    	return self._cur.fetchall()[0][0] is not None
+
     # Crear una tabla en la base de datos
-    def createTable(self, table, columns):
+    def createTable(self, table, columns, forceDrop=False):
         action = "CREATE TABLE " + table + "(" + columns + ")"
+
+        if self.tableExists(table):
+        	if forceDrop:
+	            print("La tabla " + table + " ya existe, se intentará eliminar y crear una nueva")
+	            # Se elimina
+	            self.dropTable(table)
+	        else:
+	        	print("La tabla " + table + " ya existe, NO se creara una nueva")
+	        	return
 
         # Se intenta crear una tabla nueva
         try:
             self._cur.execute(action)
             print("Se ha creado la tabla " + table + " correctamente.")
 
-        # Si no se puedo posiblemente ya existe
+        # Si no se pudo se trata otra vez
         except:
-            print("La tabla " + table + " ya existe, se intentará eliminar y crear una nueva")
-            # Se elimina
-            self.dropTable(table)
-
+            print("Error creando la tabla " + table + " se intentará crearla otra vez")
             # Se intenta crear de nuevo
             try:
                 self._cur.execute(action)
@@ -232,7 +255,7 @@ class DBManager:
     	# Crear row de producto en tabla prodructs
         self._cur.execute("INSERT INTO products(name, price, category) VALUES (%s,%s,%s) RETURNING productID",(name, price, category))
         # Crear la tabla lots_(serial de producto) para guardar los lotes relacionados a producto
-        self.createTable(lotsTable+str(self._cur.fetchall()[0][0]), lotsColumns)
+        self.createTable(lotsTable+str(self._cur.fetchall()[0][0]), lotsColumns, True)
 
     # Buscar producto por nombre o por el productID
     def getProductByNameOrID(self, name = None, productID = None, caseInsensitive = False, onlyAvailables = True):
