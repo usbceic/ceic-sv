@@ -889,7 +889,7 @@
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="page0">
            <widget class="QGroupBox" name="groupBox0">
@@ -1029,24 +1029,6 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="0" column="1">
-                    <widget class="QLineEdit" name="lineE0">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
                    <item row="1" column="0">
                     <widget class="QLabel" name="ciLl_14">
                      <property name="font">
@@ -1139,6 +1121,24 @@
                    </item>
                    <item row="3" column="1">
                     <widget class="QLineEdit" name="lineE3">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLineEdit" name="lineE0">
                      <property name="font">
                       <font>
                        <family>Open Sans</family>
@@ -8941,7 +8941,7 @@ QComboBox QAbstractItemView {
              <string notr="true"/>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="page16">
              <layout class="QGridLayout" name="gridLayout_16">
@@ -9564,24 +9564,6 @@ QComboBox QAbstractItemView {
                         </property>
                        </widget>
                       </item>
-                      <item row="0" column="1">
-                       <widget class="QDateTimeEdit" name="dtE0">
-                        <property name="font">
-                         <font>
-                          <family>Open Sans</family>
-                         </font>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="wrapping">
-                         <bool>true</bool>
-                        </property>
-                        <property name="calendarPopup">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="1" column="0">
                        <widget class="QLabel" name="queryDateToLl">
                         <property name="font">
@@ -9602,6 +9584,24 @@ QComboBox QAbstractItemView {
                       </item>
                       <item row="1" column="1">
                        <widget class="QDateTimeEdit" name="dtE1">
+                        <property name="font">
+                         <font>
+                          <family>Open Sans</family>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true"/>
+                        </property>
+                        <property name="wrapping">
+                         <bool>true</bool>
+                        </property>
+                        <property name="calendarPopup">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QDateTimeEdit" name="dtE0">
                         <property name="font">
                          <font>
                           <family>Open Sans</family>
@@ -10213,8 +10213,8 @@ QComboBox QAbstractItemView {
                       </item>
                       <item>
                        <layout class="QGridLayout" name="gridLayout_44">
-                        <item row="0" column="0">
-                         <spacer name="horizontalSpacer_66">
+                        <item row="0" column="2">
+                         <spacer name="horizontalSpacer_67">
                           <property name="orientation">
                            <enum>Qt::Horizontal</enum>
                           </property>
@@ -10226,8 +10226,8 @@ QComboBox QAbstractItemView {
                           </property>
                          </spacer>
                         </item>
-                        <item row="0" column="2">
-                         <spacer name="horizontalSpacer_67">
+                        <item row="0" column="0">
+                         <spacer name="horizontalSpacer_66">
                           <property name="orientation">
                            <enum>Qt::Horizontal</enum>
                           </property>
@@ -10402,7 +10402,7 @@ QComboBox QAbstractItemView {
                       </property>
                       <property name="minimumSize">
                        <size>
-                        <width>551</width>
+                        <width>0</width>
                         <height>0</height>
                        </size>
                       </property>
@@ -10744,7 +10744,7 @@ QComboBox QAbstractItemView {
                       </property>
                       <property name="minimumSize">
                        <size>
-                        <width>551</width>
+                        <width>0</width>
                         <height>0</height>
                        </size>
                       </property>
@@ -11081,7 +11081,7 @@ QComboBox QAbstractItemView {
                       </property>
                       <property name="minimumSize">
                        <size>
-                        <width>551</width>
+                        <width>0</width>
                         <height>0</height>
                        </size>
                       </property>
@@ -12000,7 +12000,7 @@ QComboBox QAbstractItemView {
                          <string notr="true">background-color: transparent;</string>
                         </property>
                         <property name="text">
-                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Télefono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                         </property>
                        </widget>
                       </item>
@@ -12440,7 +12440,7 @@ QComboBox QAbstractItemView {
                          <string notr="true">background-color: transparent;</string>
                         </property>
                         <property name="text">
-                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Télefono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                         </property>
                        </widget>
                       </item>
@@ -13546,7 +13546,7 @@ QComboBox QAbstractItemView {
                            <string notr="true">background-color: transparent;</string>
                           </property>
                           <property name="text">
-                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Télefono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                           </property>
                          </widget>
                         </item>
@@ -13953,7 +13953,7 @@ QComboBox QAbstractItemView {
                            <string notr="true">background-color: transparent;</string>
                           </property>
                           <property name="text">
-                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Télefono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                           </property>
                          </widget>
                         </item>
@@ -14515,7 +14515,7 @@ QComboBox QAbstractItemView {
                            <string notr="true">background-color: transparent;</string>
                           </property>
                           <property name="text">
-                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Télefono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                           </property>
                          </widget>
                         </item>
@@ -16027,7 +16027,7 @@ QComboBox QAbstractItemView {
                       <string notr="true">background-color: transparent;</string>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Télefono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>

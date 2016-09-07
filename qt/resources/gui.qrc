@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="arrows">
+    <file alias="prev_arrow3">../images/prev_arrow3.png</file>
     <file alias="next_arrow2">../images/next_arrow2.png</file>
     <file alias="prev_arrow2">../images/prev_arrow2.png</file>
     <file alias="end_arrow">../images/end_arrow.png</file>
@@ -7,6 +8,12 @@
     <file alias="prev_arrow">../images/prev_arrow.png</file>
     <file alias="next_arrow">../images/next_arrow.png</file>
     <file alias="down_arrow">../images/down_arrow.png</file>
+  </qresource>
+  <qresource prefix="login">
+    <file alias="users">../images/users.png</file>
+    <file alias="user">../images/user.png</file>
+    <file alias="logo">../images/logo.png</file>
+    <file alias="password">../images/password.png</file>
   </qresource>
   <qresource prefix="color">
     <file alias="black">../images/black.png</file>
