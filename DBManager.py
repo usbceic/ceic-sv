@@ -76,11 +76,13 @@ registerOpTable = "registerOp"
 # Columna de la tabla de operaciones de caja
 registerOpColumns = """opID SERIAL PRIMARY KEY,
 						username text REFERENCES login(username),
-						type integer NOT NULL,
+						opType integer NOT NULL,
+                        openRecord boolean,
 						IDReferenced integer,
 						quantity integer,
 						opBalance numeric DEFAULT 0,
 						totalBalance numeric NOT NULL,
+                        description text,
 						recorded timestamp DEFAULT now()"""
 
 loginTable = "login"
@@ -807,7 +809,84 @@ class DBManager:
     # Métodos de control de Operaciones de Caja
     #-------------------------------------------------------------------------------------------------------------------------------
 
-    # 
+    # Ultima aparicion de Apertura/Cerrado de Caja/Dia/Periodo Contable
+    def opTypeLastAppeareance(self, opType, openRecord=None):
+        if 0 > opType or 2 < opType:
+            print("Tipo de operacion Invalido")
+            return None
+
+        
+        action = "SELECT * FROM registerOp WHERE opType = %s AND recorded = (SELECT MAX(recorded) FROM registerOp WHERE opType = %s)"
+        kwargs = (opType, opType)
+
+        if openRecord is not None:
+            action = action + " AND openRecord = %s"
+            kwargs = kwargs + (openRecord,)
+
+        self._cur.execute(action, kwargs)
+        resp = self._cur.fetchall()
+        if len(resp) != 0:
+            return resp[0]
+        else:
+            return None
+
+    # Si el tipo de operacion esta abierta
+    def opTypeIsOpen(self, opType):
+        if 0 > opType or 2 < opType:
+            print("Tipo de operacion Invalido")
+            return None
+
+        last = self.opTypeLastAppeareance(opType)
+        if last is None:
+            return False
+
+        return last[3]
+
+    # Obtener la ultima operacion
+    def getLastOperation(self):
+        action = "SELECT * FROM registerOp WHERE recorded = (SELECT MAX(recorded) FROM registerOp)"
+        self._cur.execute(action)
+        return self._cur.fetchall()
+
+    # Cerrar Caja
+    def closeRegister(self, username, description="Cierre de Caja"):
+        if not self.opTypeIsOpen(2):
+            print("Caja ya estaba cerrada")
+            return
+
+        last = self.getLastOperation()
+
+        action = "INSERT INTO registerOp(username,opType,openRecord,opBalance,totalBalance,description) VALUES(%s,'2','false','0',%s,%s)"
+        kwargs = (username, last[7], description) # totalBalance
+        self._cur.execute(action, kwargs)
+
+    # Cerrar dia
+    def closeDay(self, username, correction=0, description="Cierre de Dia"):
+        if not self.opTypeIsOpen(1):
+            print("Dia ya estaba cerrada")
+            return
+        self.closeRegister(username)
+        last = self.getLastOperation()
+
+        action = "INSERT INTO registerOp(username,opType,openRecord,opBalance,totalBalance,description) VALUES(%s,'1','false',%s,%s,%s)"
+        kwargs = (username, correction, last[7]+correction, description) # totalBalance
+        self._cur.execute(action, kwargs)
+
+    # Cerrar Periodo Contable. Se hace Backup
+    def closeAccountingPeriod(self, username, correction=0, description="Cierre de Periodo"):
+        if not self.opTypeIsOpen(0):
+            print("Periodo Contable ya estaba cerrada")
+            return
+        self.closeDay(username)
+        last = self.getLastOperation()
+        action = "INSERT INTO registerOp(username,opType,openRecord,opBalance,totalBalance,description) VALUES(%s,'0','false',%s,%s,%s)"
+        kwargs = (username, correction, last[7]+correction, description) # totalBalance
+        self._cur.execute(action, kwargs)
+
+
+    # Abrir periodo Contable (Normalmente deberia ser un trimestre)
+    # Se 
+
 ####################################################################################################################################
 ## FIN :)
 ####################################################################################################################################
