@@ -168,6 +168,17 @@ class DBManager:
             print(self.checkClient(2425512))
             print(self.checkClient(0))
 
+            #Prueba de Backup
+            self.backupTable(clientsTable, "")
+
+            #Prueba de Restore 1
+            self.dropTable(clientsTable)
+            self.restoreTable(clientsTable,clientsColumns,"")
+            print(self.searchClient(lastName="lamar"))
+
+            #Prueba de Restore 2
+            self.restoreTable(clientsTable,clientsColumns,"",drop=False)
+            print(self.searchClient(lastName="lamar"))
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Destructor de la clase
@@ -245,6 +256,43 @@ class DBManager:
         if mode == 2: action += " WHERE available = false"
         self._cur.execute(action)
         return self._cur.fetchall()
+
+    # Hacer BackUp a Tabla, si no se quiere nombre especial solo se llamara como la tabla
+    def backupTable(self, table, directoryName, specialFilename=None):
+        if specialFilename is None:
+            file = directoryName + table + ".sql"
+        else:
+            file = directoryName + specialFilename + ".sql"
+
+        print("Haciendo Backup a la tabla " + table + " en la ubicacion: " + file)
+        with open(file, 'w') as f:
+            self._cur.copy_to(f, table)
+            f.close()
+
+    # Restaurar Tabla desde un BackUp, si no se quiere nombre especial solo se buscara archivo como la tabla
+    # En condiciones normales se deberia dropear la tabla y crearla de nuevo
+    def restoreTable(self, table, columns, directoryName, specialFilename=None, drop=True):
+        if specialFilename is None:
+            file = directoryName + table + ".sql"
+        else:
+            file = directoryName + specialFilename + ".sql"
+
+        print("Restaurando la tabla " + table + " usando el Backup en la ubicacion: " + file)
+        try:
+            f = open(file, 'r')
+        except:
+            print("Error no se pudo abrir el archivo: " + file)
+        else:
+            if not drop and self.tableExists(table):
+                print("Adevertencia: La tabla " + table + "existe y no fue vuelta a crear. Pueden ocurrir errores con los datos")
+            self.createTable(table, columns, drop)
+            try:
+                self._cur.copy_from(f, table)
+                print("Tabla Restaurada")
+            except Exception as e:
+                print("Error al copiar datos a la tabla")
+                print(e)
+            f.close()
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Métodos de control de los productos (INVENTARIO)
@@ -755,7 +803,11 @@ class DBManager:
 
 		self._cur.execute(action, (date,))
 
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Métodos de control de Operaciones de Caja
+    #-------------------------------------------------------------------------------------------------------------------------------
 
+    # 
 ####################################################################################################################################
 ## FIN :)
 ####################################################################################################################################
