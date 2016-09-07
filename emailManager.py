@@ -92,31 +92,28 @@ class emailManager():
 
     # Enviar correo de recuperación de contraseña o PRM (Password Recovery Mail)
     def sendPRM(self, toMail, code, sslMode = False):
-        #try:
-        # Conectar con el servidor
-        if sslMode: server = SMTP_SSL(self.serverDir + ":" + sslPort)
-        else:
-            server = SMTP(self.serverDir + ":" + tlsPort)
-            server.starttls()
+        try:
+            # Conectar con el servidor
+            if sslMode: server = SMTP_SSL(self.serverDir + ":" + sslPort)
+            else:
+                server = SMTP(self.serverDir + ":" + tlsPort)
+                server.starttls()
 
-        # Iniciar sesión en el servidor
-        server.login(self.usermail, self.password)
+            # Iniciar sesión en el servidor
+            server.login(self.usermail, self.password)
 
-        # Crear correo
-        PRM = self.emailForm%(self.fromMail, toMail, self.subjectPRM, self.msgPRM, code, self.firm)
+            # Crear correo
+            PRM = self.emailForm%(self.fromMail, toMail, self.subjectPRM, self.msgPRM, code, self.firm)
 
-        # Mandar el correo
-        server.sendmail(self.fromMail, toMail, PRM.encode("utf-8"))
+            # Mandar el correo
+            server.sendmail(self.fromMail, toMail, PRM.encode("utf-8"))
 
-        # Salir del servidor
-        server.quit()
+            # Salir del servidor
+            server.quit()
 
-        #except AuthenticationError: print("ERROR: No se pudo iniciar sesión en el servidor.")
-        #except NetworkError: print("ERROR: No se pudo conectar con el servidor.")
-        #except: print("ERROR: No se pudo enviar el correo.")
-
-A = emailManager(googleServer, "ceicsvoficial@gmail.com", "pizzabrownie")
-A.sendPRM("cserradag96@gmail.com", "El Juego")
+        except AuthenticationError: print("ERROR: No se pudo iniciar sesión en el servidor.")
+        except NetworkError: print("ERROR: No se pudo conectar con el servidor.")
+        except: print("ERROR: No se pudo enviar el correo.")
 
 ####################################################################################################################################
 ## FIN :)
