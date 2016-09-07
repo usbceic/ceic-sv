@@ -143,6 +143,16 @@ class DBManager:
             #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
             #print(self.getItemInfo(productsTable, ["name"]))
 
+            # Pruebas de Clientes
+            self.createClient(2425512, "Juan", "Porlamar", "0414-3278450")
+            self.createClient(2425513, "Pedro", "Porlamar", "0414-3278451")
+            self.createClient(2425514, "Paco", "Juarez", "0414-3278452")
+            print(self.searchClient(ID=2425512))
+            print(self.searchClient(name="pedro"))
+            print(self.searchClient(lastName="lamar"))
+            print(self.checkClient(2425512))
+            print(self.checkClient(0))
+
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Destructor de la clase
@@ -236,10 +246,10 @@ class DBManager:
         if name is not None:
             if productID is not None: action = action + " OR"
             action = action + " name SIMILAR TO %s"
-            kwargs = kwargs + (name,)
+            kwargs = kwargs + ("%"+name+"%",)
             if caseInsensitive: 
             	action = action + " OR LOWER(name) SIMILAR TO %s"
-            	kwargs = kwargs + (name.lower(),)
+            	kwargs = kwargs + ("%"+name.lower()+"%",)
 
         if onlyAvailables: action = action + " )"
 
@@ -583,6 +593,120 @@ class DBManager:
     #-------------------------------------------------------------------------------------------------------------------------------
     # Métodos de control de CLIENTS
     #-------------------------------------------------------------------------------------------------------------------------------
+    
+    # Crear Cliente
+    def createClient(self, ID, name="",lastName="", phone="", balance=0, debtPermission=False):
+    	action = "INSERT INTO clients(ID,name,lastName,phone,balance,debtPermission) VALUES(%s,%s,%s,%s,%s,%s)"
+    	kwargs = (ID, name, lastName, phone, balance, debtPermission)
+    	try:
+    		self._cur.execute(action, kwargs)
+    		print("Cliente " + str(ID) + "ha sido creado")
+    		return True
+    	except:
+    		print("Cliente " + str(ID) + "ya existente")
+    		return False
+
+
+    # Buscar Cliente por ID, nombre o apellido
+    def searchClient(self, ID=None, name=None, lastName=None):
+    	if ID is None and name is None and lastName is None:
+    		return []
+
+    	action = "SELECT * FROM clients WHERE "
+    	kwargs = ()
+    	if ID is not None:
+    		action = action + "ID = %s"
+    		kwargs = kwargs + (ID,)
+
+    	if name is not None:
+    		if ID is not None:
+    			action = action + " OR "
+    		action = action + "LOWER(name) SIMILAR TO %s"
+    		kwargs = kwargs + ("%"+name.lower()+"%",) 
+
+    	if lastName is not None:
+    		if ID is not None or name is not None:
+    			action = action + " OR "
+    		action = action + "LOWER(lastName) SIMILAR TO %s"
+    		kwargs = kwargs + ("%"+lastName.lower()+"%",) 
+
+    	self._cur.execute(action, kwargs)
+    	return self._cur.fetchall()
+
+    # Buscar Cliente por ID y actualizar su ultima visita
+    def checkClient(self, ID):
+    	action = "UPDATE clients SET lastSeen = now() WHERE ID = %s RETURNING *"
+    	self._cur.execute(action, (ID,))
+    	resp = self._cur.fetchall()
+    	if len(resp) != 0:
+    		return resp[0]
+    	else:
+    		return None
+
+    # Buscar Clientes con deudas
+    def indebtClients(self):
+    	action = "SELECT * FROM clients WHERE balance < 0"
+    	self._cur.execute(action)
+    	return self._cur.fetchall()
+
+    # Buscar Clientes que no se han contectado antes de una fecha (inclusive)
+    def searchClientsByDate(self, date):
+    	action = "SELECT * FROM clients WHERE lastSeen <= %s"
+    	self._cur.execute(action)
+    	return self._cur.fetchall()
+
+    # Actualizar un Cliente
+    def updateClient(self, ID, name=None, lastName=None, phone=None, balance=None, debtPermission=None):
+    	if name is None and lastName is None and phone is None and balance is None and debtPermission is None:
+    		return
+
+		action = "UPDATE clients SET"
+		kwargs = ()
+
+		if name is not None:
+			action = action + " name = %s,"
+			kwargs = kwargs + (name,)
+
+		if lastName is not None:
+			action = action + " lastName = %s,"
+			kwargs = kwargs + (lastName,)
+
+		if phone is not None:
+			action = action + " phone = %s,"
+			kwargs = kwargs + (phone,)
+
+		if balance is not None:
+			action = action + " balance = %s,"
+			kwargs = kwargs + (balance,)
+
+		if debtPermission is not None:
+			action = action + " debtPermission = %s,"
+			kwargs = kwargs + (debtPermission,)
+
+		action = action[:len(action)-1] + " WHERE ID = %s"
+    	kwargs = kwargs + (ID,)
+    	self._cur.execute(action, kwargs)
+
+	# Eliminar Cliente, por default no se eliminan clientes con deudas
+	def deleteClient(self, ID, eliminateIndebt=False):
+		action = "DELETE FROM clients WHERE ID = %s"
+		if not eliminateIndebt:
+			action = action + " AND balance >= 0"
+		else:
+			print("Advertencia: Procediendo a eliminar cliente " + str(ID) + " aunque tenga deudas")
+
+		self._cur.execute(action, (ID,))
+
+	# Eliminar Clientes anteriores a una fecha (inclusive), por default no se eliminan clientes con deudas 
+	def deleteClientsByDate(self, date, eliminateIndebt=False):
+		action = "DELETE FROM clients WHERE lastSeen <= %s"
+		if not eliminateIndebt:
+			action = action + " AND balance >= 0"
+		else:
+			print("Advertencia: Procediendo a eliminar clientes aunque tengan deudas")
+
+		self._cur.execute(action, (date,))
+
 
 ####################################################################################################################################
 ## FIN :)
