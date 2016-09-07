@@ -70,6 +70,9 @@ servicesColumns = """serviceID SERIAL PRIMARY KEY,
                     category text,
                     available boolean DEFAULT false"""
 
+# Nombre de la tabla de operaciones de caja
+registerOpTable = "registerOp"
+
 loginTable = "login"
 
 loginColumns = """username text CONSTRAINT must_be_different_username UNIQUE,
@@ -116,11 +119,11 @@ class DBManager:
             #Pruebas de Usuario
             self.createUser("Hola","hola","PRIVATE SNAFU","coreoCaliente@gmail.com")
             self.createUser("Test2","test2","Soy Prueba","google@hotmail.com")
-            print(self.obtainUsersInfo(orderByLastLogin=True))
+            print(self.getUsersInfo(orderByLastLogin=True))
             print(self.checkUser("Hola", "a"))
-            print(self.obtainUsersInfo(orderByLastLogin=True))
+            print(self.getUsersInfo(orderByLastLogin=True))
             print(self.checkUser("Hola", "hola"))
-            print(self.obtainUsersInfo(orderByLastLogin=True))
+            print(self.getUsersInfo(orderByLastLogin=True))
 
             # Pruebas de correctitud (Borrar luego)
             self.createProduct("Dona", 499.99)
@@ -590,7 +593,7 @@ class DBManager:
     	self._cur.execute(action, (username,))
 
     # Obtener lista de usuarios, sus permisos y ultimo login. Ordenado por nombre por Default
-    def obtainUsersInfo(self, orderByLastLogin=False, descendentingOrderLastLogin=False):
+    def getUsersInfo(self, orderByLastLogin=False, descendentingOrderLastLogin=False):
     	action = "SELECT username, name, email, permissionsMask, lastLogin FROM login ORDER by"
     	
     	if orderByLastLogin:
@@ -604,6 +607,7 @@ class DBManager:
     	self._cur.execute(action)
     	return self._cur.fetchall()
 
+    # Obtener nombre y correo de usuario por username
     #-------------------------------------------------------------------------------------------------------------------------------
     # Métodos de control de CLIENTS
     #-------------------------------------------------------------------------------------------------------------------------------
