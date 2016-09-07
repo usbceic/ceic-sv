@@ -75,6 +75,7 @@ loginTable = "login"
 loginColumns = """username text CONSTRAINT must_be_different_username UNIQUE,
 				password text NOT NULL,
 				name text NOT NULL,
+				email text NOT NULL,
 				permissionsMask integer NOT NULL,
 				lastLogin timestamp DEFAULT now()"""
 
@@ -113,8 +114,8 @@ class DBManager:
             self.createTable(clientsTable, clientsColumns)		# Tabla de clientes
 
             #Pruebas de Usuario
-            self.createUser("Hola","hola","PRIVATE SNAFU")
-            self.createUser("Test2","test2","Soy Prueba")
+            self.createUser("Hola","hola","PRIVATE SNAFU","coreoCaliente@gmail.com")
+            self.createUser("Test2","test2","Soy Prueba","google@hotmail.com")
             print(self.obtainUsersInfo(orderByLastLogin=True))
             print(self.checkUser("Hola", "a"))
             print(self.obtainUsersInfo(orderByLastLogin=True))
@@ -528,10 +529,10 @@ class DBManager:
     #-------------------------------------------------------------------------------------------------------------------------------
 
     # Crear usuario
-    def createUser(self, username, password, name, permissionsMask=0):
-    	action = "INSERT INTO login(username, password, name, permissionsMask) VALUES(%s,%s,%s,%s)"
+    def createUser(self, username, password, name, email, permissionsMask=0):
+    	action = "INSERT INTO login(username, password, name, email, permissionsMask) VALUES(%s,%s,%s,%s,%s)"
     	try:
-    		self._cur.execute(action, (username, password, name, permissionsMask))
+    		self._cur.execute(action, (username, password, name, email, permissionsMask))
     		print("Usuario " + username + " ha sido creado")
     		return True
     	except:
@@ -547,8 +548,17 @@ class DBManager:
     		return resp[0]
     	return None
 
+    # Verificar si un email esta asociado a un usario
+    def checkUserByEmail(self, email):
+    	action = "SELECT username, name, email, permissionsMask, lastLogin FROM login WHERE email = %s"
+    	self._cur.execute(action, (email,))
+    	resp = self._cur.fetchall()
+    	if len(resp) != 0:
+    		return resp[0]
+    	return None
+
     # Modificar Usuario
-    def updateUser(self, username, password=None, name=None, permissionsMask=None):
+    def updateUser(self, username, password=None, name=None, email=None, permissionsMask=None):
     	if password is None and name is None and permissionsMask is None:
     		return
     	action = "UPDATE login SET"
@@ -560,6 +570,10 @@ class DBManager:
     	if name is not None:
     		action = action + " name = %s,"
     		kwargs = kwargs + (name,)
+
+    	if email is not None:
+    		action = action + " email = %s,"
+    		kwargs = kwargs + (email,)
 
     	if permissionsMask is not None:
     		action = action + " permissionsMask = %s,"
@@ -577,7 +591,7 @@ class DBManager:
 
     # Obtener lista de usuarios, sus permisos y ultimo login. Ordenado por nombre por Default
     def obtainUsersInfo(self, orderByLastLogin=False, descendentingOrderLastLogin=False):
-    	action = "SELECT username, name, permissionsMask, lastLogin FROM login ORDER by"
+    	action = "SELECT username, name, email, permissionsMask, lastLogin FROM login ORDER by"
     	
     	if orderByLastLogin:
     		action = action + " lastLogin"
@@ -595,7 +609,7 @@ class DBManager:
     #-------------------------------------------------------------------------------------------------------------------------------
     
     # Crear Cliente
-    def createClient(self, ID, name="",lastName="", phone="", balance=0, debtPermission=False):
+    def createClient(self, ID, name="", lastName="", phone="", balance=0, debtPermission=False):
     	action = "INSERT INTO clients(ID,name,lastName,phone,balance,debtPermission) VALUES(%s,%s,%s,%s,%s,%s)"
     	kwargs = (ID, name, lastName, phone, balance, debtPermission)
     	try:
