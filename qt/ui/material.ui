@@ -240,8 +240,17 @@
 }
 
 /*Configuración del estilo de todos los line edit en modo de solo lectura*/
-#lineE0[readOnly=&quot;true&quot;], #lineE1[readOnly=&quot;true&quot;], #lineE2[readOnly=&quot;true&quot;], #lineE3[readOnly=&quot;true&quot;], #lineE4[readOnly=&quot;true&quot;], #lineE5[readOnly=&quot;true&quot;], #lineE6[readOnly=&quot;true&quot;], #lineE7[readOnly=&quot;true&quot;], #lineE8[readOnly=&quot;true&quot;], #lineE9[readOnly=&quot;true&quot;], #lineE10[readOnly=&quot;true&quot;], #lineE11[readOnly=&quot;true&quot;], #lineE12[readOnly=&quot;true&quot;], #lineE13[readOnly=&quot;true&quot;], #lineE14[readOnly=&quot;true&quot;], #lineE15[readOnly=&quot;true&quot;], #lineE16[readOnly=&quot;true&quot;], #lineE17[readOnly=&quot;true&quot;], #lineE18[readOnly=&quot;true&quot;], #lineE19[readOnly=&quot;true&quot;], #lineE20[readOnly=&quot;true&quot;], #lineE21[readOnly=&quot;true&quot;], #lineE22[readOnly=&quot;true&quot;], #lineE23[readOnly=&quot;true&quot;], #lineE24[readOnly=&quot;true&quot;], #lineE25[readOnly=&quot;true&quot;], #lineE26[readOnly=&quot;true&quot;], #lineE27[readOnly=&quot;true&quot;], #lineE28[readOnly=&quot;true&quot;], #lineE29[readOnly=&quot;true&quot;], #lineE30[readOnly=&quot;true&quot;], #lineE31[readOnly=&quot;true&quot;], #lineE32[readOnly=&quot;true&quot;], #lineE33[readOnly=&quot;true&quot;], #lineE34[readOnly=&quot;true&quot;], #lineE35[readOnly=&quot;true&quot;], #lineE36[readOnly=&quot;true&quot;], #lineE37[readOnly=&quot;true&quot;], #lineE38[readOnly=&quot;true&quot;], #lineE39[readOnly=&quot;true&quot;], #lineE40[readOnly=&quot;true&quot;], #lineE41[readOnly=&quot;true&quot;], #lineE42[readOnly=&quot;true&quot;], #lineE43[readOnly=&quot;true&quot;], #lineE44[readOnly=&quot;true&quot;], #lineE45[readOnly=&quot;true&quot;], #lineE46[readOnly=&quot;true&quot;], #lineE47[readOnly=&quot;true&quot;], #lineE48[readOnly=&quot;true&quot;], #lineE49[readOnly=&quot;true&quot;], #lineE50[readOnly=&quot;true&quot;], #lineE51[readOnly=&quot;true&quot;], #lineE52[readOnly=&quot;true&quot;], #lineE53[readOnly=&quot;true&quot;], #lineE54[readOnly=&quot;true&quot;], #lineE55[readOnly=&quot;true&quot;], #lineE56[readOnly=&quot;true&quot;], #lineE57[readOnly=&quot;true&quot;], #lineE58[readOnly=&quot;true&quot;], #lineE59[readOnly=&quot;true&quot;], #lineE60[readOnly=&quot;true&quot;], #lineE61[readOnly=&quot;true&quot;], #lineE62[readOnly=&quot;true&quot;], #lineE63[readOnly=&quot;true&quot;], #lineE64[readOnly=&quot;true&quot;], #lineE65[readOnly=&quot;true&quot;], #lineE66[readOnly=&quot;true&quot;], #lineE67[readOnly=&quot;true&quot;], #lineE68[readOnly=&quot;true&quot;], #lineE69[readOnly=&quot;true&quot;], #lineE70[readOnly=&quot;true&quot;], #lineE71[readOnly=&quot;true&quot;], #lineE72[readOnly=&quot;true&quot;], #lineE73[readOnly=&quot;true&quot;], #lineE74[readOnly=&quot;true&quot;], #lineE75[readOnly=&quot;true&quot;], #lineE76[readOnly=&quot;true&quot;], #lineE77[readOnly=&quot;true&quot;], #lineE78[readOnly=&quot;true&quot;], #lineE79[readOnly=&quot;true&quot;], #lineE80[readOnly=&quot;true&quot;], #lineE81[readOnly=&quot;true&quot;], #lineE82[readOnly=&quot;true&quot;], #lineE83[readOnly=&quot;true&quot;], #lineE84[readOnly=&quot;true&quot;], #lineE85[readOnly=&quot;true&quot;], #lineE86[readOnly=&quot;true&quot;], #lineE87[readOnly=&quot;true&quot;], #lineE88[readOnly=&quot;true&quot;], #lineE89[readOnly=&quot;true&quot;], #lineE90[readOnly=&quot;true&quot;]{
-    color: black;
+#lineE0[readOnly=&quot;false&quot;], #lineE1[readOnly=&quot;false&quot;], #lineE2[readOnly=&quot;true&quot;], #lineE3[readOnly=&quot;true&quot;], #lineE4[readOnly=&quot;true&quot;], #lineE5[readOnly=&quot;true&quot;], #lineE6[readOnly=&quot;true&quot;], #lineE7[readOnly=&quot;true&quot;], #lineE8[readOnly=&quot;true&quot;], #lineE9[readOnly=&quot;true&quot;], #lineE10[readOnly=&quot;true&quot;], #lineE11[readOnly=&quot;true&quot;], #lineE12[readOnly=&quot;true&quot;], #lineE13[readOnly=&quot;true&quot;], #lineE14[readOnly=&quot;true&quot;], #lineE15[readOnly=&quot;true&quot;], #lineE16[readOnly=&quot;true&quot;], #lineE17[readOnly=&quot;true&quot;], #lineE18[readOnly=&quot;true&quot;], #lineE19[readOnly=&quot;true&quot;], #lineE20[readOnly=&quot;true&quot;], #lineE21[readOnly=&quot;true&quot;], #lineE22[readOnly=&quot;true&quot;], #lineE23[readOnly=&quot;true&quot;], #lineE24[readOnly=&quot;true&quot;], #lineE25[readOnly=&quot;true&quot;], #lineE26[readOnly=&quot;true&quot;], #lineE27[readOnly=&quot;true&quot;], #lineE28[readOnly=&quot;true&quot;], #lineE29[readOnly=&quot;true&quot;], #lineE30[readOnly=&quot;true&quot;], #lineE31[readOnly=&quot;true&quot;], #lineE32[readOnly=&quot;true&quot;], #lineE33[readOnly=&quot;true&quot;], #lineE34[readOnly=&quot;true&quot;], #lineE35[readOnly=&quot;true&quot;], #lineE36[readOnly=&quot;true&quot;], #lineE37[readOnly=&quot;true&quot;], #lineE38[readOnly=&quot;true&quot;], #lineE39[readOnly=&quot;true&quot;], #lineE40[readOnly=&quot;true&quot;], #lineE41[readOnly=&quot;true&quot;], #lineE42[readOnly=&quot;true&quot;], #lineE43[readOnly=&quot;true&quot;], #lineE44[readOnly=&quot;true&quot;], #lineE45[readOnly=&quot;true&quot;], #lineE46[readOnly=&quot;true&quot;], #lineE47[readOnly=&quot;true&quot;], #lineE48[readOnly=&quot;true&quot;], #lineE49[readOnly=&quot;true&quot;], #lineE50[readOnly=&quot;true&quot;], #lineE51[readOnly=&quot;true&quot;], #lineE52[readOnly=&quot;true&quot;], #lineE53[readOnly=&quot;true&quot;], #lineE54[readOnly=&quot;true&quot;], #lineE55[readOnly=&quot;true&quot;], #lineE56[readOnly=&quot;true&quot;], #lineE57[readOnly=&quot;true&quot;], #lineE58[readOnly=&quot;true&quot;], #lineE59[readOnly=&quot;true&quot;], #lineE60[readOnly=&quot;true&quot;], #lineE61[readOnly=&quot;true&quot;], #lineE62[readOnly=&quot;true&quot;], #lineE63[readOnly=&quot;true&quot;], #lineE64[readOnly=&quot;true&quot;], #lineE65[readOnly=&quot;true&quot;], #lineE66[readOnly=&quot;true&quot;], #lineE67[readOnly=&quot;true&quot;], #lineE68[readOnly=&quot;true&quot;], #lineE69[readOnly=&quot;true&quot;], #lineE70[readOnly=&quot;true&quot;], #lineE71[readOnly=&quot;true&quot;], #lineE72[readOnly=&quot;true&quot;], #lineE73[readOnly=&quot;true&quot;], #lineE74[readOnly=&quot;true&quot;], #lineE75[readOnly=&quot;true&quot;], #lineE76[readOnly=&quot;true&quot;], #lineE77[readOnly=&quot;true&quot;], #lineE78[readOnly=&quot;true&quot;], #lineE79[readOnly=&quot;true&quot;], #lineE80[readOnly=&quot;true&quot;], #lineE81[readOnly=&quot;true&quot;], #lineE82[readOnly=&quot;true&quot;], #lineE83[readOnly=&quot;true&quot;], #lineE84[readOnly=&quot;true&quot;], #lineE85[readOnly=&quot;true&quot;], #lineE86[readOnly=&quot;true&quot;], #lineE87[readOnly=&quot;true&quot;], #lineE88[readOnly=&quot;true&quot;], #lineE89[readOnly=&quot;true&quot;], #lineE90[readOnly=&quot;true&quot;]{
+    border-style: inset;
+    border-color: silver;
+    background-color: whitesmoke;
+}
+
+/*Configuración del estilo de todos los line edit en modo de solo lectura*/
+#lineE0[readOnly=&quot;false&quot;], #lineE1[readOnly=&quot;false&quot;], #lineE2[readOnly=&quot;false&quot;], #lineE3[readOnly=&quot;false&quot;], #lineE4[readOnly=&quot;false&quot;], #lineE5[readOnly=&quot;false&quot;], #lineE6[readOnly=&quot;false&quot;], #lineE7[readOnly=&quot;false&quot;], #lineE8[readOnly=&quot;false&quot;], #lineE9[readOnly=&quot;false&quot;], #lineE10[readOnly=&quot;false&quot;], #lineE11[readOnly=&quot;false&quot;], #lineE12[readOnly=&quot;false&quot;], #lineE13[readOnly=&quot;false&quot;], #lineE14[readOnly=&quot;false&quot;], #lineE15[readOnly=&quot;false&quot;], #lineE16[readOnly=&quot;false&quot;], #lineE17[readOnly=&quot;false&quot;], #lineE18[readOnly=&quot;false&quot;], #lineE19[readOnly=&quot;false&quot;], #lineE20[readOnly=&quot;false&quot;], #lineE21[readOnly=&quot;false&quot;], #lineE22[readOnly=&quot;false&quot;], #lineE23[readOnly=&quot;false&quot;], #lineE24[readOnly=&quot;false&quot;], #lineE25[readOnly=&quot;false&quot;], #lineE26[readOnly=&quot;false&quot;], #lineE27[readOnly=&quot;false&quot;], #lineE28[readOnly=&quot;false&quot;], #lineE29[readOnly=&quot;false&quot;], #lineE30[readOnly=&quot;false&quot;], #lineE31[readOnly=&quot;false&quot;], #lineE32[readOnly=&quot;false&quot;], #lineE33[readOnly=&quot;false&quot;], #lineE34[readOnly=&quot;false&quot;], #lineE35[readOnly=&quot;false&quot;], #lineE36[readOnly=&quot;false&quot;], #lineE37[readOnly=&quot;false&quot;], #lineE38[readOnly=&quot;false&quot;], #lineE39[readOnly=&quot;false&quot;], #lineE40[readOnly=&quot;false&quot;], #lineE41[readOnly=&quot;false&quot;], #lineE42[readOnly=&quot;false&quot;], #lineE43[readOnly=&quot;false&quot;], #lineE44[readOnly=&quot;false&quot;], #lineE45[readOnly=&quot;false&quot;], #lineE46[readOnly=&quot;false&quot;], #lineE47[readOnly=&quot;false&quot;], #lineE48[readOnly=&quot;false&quot;], #lineE49[readOnly=&quot;false&quot;], #lineE50[readOnly=&quot;false&quot;], #lineE51[readOnly=&quot;false&quot;], #lineE52[readOnly=&quot;false&quot;], #lineE53[readOnly=&quot;false&quot;], #lineE54[readOnly=&quot;false&quot;], #lineE55[readOnly=&quot;false&quot;], #lineE56[readOnly=&quot;false&quot;], #lineE57[readOnly=&quot;false&quot;], #lineE58[readOnly=&quot;false&quot;], #lineE59[readOnly=&quot;false&quot;], #lineE60[readOnly=&quot;false&quot;], #lineE61[readOnly=&quot;false&quot;], #lineE62[readOnly=&quot;false&quot;], #lineE63[readOnly=&quot;false&quot;], #lineE64[readOnly=&quot;false&quot;], #lineE65[readOnly=&quot;false&quot;], #lineE66[readOnly=&quot;false&quot;], #lineE67[readOnly=&quot;false&quot;], #lineE68[readOnly=&quot;false&quot;], #lineE69[readOnly=&quot;false&quot;], #lineE70[readOnly=&quot;false&quot;], #lineE71[readOnly=&quot;false&quot;], #lineE72[readOnly=&quot;false&quot;], #lineE73[readOnly=&quot;false&quot;], #lineE74[readOnly=&quot;false&quot;], #lineE75[readOnly=&quot;false&quot;], #lineE76[readOnly=&quot;false&quot;], #lineE77[readOnly=&quot;false&quot;], #lineE78[readOnly=&quot;false&quot;], #lineE79[readOnly=&quot;false&quot;], #lineE80[readOnly=&quot;false&quot;], #lineE81[readOnly=&quot;false&quot;], #lineE82[readOnly=&quot;false&quot;], #lineE83[readOnly=&quot;false&quot;], #lineE84[readOnly=&quot;false&quot;], #lineE85[readOnly=&quot;false&quot;], #lineE86[readOnly=&quot;false&quot;], #lineE87[readOnly=&quot;false&quot;], #lineE88[readOnly=&quot;false&quot;], #lineE89[readOnly=&quot;false&quot;], #lineE90[readOnly=&quot;false&quot;]{
+    border-style: outset;
+    border-color: dimgray;
+    background-color: white;
 }
 
 /***********************************
@@ -889,7 +898,7 @@
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="page0">
            <widget class="QGroupBox" name="groupBox0">
@@ -6527,7 +6536,7 @@ QComboBox QAbstractItemView {
              <string notr="true"/>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="page11">
              <layout class="QGridLayout" name="gridLayout_10">
@@ -7624,6 +7633,24 @@ QComboBox QAbstractItemView {
                           </property>
                          </widget>
                         </item>
+                        <item row="2" column="0">
+                         <widget class="QLabel" name="lotProviderLl_2">
+                          <property name="font">
+                           <font>
+                            <family>Open Sans</family>
+                            <pointsize>12</pointsize>
+                            <weight>75</weight>
+                            <bold>true</bold>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">background-color: transparent;</string>
+                          </property>
+                          <property name="text">
+                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Proveedor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                          </property>
+                         </widget>
+                        </item>
                         <item row="2" column="1">
                          <widget class="QLineEdit" name="lineE34">
                           <property name="enabled">
@@ -7672,26 +7699,8 @@ QComboBox QAbstractItemView {
                           </property>
                          </widget>
                         </item>
-                        <item row="2" column="0">
-                         <widget class="QLabel" name="productCategoryLl_3">
-                          <property name="font">
-                           <font>
-                            <family>Open Sans</family>
-                            <pointsize>12</pointsize>
-                            <weight>75</weight>
-                            <bold>true</bold>
-                           </font>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">background-color: transparent;</string>
-                          </property>
-                          <property name="text">
-                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:'Open Sans,sans-serif';&quot;&gt;Categoria&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                          </property>
-                         </widget>
-                        </item>
                         <item row="3" column="0">
-                         <widget class="QLabel" name="lotProviderLl_2">
+                         <widget class="QLabel" name="lotDateLl_3">
                           <property name="font">
                            <font>
                             <family>Open Sans</family>
@@ -7704,7 +7713,7 @@ QComboBox QAbstractItemView {
                            <string notr="true">background-color: transparent;</string>
                           </property>
                           <property name="text">
-                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Proveedor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Precio&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                           </property>
                          </widget>
                         </item>
@@ -8346,12 +8355,6 @@ QComboBox QAbstractItemView {
                     <property name="editTriggers">
                      <set>QAbstractItemView::NoEditTriggers</set>
                     </property>
-                    <property name="tabKeyNavigation">
-                     <bool>false</bool>
-                    </property>
-                    <property name="showDropIndicator" stdset="0">
-                     <bool>false</bool>
-                    </property>
                     <property name="dragEnabled">
                      <bool>false</bool>
                     </property>
@@ -8380,7 +8383,7 @@ QComboBox QAbstractItemView {
                      <bool>true</bool>
                     </property>
                     <property name="cornerButtonEnabled">
-                     <bool>true</bool>
+                     <bool>false</bool>
                     </property>
                     <attribute name="horizontalHeaderCascadingSectionResizes">
                      <bool>true</bool>
@@ -8392,36 +8395,11 @@ QComboBox QAbstractItemView {
                      <number>25</number>
                     </attribute>
                     <attribute name="horizontalHeaderStretchLastSection">
-                     <bool>true</bool>
+                     <bool>false</bool>
                     </attribute>
                     <attribute name="verticalHeaderStretchLastSection">
                      <bool>false</bool>
                     </attribute>
-                    <row>
-                     <property name="text">
-                      <string>1</string>
-                     </property>
-                    </row>
-                    <row>
-                     <property name="text">
-                      <string>2</string>
-                     </property>
-                    </row>
-                    <row>
-                     <property name="text">
-                      <string>3</string>
-                     </property>
-                    </row>
-                    <row>
-                     <property name="text">
-                      <string>4</string>
-                     </property>
-                    </row>
-                    <row>
-                     <property name="text">
-                      <string>5</string>
-                     </property>
-                    </row>
                     <column>
                      <property name="text">
                       <string>Producto</string>
@@ -8430,6 +8408,14 @@ QComboBox QAbstractItemView {
                     <column>
                      <property name="text">
                       <string>Precio</string>
+                     </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Categoría</string>
                      </property>
                      <property name="textAlignment">
                       <set>AlignHCenter|AlignVCenter|AlignCenter</set>
@@ -8748,7 +8734,7 @@ QComboBox QAbstractItemView {
                      <number>25</number>
                     </attribute>
                     <attribute name="horizontalHeaderStretchLastSection">
-                     <bool>true</bool>
+                     <bool>false</bool>
                     </attribute>
                     <attribute name="verticalHeaderStretchLastSection">
                      <bool>false</bool>
@@ -8762,15 +8748,32 @@ QComboBox QAbstractItemView {
                      <property name="text">
                       <string>Precio</string>
                      </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                     </property>
+                    </column>
+                    <column>
+                     <property name="text">
+                      <string>Categoría</string>
+                     </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                     </property>
                     </column>
                     <column>
                      <property name="text">
                       <string>Cant</string>
                      </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+                     </property>
                     </column>
                     <column>
                      <property name="text">
                       <string>Lotes</string>
+                     </property>
+                     <property name="textAlignment">
+                      <set>AlignHCenter|AlignVCenter|AlignCenter</set>
                      </property>
                     </column>
                    </widget>
@@ -11601,7 +11604,7 @@ QComboBox QAbstractItemView {
                          <string/>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -12036,7 +12039,7 @@ QComboBox QAbstractItemView {
                          <string/>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -12054,7 +12057,7 @@ QComboBox QAbstractItemView {
                          <string/>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -12072,7 +12075,7 @@ QComboBox QAbstractItemView {
                          <string/>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -12090,7 +12093,7 @@ QComboBox QAbstractItemView {
                          <string/>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -12476,7 +12479,7 @@ QComboBox QAbstractItemView {
                          <string/>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -12494,7 +12497,7 @@ QComboBox QAbstractItemView {
                          <string/>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -12512,7 +12515,7 @@ QComboBox QAbstractItemView {
                          <string/>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -12530,7 +12533,7 @@ QComboBox QAbstractItemView {
                          <string/>
                         </property>
                         <property name="readOnly">
-                         <bool>true</bool>
+                         <bool>false</bool>
                         </property>
                        </widget>
                       </item>
@@ -14043,7 +14046,7 @@ QComboBox QAbstractItemView {
                            <string/>
                           </property>
                           <property name="readOnly">
-                           <bool>true</bool>
+                           <bool>false</bool>
                           </property>
                          </widget>
                         </item>
@@ -14061,7 +14064,7 @@ QComboBox QAbstractItemView {
                            <string/>
                           </property>
                           <property name="readOnly">
-                           <bool>true</bool>
+                           <bool>false</bool>
                           </property>
                          </widget>
                         </item>
@@ -14079,7 +14082,7 @@ QComboBox QAbstractItemView {
                            <string/>
                           </property>
                           <property name="readOnly">
-                           <bool>true</bool>
+                           <bool>false</bool>
                           </property>
                          </widget>
                         </item>
@@ -14097,7 +14100,7 @@ QComboBox QAbstractItemView {
                            <string/>
                           </property>
                           <property name="readOnly">
-                           <bool>true</bool>
+                           <bool>false</bool>
                           </property>
                          </widget>
                         </item>
@@ -14115,7 +14118,7 @@ QComboBox QAbstractItemView {
                            <string/>
                           </property>
                           <property name="readOnly">
-                           <bool>true</bool>
+                           <bool>false</bool>
                           </property>
                          </widget>
                         </item>
@@ -14595,7 +14598,7 @@ QComboBox QAbstractItemView {
                            <string/>
                           </property>
                           <property name="readOnly">
-                           <bool>true</bool>
+                           <bool>false</bool>
                           </property>
                          </widget>
                         </item>
@@ -14608,7 +14611,7 @@ QComboBox QAbstractItemView {
                            <string/>
                           </property>
                           <property name="readOnly">
-                           <bool>true</bool>
+                           <bool>false</bool>
                           </property>
                          </widget>
                         </item>
@@ -14621,7 +14624,7 @@ QComboBox QAbstractItemView {
                            <string/>
                           </property>
                           <property name="readOnly">
-                           <bool>true</bool>
+                           <bool>false</bool>
                           </property>
                          </widget>
                         </item>
@@ -14634,7 +14637,7 @@ QComboBox QAbstractItemView {
                            <string/>
                           </property>
                           <property name="readOnly">
-                           <bool>true</bool>
+                           <bool>false</bool>
                           </property>
                          </widget>
                         </item>
@@ -14647,7 +14650,7 @@ QComboBox QAbstractItemView {
                            <string/>
                           </property>
                           <property name="readOnly">
-                           <bool>true</bool>
+                           <bool>false</bool>
                           </property>
                          </widget>
                         </item>
