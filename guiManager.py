@@ -102,17 +102,7 @@ class adminGUI(QMainWindow, form_class):
 
         # Parametros para buscar en la tabla de productos
         self.productsParams0 = ["name"]
-        self.productsParams1 = ["name", "price", "category"]
-
-        # Listas de nombres de los productos
-        self.productsNames = self.getProductList(self.productsParams0, 0)                     # Completa
-        self.productsNamesAvailable = self.getProductList(self.productsParams0, 1)            # Disponibles
-        self.productsNamesNotAvailable = self.getProductList(self.productsParams0, 2)         # No disponibles
-
-        # Listas con información para las tablas de productos
-        self.productsInfo = self.getProductList(self.productsParams1, 0)                     # Completa
-        self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)            # Disponibles
-        self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2)         # No disponibles
+        self.productsParams1 = ["name", "price", "category", "remaining", "remainingLots"]
 
         # Barras de búsqueda por cédula:
         self.ciSearch = [self.lineE17, self.lineE47, self.lineE52, self.lineE57]
@@ -123,14 +113,13 @@ class adminGUI(QMainWindow, form_class):
         # Apartado de productos en inventario
         self.productsRO0 = [self.lineE26, self.lineE27, self.lineE28, self.lineE29, self.lineE30, self.lineE31, self.lineE32]
         self.productsRO1 = [self.lineE27, self.lineE28, self.lineE29, self.lineE30, self.lineE31, self.lineE32]
-        self.productsRO2 = [self.lineE27, self.lineE28, self.lineE29, self.lineE31, self.lineE32]
-        self.productsRO3 = [self.lineE30]
+        self.productsRO2 = [self.lineE27, self.lineE28]
 
         # Apartado de lotes en inventario
-        self.lotsRO0 = [self.lineE34, self.lineE35, self.lineE36, self.lineE37, self.lineE38, self.lineE39]
-        self.lotsRO1 = [self.lineE34, self.lineE35, self.lineE36, self.lineE37, self.lineE38, self.lineE39]
-        self.lotsRO2 = [self.lineE34, self.lineE35, self.lineE36, self.lineE38, self.lineE39]
-        self.lotsRO3 = [self.lineE37]
+        self.lotsRO0 = [self.lineE33, self.lineE34, self.lineE35, self.lineE36, self.lineE37, self.lineE38]
+        self.lotsRO1 = [self.lineE34, self.lineE35, self.lineE36, self.lineE37, self.lineE38]
+        self.lotsRO2 = [self.lineE34, self.lineE35, self.lineE36, self.lineE37]
+        self.lotsRO3 = [self.lineE38]
 
         # Tablas
         self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
@@ -140,28 +129,17 @@ class adminGUI(QMainWindow, form_class):
         # Cargar configuraciones iniciales
         #---------------------------------------------------------------------------------------------------------------------------
 
-        #Configuración de la barra de búsqueda de cliente por CI
-        self.setupSearchBar(self.ciSearch, clientList, True)
-
-        # Configuración de las barras de búsqueda por nombre de producto
-        self.setupSearchBar(self.productSearch, self.productsNames)
-
         # Se connectan los botones entre otras cosas con algunos de los métodos definidos a continuación
         QMetaObject.connectSlotsByName(self)
 
         # Variable de control para los QPushButton
         self.clicked = False
 
-        # Configurar tablas
-        self.setupTables()
+        # Aplicar configuraciones generales de la interfaz
+        self.generalSetup()
 
-        # Setup de las distintas tablas
-        self.updateTable(self.table0, self.productsInfoAvailable)
-        self.updateTable(self.table1, self.productsInfoNotAvailable)
-        self.updateTable(self.table2, self.productsInfo)
-
-        self.center()
-        self.setSize()
+        # Refrescar todos los elementos de la interfaz
+        self.refresh()
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Configuraciones básicas de la ventana
@@ -178,7 +156,14 @@ class adminGUI(QMainWindow, form_class):
     # Fijar tamaño de la ventana
     def setSize(self):
         self.setFixedSize(self.width(), self.height())
-        self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
+        #self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
+
+    def generalSetup(self):
+        # Centrar posición de la ventana
+        self.center()
+
+        # Establecer tamaño y ocultar botones de la ventana
+        self.setSize()
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Procedimientos de la clase (Métodos)
@@ -217,7 +202,7 @@ class adminGUI(QMainWindow, form_class):
         LEmodel.setStringList(itemsList)
         LEcompleter = QCompleter()
         LEcompleter.setModel(LEmodel)
-        #LEcompleter.popup().setStyleSheet(getStyle(LEpopup))  Se vuelve mierda la interfaz por alguna razon, revisar al final
+        # LEcompleter.popup().setStyleSheet(getStyle(LEpopup))  Causa error en los Threads (REVISAR AL FINAL!)
         LEcompleter.setCompletionMode(QCompleter.PopupCompletion)
         LEcompleter.setCaseSensitivity(Qt.CaseInsensitive)
         for lineE in listLE:
@@ -225,7 +210,7 @@ class adminGUI(QMainWindow, form_class):
             lineE.setCompleter(LEcompleter)
 
     # Obtener una lista con los nombres de todos los productos
-    def getProductList(self, params, mode):
+    def getProductList(self, params, mode = 0):
         productsList = self.db.getItemInfo(productsTable, params, mode)
         if len(params) == 1:
             productsNames = []
@@ -233,7 +218,8 @@ class adminGUI(QMainWindow, form_class):
                 productsNames += productsList[i]
             return productsNames
 
-        else: return productsList
+        else:
+            return sorted(productsList, key = lambda product: product[0])
 
     # Borrar contenido de uno o más LineEdit:
     def clearLE(self, listLE):
@@ -242,6 +228,7 @@ class adminGUI(QMainWindow, form_class):
     # Marcar en solo lectura uno o más LineEdit:
     def ReadOnlyLE(self, listLE, boolean):
         for lineE in listLE: lineE.setReadOnly(boolean)
+        self.setStyleSheet(getStyle(styles[1]))
 
     # Cambio de estado de los line edits en un apartado
     def changeRO(self, listaLE0, boolean = True, listaLE1 = []):
@@ -255,19 +242,53 @@ class adminGUI(QMainWindow, form_class):
 
     # Método para refrescar la tabla de canciones en la ventana
     def updateTable(self, table, itemsList):
-        #for i in reversed(range(table.rowCount())): table.removeRow(i)
+        for i in reversed(range(table.rowCount())): table.removeRow(i)
 
-        #table.setRowCount(len(itemsList))
+        table.setRowCount(len(itemsList))
         for i in range(len(itemsList)):
-            name = QTableWidgetItem(str(itemsList[i][0]))
-            price = QTableWidgetItem(str(itemsList[i][1]))
-            category = QTableWidgetItem(str(itemsList[i][2]))
-            table.setItem(i, 0, name)
-            table.setItem(i, 1, price)
-            table.setItem(i, 2, category)
+            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][0]))) # Nombre
+            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][1]))) # Precio
+            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][2]))) # Categoria
+            table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Cantidad
+            table.setItem(i, 4, QTableWidgetItem(str(itemsList[i][4]))) # Lotes
 
         self.elem_actual = 0
         if len(itemsList) > 0: table.selectRow(self.elem_actual)
+
+        table.resizeColumnsToContents()
+
+    def refresh(self):
+        # Listas de nombres de los productos
+        self.productsNames = self.getProductList(self.productsParams0, 0)                     # Completa
+        self.productsNamesAvailable = self.getProductList(self.productsParams0, 1)            # Disponibles
+        self.productsNamesNotAvailable = self.getProductList(self.productsParams0, 2)         # No disponibles
+
+        # Listas con información para las tablas de productos
+        self.productsInfo = self.getProductList(self.productsParams1, 0)                     # Completa
+        self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)            # Disponibles
+        self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2)         # No disponibles
+
+        print(self.productsInfoAvailable)
+
+        #Configuración de la barra de búsqueda de cliente por CI
+        self.setupSearchBar(self.ciSearch, clientList, True)
+
+        # Configuración de las barras de búsqueda por nombre de producto
+        self.setupSearchBar(self.productSearch, self.productsNames)
+
+        # Setup de las distintas tablas
+        self.updateTable(self.table0, self.productsInfoAvailable)
+        self.updateTable(self.table1, self.productsInfoNotAvailable)
+        self.updateTable(self.table2, self.productsInfo)
+
+        # Configurar tablas
+        self.setupTables()
+
+        # Limpiar campos
+        self.clearLE(self.ciSearch)
+        self.clearLE(self.productSearch)
+        self.clearLE(self.productsRO0)
+        self.clearLE(self.lotsRO0)
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Configuración de los botones para cambio de página de los stacked:
@@ -382,36 +403,104 @@ class adminGUI(QMainWindow, form_class):
     #-------------------------------------------------------------------------------------------------------------------------------
 
     # Radio button para agregar nuevos productos
-    def on_rbutton5_pressed(self): self.changeRO(self.productsRO1, False)
+    def on_rbutton5_pressed(self): self.changeRO(self.productsRO1, True, self.productsRO2)
 
     # Radio button para consultar productos
     def on_rbutton6_pressed(self): self.changeRO(self.productsRO1)
 
     # Radio button para editar productos
-    def on_rbutton7_pressed(self): self.changeRO(self.productsRO2, False, self.productsRO3)
+    def on_rbutton7_pressed(self): self.changeRO(self.productsRO1, True, self.productsRO2)
 
     # Radio button para eliminar productos
     def on_rbutton8_pressed(self): self.changeRO(self.productsRO1)
 
+    # Radio button para agregar nuevos lotes
+    def on_rbutton9_pressed(self): self.changeRO(self.lotsRO2, False, self.lotsRO3)
+
+    # Radio button para consultar lotes
+    def on_rbutton10_pressed(self): self.changeRO(self.lotsRO1)
+
+    # Radio button para editar lotes
+    def on_rbutton11_pressed(self): self.changeRO(self.lotsRO0, False)
+
+    # Radio button para eliminar lotes
+    def on_rbutton12_pressed(self): self.changeRO(self.lotsRO1)
+
     # Boton "Aceptar" en el apartado de productos
     def on_pbutton11_pressed(self):
         if self.click():
+            # Modalidad para agregar nuevos productos
             if self.rbutton5.isChecked():
-                name = self.lineE26.text()
-                price = self.lineE27.text()
-                category = self.lineE28.text()
-                self.db.createProduct(name, price)
-                self.setupProductsSearchs()
-                self.clearLE(self.productsRO0)
+                # Obtener información del nuevo producto
+                productName = self.lineE26.text()
+                productPrice = self.lineE27.text()
+                productCategoy = self.lineE28.text()
+
+                # Agregar el producto a la BD
+                self.db.createProduct(productName, productPrice, productCategoy)
+
+                # Refrescar toda la interfaz
+                self.refresh()
+
+                # Enfocar
+                self.lineE26.setFocus()
+
+            # Modalidad para consultar productos
+            elif self.rbutton6.isChecked():
+                productName = self.lineE26.text()
+                print(self.db.getProductByNameOrID(productName))
+                # code goes here
+                print("XD")
+
+            # Modalidad para editar productos
+            elif self.rbutton7.isChecked():
+                # code goes here
+                print("XD")
+
+            # Modalidad para eliminar productos
+            elif self.rbutton8.isChecked():
+                # code goes here
+                print("XD")
 
     # Boton "Aceptar" en el apartado de lotes
     def on_pbutton13_pressed(self):
         if self.click():
+
+            # Modalidad para agregar nuevos lotes
             if self.rbutton9.isChecked():
-                productID = self.lineE26.text()
-                price = self.lineE27.text()
-                self.db.createLot(productID, price)
-                self.clearLE(self.productsRO0)
+                # Obtener información del nuevo lote
+                lotProduct = self.lineE33.text()
+                lotProvider = self.lineE34.text()
+                lotPrice = self.lineE35.text()
+                lotExpiration = self.lineE36.text()
+                lotQuantity = self.lineE37.text()
+                lotProductID = self.db.getProductID(lotProduct)
+
+                # Agregar el lote a la BD
+                if lotExpiration != "": self.db.createLot(lotProductID, lotPrice, lotQuantity, lotProvider, None, lotExpiration)
+                else: self.db.createLot(lotProductID, lotPrice, lotQuantity, lotProvider)
+                self.db.updateProduct(lotProductID, available = True)
+
+                # Refrescar toda la interfaz
+                self.refresh()
+
+                # Enfocar
+                self.lineE33.setFocus()
+
+            # Modalidad para consultar lotes
+            elif self.rbutton10.isChecked():
+                # code goes here
+                print("XD")
+
+            # Modalidad para editar lotes
+            elif self.rbutton11.isChecked():
+                # code goes here
+                print("XD")
+
+            # Modalidad para eliminar lotes
+            elif self.rbutton12.isChecked():
+                # code goes here
+                print("XD")
 
 ####################################################################################################################################
 ## FIN :)
