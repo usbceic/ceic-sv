@@ -27,10 +27,10 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtGui import QMainWindow, QDialog, QApplication, QLineEdit, QCursor
+from PyQt4.QtGui import QMainWindow, QDialog, QApplication, QLineEdit, QCursor, QSplashScreen, QPixmap
 
 # Módulo con estructuras de Qt
-from PyQt4.QtCore import Qt, QMetaObject, QEvent, pyqtSignal
+from PyQt4.QtCore import Qt, QMetaObject, QEvent, pyqtSignal, QTimer
 
 # Manejador de la base de datos
 from DBManager import DBManager
@@ -76,6 +76,9 @@ class loginGUI(QMainWindow, loginWindow):
         # Interfaz
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
+
+        self.splash_img = QPixmap("qt/images/splash.png")
+        self.splash = QSplashScreen(self.splash_img, Qt.WindowStaysOnTopHint)
 
         self.sessionOn = False
         self.db = DBManager("carlos", "curtis", True)

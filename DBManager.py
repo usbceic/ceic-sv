@@ -131,30 +131,30 @@ class DBManager:
             #Pruebas de Usuario
             self.createUser("Hola","hola","PRIVATE SNAFU","coreoCaliente@gmail.com")
             self.createUser("Test2","test2","Soy Prueba","google@hotmail.com")
-            print(self.getUsersInfo(orderByLastLogin=True))
-            print(self.checkUser("Hola", "a"))
-            print(self.getUsersInfo(orderByLastLogin=True))
-            print(self.checkUser("Hola", "hola"))
-            print(self.getUsersInfo(orderByLastLogin=True))
+            #print(self.getUsersInfo(orderByLastLogin=True))
+            #print(self.checkUser("Hola", "a"))
+            #print(self.getUsersInfo(orderByLastLogin=True))
+            #print(self.checkUser("Hola", "hola"))
+            #print(self.getUsersInfo(orderByLastLogin=True))
 
             # Pruebas de correctitud (Borrar luego)
-            self.createProduct("Dona", 499.99)
-            self.createProduct("Pizza", 699.99)
-            self.createProduct("Memes", 100000000)
-            print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
+            self.createProduct("Dona", 499.99, "Comida")
+            self.createProduct("Pizza", 699.99, "Comida")
+            self.createProduct("Memes", 100000000, "Otros")
+            #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
             self.deleteProduct(1)
-            print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
+            #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
             self.createLot(2, 10.5, 50, adquisitionDate=datetime.datetime.now().date().isoformat())
             self.createLot(2, 1.5, 5, adquisitionDate=datetime.date(1998, 8,15).isoformat())
-            print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
-            print(self.getLots(False))
+            #print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
+            #print(self.getLots(False))
             self.updateLot(2, 2, quantity=100, available=True)
-            print(self.getLots(False))
-            print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
+            #print(self.getLots(False))
+            #print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
             self.deleteLot(2, 2)
-            print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
+            #print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
             self.createLot(2, 1.5, 5, adquisitionDate=datetime.date(1998, 8,15).isoformat(), expirationDate=datetime.date(1998, 8,30).isoformat())
-            print(self.getExpiredLotsOfProduct(2))
+            #print(self.getExpiredLotsOfProduct(2))
             #print(self.getProducts(onlyAvailables = False))
             #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
             #print(self.getItemInfo(productsTable, ["name"]))
@@ -163,11 +163,11 @@ class DBManager:
             self.createClient(2425512, "Juan", "Porlamar", "0414-3278450")
             self.createClient(2425513, "Pedro", "Porlamar", "0414-3278451")
             self.createClient(2425514, "Paco", "Juarez", "0414-3278452")
-            print(self.searchClient(ID=2425512))
-            print(self.searchClient(name="pedro"))
-            print(self.searchClient(lastName="lamar"))
-            print(self.checkClient(2425512))
-            print(self.checkClient(0))
+            #print(self.searchClient(ID=2425512))
+            #print(self.searchClient(name="pedro"))
+            #print(self.searchClient(lastName="lamar"))
+            #print(self.checkClient(2425512))
+            #print(self.checkClient(0))
 
             #Prueba de Backup
             self.backupTable(clientsTable, "")
@@ -175,11 +175,11 @@ class DBManager:
             #Prueba de Restore 1
             self.dropTable(clientsTable)
             self.restoreTable(clientsTable,clientsColumns,"")
-            print(self.searchClient(lastName="lamar"))
+            #print(self.searchClient(lastName="lamar"))
 
             #Prueba de Restore 2
             self.restoreTable(clientsTable,clientsColumns,"",drop=False)
-            print(self.searchClient(lastName="lamar"))
+            #print(self.searchClient(lastName="lamar"))
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Destructor de la clase
@@ -339,28 +339,38 @@ class DBManager:
         return self._cur.fetchall()[0][0]
 
     # Actualizar información de un producto
-    def updateProduct(self, productID, name = None, price = None, currentLot =None, available = None):
-        if name is None and price is None and available is None: return
+    def updateProduct(self, productID, name=None, price=None, remaining=None, remainingLots=None, currentLot=None, available=None):
+        if (name or price or remaining or remainingLots or available) == None: return
 
         kwargs = ()
         action = "UPDATE products SET"
 
-        if name is not None:
+        if name != None:
             action = action + " name = %s"
             kwargs = kwargs + (name,)
 
-        if price is not None:
-            if name is not None: action = action + ","
+        if price != None:
+            if name != None: action = action + ","
             action = action + " price = %s"
             kwargs = kwargs + (price,)
 
-        if currentLot is not None:
-            if name is not None or price is not None: action = action + ","
+        if remaining != None:
+            if (name or price) != None: action = action + ","
+            action = action + " remaining = %s"
+            kwargs = kwargs + (remaining,)
+
+        if remainingLots != None:
+            if (name or price or remaining) != None: action = action + ","
+            action = action + " remainingLots = %s"
+            kwargs = kwargs + (remainingLots,)
+
+        if currentLot != None:
+            if (name or price or remaining or remainingLots) != None: action = action + ","
             action = action + " currentLot = %s"
             kwargs = kwargs + (currentLot,)
 
-        if available is not None:
-            if name is not None or price is not None or currentLot is not None: action = action + ","
+        if available != None:
+            if (name or price or remaining or remainingLots or currentLot) != None: action = action + ","
             action = action + " available = %s"
             kwargs = kwargs + (available,)
 

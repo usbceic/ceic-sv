@@ -27,10 +27,11 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
 
 # Módulo con estructuras de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem
+from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, \
+QFileDialog, QIcon
 
 # Módulo manejador de la base de datos
 from DBManager import *
@@ -42,6 +43,7 @@ from DBManager import *
 # Paths
 UIpath = "qt/ui/"
 stylePath = "qt/stylesheet/"
+productPath = "images/inventory/"
 
 # UI
 MainUI = "material.ui"
@@ -102,7 +104,7 @@ class adminGUI(QMainWindow, form_class):
 
         # Parametros para buscar en la tabla de productos
         self.productsParams0 = ["name"]
-        self.productsParams1 = ["name", "price", "category", "remaining", "remainingLots"]
+        self.productsParams1 = ["name", "price", "category", "remaining", "remainingLots", "productID"]
 
         # Barras de búsqueda por cédula:
         self.ciSearch = [self.lineE17, self.lineE47, self.lineE52, self.lineE57]
@@ -111,8 +113,8 @@ class adminGUI(QMainWindow, form_class):
         self.productSearch = [self.lineE23, self.lineE26, self.lineE33]
 
         # Apartado de productos en inventario
-        self.productsRO0 = [self.lineE26, self.lineE27, self.lineE28, self.lineE29, self.lineE30, self.lineE31, self.lineE32]
-        self.productsRO1 = [self.lineE27, self.lineE28, self.lineE29, self.lineE30, self.lineE31, self.lineE32]
+        self.productsRO0 = [self.lineE26, self.lineE27, self.lineE28, self.lineE29, self.lineE30]
+        self.productsRO1 = [self.lineE27, self.lineE28, self.lineE29, self.lineE30]
         self.productsRO2 = [self.lineE27, self.lineE28]
 
         # Apartado de lotes en inventario
@@ -132,8 +134,13 @@ class adminGUI(QMainWindow, form_class):
         # Se connectan los botones entre otras cosas con algunos de los métodos definidos a continuación
         QMetaObject.connectSlotsByName(self)
 
-        # Variable de control para los QPushButton
-        self.clicked = False
+        # Variables de control
+        self.clicked = False        # QPushbutton presionado
+        self.writing = False        # Texto de un QLineEdit cambiado
+        self.currentProduct = None  # Instancia de producto en uso
+
+        # Variables para almacenar data temporal
+        self.tempImage = ""
 
         # Aplicar configuraciones generales de la interfaz
         self.generalSetup()
@@ -178,6 +185,15 @@ class adminGUI(QMainWindow, form_class):
             self.clicked = True
             return False
 
+    # Cambio de texto en un QLineEdit
+    def textChanged(self):
+        if self.writing:
+            self.writing = False
+            return True
+        else:
+            self.writing = True
+            return False
+
     # Cambiar página de un QStackedWidget
     def setPage(self, stacked, index):
         if self.click(): stacked.setCurrentIndex(index)
@@ -198,11 +214,9 @@ class adminGUI(QMainWindow, form_class):
 
     # Método para buscar en un LineEdit
     def setupSearchBar(self, listLE, itemsList, numValidator = False):
-        LEmodel = QStringListModel()
+        LEmodel, LEcompleter = QStringListModel(), QCompleter()
         LEmodel.setStringList(itemsList)
-        LEcompleter = QCompleter()
         LEcompleter.setModel(LEmodel)
-        # LEcompleter.popup().setStyleSheet(getStyle(LEpopup))  Causa error en los Threads (REVISAR AL FINAL!)
         LEcompleter.setCompletionMode(QCompleter.PopupCompletion)
         LEcompleter.setCaseSensitivity(Qt.CaseInsensitive)
         for lineE in listLE:
@@ -216,7 +230,7 @@ class adminGUI(QMainWindow, form_class):
             productsNames = []
             for i in range(len(productsList)):
                 productsNames += productsList[i]
-            return productsNames
+            return sorted(productsNames)
 
         else:
             return sorted(productsList, key = lambda product: product[0])
@@ -257,18 +271,17 @@ class adminGUI(QMainWindow, form_class):
 
         table.resizeColumnsToContents()
 
+    # Método para refrescar la interfaz
     def refresh(self):
         # Listas de nombres de los productos
-        self.productsNames = self.getProductList(self.productsParams0, 0)                     # Completa
-        self.productsNamesAvailable = self.getProductList(self.productsParams0, 1)            # Disponibles
-        self.productsNamesNotAvailable = self.getProductList(self.productsParams0, 2)         # No disponibles
+        self.productsNames = self.getProductList(self.productsParams0, 0)             # Completa
+        self.productsNamesAvailable = self.getProductList(self.productsParams0, 1)    # Disponibles
+        self.productsNamesNotAvailable = self.getProductList(self.productsParams0, 2) # No disponibles
 
         # Listas con información para las tablas de productos
-        self.productsInfo = self.getProductList(self.productsParams1, 0)                     # Completa
-        self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)            # Disponibles
-        self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2)         # No disponibles
-
-        print(self.productsInfoAvailable)
+        self.productsInfo = self.getProductList(self.productsParams1, 0)              # Completa
+        self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)     # Disponibles
+        self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2)  # No disponibles
 
         #Configuración de la barra de búsqueda de cliente por CI
         self.setupSearchBar(self.ciSearch, clientList, True)
@@ -294,70 +307,48 @@ class adminGUI(QMainWindow, form_class):
     # Configuración de los botones para cambio de página de los stacked:
     #-------------------------------------------------------------------------------------------------------------------------------
 
-    def on_home_pressed(self): self.setPage(self.MainStacked, 0)
-    def on_sales_pressed(self): self.setPage(self.MainStacked, 1)
-    def on_inventory_pressed(self): self.setPage(self.MainStacked, 2)
-    def on_querys_pressed(self): self.setPage(self.MainStacked, 3)
-    def on_clients_pressed(self): self.setPage(self.MainStacked, 4)
-    def on_users_pressed(self): self.setPage(self.MainStacked, 5)
-    def on_configure_pressed(self): self.setPage(self.MainStacked, 6)
+    # Cambio de página en MainStacked
+    def on_home_pressed(self): self.setPage(self.MainStacked, 0)      # Cambiar a la página principal
+    def on_sales_pressed(self): self.setPage(self.MainStacked, 1)     # Cambiar a la página de ventas
+    def on_inventory_pressed(self): self.setPage(self.MainStacked, 2) # Cambiar a la página de inventario
+    def on_querys_pressed(self): self.setPage(self.MainStacked, 3)    # Cambiar a la página de consultas
+    def on_loans_pressed(self): self.setPage(self.MainStacked, 4)     # Cambiar a la página de préstamos
+    def on_books_pressed(self): self.setPage(self.MainStacked, 5)     # Cambiar a la página de libros
+    def on_clients_pressed(self): self.setPage(self.MainStacked, 6)   # Cambiar a la página de clientes
+    def on_users_pressed(self): self.setPage(self.MainStacked, 7)     # Cambiar a la página de usuarios
+    def on_configure_pressed(self): self.setPage(self.MainStacked, 8) # Cambiar a la página de configuraciones
+    def on_help_pressed(self): self.setPage(self.MainStacked, 9)      # Cambiar a la página de ayuda
 
-    def on_arrow0_pressed(self): self.setPage(self.subStacked3, 1)
-    def on_arrow1_pressed(self): self.setPage(self.subStacked3, 1)
-    def on_arrow2_pressed(self): self.setPage(self.subStacked3, 0)
-    def on_arrow3_pressed(self): self.setPage(self.subStacked3, 0)
+    # Cambio de página en subStacked
+    def on_arrow1_pressed(self): self.changePage(self.subStacked3)
+    def on_arrow3_pressed(self): self.changePage(self.subStacked4)
+    def on_arrow5_pressed(self): self.changePage(self.subStacked5)
+    def on_arrow7_pressed(self): self.changePage(self.subStacked6)
+    def on_arrow9_pressed(self): self.changePage(self.subStacked7)
+    def on_arrow11_pressed(self): self.changePage(self.subStacked8)
+    def on_arrow13_pressed(self): self.changePage(self.subStacked9)
+    def on_arrow15_pressed(self): self.changePage(self.subStacked10)
+    def on_arrow17_pressed(self): self.changePage(self.subStacked11)
+    def on_arrow19_pressed(self): self.changePage(self.subStacked12)
+    def on_arrow21_pressed(self): self.changePage(self.subStacked13)
+    def on_arrow23_pressed(self): self.changePage(self.subStacked14)
+    def on_arrow25_pressed(self): self.changePage(self.subStacked15)
+    def on_arrow27_pressed(self): self.changePage(self.subStacked16)
 
-    def on_arrow4_pressed(self): self.setPage(self.subStacked4, 1)
-    def on_arrow5_pressed(self): self.setPage(self.subStacked4, 1)
-    def on_arrow6_pressed(self): self.setPage(self.subStacked4, 0)
-    def on_arrow7_pressed(self): self.setPage(self.subStacked4, 0)
-
-    def on_arrow8_pressed(self): self.setPage(self.subStacked5, 2)
-    def on_arrow9_pressed(self): self.setPage(self.subStacked5, 1)
-    def on_arrow10_pressed(self): self.setPage(self.subStacked5, 0)
-    def on_arrow11_pressed(self): self.setPage(self.subStacked5, 2)
-    def on_arrow12_pressed(self): self.setPage(self.subStacked5, 1)
-    def on_arrow13_pressed(self): self.setPage(self.subStacked5, 0)
-
-    def on_arrow14_pressed(self): self.setPage(self.subStacked6, 1)
-    def on_arrow15_pressed(self): self.setPage(self.subStacked6, 1)
-    def on_arrow16_pressed(self): self.setPage(self.subStacked6, 0)
-    def on_arrow17_pressed(self): self.setPage(self.subStacked6, 0)
-
-    def on_arrow18_pressed(self): self.setPage(self.subStacked7, 3)
-    def on_arrow19_pressed(self): self.setPage(self.subStacked7, 1)
-    def on_arrow20_pressed(self): self.setPage(self.subStacked7, 0)
-    def on_arrow21_pressed(self): self.setPage(self.subStacked7, 2)
-    def on_arrow22_pressed(self): self.setPage(self.subStacked7, 1)
-    def on_arrow23_pressed(self): self.setPage(self.subStacked7, 3)
-    def on_arrow24_pressed(self): self.setPage(self.subStacked7, 2)
-    def on_arrow25_pressed(self): self.setPage(self.subStacked7, 0)
-
-    def on_arrow26_pressed(self): self.setPage(self.subStacked8, 2)
-    def on_arrow27_pressed(self): self.setPage(self.subStacked8, 1)
-    def on_arrow28_pressed(self): self.setPage(self.subStacked8, 0)
-    def on_arrow29_pressed(self): self.setPage(self.subStacked8, 2)
-    def on_arrow30_pressed(self): self.setPage(self.subStacked8, 1)
-    def on_arrow31_pressed(self): self.setPage(self.subStacked8, 0)
-
-    def on_arrow32_pressed(self): self.setPage(self.subStacked9, 1)
-    def on_arrow33_pressed(self): self.setPage(self.subStacked9, 1)
-    def on_arrow34_pressed(self): self.setPage(self.subStacked9, 0)
-    def on_arrow35_pressed(self): self.setPage(self.subStacked9, 0)
-
-    def on_arrow36_pressed(self): self.setPage(self.subStacked10, 2)
-    def on_arrow37_pressed(self): self.setPage(self.subStacked10, 1)
-    def on_arrow38_pressed(self): self.setPage(self.subStacked10, 0)
-    def on_arrow39_pressed(self): self.setPage(self.subStacked10, 2)
-    def on_arrow40_pressed(self): self.setPage(self.subStacked10, 1)
-    def on_arrow41_pressed(self): self.setPage(self.subStacked10, 0)
-
-    def on_arrow42_pressed(self): self.setPage(self.subStacked11, 2)
-    def on_arrow43_pressed(self): self.setPage(self.subStacked11, 1)
-    def on_arrow44_pressed(self): self.setPage(self.subStacked11, 0)
-    def on_arrow45_pressed(self): self.setPage(self.subStacked11, 2)
-    def on_arrow46_pressed(self): self.setPage(self.subStacked11, 1)
-    def on_arrow47_pressed(self): self.setPage(self.subStacked11, 0)
+    def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)
+    def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)
+    def on_arrow4_pressed(self): self.changePage(self.subStacked5, 1)
+    def on_arrow6_pressed(self): self.changePage(self.subStacked6, 1)
+    def on_arrow8_pressed(self): self.changePage(self.subStacked7, 1)
+    def on_arrow10_pressed(self): self.changePage(self.subStacked8, 1)
+    def on_arrow12_pressed(self): self.changePage(self.subStacked9, 1)
+    def on_arrow14_pressed(self): self.changePage(self.subStacked10, 1)
+    def on_arrow16_pressed(self): self.changePage(self.subStacked11, 1)
+    def on_arrow18_pressed(self): self.changePage(self.subStacked12, 1)
+    def on_arrow20_pressed(self): self.changePage(self.subStacked13, 1)
+    def on_arrow22_pressed(self): self.changePage(self.subStacked14, 1)
+    def on_arrow24_pressed(self): self.changePage(self.subStacked15, 1)
+    def on_arrow26_pressed(self): self.changePage(self.subStacked16, 1)
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Configuración de los botones de las listas de productos Top 10 y Nuevo:
@@ -403,28 +394,44 @@ class adminGUI(QMainWindow, form_class):
     #-------------------------------------------------------------------------------------------------------------------------------
 
     # Radio button para agregar nuevos productos
-    def on_rbutton5_pressed(self): self.changeRO(self.productsRO1, True, self.productsRO2)
+    def on_rbutton5_pressed(self):
+        self.clearLE(self.productsRO0)
+        self.changeRO(self.productsRO1, True, self.productsRO2)
 
     # Radio button para consultar productos
-    def on_rbutton6_pressed(self): self.changeRO(self.productsRO1)
+    def on_rbutton6_pressed(self):
+        self.clearLE(self.productsRO0)
+        self.changeRO(self.productsRO1)
 
     # Radio button para editar productos
-    def on_rbutton7_pressed(self): self.changeRO(self.productsRO1, True, self.productsRO2)
+    def on_rbutton7_pressed(self):
+        self.clearLE(self.productsRO0)
+        self.changeRO(self.productsRO1, True, self.productsRO2)
 
     # Radio button para eliminar productos
-    def on_rbutton8_pressed(self): self.changeRO(self.productsRO1)
+    def on_rbutton8_pressed(self):
+        self.clearLE(self.productsRO0)
+        self.changeRO(self.productsRO1)
 
     # Radio button para agregar nuevos lotes
-    def on_rbutton9_pressed(self): self.changeRO(self.lotsRO2, False, self.lotsRO3)
+    def on_rbutton9_pressed(self):
+        self.clearLE(self.lotsRO0)
+        self.changeRO(self.lotsRO2, False, self.lotsRO3)
 
     # Radio button para consultar lotes
-    def on_rbutton10_pressed(self): self.changeRO(self.lotsRO1)
+    def on_rbutton10_pressed(self):
+        self.clearLE(self.lotsRO0)
+        self.changeRO(self.lotsRO1)
 
     # Radio button para editar lotes
-    def on_rbutton11_pressed(self): self.changeRO(self.lotsRO0, False)
+    def on_rbutton11_pressed(self):
+        self.clearLE(self.lotsRO0)
+        self.changeRO(self.lotsRO0, False)
 
     # Radio button para eliminar lotes
-    def on_rbutton12_pressed(self): self.changeRO(self.lotsRO1)
+    def on_rbutton12_pressed(self):
+        self.clearLE(self.lotsRO0)
+        self.changeRO(self.lotsRO1)
 
     # Boton "Aceptar" en el apartado de productos
     def on_pbutton11_pressed(self):
@@ -448,19 +455,35 @@ class adminGUI(QMainWindow, form_class):
             # Modalidad para consultar productos
             elif self.rbutton6.isChecked():
                 productName = self.lineE26.text()
-                print(self.db.getProductByNameOrID(productName))
-                # code goes here
-                print("XD")
+                product = self.db.getProductByNameOrID(productName)
+                print(self.currentProduct)
+
+                # Refrescar toda la interfaz
+                self.refresh()
+
+                # Enfocar
+                self.lineE26.setFocus()
 
             # Modalidad para editar productos
             elif self.rbutton7.isChecked():
-                # code goes here
-                print("XD")
+                productName = self.lineE26.text()
+                productPrice = self.lineE27.text()
+                productCategoy = self.lineE28.text()
+
+                # Refrescar toda la interfaz
+                self.refresh()
+
+                # Enfocar
+                self.lineE26.setFocus()
 
             # Modalidad para eliminar productos
             elif self.rbutton8.isChecked():
-                # code goes here
-                print("XD")
+
+                # Refrescar toda la interfaz
+                self.refresh()
+
+                # Enfocar
+                self.lineE26.setFocus()
 
     # Boton "Aceptar" en el apartado de lotes
     def on_pbutton13_pressed(self):
@@ -479,26 +502,84 @@ class adminGUI(QMainWindow, form_class):
                 # Agregar el lote a la BD
                 if lotExpiration != "": self.db.createLot(lotProductID, lotPrice, lotQuantity, lotProvider, None, lotExpiration)
                 else: self.db.createLot(lotProductID, lotPrice, lotQuantity, lotProvider)
-                self.db.updateProduct(lotProductID, available = True)
 
-                # Refrescar toda la interfaz
-                self.refresh()
+                product = self.db.getProductByNameOrID(lotProduct, onlyAvailables = False)[0]
+                remaining = product[4] + int(lotQuantity)
+                lots = product[5] + 1
+                current = product[6]
 
-                # Enfocar
-                self.lineE33.setFocus()
+                if current != 0: self.db.updateProduct(lotProductID, remaining=remaining, remainingLots=lots, available=True)
+                else: self.db.updateProduct(lotProductID, remaining=remaining, remainingLots=lots, currentLot=0, available=True)
 
-            # Modalidad para consultar lotes
-            elif self.rbutton10.isChecked():
+                self.refresh()               # Refrescar toda la interfaz
+                self.lineE33.setFocus()      # Enfocar
+
+            elif self.rbutton10.isChecked(): # Modalidad para consultar lotes
+                self.refresh()               # Refrescar toda la interfaz
+                self.lineE33.setFocus()      # Enfocar
+
+            elif self.rbutton11.isChecked(): # Modalidad para editar lotes
+                self.refresh()               # Refrescar toda la interfaz
+                self.lineE33.setFocus()      # Enfocar
+
+            elif self.rbutton12.isChecked(): # Modalidad para eliminar lotes
+                self.refresh()               # Refrescar toda la interfaz
+                self.lineE33.setFocus()      # Enfocar
+
+    # Boton para ver/agregar imágen de un producto
+    def on_selectedItem1_pressed(self):
+        if self.click():
+            filePath = QFileDialog.getOpenFileName(self, 'Seleccionar imágen', QDir.currentPath(), "Imágenes (*.bmp *.jpg *.jpeg *.png)")
+            if filePath != "":
+                self.selectedItem1.setIcon(QIcon(filePath))
+                self.tempImage = filePath
+
+    # LineEdit para ingresar nombres de los productos
+    def on_lineE26_textChanged(self):
+        if self.textChanged():
+            if (self.rbutton6.isChecked() or self.rbutton8.isChecked() or self.rbutton7.isChecked()) and self.lineE26.text() != "":
+                productName = self.lineE26.text()
+                if productName in self.productsNames:
+                    product = self.productsInfo[self.productsNames.index(productName)]
+                    self.lineE27.setText(str(product[1])) # Precio
+                    self.lineE28.setText(product[2])      # Categoria
+                    self.lineE29.setText(str(product[4])) # Lotes
+                    self.lineE30.setText(str(product[3])) # Disp. Total
+                    self.currentProduct = str(product[5])
+
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Manejador de eventos de teclas presionadas
+    #-------------------------------------------------------------------------------------------------------------------------------
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Return:
+            currentPage = self.MainStacked.currentIndex()
+
+            if currentPage == 0:
                 # code goes here
                 print("XD")
 
-            # Modalidad para editar lotes
-            elif self.rbutton11.isChecked():
+            if currentPage == 1:
                 # code goes here
                 print("XD")
 
-            # Modalidad para eliminar lotes
-            elif self.rbutton12.isChecked():
+            elif currentPage == 2:
+                # code goes here
+                print("XD")
+
+            elif currentPage == 3:
+                # code goes here
+                print("XD")
+
+            elif currentPage == 4:
+                # code goes here
+                print("XD")
+
+            elif currentPage == 5:
+                # code goes here
+                print("XD")
+
+            elif currentPage == 6:
                 # code goes here
                 print("XD")
 

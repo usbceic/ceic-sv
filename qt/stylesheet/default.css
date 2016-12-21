@@ -36,7 +36,7 @@
     min-width: 5em;
  }
 
-#home, #sales, #inventory, #querys, #clients, #users, #configure{
+#home, #sales, #inventory, #querys, #books, #loans, #clients, #users, #configure, #help{
     background-color: transparent;
     border-style: outset;
     border-width: 1px;
@@ -46,7 +46,7 @@
     padding: 2px;
 }
 
-#home:hover, #sales:hover, #inventory:hover, #querys:hover, #clients:hover, #users:hover, #configure:hover, #home:pressed, #sales:pressed, #inventory:pressed, #querys:pressed, #clients:pressed, #users:pressed, #configure:pressed{
+#home:hover, #sales:hover, #inventory:hover, #querys:hover, #books:hover, #loans:hover, #clients:hover, #users:hover, #configure:hover, #help:hover, #home:pressed, #sales:pressed, #inventory:pressed, #querys:pressed, #books:pressed, #loans:pressed, #clients:pressed, #users:pressed, #configure:pressed, #help:pressed{
     background-color: rgb(215, 215, 215);
 }
 
@@ -55,18 +55,24 @@
 ##########################################################*/
 
 /*Colorea páginas del stacked principal*/
-#page0, #page1, #page2, #page3, #page4, #page5, #page6 {
+#page0, #page1, #page2, #page3, #page4, #page5, #page6, #page7, #page8, #page9 {
     background-color: rgb(248, 248, 248);
 }
 
-/*Configurar el estilo de los subStacked*/
-#subStacked0, #subStacked1, #subStacked2, #subStacked3, #subStacked4, #subStacked5, #subStacked6, #subStacked7, #subStacked8, #subStacked9, #subStacked10, #subStacked11 {
+/*Configurar el estilo de los subStacked fuera de GropBox*/
+#subStacked2 {
     border: 0px solid dimgray;
     padding: 0px;
 }
 
+/*Configurar el estilo de los subStacked dentro de GropBox*/
+#subStacked0, #subStacked1, #subStacked3, #subStacked4, #subStacked5, #subStacked6, #subStacked7, #subStacked8, #subStacked9, #subStacked10, #subStacked11, #subStacked12, #subStacked13, #subStacked14, #subStacked15, #subStacked16, #subStacked17, #subStacked18, #subStacked19{
+    border: 0px solid dimgray;
+    padding: -6px;
+}
+
 /*Colorear páginas los subStacked*/
-#page7, #page8, #page9, #page10, #page11, #page12, #page13, #page14, #page15, #page16, #page17, #page18, #page19, #page20, #page21, #page22, #page23, #page24, #page25, #page26, #page27, #page28, #page29, #page30, #page31, #page32, #page33, #page34, #page35, #page36, #page37 {
+#page10, #page11, #page12, #page13, #page14, #page15, #page16, #page17, #page18, #page19, #page20, #page21, #page22, #page23, #page24, #page25, #page26, #page27, #page28, #page29, #page30, #page31, #page32, #page33, #page34, #page35, #page36, #page37, #page38, #page39 {
     background-color:  rgb(238, 238, 238);
 }
 
@@ -75,10 +81,17 @@
 ***********************************/
 
 /*Configurar el estilo de los groupBox*/
-#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox5, #groupBox6 {
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox5, #groupBox6, #groupBox16, #groupBox17{
    background-color:  rgb(238, 238, 238);
    border: 0px solid dimgray;
    padding: 1px;
+}
+
+/*Configurar el estilo de los groupBox con subStacked*/
+#groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22{
+   background-color:  rgb(238, 238, 238);
+   border: 0px solid dimgray;
+   padding: -6px;
 }
 
 /***********************************
@@ -86,23 +99,22 @@
 ***********************************/
 
 /*Configurar el estilo por defecto de las flechas de movimiento de los  subStacked*/
-#arrow0, #arrow1, #arrow2, #arrow3, #arrow4, #arrow5, #arrow6, #arrow7, #arrow8, #arrow9, #arrow10, #arrow11, #arrow12, #arrow13, #arrow14, #arrow15, #arrow16, #arrow17, #arrow18, #arrow19, #arrow20, #arrow21, #arrow22, #arrow23, #arrow24, #arrow25, #arrow26, #arrow27, #arrow28, #arrow29, #arrow30, #arrow31, #arrow32, #arrow33, #arrow34, #arrow35, #arrow36, #arrow37, #arrow38, #arrow39, #arrow40, #arrow41, #arrow42, #arrow43, #arrow44, #arrow45, #arrow46, #arrow47 {
+#arrow0, #arrow1, #arrow2, #arrow3, #arrow4, #arrow5, #arrow6, #arrow7, #arrow8, #arrow9, #arrow10, #arrow11, #arrow12, #arrow13, #arrow14, #arrow15, #arrow16, #arrow17, #arrow18, #arrow19, #arrow20, #arrow21, #arrow22, #arrow23, #arrow24, #arrow25, #arrow26, #arrow27{
      background-color:  rgb(238, 238, 238);
      border-style: outset;
      border-width: 1px;
-     border-radius: 10px;
      border-color: transparent;
      min-width: 2em;
      padding: 2px;
 }
 
 /*Configurar el estilo de las flechas de movimiento de los subStacked cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
-#arrow0:hover, #arrow1:hover, #arrow2:hover, #arrow3:hover, #arrow4:hover, #arrow5:hover, #arrow6:hover, #arrow7:hover, #arrow8:hover, #arrow9:hover, #arrow10:hover, #arrow11:hover, #arrow12:hover, #arrow13:hover, #arrow14:hover, #arrow15:hover, #arrow16:hover, #arrow17:hover, #arrow18:hover, #arrow19:hover, #arrow20:hover, #arrow21:hover, #arrow22:hover, #arrow23:hover, #arrow24:hover, #arrow25:hover, #arrow26:hover, #arrow27:hover, #arrow28:hover, #arrow29:hover, #arrow30:hover, #arrow31:hover, #arrow32:hover, #arrow33:hover, #arrow34:hover, #arrow35:hover, #arrow36:hover, #arrow37:hover, #arrow38:hover, #arrow39:hover, #arrow40:hover, #arrow41:hover, #arrow42:hover, #arrow43:hover, #arrow44:hover, #arrow45:hover, #arrow46:hover, #arrow47:hover, #arrow0:pressed, #arrow1:pressed, #arrow2:pressed, #arrow3:pressed, #arrow4:pressed, #arrow5:pressed, #arrow6:pressed, #arrow7:pressed, #arrow8:pressed, #arrow9:pressed, #arrow10:pressed, #arrow11:pressed, #arrow12:pressed, #arrow13:pressed, #arrow14:pressed, #arrow15:pressed, #arrow16:pressed, #arrow17:pressed, #arrow18:pressed, #arrow19:pressed, #arrow20:pressed, #arrow21:pressed, #arrow22:pressed, #arrow23:pressed, #arrow24:pressed, #arrow25:pressed, #arrow26:pressed, #arrow27:pressed, #arrow28:pressed, #arrow29:pressed, #arrow30:pressed, #arrow31:pressed, #arrow32:pressed, #arrow33:pressed, #arrow34:pressed, #arrow35:pressed, #arrow36:pressed, #arrow37:pressed, #arrow38:pressed, #arrow39:pressed, #arrow40:pressed, #arrow41:pressed, #arrow42:pressed, #arrow43:pressed, #arrow44:pressed, #arrow45:pressed, #arrow46:pressed, #arrow47:pressed{
+#arrow0:hover, #arrow1:hover, #arrow2:hover, #arrow3:hover, #arrow4:hover, #arrow5:hover, #arrow6:hover, #arrow7:hover, #arrow8:hover, #arrow9:hover, #arrow10:hover, #arrow11:hover, #arrow12:hover, #arrow13:hover, #arrow14:hover, #arrow15:hover, #arrow16:hover, #arrow17:hover, #arrow18:hover, #arrow19:hover, #arrow20:hover, #arrow21:hover, #arrow22:hover, #arrow23:hover, #arrow24:hover, #arrow25:hover, #arrow26:hover, #arrow27:hover, #arrow0:pressed, #arrow1:pressed, #arrow2:pressed, #arrow3:pressed, #arrow4:pressed, #arrow5:pressed, #arrow6:pressed, #arrow7:pressed, #arrow8:pressed, #arrow9:pressed, #arrow10:pressed, #arrow11:pressed, #arrow12:pressed, #arrow13:pressed, #arrow14:pressed, #arrow15:pressed, #arrow16:pressed, #arrow17:pressed, #arrow18:pressed, #arrow19:pressed, #arrow20:pressed, #arrow21:pressed, #arrow22:pressed, #arrow23:pressed, #arrow24:pressed, #arrow25:pressed, #arrow26:pressed, #arrow27:pressed{
     background-color: rgb(225, 225, 225);
 }
 
 /*Configurar el estilo por defecto de las flechas de movimiento de las tablas*/
-#arrow48, #arrow49, #arrow50, #arrow51, #arrow52, #arrow53, #arrow54, #arrow55, #arrow56, #arrow57, #arrow58, #arrow59, #arrow60, #arrow61, #arrow62, #arrow63, #arrow64, #arrow65, #arrow66, #arrow67, #arrow68, #arrow69, #arrow70, #arrow71, #arrow72, #arrow73, #arrow74, #arrow75, #arrow76, #arrow77, #arrow78, #arrow79, #arrow80, #arrow81, #arrow82, #arrow83, #arrow84, #arrow85, #arrow86, #arrow87, #arrow88, #arrow89, #arrow90, #arrow91{
+#arrow42, #arrow43, #arrow44, #arrow45, #arrow46, #arrow47, #arrow48, #arrow49, #arrow50, #arrow51, #arrow52, #arrow53, #arrow54, #arrow55, #arrow56, #arrow57, #arrow58, #arrow59, #arrow60, #arrow61, #arrow62, #arrow63, #arrow64, #arrow65, #arrow66, #arrow67, #arrow68, #arrow69, #arrow70, #arrow71, #arrow72, #arrow73, #arrow74, #arrow75, #arrow76, #arrow77, #arrow78, #arrow79, #arrow80, #arrow81, #arrow82, #arrow83, #arrow84, #arrow85, #arrow86, #arrow87, #arrow88, #arrow89, #arrow90, #arrow91{
      background-color:  rgb(238, 238, 238);
      border-style: outset;
      border-width: 1px;
@@ -115,7 +127,7 @@
 
 
 /*Configurar el estilo de las flechas de movimiento de las tablas cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
-#arrow48:hover, #arrow49:hover, #arrow50:hover, #arrow51:hover, #arrow52:hover, #arrow53:hover, #arrow54:hover, #arrow55:hover, #arrow56:hover, #arrow57:hover, #arrow58:hover, #arrow59:hover, #arrow60:hover, #arrow61:hover, #arrow62:hover, #arrow63:hover, #arrow64:hover, #arrow65:hover, #arrow66:hover, #arrow67:hover, #arrow68:hover, #arrow69:hover, #arrow70:hover, #arrow71:hover, #arrow72:hover, #arrow73:hover, #arrow74:hover, #arrow75:hover, #arrow76:hover, #arrow77:hover, #arrow78:hover, #arrow79:hover, #arrow48:pressed, #arrow49:pressed, #arrow50:pressed, #arrow51:pressed, #arrow52:pressed, #arrow53:pressed, #arrow54:pressed, #arrow55:pressed, #arrow56:pressed, #arrow57:pressed, #arrow58:pressed, #arrow59:pressed, #arrow60:pressed, #arrow61:pressed, #arrow62:pressed, #arrow63:pressed, #arrow64:pressed, #arrow65:pressed, #arrow66:pressed, #arrow67:pressed, #arrow68:pressed, #arrow69:pressed, #arrow70:pressed, #arrow71:pressed, #arrow72:pressed, #arrow73:pressed, #arrow74:pressed, #arrow75:pressed, #arrow76:pressed, #arrow77:pressed, #arrow78:pressed, #arrow79:pressed, #arrow80:hover, #arrow81:hover, #arrow82:hover, #arrow83:hover, #arrow84:hover, #arrow85:hover, #arrow86:hover, #arrow87:hover, #arrow88:hover, #arrow89:hover, #arrow90:hover, #arrow91:hover, #arrow80:pressed, #arrow81:pressed, #arrow82:pressed, #arrow83:pressed, #arrow84:pressed, #arrow85:pressed, #arrow86:pressed, #arrow87:pressed, #arrow88:pressed, #arrow89:pressed, #arrow90:pressed, #arrow91:pressed{
+#arrow42:hover, #arrow43:hover, #arrow44:hover, #arrow45:hover, #arrow46:hover, #arrow47:hover, #arrow48:hover, #arrow49:hover, #arrow50:hover, #arrow51:hover, #arrow52:hover, #arrow53:hover, #arrow54:hover, #arrow55:hover, #arrow56:hover, #arrow57:hover, #arrow58:hover, #arrow59:hover, #arrow60:hover, #arrow61:hover, #arrow62:hover, #arrow63:hover, #arrow64:hover, #arrow65:hover, #arrow42:pressed, #arrow43:pressed, #arrow44:pressed, #arrow45:pressed, #arrow46:pressed, #arrow47:pressed, #arrow48:pressed, #arrow49:pressed, #arrow50:pressed, #arrow51:pressed, #arrow52:pressed, #arrow53:pressed, #arrow54:pressed, #arrow55:pressed, #arrow56:pressed, #arrow57:pressed, #arrow58:pressed, #arrow59:pressed, #arrow60:pressed, #arrow61:pressed, #arrow62:pressed, #arrow63:pressed, #arrow64:pressed, #arrow65:pressed{
     background-color: rgb(225, 225, 225);
 }
 
@@ -161,7 +173,7 @@
 **************************************/
 
 /*Configurar el estilo por defecto de las botones de aplicar, aceptar, cancelar...*/
-#pbutton0, #pbutton1, #pbutton2, #pbutton3, #pbutton4, #pbutton5, #pbutton6, #pbutton7, #pbutton8, #pbutton9, #pbutton10, #pbutton11, #pbutton12, #pbutton13, #pbutton14, #pbutton15, #pbutton16, #pbutton17, #pbutton18, #pbutton19, #pbutton20, #pbutton21, #pbutton22, #pbutton23, #pbutton24, #pbutton25, #pbutton26, #pbutton27, #pbutton28{
+#pbutton0, #pbutton1, #pbutton2, #pbutton3, #pbutton4, #pbutton5, #pbutton6, #pbutton7, #pbutton8, #pbutton9, #pbutton10, #pbutton11, #pbutton12, #pbutton13, #pbutton14, #pbutton15, #pbutton16, #pbutton17, #pbutton18, #pbutton19, #pbutton20, #pbutton21, #pbutton22, #pbutton23, #pbutton24, #pbutton25, #pbutton26, #pbutton27, #pbutton28, #pbutton29, #pbutton30, #pbutton31, #pbutton32, #pbutton33, #pbutton34, #pbutton35, #pbutton36, #pbutton37, #pbutton38, #pbutton39, #pbutton40, #pbutton41, #pbutton42, #pbutton43, #pbutton44, #pbutton45, #pbutton46, #pbutton47, #pbutton48, #pbutton49, #pbutton50{
     background-color: rgb(248, 248, 248);
     border-style: outset;
     border-width: 1px;
@@ -172,7 +184,7 @@
 }
 
 /*Configurar el estilo de las botones de aplicar, aceptar, cancelar... cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
-#pbutton0:hover, #pbutton1:hover, #pbutton2:hover, #pbutton3:hover, #pbutton4:hover, #pbutton5:hover, #pbutton6:hover, #pbutton7:hover, #pbutton8:hover, #pbutton9:hover, #pbutton10:hover, #pbutton11:hover, #pbutton12:hover, #pbutton13:hover, #pbutton14:hover, #pbutton15:hover, #pbutton16:hover, #pbutton17:hover, #pbutton18:hover, #pbutton19:hover, #pbutton20:hover, #pbutton21:hover, #pbutton22:hover, #pbutton23:hover,#pbutton24:hover, #pbutton25:hover, #pbutton26:hover, #pbutton27:hover, #pbutton28:hover, #pbutton0:pressed, #pbutton1:pressed, #pbutton2:pressed, #pbutton3:pressed, #pbutton4:pressed, #pbutton5:pressed, #pbutton6:pressed, #pbutton7:pressed, #pbutton8:pressed, #pbutton9:pressed, #pbutton10:pressed, #pbutton11:pressed, #pbutton12:pressed, #pbutton13:pressed, #pbutton14:pressed, #pbutton15:pressed, #pbutton16:pressed, #pbutton17:pressed, #pbutton18:pressed, #pbutton19:pressed, #pbutton20:pressed, #pbutton21:pressed, #pbutton22:pressed, #pbutton23:pressed, #pbutton24:pressed, #pbutton25:pressed, #pbutton26:pressed, #pbutton27:pressed, #pbutton28:pressed{
+#pbutton0:hover, #pbutton1:hover, #pbutton2:hover, #pbutton3:hover, #pbutton4:hover, #pbutton5:hover, #pbutton6:hover, #pbutton7:hover, #pbutton8:hover, #pbutton9:hover, #pbutton10:hover, #pbutton11:hover, #pbutton12:hover, #pbutton13:hover, #pbutton14:hover, #pbutton15:hover, #pbutton16:hover, #pbutton17:hover, #pbutton18:hover, #pbutton19:hover, #pbutton20:hover, #pbutton21:hover, #pbutton22:hover, #pbutton23:hover,#pbutton24:hover, #pbutton25:hover, #pbutton26:hover, #pbutton27:hover, #pbutton28:hover, #pbutton29:hover, #pbutton30:hover, #pbutton31:hover, #pbutton32:hover, #pbutton33:hover, #pbutton34:hover, #pbutton35:hover, #pbutton36:hover, #pbutton37:hover, #pbutton38:hover, #pbutton39:hover, #pbutton40:hover, #pbutton41:hover, #pbutton42:hover, #pbutton43:hover, #pbutton44:hover, #pbutton45:hover, #pbutton46:hover, #pbutton47:hover, #pbutton48:hover, #pbutton49:hover, #pbutton50:hover, #pbutton0:pressed, #pbutton1:pressed, #pbutton2:pressed, #pbutton3:pressed, #pbutton4:pressed, #pbutton5:pressed, #pbutton6:pressed, #pbutton7:pressed, #pbutton8:pressed, #pbutton9:pressed, #pbutton10:pressed, #pbutton11:pressed, #pbutton12:pressed, #pbutton13:pressed, #pbutton14:pressed, #pbutton15:pressed, #pbutton16:pressed, #pbutton17:pressed, #pbutton18:pressed, #pbutton19:pressed, #pbutton20:pressed, #pbutton21:pressed, #pbutton22:pressed, #pbutton23:pressed, #pbutton24:pressed, #pbutton25:pressed, #pbutton26:pressed, #pbutton27:pressed, #pbutton28:pressed, #pbutton29:pressed, #pbutton30:pressed, #pbutton31:pressed, #pbutton32:pressed, #pbutton33:pressed, #pbutton34:pressed, #pbutton35:pressed, #pbutton36:pressed, #pbutton37:pressed, #pbutton38:pressed, #pbutton39:pressed, #pbutton40:pressed, #pbutton41:pressed, #pbutton42:pressed, #pbutton43:pressed, #pbutton44:pressed, #pbutton45:pressed, #pbutton46:pressed, #pbutton47:pressed, #pbutton48:pressed, #pbutton49:pressed, #pbutton50:pressed{
     background-color: rgb(240, 240, 240);
     border-style: inset;
 }
@@ -201,7 +213,7 @@
 ***********************************/
 
 /*Configuración del estilo de todos los line edit*/
-#lineE0, #lineE1, #lineE2, #lineE3, #lineE4, #lineE5, #lineE6, #lineE7, #lineE8, #lineE9, #lineE10, #lineE11, #lineE12, #lineE13, #lineE14, #lineE15, #lineE16, #lineE17, #lineE18, #lineE19, #lineE20, #lineE21, #lineE22, #lineE23, #lineE24, #lineE25, #lineE26, #lineE27, #lineE28, #lineE29, #lineE30, #lineE31, #lineE32, #lineE33, #lineE34, #lineE35, #lineE36, #lineE37, #lineE38, #lineE39, #lineE40, #lineE41, #lineE42, #lineE43, #lineE44, #lineE45, #lineE46, #lineE47, #lineE48, #lineE49, #lineE50, #lineE51, #lineE52, #lineE53, #lineE54, #lineE55, #lineE56, #lineE57, #lineE58, #lineE59, #lineE60, #lineE61, #lineE62, #lineE63, #lineE64, #lineE65, #lineE66, #lineE67, #lineE68, #lineE69, #lineE70, #lineE71, #lineE72, #lineE73, #lineE74, #lineE75, #lineE76, #lineE77, #lineE78, #lineE79, #lineE80, #lineE81, #lineE82, #lineE83, #lineE84, #lineE85, #lineE86, #lineE87, #lineE88, #lineE89, #lineE90{
+#lineE0, #lineE1, #lineE2, #lineE3, #lineE4, #lineE5, #lineE6, #lineE7, #lineE8, #lineE9, #lineE10, #lineE11, #lineE12, #lineE13, #lineE14, #lineE15, #lineE16, #lineE17, #lineE18, #lineE19, #lineE20, #lineE21, #lineE22, #lineE23, #lineE24, #lineE25, #lineE26, #lineE27, #lineE28, #lineE29, #lineE30, #lineE31, #lineE32, #lineE33, #lineE34, #lineE35, #lineE36, #lineE37, #lineE38, #lineE39, #lineE40, #lineE41, #lineE42, #lineE43, #lineE44, #lineE45, #lineE46, #lineE47, #lineE48, #lineE49, #lineE50, #lineE51, #lineE52, #lineE53, #lineE54, #lineE55, #lineE56, #lineE57, #lineE58, #lineE59, #lineE60, #lineE61, #lineE62, #lineE63, #lineE64, #lineE65, #lineE66, #lineE67, #lineE68, #lineE69, #lineE70, #lineE71, #lineE72, #lineE73, #lineE74, #lineE75, #lineE76, #lineE77, #lineE78, #lineE79, #lineE80, #lineE81, #lineE82, #lineE83, #lineE84, #lineE85, #lineE86, #lineE87, #lineE88, #lineE89, #lineE90, #lineE91, #lineE92, #lineE93, #lineE94, #lineE95, #lineE96, #lineE97, #lineE98, #lineE99, #lineE100, #lineE101, #lineE102, #lineE103, #lineE104, #lineE105, #lineE106, #lineE107, #lineE108, #lineE109, #lineE110, #lineE111, #lineE112, #lineE113, #lineE114, #lineE115, #lineE116, #lineE117, #lineE118, #lineE119, #lineE120, #lineE121, #lineE122, #lineE123, #lineE124, #lineE125, #lineE126, #lineE127, #lineE128, #lineE129, #lineE130, #lineE131, #lineE132, #lineE133, #lineE134, #lineE135, #lineE136, #lineE137, #lineE138, #lineE139, #lineE140, #lineE141, #lineE142, #lineE143, #lineE144, #lineE145, #lineE146, #lineE147, #lineE148, #lineE149{
     border-style: outset;
     border-width: 1px;
     border-radius: 4px;
@@ -211,14 +223,14 @@
 }
 
 /*Configuración del estilo de todos los line edit en modo de solo lectura*/
-#lineE0[readOnly="false"], #lineE1[readOnly="false"], #lineE2[readOnly="true"], #lineE3[readOnly="true"], #lineE4[readOnly="true"], #lineE5[readOnly="true"], #lineE6[readOnly="true"], #lineE7[readOnly="true"], #lineE8[readOnly="true"], #lineE9[readOnly="true"], #lineE10[readOnly="true"], #lineE11[readOnly="true"], #lineE12[readOnly="true"], #lineE13[readOnly="true"], #lineE14[readOnly="true"], #lineE15[readOnly="true"], #lineE16[readOnly="true"], #lineE17[readOnly="true"], #lineE18[readOnly="true"], #lineE19[readOnly="true"], #lineE20[readOnly="true"], #lineE21[readOnly="true"], #lineE22[readOnly="true"], #lineE23[readOnly="true"], #lineE24[readOnly="true"], #lineE25[readOnly="true"], #lineE26[readOnly="true"], #lineE27[readOnly="true"], #lineE28[readOnly="true"], #lineE29[readOnly="true"], #lineE30[readOnly="true"], #lineE31[readOnly="true"], #lineE32[readOnly="true"], #lineE33[readOnly="true"], #lineE34[readOnly="true"], #lineE35[readOnly="true"], #lineE36[readOnly="true"], #lineE37[readOnly="true"], #lineE38[readOnly="true"], #lineE39[readOnly="true"], #lineE40[readOnly="true"], #lineE41[readOnly="true"], #lineE42[readOnly="true"], #lineE43[readOnly="true"], #lineE44[readOnly="true"], #lineE45[readOnly="true"], #lineE46[readOnly="true"], #lineE47[readOnly="true"], #lineE48[readOnly="true"], #lineE49[readOnly="true"], #lineE50[readOnly="true"], #lineE51[readOnly="true"], #lineE52[readOnly="true"], #lineE53[readOnly="true"], #lineE54[readOnly="true"], #lineE55[readOnly="true"], #lineE56[readOnly="true"], #lineE57[readOnly="true"], #lineE58[readOnly="true"], #lineE59[readOnly="true"], #lineE60[readOnly="true"], #lineE61[readOnly="true"], #lineE62[readOnly="true"], #lineE63[readOnly="true"], #lineE64[readOnly="true"], #lineE65[readOnly="true"], #lineE66[readOnly="true"], #lineE67[readOnly="true"], #lineE68[readOnly="true"], #lineE69[readOnly="true"], #lineE70[readOnly="true"], #lineE71[readOnly="true"], #lineE72[readOnly="true"], #lineE73[readOnly="true"], #lineE74[readOnly="true"], #lineE75[readOnly="true"], #lineE76[readOnly="true"], #lineE77[readOnly="true"], #lineE78[readOnly="true"], #lineE79[readOnly="true"], #lineE80[readOnly="true"], #lineE81[readOnly="true"], #lineE82[readOnly="true"], #lineE83[readOnly="true"], #lineE84[readOnly="true"], #lineE85[readOnly="true"], #lineE86[readOnly="true"], #lineE87[readOnly="true"], #lineE88[readOnly="true"], #lineE89[readOnly="true"], #lineE90[readOnly="true"]{
+#lineE0[readOnly="false"], #lineE1[readOnly="false"], #lineE2[readOnly="true"], #lineE3[readOnly="true"], #lineE4[readOnly="true"], #lineE5[readOnly="true"], #lineE6[readOnly="true"], #lineE7[readOnly="true"], #lineE8[readOnly="true"], #lineE9[readOnly="true"], #lineE10[readOnly="true"], #lineE11[readOnly="true"], #lineE12[readOnly="true"], #lineE13[readOnly="true"], #lineE14[readOnly="true"], #lineE15[readOnly="true"], #lineE16[readOnly="true"], #lineE17[readOnly="true"], #lineE18[readOnly="true"], #lineE19[readOnly="true"], #lineE20[readOnly="true"], #lineE21[readOnly="true"], #lineE22[readOnly="true"], #lineE23[readOnly="true"], #lineE24[readOnly="true"], #lineE25[readOnly="true"], #lineE26[readOnly="true"], #lineE27[readOnly="true"], #lineE28[readOnly="true"], #lineE29[readOnly="true"], #lineE30[readOnly="true"], #lineE31[readOnly="true"], #lineE32[readOnly="true"], #lineE33[readOnly="true"], #lineE34[readOnly="true"], #lineE35[readOnly="true"], #lineE36[readOnly="true"], #lineE37[readOnly="true"], #lineE38[readOnly="true"], #lineE39[readOnly="true"], #lineE40[readOnly="true"], #lineE41[readOnly="true"], #lineE42[readOnly="true"], #lineE43[readOnly="true"], #lineE44[readOnly="true"], #lineE45[readOnly="true"], #lineE46[readOnly="true"], #lineE47[readOnly="true"], #lineE48[readOnly="true"], #lineE49[readOnly="true"], #lineE50[readOnly="true"], #lineE51[readOnly="true"], #lineE52[readOnly="true"], #lineE53[readOnly="true"], #lineE54[readOnly="true"], #lineE55[readOnly="true"], #lineE56[readOnly="true"], #lineE57[readOnly="true"], #lineE58[readOnly="true"], #lineE59[readOnly="true"], #lineE60[readOnly="true"], #lineE61[readOnly="true"], #lineE62[readOnly="true"], #lineE63[readOnly="true"], #lineE64[readOnly="true"], #lineE65[readOnly="true"], #lineE66[readOnly="true"], #lineE67[readOnly="true"], #lineE68[readOnly="true"], #lineE69[readOnly="true"], #lineE70[readOnly="true"], #lineE71[readOnly="true"], #lineE72[readOnly="true"], #lineE73[readOnly="true"], #lineE74[readOnly="true"], #lineE75[readOnly="true"], #lineE76[readOnly="true"], #lineE77[readOnly="true"], #lineE78[readOnly="true"], #lineE79[readOnly="true"], #lineE80[readOnly="true"], #lineE81[readOnly="true"], #lineE82[readOnly="true"], #lineE83[readOnly="true"], #lineE84[readOnly="true"], #lineE85[readOnly="true"], #lineE86[readOnly="true"], #lineE87[readOnly="true"], #lineE88[readOnly="true"], #lineE89[readOnly="true"], #lineE90[readOnly="true"], #lineE91[readOnly="true"], #lineE92[readOnly="true"], #lineE93[readOnly="true"], #lineE94[readOnly="true"], #lineE95[readOnly="true"], #lineE96[readOnly="true"], #lineE97[readOnly="true"], #lineE98[readOnly="true"], #lineE99[readOnly="true"], #lineE100[readOnly="true"], #lineE101[readOnly="true"], #lineE102[readOnly="true"], #lineE103[readOnly="true"], #lineE104[readOnly="true"], #lineE105[readOnly="true"], #lineE106[readOnly="true"], #lineE107[readOnly="true"], #lineE108[readOnly="true"], #lineE109[readOnly="true"], #lineE110[readOnly="true"], #lineE111[readOnly="true"], #lineE112[readOnly="true"], #lineE113[readOnly="true"], #lineE114[readOnly="true"], #lineE115[readOnly="true"], #lineE116[readOnly="true"], #lineE117[readOnly="true"], #lineE118[readOnly="true"], #lineE119[readOnly="true"], #lineE120[readOnly="true"], #lineE121[readOnly="true"], #lineE122[readOnly="true"], #lineE123[readOnly="true"], #lineE124[readOnly="true"], #lineE125[readOnly="true"], #lineE126[readOnly="true"], #lineE127[readOnly="true"], #lineE128[readOnly="true"], #lineE129[readOnly="true"], #lineE130[readOnly="true"], #lineE131[readOnly="true"], #lineE132[readOnly="true"], #lineE133[readOnly="true"], #lineE134[readOnly="true"], #lineE135[readOnly="true"], #lineE136[readOnly="true"], #lineE137[readOnly="true"], #lineE138[readOnly="true"], #lineE139[readOnly="true"], #lineE140[readOnly="true"], #lineE141[readOnly="true"], #lineE142[readOnly="true"], #lineE143[readOnly="true"], #lineE144[readOnly="true"], #lineE145[readOnly="true"], #lineE146[readOnly="true"], #lineE147[readOnly="true"], #lineE148[readOnly="true"], #lineE149[readOnly="true"]{
     border-style: inset;
     border-color: silver;
     background-color: whitesmoke;
 }
 
 /*Configuración del estilo de todos los line edit en modo de solo lectura*/
-#lineE0[readOnly="false"], #lineE1[readOnly="false"], #lineE2[readOnly="false"], #lineE3[readOnly="false"], #lineE4[readOnly="false"], #lineE5[readOnly="false"], #lineE6[readOnly="false"], #lineE7[readOnly="false"], #lineE8[readOnly="false"], #lineE9[readOnly="false"], #lineE10[readOnly="false"], #lineE11[readOnly="false"], #lineE12[readOnly="false"], #lineE13[readOnly="false"], #lineE14[readOnly="false"], #lineE15[readOnly="false"], #lineE16[readOnly="false"], #lineE17[readOnly="false"], #lineE18[readOnly="false"], #lineE19[readOnly="false"], #lineE20[readOnly="false"], #lineE21[readOnly="false"], #lineE22[readOnly="false"], #lineE23[readOnly="false"], #lineE24[readOnly="false"], #lineE25[readOnly="false"], #lineE26[readOnly="false"], #lineE27[readOnly="false"], #lineE28[readOnly="false"], #lineE29[readOnly="false"], #lineE30[readOnly="false"], #lineE31[readOnly="false"], #lineE32[readOnly="false"], #lineE33[readOnly="false"], #lineE34[readOnly="false"], #lineE35[readOnly="false"], #lineE36[readOnly="false"], #lineE37[readOnly="false"], #lineE38[readOnly="false"], #lineE39[readOnly="false"], #lineE40[readOnly="false"], #lineE41[readOnly="false"], #lineE42[readOnly="false"], #lineE43[readOnly="false"], #lineE44[readOnly="false"], #lineE45[readOnly="false"], #lineE46[readOnly="false"], #lineE47[readOnly="false"], #lineE48[readOnly="false"], #lineE49[readOnly="false"], #lineE50[readOnly="false"], #lineE51[readOnly="false"], #lineE52[readOnly="false"], #lineE53[readOnly="false"], #lineE54[readOnly="false"], #lineE55[readOnly="false"], #lineE56[readOnly="false"], #lineE57[readOnly="false"], #lineE58[readOnly="false"], #lineE59[readOnly="false"], #lineE60[readOnly="false"], #lineE61[readOnly="false"], #lineE62[readOnly="false"], #lineE63[readOnly="false"], #lineE64[readOnly="false"], #lineE65[readOnly="false"], #lineE66[readOnly="false"], #lineE67[readOnly="false"], #lineE68[readOnly="false"], #lineE69[readOnly="false"], #lineE70[readOnly="false"], #lineE71[readOnly="false"], #lineE72[readOnly="false"], #lineE73[readOnly="false"], #lineE74[readOnly="false"], #lineE75[readOnly="false"], #lineE76[readOnly="false"], #lineE77[readOnly="false"], #lineE78[readOnly="false"], #lineE79[readOnly="false"], #lineE80[readOnly="false"], #lineE81[readOnly="false"], #lineE82[readOnly="false"], #lineE83[readOnly="false"], #lineE84[readOnly="false"], #lineE85[readOnly="false"], #lineE86[readOnly="false"], #lineE87[readOnly="false"], #lineE88[readOnly="false"], #lineE89[readOnly="false"], #lineE90[readOnly="false"]{
+#lineE0[readOnly="false"], #lineE1[readOnly="false"], #lineE2[readOnly="false"], #lineE3[readOnly="false"], #lineE4[readOnly="false"], #lineE5[readOnly="false"], #lineE6[readOnly="false"], #lineE7[readOnly="false"], #lineE8[readOnly="false"], #lineE9[readOnly="false"], #lineE10[readOnly="false"], #lineE11[readOnly="false"], #lineE12[readOnly="false"], #lineE13[readOnly="false"], #lineE14[readOnly="false"], #lineE15[readOnly="false"], #lineE16[readOnly="false"], #lineE17[readOnly="false"], #lineE18[readOnly="false"], #lineE19[readOnly="false"], #lineE20[readOnly="false"], #lineE21[readOnly="false"], #lineE22[readOnly="false"], #lineE23[readOnly="false"], #lineE24[readOnly="false"], #lineE25[readOnly="false"], #lineE26[readOnly="false"], #lineE27[readOnly="false"], #lineE28[readOnly="false"], #lineE29[readOnly="false"], #lineE30[readOnly="false"], #lineE31[readOnly="false"], #lineE32[readOnly="false"], #lineE33[readOnly="false"], #lineE34[readOnly="false"], #lineE35[readOnly="false"], #lineE36[readOnly="false"], #lineE37[readOnly="false"], #lineE38[readOnly="false"], #lineE39[readOnly="false"], #lineE40[readOnly="false"], #lineE41[readOnly="false"], #lineE42[readOnly="false"], #lineE43[readOnly="false"], #lineE44[readOnly="false"], #lineE45[readOnly="false"], #lineE46[readOnly="false"], #lineE47[readOnly="false"], #lineE48[readOnly="false"], #lineE49[readOnly="false"], #lineE50[readOnly="false"], #lineE51[readOnly="false"], #lineE52[readOnly="false"], #lineE53[readOnly="false"], #lineE54[readOnly="false"], #lineE55[readOnly="false"], #lineE56[readOnly="false"], #lineE57[readOnly="false"], #lineE58[readOnly="false"], #lineE59[readOnly="false"], #lineE60[readOnly="false"], #lineE61[readOnly="false"], #lineE62[readOnly="false"], #lineE63[readOnly="false"], #lineE64[readOnly="false"], #lineE65[readOnly="false"], #lineE66[readOnly="false"], #lineE67[readOnly="false"], #lineE68[readOnly="false"], #lineE69[readOnly="false"], #lineE70[readOnly="false"], #lineE71[readOnly="false"], #lineE72[readOnly="false"], #lineE73[readOnly="false"], #lineE74[readOnly="false"], #lineE75[readOnly="false"], #lineE76[readOnly="false"], #lineE77[readOnly="false"], #lineE78[readOnly="false"], #lineE79[readOnly="false"], #lineE80[readOnly="false"], #lineE81[readOnly="false"], #lineE82[readOnly="false"], #lineE83[readOnly="false"], #lineE84[readOnly="false"], #lineE85[readOnly="false"], #lineE86[readOnly="false"], #lineE87[readOnly="false"], #lineE88[readOnly="false"], #lineE89[readOnly="false"], #lineE90[readOnly="false"], #lineE91[readOnly="false"], #lineE92[readOnly="false"], #lineE93[readOnly="false"], #lineE94[readOnly="false"], #lineE95[readOnly="false"], #lineE96[readOnly="false"], #lineE97[readOnly="false"], #lineE98[readOnly="false"], #lineE99[readOnly="false"], #lineE100[readOnly="false"], #lineE101[readOnly="false"], #lineE102[readOnly="false"], #lineE103[readOnly="false"], #lineE104[readOnly="false"], #lineE105[readOnly="false"], #lineE106[readOnly="false"], #lineE107[readOnly="false"], #lineE108[readOnly="false"], #lineE109[readOnly="false"], #lineE110[readOnly="false"], #lineE111[readOnly="false"], #lineE112[readOnly="false"], #lineE113[readOnly="false"], #lineE114[readOnly="false"], #lineE115[readOnly="false"], #lineE116[readOnly="false"], #lineE117[readOnly="false"], #lineE118[readOnly="false"], #lineE119[readOnly="false"], #lineE120[readOnly="false"], #lineE121[readOnly="false"], #lineE122[readOnly="false"], #lineE123[readOnly="false"], #lineE124[readOnly="false"], #lineE125[readOnly="false"], #lineE126[readOnly="false"], #lineE127[readOnly="false"], #lineE128[readOnly="false"], #lineE129[readOnly="false"], #lineE130[readOnly="false"], #lineE131[readOnly="false"], #lineE132[readOnly="false"], #lineE133[readOnly="false"], #lineE134[readOnly="false"], #lineE135[readOnly="false"], #lineE136[readOnly="false"], #lineE137[readOnly="false"], #lineE138[readOnly="false"], #lineE139[readOnly="false"], #lineE140[readOnly="false"], #lineE141[readOnly="false"], #lineE142[readOnly="false"], #lineE143[readOnly="false"], #lineE144[readOnly="false"], #lineE145[readOnly="false"], #lineE146[readOnly="false"], #lineE147[readOnly="false"], #lineE148[readOnly="false"], #lineE149[readOnly="false"]{
     border-style: outset;
     border-color: dimgray;
     background-color: white;
@@ -229,7 +241,7 @@
 ***********************************/
 
 /*Configuración del estilo por defecto de todos los comboBox*/
-#cbox0, #cbox1, #cbox2, #cbox3, #cbox4, #cbox5, #cbox6, #cbox7, #cbox8, #cbox9, #cbox10, #cbox11, #cbox12, #cbox13, #cbox14, #cbox15{
+#cbox0, #cbox1, #cbox2, #cbox3, #cbox4, #cbox5, #cbox6, #cbox7, #cbox8, #cbox9, #cbox10, #cbox11, #cbox12, #cbox13, #cbox14, #cbox15, #cbox16, #cbox17, #cbox18, #cbox19, #cbox20{
     color: black;
     border: 1px solid dimgray;
     border-radius: 3px;
@@ -238,13 +250,13 @@
 }
 
 /*Configuración del estilo de todos los comboBox cuando estan en uso*/
-#cbox0::on, #cbox1::on, #cbox2::on, #cbox3::on, #cbox4::on, #cbox5::on, #cbox6::on, #cbox7::on, #cbox8::on, #cbox9::on, #cbox10::on, #cbox11::on, #cbox12::on, #cbox13::on, #cbox14::on, #cbox15::on{
+#cbox0::on, #cbox1::on, #cbox2::on, #cbox3::on, #cbox4::on, #cbox5::on, #cbox6::on, #cbox7::on, #cbox8::on, #cbox9::on, #cbox10::on, #cbox11::on, #cbox12::on, #cbox13::on, #cbox14::on, #cbox15::on, #cbox16::on, #cbox17::on, #cbox18::on, #cbox19::on, #cbox20::on{
     padding-top: 10px;
     padding-left: 4px;
 }
 
 /*Configuración del estilo de todos los comboBox cuando se despliegan*/
-#cbox0::drop-down, #cbox1::drop-down, #cbox2::drop-down, #cbox3::drop-down, #cbox4::drop-down, #cbox5::drop-down, #cbox6::drop-down, #cbox7::drop-down, #cbox8::drop-down, #cbox9::drop-down, #cbox10::drop-down, #cbox11::drop-down, #cbox12::drop-down, #cbox13::drop-down, #cbox14::drop-down, #cbox15::drop-down{
+#cbox0::drop-down, #cbox1::drop-down, #cbox2::drop-down, #cbox3::drop-down, #cbox4::drop-down, #cbox5::drop-down, #cbox6::drop-down, #cbox7::drop-down, #cbox8::drop-down, #cbox9::drop-down, #cbox10::drop-down, #cbox11::drop-down, #cbox12::drop-down, #cbox13::drop-down, #cbox14::drop-down, #cbox15::drop-down, #cbox16::drop-down, #cbox17::drop-down, #cbox18::drop-down, #cbox19::drop-down, #cbox20::drop-down{
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 15px;
@@ -256,18 +268,20 @@
 }
 
 /*Configuración del estilo de la flecha de todos los comboBox*/
-#cbox0::down-arrow, #cbox1::down-arrow, #cbox2::down-arrow, #cbox3::down-arrow, #cbox4::down-arrow, #cbox5::down-arrow, #cbox6::down-arrow, #cbox7::down-arrow, #cbox8::down-arrow, #cbox9::down-arrow, #cbox10::down-arrow, #cbox11::down-arrow, #cbox12::down-arrow, #cbox13::down-arrow, #cbox14::down-arrow, #cbox15::down-arrow{
+#cbox0::down-arrow, #cbox1::down-arrow, #cbox2::down-arrow, #cbox3::down-arrow, #cbox4::down-arrow, #cbox5::down-arrow, #cbox6::down-arrow, #cbox7::down-arrow, #cbox8::down-arrow, #cbox9::down-arrow, #cbox10::down-arrow, #cbox11::down-arrow, #cbox12::down-arrow, #cbox13::down-arrow, #cbox14::down-arrow, #cbox15::down-arrow, #cbox16::down-arrow, #cbox17::down-arrow, #cbox18::down-arrow, #cbox19::down-arrow, #cbox20::down-arrow{
     image: url(:/arrows/down_arrow);
 }
 
 /*Configuración del estilo de la flecha de todos los comboBox cuando se despliegan*/
-#cbox0::drop-arrow::on, #cbox1::drop-arrow::on, #cbox2::drop-arrow::on, #cbox3::drop-arrow::on, #cbox4::drop-arrow::on, #cbox5::drop-arrow::on, #cbox6::drop-arrow::on, #cbox7::drop-arrow::on, #cbox8::drop-arrow::on, #cbox9::drop-arrow::on, #cbox10::drop-arrow::on, #cbox11::drop-arrow::on, #cbox12::drop-arrow::on, #cbox13::drop-arrow::on, #cbox14::drop-arrow::on, #cbox15::drop-arrow::on{
+#cbox0::drop-arrow::on, #cbox1::drop-arrow::on, #cbox2::drop-arrow::on, #cbox3::drop-arrow::on, #cbox4::drop-arrow::on, #cbox5::drop-arrow::on, #cbox6::drop-arrow::on, #cbox7::drop-arrow::on, #cbox8::drop-arrow::on, #cbox9::drop-arrow::on, #cbox10::drop-arrow::on, #cbox11::drop-arrow::on, #cbox12::drop-arrow::on, #cbox13::drop-arrow::on, #cbox14::drop-arrow::on, #cbox15::drop-arrow::on, #cbox16::drop-arrow::on, #cbox17::drop-arrow::on, #cbox18::drop-arrow::on, #cbox19::drop-arrow::on, #cbox20::drop-arrow::on{
     top: 1px;
     left: 1px;
 }
 
+
+
 /*Configuración del estilo del menu desplegado de todos los comboBox*/
-#cbox0 QAbstractItemView, #cbox1 QAbstractItemView, #cbox2 QAbstractItemView, #cbox3 QAbstractItemView, #cbox4 QAbstractItemView, #cbox5 QAbstractItemView, #cbox6 QAbstractItemView, #cbox7 QAbstractItemView, #cbox8 QAbstractItemView, #cbox9 QAbstractItemView, #cbox10 QAbstractItemView, #cbox11 QAbstractItemView, #cbox12 QAbstractItemView, #cbox13 QAbstractItemView, #cbox14 QAbstractItemView, #cbox15 QAbstractItemView{
+#cbox0 QAbstractItemView, #cbox1 QAbstractItemView, #cbox2 QAbstractItemView, #cbox3 QAbstractItemView, #cbox4 QAbstractItemView, #cbox5 QAbstractItemView, #cbox6 QAbstractItemView, #cbox7 QAbstractItemView, #cbox8 QAbstractItemView, #cbox9 QAbstractItemView, #cbox10 QAbstractItemView, #cbox11 QAbstractItemView, #cbox12 QAbstractItemView, #cbox13 QAbstractItemView, #cbox14 QAbstractItemView, #cbox15 QAbstractItemView, #cbox16 QAbstractItemView, #cbox17 QAbstractItemView, #cbox18 QAbstractItemView, #cbox19 QAbstractItemView, #cbox20 QAbstractItemView{
     border: 1px solid dimgray;
     border-radius: 3px;
     padding: 1px 6px 1px 1px;
