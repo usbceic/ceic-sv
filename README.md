@@ -12,8 +12,9 @@
 * Para correr la aplicación mediante la consola correr el comando *python system.py*
 
 ## Dependencias ##
-* Python 3.4
+* Python 3.4.4
 * PyQt4
+* psycopg2 (Puede instalarse mediante el comando *pip install psycopg2*)
 * Postgre 9.4
 
 * Summary of set up
