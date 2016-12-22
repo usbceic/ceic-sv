@@ -11,11 +11,20 @@
 * Esta aplicación trabaja con Python, Qt y PostgreSQL
 * Para correr la aplicación mediante la consola correr el comando *python system.py*
 
-## Dependencias ##
-* Python 3.4.4
-* PyQt4
-* psycopg2 (Puede instalarse mediante el comando *pip install psycopg2*)
-* Postgre 9.4
+## Requisitos ##
+* Sistemas operativos soportados: 
+	- Ubuntu 13.04 o superior
+	- Windows XP o superior
+* Sistema operativo recomendado: Ubuntu 16.04	
+* Resolución de pantalla mínima: 800x600
+* Resolución de pantalla recomendada: 1024x768
+* Instalar Python 3.4.x con las siguientes librerias:
+	- PyQt4
+	- psycopg2
+	- smtplib
+	- socket
+* Instalar PostgreSQL 9.4.x o superior
+* Instalar las fuentes tipográficas incluidas en este software
 
 * Summary of set up
 * Configuration
