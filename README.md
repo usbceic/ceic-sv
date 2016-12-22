@@ -9,10 +9,12 @@
 ### Como configurar y correr la aplicación ###
 
 * Esta aplicación trabaja con Python, Qt y PostgreSQL
-* Para correr la aplicación ...
+* Para correr la aplicación mediante la consola correr el comando *python system.py*
+
+## Dependencias ##
 * Python 3.4
 * PyQt4
-* Postgre version ..
+* Postgre 9.4
 
 * Summary of set up
 * Configuration
