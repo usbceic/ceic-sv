@@ -110,7 +110,7 @@
 ***********************************/
 
 /*Configurar el estilo de los groupBox*/
-#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox5, #groupBox6, #groupBox16, #groupBox17{
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox5, #groupBox6, #groupBox16, #groupBox17, #groupBox23{
    background-color:  rgb(238, 238, 238);
    border: 0px solid dimgray;
    padding: 1px;
@@ -379,7 +379,95 @@
     min-height:8em;
     selection-background-color:rgb(245,245,245);
 }
-</string>
+
+/***********************************
+* Tablas
+***********************************/
+
+/*Configuración general de las tablas*/
+#table0, #table1, #table2, #table3, #table4, #table5, #table6, #table7, #table8, #table9, #table10, #table11, #table12{
+    color: black;
+    background-color: white;
+}
+
+/*Estilo de los cabezales horizontales*/
+#table0 QHeaderView::section:horizontal, #table1 QHeaderView::section:horizontal, #table2 QHeaderView::section:horizontal, #table3 QHeaderView::section:horizontal, #table4 QHeaderView::section:horizontal, #table5 QHeaderView::section:horizontal, #table6 QHeaderView::section:horizontal, #table7 QHeaderView::section:horizontal, #table8 QHeaderView::section:horizontal, #table9 QHeaderView::section:horizontal, #table10 QHeaderView::section:horizontal, #table11 QHeaderView::section:horizontal, #table12 QHeaderView::section:horizontal{
+    color: black;
+    padding: 6px;
+    font-size: 12pt;
+    border-width: 1px;
+    border-style: solid;
+    border-color: dimgray;
+    border-right-color: transparent;
+    border-left-color: transparent;
+    background-color: white;
+}
+
+/*Estilo de los cabezales verticales*/
+#table0 QHeaderView::section:vertical, #table1 QHeaderView::section:vertical, #table2 QHeaderView::section:vertical, #table3 QHeaderView::section:vertical, #table4 QHeaderView::section:vertical, #table5 QHeaderView::section:vertical, #table6 QHeaderView::section:vertical, #table7 QHeaderView::section:vertical, #table8 QHeaderView::section:vertical, #table9 QHeaderView::section:vertical, #table10 QHeaderView::section:vertical, #table11 QHeaderView::section:vertical, #table12 QHeaderView::section:vertical{
+    padding: 2px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: dimgray;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    background-color: white;
+}
+
+/*Estilo del boton de la esquina superior izquierda de la tabla*/
+#table0 QTableCornerButton::section, #table1 QTableCornerButton::section, #table2 QTableCornerButton::section, #table3 QTableCornerButton::section, #table4 QTableCornerButton::section, #table5 QTableCornerButton::section, #table6 QTableCornerButton::section, #table7 QTableCornerButton::section, #table8 QTableCornerButton::section, #table9 QTableCornerButton::section, #table10 QTableCornerButton::section, #table11 QTableCornerButton::section, #table12 QTableCornerButton::section{
+    background-color: white;
+    border-width: 1px;
+    border-style: solid;
+    border-color: dimgray;
+    border-left-color: transparent;
+}
+
+/*Estilo de los items seleccionados*/
+#table0::item:selected, #table1::item:selected, #table2::item:selected, #table3::item:selected, #table4::item:selected, #table5::item:selected, #table6::item:selected, #table7::item:selected, #table8::item:selected, #table9::item:selected, #table10::item:selected, #table11::item:selected, #table12::item:selected{
+    background-color: whitesmoke;
+    selection-color: black;
+}
+
+/***********************************
+* RadioButton
+***********************************/
+
+/*Dimensiones del indicador*/
+#rbutton0::indicator, #rbutton1::indicator, #rbutton2::indicator, #rbutton3::indicator, #rbutton4::indicator, #rbutton5::indicator, #rbutton6::indicator, #rbutton7::indicator, #rbutton8::indicator, #rbutton9::indicator, #rbutton10::indicator, #rbutton11::indicator, #rbutton12::indicator, #rbutton13::indicator, #rbutton14::indicator, #rbutton15::indicator, #rbutton16::indicator, #rbutton17::indicator, #rbutton18::indicator, #rbutton19::indicator, #rbutton20::indicator{
+    width: 13px;
+    height: 13px;
+}
+
+/*Imágen por defecto del indicador desmarcado*/
+#rbutton0::indicator::unchecked, #rbutton1::indicator::unchecked, #rbutton2::indicator::unchecked, #rbutton3::indicator::unchecked, #rbutton4::indicator::unchecked, #rbutton5::indicator::unchecked, #rbutton6::indicator::unchecked, #rbutton7::indicator::unchecked, #rbutton8::indicator::unchecked, #rbutton9::indicator::unchecked, #rbutton10::indicator::unchecked, #rbutton11::indicator::unchecked, #rbutton12::indicator::unchecked, #rbutton13::indicator::unchecked, #rbutton14::indicator::unchecked, #rbutton15::indicator::unchecked, #rbutton16::indicator::unchecked, #rbutton17::indicator::unchecked, #rbutton18::indicator::unchecked, #rbutton19::indicator::unchecked, #rbutton20::indicator::unchecked{
+    image: url(:rbutton/unchecked);
+}
+
+/*Imágen al pasar por encima del indicador desmarcado*/
+#rbutton0::indicator::unchecked:hover, #rbutton1::indicator::unchecked:hover, #rbutton2::indicator::unchecked:hover, #rbutton3::indicator::unchecked:hover, #rbutton4::indicator::unchecked:hover, #rbutton5::indicator::unchecked:hover, #rbutton6::indicator::unchecked:hover, #rbutton7::indicator::unchecked:hover, #rbutton8::indicator::unchecked:hover, #rbutton9::indicator::unchecked:hover, #rbutton10::indicator::unchecked:hover, #rbutton11::indicator::unchecked:hover, #rbutton12::indicator::unchecked:hover, #rbutton13::indicator::unchecked:hover, #rbutton14::indicator::unchecked:hover, #rbutton15::indicator::unchecked:hover, #rbutton16::indicator::unchecked:hover, #rbutton17::indicator::unchecked:hover, #rbutton18::indicator::unchecked:hover, #rbutton19::indicator::unchecked:hover, #rbutton20::indicator::unchecked:hover{
+    image: url(:rbutton/unchecked-focus);
+}
+
+/*Imágen al presionar el indicador desmarcado*/
+#rbutton0::indicator::unchecked:pressed, #rbutton1::indicator::unchecked:pressed, #rbutton2::indicator::unchecked:pressed, #rbutton3::indicator::unchecked:pressed, #rbutton4::indicator::unchecked:pressed, #rbutton5::indicator::unchecked:pressed, #rbutton6::indicator::unchecked:pressed, #rbutton7::indicator::unchecked:pressed, #rbutton8::indicator::unchecked:pressed, #rbutton9::indicator::unchecked:pressed, #rbutton10::indicator::unchecked:pressed, #rbutton11::indicator::unchecked:pressed, #rbutton12::indicator::unchecked:pressed, #rbutton13::indicator::unchecked:pressed, #rbutton14::indicator::unchecked:pressed, #rbutton15::indicator::unchecked:pressed, #rbutton16::indicator::unchecked:pressed, #rbutton17::indicator::unchecked:pressed, #rbutton18::indicator::unchecked:pressed, #rbutton19::indicator::unchecked:pressed, #rbutton20::indicator::unchecked:pressed{
+    image: url(:rbutton/unchecked-focus);
+}
+
+/*Imágen por defecto del indicador marcado*/
+#rbutton0::indicator::checked, #rbutton1::indicator::checked, #rbutton2::indicator::checked, #rbutton3::indicator::checked, #rbutton4::indicator::checked, #rbutton5::indicator::checked, #rbutton6::indicator::checked, #rbutton7::indicator::checked, #rbutton8::indicator::checked, #rbutton9::indicator::checked, #rbutton10::indicator::checked, #rbutton11::indicator::checked, #rbutton12::indicator::checked, #rbutton13::indicator::checked, #rbutton14::indicator::checked, #rbutton15::indicator::checked, #rbutton16::indicator::checked, #rbutton17::indicator::checked, #rbutton18::indicator::checked, #rbutton19::indicator::checked, #rbutton20::indicator::checked{
+    image: url(:rbutton/checked);
+}
+
+/*Imágen al pasar por encima del indicador marcado*/
+#rbutton0::indicator::checked:hover, #rbutton1::indicator::checked:hover, #rbutton2::indicator::checked:hover, #rbutton3::indicator::checked:hover, #rbutton4::indicator::checked:hover, #rbutton5::indicator::checked:hover, #rbutton6::indicator::checked:hover, #rbutton7::indicator::checked:hover, #rbutton8::indicator::checked:hover, #rbutton9::indicator::checked:hover, #rbutton10::indicator::checked:hover, #rbutton11::indicator::checked:hover, #rbutton12::indicator::checked:hover, #rbutton13::indicator::checked:hover, #rbutton14::indicator::checked:hover, #rbutton15::indicator::checked:hover, #rbutton16::indicator::checked:hover, #rbutton17::indicator::checked:hover, #rbutton18::indicator::checked:hover, #rbutton19::indicator::checked:hover, #rbutton20::indicator::checked:hover{
+    image: url(:rbutton/checked-focus);
+}
+
+/*Imágen al presionar el indicador marcado*/
+#rbutton0::indicator::checked:pressed, #rbutton1::indicator::checked:pressed, #rbutton2::indicator::checked:pressed, #rbutton3::indicator::checked:pressed, #rbutton4::indicator::checked:pressed, #rbutton5::indicator::checked:pressed, #rbutton6::indicator::checked:pressed, #rbutton7::indicator::checked:pressed, #rbutton8::indicator::checked:pressed, #rbutton9::indicator::checked:pressed, #rbutton10::indicator::checked:pressed, #rbutton11::indicator::checked:pressed, #rbutton12::indicator::checked:pressed, #rbutton13::indicator::checked:pressed, #rbutton14::indicator::checked:pressed, #rbutton15::indicator::checked:pressed, #rbutton16::indicator::checked:pressed, #rbutton17::indicator::checked:pressed, #rbutton18::indicator::checked:pressed, #rbutton19::indicator::checked:pressed, #rbutton20::indicator::checked:pressed{
+    image: url(:rbutton/checked-focus);
+}</string>
   </property>
   <property name="iconSize">
    <size>
@@ -999,7 +1087,7 @@
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>4</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="page0">
            <widget class="QGroupBox" name="groupBox0">
@@ -4844,6 +4932,9 @@ QComboBox QAbstractItemView {
                  <property name="dragEnabled">
                   <bool>false</bool>
                  </property>
+                 <property name="dragDropOverwriteMode">
+                  <bool>false</bool>
+                 </property>
                  <property name="selectionBehavior">
                   <enum>QAbstractItemView::SelectRows</enum>
                  </property>
@@ -7895,7 +7986,7 @@ QComboBox QAbstractItemView {
                     <string notr="true"/>
                    </property>
                    <property name="currentIndex">
-                    <number>1</number>
+                    <number>0</number>
                    </property>
                    <widget class="QWidget" name="page13">
                     <layout class="QGridLayout" name="gridLayout_12">
@@ -11352,6 +11443,305 @@ QComboBox QAbstractItemView {
                  </item>
                  <item row="0" column="3">
                   <spacer name="horizontalSpacer_148">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QGroupBox" name="groupBox23">
+            <property name="geometry">
+             <rect>
+              <x>250</x>
+              <y>70</y>
+              <width>511</width>
+              <height>281</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="title">
+             <string/>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_213">
+             <item row="0" column="0">
+              <layout class="QVBoxLayout" name="salesLt1_2">
+               <item>
+                <widget class="Line" name="salesLe6_2">
+                 <property name="styleSheet">
+                  <string notr="true">background-color: transparent;</string>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Plain</enum>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QGridLayout" name="salesLt2_2">
+                 <item row="0" column="2">
+                  <spacer name="salesSr8_2">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLabel" name="invoiceLl0_2">
+                   <property name="font">
+                    <font>
+                     <family>Open Sans</family>
+                     <pointsize>14</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background-color: transparent;</string>
+                   </property>
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Libros&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <spacer name="salesSr0_2">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="Line" name="salesLe5_2">
+                 <property name="styleSheet">
+                  <string notr="true">background-color: transparent;</string>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Plain</enum>
+                 </property>
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QTableWidget" name="table12">
+                 <property name="styleSheet">
+                  <string notr="true">QTableWidget::item:selected{
+	background-color: whitesmoke;
+	selection-color: black;
+}</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Sunken</enum>
+                 </property>
+                 <property name="midLineWidth">
+                  <number>1</number>
+                 </property>
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <property name="dragEnabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="dragDropOverwriteMode">
+                  <bool>false</bool>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectRows</enum>
+                 </property>
+                 <property name="textElideMode">
+                  <enum>Qt::ElideMiddle</enum>
+                 </property>
+                 <property name="showGrid">
+                  <bool>true</bool>
+                 </property>
+                 <property name="gridStyle">
+                  <enum>Qt::SolidLine</enum>
+                 </property>
+                 <property name="sortingEnabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
+                 <property name="cornerButtonEnabled">
+                  <bool>false</bool>
+                 </property>
+                 <attribute name="horizontalHeaderCascadingSectionResizes">
+                  <bool>false</bool>
+                 </attribute>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>100</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderMinimumSectionSize">
+                  <number>25</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderStretchLastSection">
+                  <bool>true</bool>
+                 </attribute>
+                 <attribute name="verticalHeaderStretchLastSection">
+                  <bool>false</bool>
+                 </attribute>
+                 <column>
+                  <property name="text">
+                   <string>Producto</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Precio</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Cant.</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Monto</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </column>
+                </widget>
+               </item>
+               <item>
+                <layout class="QGridLayout" name="gridLayout_152">
+                 <item row="0" column="1">
+                  <layout class="QGridLayout" name="gridLayout_153">
+                   <item row="0" column="1">
+                    <widget class="QPushButton" name="arrow43_2">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../resources/gui.qrc">
+                       <normaloff>:/arrows/prev_arrow</normaloff>:/arrows/prev_arrow</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="2">
+                    <widget class="QPushButton" name="arrow44_2">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../resources/gui.qrc">
+                       <normaloff>:/arrows/next_arrow</normaloff>:/arrows/next_arrow</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QPushButton" name="arrow42_2">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../resources/gui.qrc">
+                       <normaloff>:/arrows/top_arrow</normaloff>:/arrows/top_arrow</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="3">
+                    <widget class="QPushButton" name="arrow45_2">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../resources/gui.qrc">
+                       <normaloff>:/arrows/end_arrow</normaloff>:/arrows/end_arrow</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item row="0" column="0">
+                  <spacer name="horizontalSpacer_183">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="0" column="2">
+                  <spacer name="horizontalSpacer_184">
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
                    </property>
@@ -15750,12 +16140,6 @@ QComboBox QAbstractItemView {
              </item>
             </layout>
            </widget>
-           <zorder>groupBox18</zorder>
-           <zorder>groupBox19</zorder>
-           <zorder>groupBox20</zorder>
-           <zorder></zorder>
-           <zorder>groupBox21</zorder>
-           <zorder>groupBox22</zorder>
           </widget>
           <widget class="QWidget" name="page6">
            <widget class="QGroupBox" name="groupBox12">
@@ -17228,6 +17612,15 @@ QComboBox QAbstractItemView {
 	selection-color: black;
 }</string>
                          </property>
+                         <property name="editTriggers">
+                          <set>QAbstractItemView::NoEditTriggers</set>
+                         </property>
+                         <property name="dragDropOverwriteMode">
+                          <bool>false</bool>
+                         </property>
+                         <property name="selectionBehavior">
+                          <enum>QAbstractItemView::SelectRows</enum>
+                         </property>
                          <attribute name="verticalHeaderStretchLastSection">
                           <bool>false</bool>
                          </attribute>
@@ -17381,6 +17774,15 @@ QComboBox QAbstractItemView {
 	background-color: whitesmoke;
 	selection-color: black;
 }</string>
+                         </property>
+                         <property name="editTriggers">
+                          <set>QAbstractItemView::NoEditTriggers</set>
+                         </property>
+                         <property name="dragDropOverwriteMode">
+                          <bool>false</bool>
+                         </property>
+                         <property name="selectionBehavior">
+                          <enum>QAbstractItemView::SelectRows</enum>
                          </property>
                          <attribute name="verticalHeaderStretchLastSection">
                           <bool>false</bool>
@@ -19074,7 +19476,7 @@ QComboBox QAbstractItemView {
                     <string notr="true"/>
                    </property>
                    <property name="currentIndex">
-                    <number>1</number>
+                    <number>0</number>
                    </property>
                    <widget class="QWidget" name="page30">
                     <layout class="QGridLayout" name="gridLayout_106">
@@ -19155,6 +19557,15 @@ QComboBox QAbstractItemView {
 	background-color: whitesmoke;
 	selection-color: black;
 }</string>
+                         </property>
+                         <property name="editTriggers">
+                          <set>QAbstractItemView::NoEditTriggers</set>
+                         </property>
+                         <property name="dragDropOverwriteMode">
+                          <bool>false</bool>
+                         </property>
+                         <property name="selectionBehavior">
+                          <enum>QAbstractItemView::SelectRows</enum>
                          </property>
                          <attribute name="verticalHeaderStretchLastSection">
                           <bool>false</bool>
@@ -19310,6 +19721,15 @@ QComboBox QAbstractItemView {
 	selection-color: black;
 }</string>
                          </property>
+                         <property name="editTriggers">
+                          <set>QAbstractItemView::NoEditTriggers</set>
+                         </property>
+                         <property name="dragDropOverwriteMode">
+                          <bool>false</bool>
+                         </property>
+                         <property name="selectionBehavior">
+                          <enum>QAbstractItemView::SelectRows</enum>
+                         </property>
                          <attribute name="verticalHeaderStretchLastSection">
                           <bool>false</bool>
                          </attribute>
@@ -19463,6 +19883,15 @@ QComboBox QAbstractItemView {
 	background-color: whitesmoke;
 	selection-color: black;
 }</string>
+                         </property>
+                         <property name="editTriggers">
+                          <set>QAbstractItemView::NoEditTriggers</set>
+                         </property>
+                         <property name="dragDropOverwriteMode">
+                          <bool>false</bool>
+                         </property>
+                         <property name="selectionBehavior">
+                          <enum>QAbstractItemView::SelectRows</enum>
                          </property>
                          <attribute name="verticalHeaderStretchLastSection">
                           <bool>false</bool>
