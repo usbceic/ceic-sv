@@ -49,8 +49,8 @@ productPath = "images/inventory/"
 MainUI = "material.ui"
 
 # Styles
-styles = ["black.css", "default.css", "fuchsia.css", "green.css", "orange.css", "purple.css", "red.css", "yellow.css"]
-LEpopup = "LEpopup.css"
+styles = ["black.qss", "default.qss", "fuchsia.qss", "green.qss", "orange.qss", "purple.qss", "red.qss", "yellow.qss"]
+LEpopup = "LEpopup.qss"
 
 # Interfaz .ui creada con qt designer
 form_class = loadUiType(UIpath+MainUI)[0]
@@ -127,6 +127,9 @@ class adminGUI(QMainWindow, form_class):
         self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
                         self.table8, self.table9, self.table10, self.table11]
 
+        # SpinLines
+        self.spinBox = [self.spinLine0]
+
         #---------------------------------------------------------------------------------------------------------------------------
         # Cargar configuraciones iniciales
         #---------------------------------------------------------------------------------------------------------------------------
@@ -164,13 +167,6 @@ class adminGUI(QMainWindow, form_class):
     def setSize(self):
         self.setFixedSize(self.width(), self.height())
         #self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
-
-    def generalSetup(self):
-        # Centrar posición de la ventana
-        self.center()
-
-        # Establecer tamaño y ocultar botones de la ventana
-        self.setSize()
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Procedimientos de la clase (Métodos)
@@ -223,6 +219,14 @@ class adminGUI(QMainWindow, form_class):
             if numValidator: lineE.setValidator(QIntValidator(0, 100000000))
             lineE.setCompleter(LEcompleter)
 
+    # Método para configurar un spinLine
+    def setupSpinLine(self, listSL):
+        for spinL in listSL: spinL.setValidator(QIntValidator(0, 9999999))
+
+    # Método para configurar un spinLine
+    def clearSpinLine(self, listSL):
+        for spinL in listSL: spinL.setText("0")
+
     # Obtener una lista con los nombres de todos los productos
     def getProductList(self, params, mode = 0):
         productsList = self.db.getItemInfo(productsTable, params, mode)
@@ -246,9 +250,8 @@ class adminGUI(QMainWindow, form_class):
 
     # Cambio de estado de los line edits en un apartado
     def changeRO(self, listaLE0, boolean = True, listaLE1 = []):
-        if self.click():
-            self.ReadOnlyLE(listaLE0, boolean)
-            if len(listaLE1) != 0: self.ReadOnlyLE(listaLE1, not(boolean))
+        self.ReadOnlyLE(listaLE0, boolean)
+        self.ReadOnlyLE(listaLE1, not(boolean))
 
     def setupTables(self):
         for table in self.tables:
@@ -283,8 +286,11 @@ class adminGUI(QMainWindow, form_class):
         self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)     # Disponibles
         self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2)  # No disponibles
 
-        #Configuración de la barra de búsqueda de cliente por CI
+        # Configuración de la barra de búsqueda de cliente por CI
         self.setupSearchBar(self.ciSearch, clientList, True)
+
+        # Limpiar los spinLine
+        self.clearSpinLine(self.spinBox)
 
         # Configuración de las barras de búsqueda por nombre de producto
         self.setupSearchBar(self.productSearch, self.productsNames)
@@ -302,6 +308,18 @@ class adminGUI(QMainWindow, form_class):
         self.clearLE(self.productSearch)
         self.clearLE(self.productsRO0)
         self.clearLE(self.lotsRO0)
+
+    def generalSetup(self):
+        # Centrar posición de la ventana
+        self.center()
+
+        # Establecer tamaño y ocultar botones de la ventana
+        self.setSize()
+
+        # Configurar los spin box
+        self.setupSpinLine(self.spinBox)
+        self.add0.setAutoRepeat(True)
+        self.substract0.setAutoRepeat(True)
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Configuración de los botones para cambio de página de los stacked:
@@ -395,43 +413,51 @@ class adminGUI(QMainWindow, form_class):
 
     # Radio button para agregar nuevos productos
     def on_rbutton5_pressed(self):
-        self.clearLE(self.productsRO0)
-        self.changeRO(self.productsRO1, True, self.productsRO2)
+        if self.click():
+            self.clearLE(self.productsRO0)
+            self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
 
     # Radio button para consultar productos
     def on_rbutton6_pressed(self):
-        self.clearLE(self.productsRO0)
-        self.changeRO(self.productsRO1)
+        if self.click():
+            self.clearLE(self.productsRO0)
+            self.changeRO(self.productsRO1)
 
     # Radio button para editar productos
     def on_rbutton7_pressed(self):
-        self.clearLE(self.productsRO0)
-        self.changeRO(self.productsRO1, True, self.productsRO2)
+        if self.click():
+            self.clearLE(self.productsRO0)
+            self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
 
     # Radio button para eliminar productos
     def on_rbutton8_pressed(self):
-        self.clearLE(self.productsRO0)
-        self.changeRO(self.productsRO1)
+        if self.click():
+            self.clearLE(self.productsRO0)
+            self.changeRO(self.productsRO1)
 
     # Radio button para agregar nuevos lotes
     def on_rbutton9_pressed(self):
-        self.clearLE(self.lotsRO0)
-        self.changeRO(self.lotsRO2, False, self.lotsRO3)
+        if self.click():
+            self.clearLE(self.lotsRO0)
+            self.changeRO(self.lotsRO2, False, self.lotsRO3)
 
     # Radio button para consultar lotes
     def on_rbutton10_pressed(self):
-        self.clearLE(self.lotsRO0)
-        self.changeRO(self.lotsRO1)
+        if self.click():
+            self.clearLE(self.lotsRO0)
+            self.changeRO(self.lotsRO1)
 
     # Radio button para editar lotes
     def on_rbutton11_pressed(self):
-        self.clearLE(self.lotsRO0)
-        self.changeRO(self.lotsRO0, False)
+        if self.click():
+            self.clearLE(self.lotsRO0)
+            self.changeRO(self.lotsRO0, False)
 
     # Radio button para eliminar lotes
     def on_rbutton12_pressed(self):
-        self.clearLE(self.lotsRO0)
-        self.changeRO(self.lotsRO1)
+        if self.click():
+            self.clearLE(self.lotsRO0)
+            self.changeRO(self.lotsRO1)
 
     # Boton "Aceptar" en el apartado de productos
     def on_pbutton11_pressed(self):
@@ -546,6 +572,24 @@ class adminGUI(QMainWindow, form_class):
                     self.lineE29.setText(str(product[4])) # Lotes
                     self.lineE30.setText(str(product[3])) # Disp. Total
                     self.currentProduct = str(product[5])
+
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Configuración de botones de ventas
+    #-------------------------------------------------------------------------------------------------------------------------------
+
+    # Botón para sumar al spinLine
+    def on_add0_pressed(self):
+        if self.click():
+            count = int(self.spinLine0.text())
+            if count < 9999999:
+                self.spinLine0.setText(str(count+1))
+
+    # Botón para restar al spinLine
+    def on_substract0_pressed(self):
+        if self.click():
+            count = int(self.spinLine0.text())
+            if count > 0:
+                self.spinLine0.setText(str(count-1))
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Manejador de eventos de teclas presionadas

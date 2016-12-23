@@ -252,7 +252,7 @@
 }
 
 /*Configuración del estilo de todos los line edit en modo de solo lectura*/
-#lineE0[readOnly=&quot;false&quot;], #lineE1[readOnly=&quot;false&quot;], #lineE2[readOnly=&quot;true&quot;], #lineE3[readOnly=&quot;true&quot;], #lineE4[readOnly=&quot;true&quot;], #lineE5[readOnly=&quot;true&quot;], #lineE6[readOnly=&quot;true&quot;], #lineE7[readOnly=&quot;true&quot;], #lineE8[readOnly=&quot;true&quot;], #lineE9[readOnly=&quot;true&quot;], #lineE10[readOnly=&quot;true&quot;], #lineE11[readOnly=&quot;true&quot;], #lineE12[readOnly=&quot;true&quot;], #lineE13[readOnly=&quot;true&quot;], #lineE14[readOnly=&quot;true&quot;], #lineE15[readOnly=&quot;true&quot;], #lineE16[readOnly=&quot;true&quot;], #lineE17[readOnly=&quot;true&quot;], #lineE18[readOnly=&quot;true&quot;], #lineE19[readOnly=&quot;true&quot;], #lineE20[readOnly=&quot;true&quot;], #lineE21[readOnly=&quot;true&quot;], #lineE22[readOnly=&quot;true&quot;], #lineE23[readOnly=&quot;true&quot;], #lineE24[readOnly=&quot;true&quot;], #lineE25[readOnly=&quot;true&quot;], #lineE26[readOnly=&quot;true&quot;], #lineE27[readOnly=&quot;true&quot;], #lineE28[readOnly=&quot;true&quot;], #lineE29[readOnly=&quot;true&quot;], #lineE30[readOnly=&quot;true&quot;], #lineE31[readOnly=&quot;true&quot;], #lineE32[readOnly=&quot;true&quot;], #lineE33[readOnly=&quot;true&quot;], #lineE34[readOnly=&quot;true&quot;], #lineE35[readOnly=&quot;true&quot;], #lineE36[readOnly=&quot;true&quot;], #lineE37[readOnly=&quot;true&quot;], #lineE38[readOnly=&quot;true&quot;], #lineE39[readOnly=&quot;true&quot;], #lineE40[readOnly=&quot;true&quot;], #lineE41[readOnly=&quot;true&quot;], #lineE42[readOnly=&quot;true&quot;], #lineE43[readOnly=&quot;true&quot;], #lineE44[readOnly=&quot;true&quot;], #lineE45[readOnly=&quot;true&quot;], #lineE46[readOnly=&quot;true&quot;], #lineE47[readOnly=&quot;true&quot;], #lineE48[readOnly=&quot;true&quot;], #lineE49[readOnly=&quot;true&quot;], #lineE50[readOnly=&quot;true&quot;], #lineE51[readOnly=&quot;true&quot;], #lineE52[readOnly=&quot;true&quot;], #lineE53[readOnly=&quot;true&quot;], #lineE54[readOnly=&quot;true&quot;], #lineE55[readOnly=&quot;true&quot;], #lineE56[readOnly=&quot;true&quot;], #lineE57[readOnly=&quot;true&quot;], #lineE58[readOnly=&quot;true&quot;], #lineE59[readOnly=&quot;true&quot;], #lineE60[readOnly=&quot;true&quot;], #lineE61[readOnly=&quot;true&quot;], #lineE62[readOnly=&quot;true&quot;], #lineE63[readOnly=&quot;true&quot;], #lineE64[readOnly=&quot;true&quot;], #lineE65[readOnly=&quot;true&quot;], #lineE66[readOnly=&quot;true&quot;], #lineE67[readOnly=&quot;true&quot;], #lineE68[readOnly=&quot;true&quot;], #lineE69[readOnly=&quot;true&quot;], #lineE70[readOnly=&quot;true&quot;], #lineE71[readOnly=&quot;true&quot;], #lineE72[readOnly=&quot;true&quot;], #lineE73[readOnly=&quot;true&quot;], #lineE74[readOnly=&quot;true&quot;], #lineE75[readOnly=&quot;true&quot;], #lineE76[readOnly=&quot;true&quot;], #lineE77[readOnly=&quot;true&quot;], #lineE78[readOnly=&quot;true&quot;], #lineE79[readOnly=&quot;true&quot;], #lineE80[readOnly=&quot;true&quot;], #lineE81[readOnly=&quot;true&quot;], #lineE82[readOnly=&quot;true&quot;], #lineE83[readOnly=&quot;true&quot;], #lineE84[readOnly=&quot;true&quot;], #lineE85[readOnly=&quot;true&quot;], #lineE86[readOnly=&quot;true&quot;], #lineE87[readOnly=&quot;true&quot;], #lineE88[readOnly=&quot;true&quot;], #lineE89[readOnly=&quot;true&quot;], #lineE90[readOnly=&quot;true&quot;], #lineE91[readOnly=&quot;true&quot;], #lineE92[readOnly=&quot;true&quot;], #lineE93[readOnly=&quot;true&quot;], #lineE94[readOnly=&quot;true&quot;], #lineE95[readOnly=&quot;true&quot;], #lineE96[readOnly=&quot;true&quot;], #lineE97[readOnly=&quot;true&quot;], #lineE98[readOnly=&quot;true&quot;], #lineE99[readOnly=&quot;true&quot;], #lineE100[readOnly=&quot;true&quot;], #lineE101[readOnly=&quot;true&quot;], #lineE102[readOnly=&quot;true&quot;], #lineE103[readOnly=&quot;true&quot;], #lineE104[readOnly=&quot;true&quot;], #lineE105[readOnly=&quot;true&quot;], #lineE106[readOnly=&quot;true&quot;], #lineE107[readOnly=&quot;true&quot;], #lineE108[readOnly=&quot;true&quot;], #lineE109[readOnly=&quot;true&quot;], #lineE110[readOnly=&quot;true&quot;], #lineE111[readOnly=&quot;true&quot;], #lineE112[readOnly=&quot;true&quot;], #lineE113[readOnly=&quot;true&quot;], #lineE114[readOnly=&quot;true&quot;], #lineE115[readOnly=&quot;true&quot;], #lineE116[readOnly=&quot;true&quot;], #lineE117[readOnly=&quot;true&quot;], #lineE118[readOnly=&quot;true&quot;], #lineE119[readOnly=&quot;true&quot;], #lineE120[readOnly=&quot;true&quot;], #lineE121[readOnly=&quot;true&quot;], #lineE122[readOnly=&quot;true&quot;], #lineE123[readOnly=&quot;true&quot;], #lineE124[readOnly=&quot;true&quot;], #lineE125[readOnly=&quot;true&quot;], #lineE126[readOnly=&quot;true&quot;], #lineE127[readOnly=&quot;true&quot;], #lineE128[readOnly=&quot;true&quot;], #lineE129[readOnly=&quot;true&quot;], #lineE130[readOnly=&quot;true&quot;], #lineE131[readOnly=&quot;true&quot;], #lineE132[readOnly=&quot;true&quot;], #lineE133[readOnly=&quot;true&quot;], #lineE134[readOnly=&quot;true&quot;], #lineE135[readOnly=&quot;true&quot;], #lineE136[readOnly=&quot;true&quot;], #lineE137[readOnly=&quot;true&quot;], #lineE138[readOnly=&quot;true&quot;], #lineE139[readOnly=&quot;true&quot;], #lineE140[readOnly=&quot;true&quot;], #lineE141[readOnly=&quot;true&quot;], #lineE142[readOnly=&quot;true&quot;], #lineE143[readOnly=&quot;true&quot;], #lineE144[readOnly=&quot;true&quot;], #lineE145[readOnly=&quot;true&quot;], #lineE146[readOnly=&quot;true&quot;], #lineE147[readOnly=&quot;true&quot;], #lineE148[readOnly=&quot;true&quot;], #lineE149[readOnly=&quot;true&quot;]{
+#lineE0[readOnly=&quot;true&quot;], #lineE1[readOnly=&quot;true&quot;], #lineE2[readOnly=&quot;true&quot;], #lineE3[readOnly=&quot;true&quot;], #lineE4[readOnly=&quot;true&quot;], #lineE5[readOnly=&quot;true&quot;], #lineE6[readOnly=&quot;true&quot;], #lineE7[readOnly=&quot;true&quot;], #lineE8[readOnly=&quot;true&quot;], #lineE9[readOnly=&quot;true&quot;], #lineE10[readOnly=&quot;true&quot;], #lineE11[readOnly=&quot;true&quot;], #lineE12[readOnly=&quot;true&quot;], #lineE13[readOnly=&quot;true&quot;], #lineE14[readOnly=&quot;true&quot;], #lineE15[readOnly=&quot;true&quot;], #lineE16[readOnly=&quot;true&quot;], #lineE17[readOnly=&quot;true&quot;], #lineE18[readOnly=&quot;true&quot;], #lineE19[readOnly=&quot;true&quot;], #lineE20[readOnly=&quot;true&quot;], #lineE21[readOnly=&quot;true&quot;], #lineE22[readOnly=&quot;true&quot;], #lineE23[readOnly=&quot;true&quot;], #lineE24[readOnly=&quot;true&quot;], #lineE25[readOnly=&quot;true&quot;], #lineE26[readOnly=&quot;true&quot;], #lineE27[readOnly=&quot;true&quot;], #lineE28[readOnly=&quot;true&quot;], #lineE29[readOnly=&quot;true&quot;], #lineE30[readOnly=&quot;true&quot;], #lineE31[readOnly=&quot;true&quot;], #lineE32[readOnly=&quot;true&quot;], #lineE33[readOnly=&quot;true&quot;], #lineE34[readOnly=&quot;true&quot;], #lineE35[readOnly=&quot;true&quot;], #lineE36[readOnly=&quot;true&quot;], #lineE37[readOnly=&quot;true&quot;], #lineE38[readOnly=&quot;true&quot;], #lineE39[readOnly=&quot;true&quot;], #lineE40[readOnly=&quot;true&quot;], #lineE41[readOnly=&quot;true&quot;], #lineE42[readOnly=&quot;true&quot;], #lineE43[readOnly=&quot;true&quot;], #lineE44[readOnly=&quot;true&quot;], #lineE45[readOnly=&quot;true&quot;], #lineE46[readOnly=&quot;true&quot;], #lineE47[readOnly=&quot;true&quot;], #lineE48[readOnly=&quot;true&quot;], #lineE49[readOnly=&quot;true&quot;], #lineE50[readOnly=&quot;true&quot;], #lineE51[readOnly=&quot;true&quot;], #lineE52[readOnly=&quot;true&quot;], #lineE53[readOnly=&quot;true&quot;], #lineE54[readOnly=&quot;true&quot;], #lineE55[readOnly=&quot;true&quot;], #lineE56[readOnly=&quot;true&quot;], #lineE57[readOnly=&quot;true&quot;], #lineE58[readOnly=&quot;true&quot;], #lineE59[readOnly=&quot;true&quot;], #lineE60[readOnly=&quot;true&quot;], #lineE61[readOnly=&quot;true&quot;], #lineE62[readOnly=&quot;true&quot;], #lineE63[readOnly=&quot;true&quot;], #lineE64[readOnly=&quot;true&quot;], #lineE65[readOnly=&quot;true&quot;], #lineE66[readOnly=&quot;true&quot;], #lineE67[readOnly=&quot;true&quot;], #lineE68[readOnly=&quot;true&quot;], #lineE69[readOnly=&quot;true&quot;], #lineE70[readOnly=&quot;true&quot;], #lineE71[readOnly=&quot;true&quot;], #lineE72[readOnly=&quot;true&quot;], #lineE73[readOnly=&quot;true&quot;], #lineE74[readOnly=&quot;true&quot;], #lineE75[readOnly=&quot;true&quot;], #lineE76[readOnly=&quot;true&quot;], #lineE77[readOnly=&quot;true&quot;], #lineE78[readOnly=&quot;true&quot;], #lineE79[readOnly=&quot;true&quot;], #lineE80[readOnly=&quot;true&quot;], #lineE81[readOnly=&quot;true&quot;], #lineE82[readOnly=&quot;true&quot;], #lineE83[readOnly=&quot;true&quot;], #lineE84[readOnly=&quot;true&quot;], #lineE85[readOnly=&quot;true&quot;], #lineE86[readOnly=&quot;true&quot;], #lineE87[readOnly=&quot;true&quot;], #lineE88[readOnly=&quot;true&quot;], #lineE89[readOnly=&quot;true&quot;], #lineE90[readOnly=&quot;true&quot;], #lineE91[readOnly=&quot;true&quot;], #lineE92[readOnly=&quot;true&quot;], #lineE93[readOnly=&quot;true&quot;], #lineE94[readOnly=&quot;true&quot;], #lineE95[readOnly=&quot;true&quot;], #lineE96[readOnly=&quot;true&quot;], #lineE97[readOnly=&quot;true&quot;], #lineE98[readOnly=&quot;true&quot;], #lineE99[readOnly=&quot;true&quot;], #lineE100[readOnly=&quot;true&quot;], #lineE101[readOnly=&quot;true&quot;], #lineE102[readOnly=&quot;true&quot;], #lineE103[readOnly=&quot;true&quot;], #lineE104[readOnly=&quot;true&quot;], #lineE105[readOnly=&quot;true&quot;], #lineE106[readOnly=&quot;true&quot;], #lineE107[readOnly=&quot;true&quot;], #lineE108[readOnly=&quot;true&quot;], #lineE109[readOnly=&quot;true&quot;], #lineE110[readOnly=&quot;true&quot;], #lineE111[readOnly=&quot;true&quot;], #lineE112[readOnly=&quot;true&quot;], #lineE113[readOnly=&quot;true&quot;], #lineE114[readOnly=&quot;true&quot;], #lineE115[readOnly=&quot;true&quot;], #lineE116[readOnly=&quot;true&quot;], #lineE117[readOnly=&quot;true&quot;], #lineE118[readOnly=&quot;true&quot;], #lineE119[readOnly=&quot;true&quot;], #lineE120[readOnly=&quot;true&quot;], #lineE121[readOnly=&quot;true&quot;], #lineE122[readOnly=&quot;true&quot;], #lineE123[readOnly=&quot;true&quot;], #lineE124[readOnly=&quot;true&quot;], #lineE125[readOnly=&quot;true&quot;], #lineE126[readOnly=&quot;true&quot;], #lineE127[readOnly=&quot;true&quot;], #lineE128[readOnly=&quot;true&quot;], #lineE129[readOnly=&quot;true&quot;], #lineE130[readOnly=&quot;true&quot;], #lineE131[readOnly=&quot;true&quot;], #lineE132[readOnly=&quot;true&quot;], #lineE133[readOnly=&quot;true&quot;], #lineE134[readOnly=&quot;true&quot;], #lineE135[readOnly=&quot;true&quot;], #lineE136[readOnly=&quot;true&quot;], #lineE137[readOnly=&quot;true&quot;], #lineE138[readOnly=&quot;true&quot;], #lineE139[readOnly=&quot;true&quot;], #lineE140[readOnly=&quot;true&quot;], #lineE141[readOnly=&quot;true&quot;], #lineE142[readOnly=&quot;true&quot;], #lineE143[readOnly=&quot;true&quot;], #lineE144[readOnly=&quot;true&quot;], #lineE145[readOnly=&quot;true&quot;], #lineE146[readOnly=&quot;true&quot;], #lineE147[readOnly=&quot;true&quot;], #lineE148[readOnly=&quot;true&quot;], #lineE149[readOnly=&quot;true&quot;]{
     border-style: inset;
     border-color: silver;
     background-color: whitesmoke;
@@ -270,7 +270,7 @@
 ***********************************/
 
 /*Configuración del estilo por defecto de todos los comboBox*/
-#cbox0, #cbox1, #cbox2, #cbox3, #cbox4, #cbox5, #cbox6, #cbox7, #cbox8, #cbox9, #cbox10, #cbox11, #cbox12, #cbox13, #cbox14, #cbox15, #cbox16, #cbox17, #cbox18, #cbox19, #cbox20{
+#cbox0, #cbox1, #cbox2, #cbox3, #cbox4, #cbox5, #cbox6, #cbox7, #cbox8, #cbox9, #cbox10, #cbox11, #cbox12, #cbox13, #cbox14, #cbox15, #cbox16, #cbox17, #cbox18, #cbox19, #cbox20, #cbox21, #cbox22, #cbox23, #cbox24, #cbox25, #cbox26, #cbox27, #cbox28, #cbox29{
     color: black;
     border: 1px solid dimgray;
     border-radius: 3px;
@@ -279,13 +279,13 @@
 }
 
 /*Configuración del estilo de todos los comboBox cuando estan en uso*/
-#cbox0::on, #cbox1::on, #cbox2::on, #cbox3::on, #cbox4::on, #cbox5::on, #cbox6::on, #cbox7::on, #cbox8::on, #cbox9::on, #cbox10::on, #cbox11::on, #cbox12::on, #cbox13::on, #cbox14::on, #cbox15::on, #cbox16::on, #cbox17::on, #cbox18::on, #cbox19::on, #cbox20::on{
+#cbox0::on, #cbox1::on, #cbox2::on, #cbox3::on, #cbox4::on, #cbox5::on, #cbox6::on, #cbox7::on, #cbox8::on, #cbox9::on, #cbox10::on, #cbox11::on, #cbox12::on, #cbox13::on, #cbox14::on, #cbox15::on, #cbox16::on, #cbox17::on, #cbox18::on, #cbox19::on, #cbox20::on, #cbox21::on, #cbox22::on, #cbox23::on, #cbox24::on, #cbox25::on, #cbox26::on, #cbox27::on, #cbox28::on, #cbox29::on{
     padding-top: 10px;
     padding-left: 4px;
 }
 
 /*Configuración del estilo de todos los comboBox cuando se despliegan*/
-#cbox0::drop-down, #cbox1::drop-down, #cbox2::drop-down, #cbox3::drop-down, #cbox4::drop-down, #cbox5::drop-down, #cbox6::drop-down, #cbox7::drop-down, #cbox8::drop-down, #cbox9::drop-down, #cbox10::drop-down, #cbox11::drop-down, #cbox12::drop-down, #cbox13::drop-down, #cbox14::drop-down, #cbox15::drop-down, #cbox16::drop-down, #cbox17::drop-down, #cbox18::drop-down, #cbox19::drop-down, #cbox20::drop-down{
+#cbox0::drop-down, #cbox1::drop-down, #cbox2::drop-down, #cbox3::drop-down, #cbox4::drop-down, #cbox5::drop-down, #cbox6::drop-down, #cbox7::drop-down, #cbox8::drop-down, #cbox9::drop-down, #cbox10::drop-down, #cbox11::drop-down, #cbox12::drop-down, #cbox13::drop-down, #cbox14::drop-down, #cbox15::drop-down, #cbox16::drop-down, #cbox17::drop-down, #cbox18::drop-down, #cbox19::drop-down, #cbox20::drop-down, #cbox21::drop-down, #cbox22::drop-down, #cbox23::drop-down, #cbox24::drop-down, #cbox25::drop-down, #cbox26::drop-down, #cbox27::drop-down, #cbox28::drop-down, #cbox29::drop-down{
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 15px;
@@ -297,12 +297,12 @@
 }
 
 /*Configuración del estilo de la flecha de todos los comboBox*/
-#cbox0::down-arrow, #cbox1::down-arrow, #cbox2::down-arrow, #cbox3::down-arrow, #cbox4::down-arrow, #cbox5::down-arrow, #cbox6::down-arrow, #cbox7::down-arrow, #cbox8::down-arrow, #cbox9::down-arrow, #cbox10::down-arrow, #cbox11::down-arrow, #cbox12::down-arrow, #cbox13::down-arrow, #cbox14::down-arrow, #cbox15::down-arrow, #cbox16::down-arrow, #cbox17::down-arrow, #cbox18::down-arrow, #cbox19::down-arrow, #cbox20::down-arrow{
-    image: url(:/arrows/down_arrow);
+#cbox0::down-arrow, #cbox1::down-arrow, #cbox2::down-arrow, #cbox3::down-arrow, #cbox4::down-arrow, #cbox5::down-arrow, #cbox6::down-arrow, #cbox7::down-arrow, #cbox8::down-arrow, #cbox9::down-arrow, #cbox10::down-arrow, #cbox11::down-arrow, #cbox12::down-arrow, #cbox13::down-arrow, #cbox14::down-arrow, #cbox15::down-arrow, #cbox16::down-arrow, #cbox17::down-arrow, #cbox18::down-arrow, #cbox19::down-arrow, #cbox20::down-arrow, #cbox21::down-arrow, #cbox22::down-arrow, #cbox23::down-arrow, #cbox24::down-arrow, #cbox25::down-arrow, #cbox26::down-arrow, #cbox27::down-arrow, #cbox28::down-arrow, #cbox29::down-arrow{
+    image: url(:/arrows/down);
 }
 
 /*Configuración del estilo de la flecha de todos los comboBox cuando se despliegan*/
-#cbox0::drop-arrow::on, #cbox1::drop-arrow::on, #cbox2::drop-arrow::on, #cbox3::drop-arrow::on, #cbox4::drop-arrow::on, #cbox5::drop-arrow::on, #cbox6::drop-arrow::on, #cbox7::drop-arrow::on, #cbox8::drop-arrow::on, #cbox9::drop-arrow::on, #cbox10::drop-arrow::on, #cbox11::drop-arrow::on, #cbox12::drop-arrow::on, #cbox13::drop-arrow::on, #cbox14::drop-arrow::on, #cbox15::drop-arrow::on, #cbox16::drop-arrow::on, #cbox17::drop-arrow::on, #cbox18::drop-arrow::on, #cbox19::drop-arrow::on, #cbox20::drop-arrow::on{
+#cbox0::drop-arrow::on, #cbox1::drop-arrow::on, #cbox2::drop-arrow::on, #cbox3::drop-arrow::on, #cbox4::drop-arrow::on, #cbox5::drop-arrow::on, #cbox6::drop-arrow::on, #cbox7::drop-arrow::on, #cbox8::drop-arrow::on, #cbox9::drop-arrow::on, #cbox10::drop-arrow::on, #cbox11::drop-arrow::on, #cbox12::drop-arrow::on, #cbox13::drop-arrow::on, #cbox14::drop-arrow::on, #cbox15::drop-arrow::on, #cbox16::drop-arrow::on, #cbox17::drop-arrow::on, #cbox18::drop-arrow::on, #cbox19::drop-arrow::on, #cbox20::drop-arrow::on, #cbox21::drop-arrow::on, #cbox22::drop-arrow::on, #cbox23::drop-arrow::on, #cbox24::drop-arrow::on, #cbox25::drop-arrow::on, #cbox26::drop-arrow::on, #cbox27::drop-arrow::on, #cbox28::drop-arrow::on, #cbox29::drop-arrow::on{
     top: 1px;
     left: 1px;
 }
@@ -310,7 +310,7 @@
 
 
 /*Configuración del estilo del menu desplegado de todos los comboBox*/
-#cbox0 QAbstractItemView, #cbox1 QAbstractItemView, #cbox2 QAbstractItemView, #cbox3 QAbstractItemView, #cbox4 QAbstractItemView, #cbox5 QAbstractItemView, #cbox6 QAbstractItemView, #cbox7 QAbstractItemView, #cbox8 QAbstractItemView, #cbox9 QAbstractItemView, #cbox10 QAbstractItemView, #cbox11 QAbstractItemView, #cbox12 QAbstractItemView, #cbox13 QAbstractItemView, #cbox14 QAbstractItemView, #cbox15 QAbstractItemView, #cbox16 QAbstractItemView, #cbox17 QAbstractItemView, #cbox18 QAbstractItemView, #cbox19 QAbstractItemView, #cbox20 QAbstractItemView{
+#cbox0 QAbstractItemView, #cbox1 QAbstractItemView, #cbox2 QAbstractItemView, #cbox3 QAbstractItemView, #cbox4 QAbstractItemView, #cbox5 QAbstractItemView, #cbox6 QAbstractItemView, #cbox7 QAbstractItemView, #cbox8 QAbstractItemView, #cbox9 QAbstractItemView, #cbox10 QAbstractItemView, #cbox11 QAbstractItemView, #cbox12 QAbstractItemView, #cbox13 QAbstractItemView, #cbox14 QAbstractItemView, #cbox15 QAbstractItemView, #cbox16 QAbstractItemView, #cbox17 QAbstractItemView, #cbox18 QAbstractItemView, #cbox19 QAbstractItemView, #cbox20 QAbstractItemView, #cbox21 QAbstractItemView, #cbox22 QAbstractItemView, #cbox23 QAbstractItemView, #cbox24 QAbstractItemView, #cbox25 QAbstractItemView, #cbox26 QAbstractItemView, #cbox27 QAbstractItemView, #cbox28 QAbstractItemView, #cbox29 QAbstractItemView{
     border: 1px solid dimgray;
     border-radius: 3px;
     padding: 1px 6px 1px 1px;
@@ -341,7 +341,7 @@
 
 /*Configuración del estilo por defecto de la flecha de todos los DataTimeEdit*/
 #dtE0::down-arrow, #dtE1::down-arrow{
-    image: url(:/arrows/down_arrow);
+    image: url(:/arrows/down);
     border-color: transparent;
 }
 
@@ -467,6 +467,47 @@
 /*Imágen al presionar el indicador marcado*/
 #rbutton0::indicator::checked:pressed, #rbutton1::indicator::checked:pressed, #rbutton2::indicator::checked:pressed, #rbutton3::indicator::checked:pressed, #rbutton4::indicator::checked:pressed, #rbutton5::indicator::checked:pressed, #rbutton6::indicator::checked:pressed, #rbutton7::indicator::checked:pressed, #rbutton8::indicator::checked:pressed, #rbutton9::indicator::checked:pressed, #rbutton10::indicator::checked:pressed, #rbutton11::indicator::checked:pressed, #rbutton12::indicator::checked:pressed, #rbutton13::indicator::checked:pressed, #rbutton14::indicator::checked:pressed, #rbutton15::indicator::checked:pressed, #rbutton16::indicator::checked:pressed, #rbutton17::indicator::checked:pressed, #rbutton18::indicator::checked:pressed, #rbutton19::indicator::checked:pressed, #rbutton20::indicator::checked:pressed{
     image: url(:rbutton/checked-focus);
+}
+
+/***********************************
+* Custom SpinBox
+***********************************/
+
+/*Configurar el estilo por defecto de los botones para agregar y quitar*/
+#add0, #substract0{
+    border: 1px solid transparent;
+    border-radius: 3px;
+    min-width: 2em;
+    padding: 2px;
+}
+
+/*Configurar el estilo de los botones para agregar y quitar cuando se pasa por encima de ellos o son presionados*/
+#add0:hover, #add0:pressed, #substract0:hover, #substract0:pressed{
+    background-color: whitesmoke;
+}
+
+/*Configuración del estilo por defecto del line edit*/
+#spinLine0{
+    padding: 2px;
+    text-align: center;
+    border: 1px outset transparent;
+    border-right-color: dimgray;
+    border-left-color: dimgray;
+}
+
+/*Configuración del estilo del line edit en modo de solo lectura*/
+#spinLine0[readOnly=&quot;true&quot;]{
+    border-style: inset;
+    border-color: silver;
+    background-color: whitesmoke;
+}
+
+/*Connfiguración del estilo por defecto del QFrame*/
+#spinFrame0{
+    background-color: white;
+    border: 1px outset dimgray;
+    border-radius: 3px;
+    padding: -9px;
 }</string>
   </property>
   <property name="iconSize">
@@ -761,6 +802,35 @@
           <layout class="QGridLayout" name="gridLayout_79">
            <item row="0" column="0">
             <layout class="QGridLayout" name="gridLayout_143">
+             <item row="10" column="0">
+              <widget class="QPushButton" name="help">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="toolTip">
+                <string>Ayuda</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../resources/gui.qrc">
+                 <normaloff>:/menubar/help</normaloff>:/menubar/help</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
              <item row="3" column="0">
               <widget class="QPushButton" name="querys">
                <property name="cursor">
@@ -1018,35 +1088,6 @@
                </property>
               </widget>
              </item>
-             <item row="10" column="0">
-              <widget class="QPushButton" name="help">
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="toolTip">
-                <string>Ayuda</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../resources/gui.qrc">
-                 <normaloff>:/menubar/help</normaloff>:/menubar/help</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-              </widget>
-             </item>
              <item row="8" column="0">
               <widget class="QPushButton" name="configure">
                <property name="cursor">
@@ -1087,7 +1128,7 @@
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="page0">
            <widget class="QGroupBox" name="groupBox0">
@@ -1571,7 +1612,7 @@
                       </widget>
                      </item>
                      <item row="0" column="1">
-                      <widget class="QComboBox" name="comboBox_8">
+                      <widget class="QComboBox" name="cbox20">
                        <property name="font">
                         <font>
                          <family>Open Sans</family>
@@ -1589,49 +1630,7 @@
                         <enum>Qt::NoFocus</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">QComboBox {
-    color: black;
-    border: 1px solid dimgray;
-    border-radius: 3px;
-    padding: 1px 18px 1px 3px;
-    min-width: 6em;
-}
-
-QComboBox::on {
-    padding-top: 10px;
-    padding-left: 4px;
-}
-
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 15px;
-
-    border-left-width: 1px;
-    border-left-color: darkgray;
-    border-left-style: solid; /* just a single line */
-    border-top-right-radius: 3px; /* same radius as the QComboBox */
-    border-bottom-right-radius: 3px;
-}
-
-QComboBox::down-arrow {
-	image: url(:/arrows/down_arrow);
-}
-
-QComboBox::down-arrow:on {
-    top: 1px;
-    left: 1px;
-}
-
-QComboBox QAbstractItemView {
-    border: 1px solid dimgray;
-    border-radius: 3px;
-    padding: 1px 6px 1px 1px;
-    min-width: 14em;
-    selection-background-color: dimgray;
-}
-
-</string>
+                        <string notr="true"/>
                        </property>
                        <property name="currentIndex">
                         <number>0</number>
@@ -1732,7 +1731,7 @@ QLineEdit[readOnly=&quot;true&quot;] {
                       </widget>
                      </item>
                      <item row="2" column="1">
-                      <widget class="QComboBox" name="comboBox_3">
+                      <widget class="QComboBox" name="cbox21">
                        <property name="font">
                         <font>
                          <family>Open Sans</family>
@@ -1750,49 +1749,7 @@ QLineEdit[readOnly=&quot;true&quot;] {
                         <enum>Qt::NoFocus</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">QComboBox {
-    color: black;
-    border: 1px solid dimgray;
-    border-radius: 3px;
-    padding: 1px 18px 1px 3px;
-    min-width: 6em;
-}
-
-QComboBox::on {
-    padding-top: 10px;
-    padding-left: 4px;
-}
-
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 15px;
-
-    border-left-width: 1px;
-    border-left-color: darkgray;
-    border-left-style: solid; /* just a single line */
-    border-top-right-radius: 3px; /* same radius as the QComboBox */
-    border-bottom-right-radius: 3px;
-}
-
-QComboBox::down-arrow {
-	image: url(:/arrows/down_arrow);
-}
-
-QComboBox::down-arrow:on {
-    top: 1px;
-    left: 1px;
-}
-
-QComboBox QAbstractItemView {
-    border: 1px solid dimgray;
-    border-radius: 3px;
-    padding: 1px 6px 1px 1px;
-    min-width: 14em;
-    selection-background-color: dimgray;
-}
-
-</string>
+                        <string notr="true"/>
                        </property>
                        <property name="currentIndex">
                         <number>0</number>
@@ -1953,7 +1910,7 @@ QComboBox QAbstractItemView {
                       </widget>
                      </item>
                      <item row="0" column="1">
-                      <widget class="QComboBox" name="comboBox_12">
+                      <widget class="QComboBox" name="cbox22">
                        <property name="font">
                         <font>
                          <family>Open Sans</family>
@@ -1971,49 +1928,7 @@ QComboBox QAbstractItemView {
                         <enum>Qt::NoFocus</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">QComboBox {
-    color: black;
-    border: 1px solid dimgray;
-    border-radius: 3px;
-    padding: 1px 18px 1px 3px;
-    min-width: 6em;
-}
-
-QComboBox::on {
-    padding-top: 10px;
-    padding-left: 4px;
-}
-
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 15px;
-
-    border-left-width: 1px;
-    border-left-color: darkgray;
-    border-left-style: solid; /* just a single line */
-    border-top-right-radius: 3px; /* same radius as the QComboBox */
-    border-bottom-right-radius: 3px;
-}
-
-QComboBox::down-arrow {
-	image: url(:/arrows/down_arrow);
-}
-
-QComboBox::down-arrow:on {
-    top: 1px;
-    left: 1px;
-}
-
-QComboBox QAbstractItemView {
-    border: 1px solid dimgray;
-    border-radius: 3px;
-    padding: 1px 6px 1px 1px;
-    min-width: 14em;
-    selection-background-color: dimgray;
-}
-
-</string>
+                        <string notr="true"/>
                        </property>
                        <property name="currentIndex">
                         <number>0</number>
@@ -2114,7 +2029,7 @@ QLineEdit[readOnly=&quot;true&quot;] {
                       </widget>
                      </item>
                      <item row="2" column="1">
-                      <widget class="QComboBox" name="comboBox_11">
+                      <widget class="QComboBox" name="cbox23">
                        <property name="font">
                         <font>
                          <family>Open Sans</family>
@@ -2132,49 +2047,7 @@ QLineEdit[readOnly=&quot;true&quot;] {
                         <enum>Qt::NoFocus</enum>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">QComboBox {
-    color: black;
-    border: 1px solid dimgray;
-    border-radius: 3px;
-    padding: 1px 18px 1px 3px;
-    min-width: 6em;
-}
-
-QComboBox::on {
-    padding-top: 10px;
-    padding-left: 4px;
-}
-
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 15px;
-
-    border-left-width: 1px;
-    border-left-color: darkgray;
-    border-left-style: solid; /* just a single line */
-    border-top-right-radius: 3px; /* same radius as the QComboBox */
-    border-bottom-right-radius: 3px;
-}
-
-QComboBox::down-arrow {
-	image: url(:/arrows/down_arrow);
-}
-
-QComboBox::down-arrow:on {
-    top: 1px;
-    left: 1px;
-}
-
-QComboBox QAbstractItemView {
-    border: 1px solid dimgray;
-    border-radius: 3px;
-    padding: 1px 6px 1px 1px;
-    min-width: 14em;
-    selection-background-color: dimgray;
-}
-
-</string>
+                        <string notr="true"/>
                        </property>
                        <property name="currentIndex">
                         <number>0</number>
@@ -3613,7 +3486,7 @@ QComboBox QAbstractItemView {
                      </widget>
                     </item>
                     <item row="1" column="1">
-                     <widget class="QComboBox" name="comboBox_7">
+                     <widget class="QComboBox" name="cbox24">
                       <property name="font">
                        <font>
                         <family>Open Sans</family>
@@ -3626,47 +3499,7 @@ QComboBox QAbstractItemView {
                        <enum>Qt::NoFocus</enum>
                       </property>
                       <property name="styleSheet">
-                       <string notr="true">QComboBox {
-    color: black;
-    border: 1px solid dimgray;
-    border-radius: 3px;
-    padding: 1px 18px 1px 3px;
-    min-width: 6em;
-}
-
-QComboBox::on {
-    padding-top: 10px;
-    padding-left: 4px;
-}
-
-QComboBox::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 15px;
-
-    border-left-width: 1px;
-    border-left-color: darkgray;
-    border-left-style: solid; /* just a single line */
-    border-top-right-radius: 3px; /* same radius as the QComboBox */
-    border-bottom-right-radius: 3px;
-}
-
-QComboBox::down-arrow {
-	image: url(:/arrows/down_arrow);
-}
-
-QComboBox::down-arrow:on {
-    top: 1px;
-    left: 1px;
-}
-
-QComboBox QAbstractItemView {
-    border: 1px solid dimgray;
-    border-radius: 3px;
-    padding: 1px 6px 1px 1px;
-    min-width: 14em;
-    selection-background-color: dimgray;
-}</string>
+                       <string notr="true"/>
                       </property>
                       <property name="currentIndex">
                        <number>0</number>
@@ -4493,6 +4326,9 @@ QComboBox QAbstractItemView {
                    <property name="styleSheet">
                     <string notr="true"/>
                    </property>
+                   <property name="inputMask">
+                    <string/>
+                   </property>
                    <property name="text">
                     <string/>
                    </property>
@@ -4991,11 +4827,6 @@ QComboBox QAbstractItemView {
                    <string>Monto</string>
                   </property>
                  </column>
-                 <column>
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </column>
                 </widget>
                </item>
               </layout>
@@ -5222,44 +5053,6 @@ QComboBox QAbstractItemView {
                        </property>
                       </widget>
                      </item>
-                     <item row="2" column="1">
-                      <layout class="QFormLayout" name="salesLt19">
-                       <property name="fieldGrowthPolicy">
-                        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-                       </property>
-                       <item row="0" column="0">
-                        <widget class="QSpinBox" name="selectQuantitySB">
-                         <property name="font">
-                          <font>
-                           <family>Open Sans</family>
-                          </font>
-                         </property>
-                         <property name="focusPolicy">
-                          <enum>Qt::WheelFocus</enum>
-                         </property>
-                         <property name="contextMenuPolicy">
-                          <enum>Qt::PreventContextMenu</enum>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">background-color: rgb(255, 255, 255);</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="0" column="1">
-                        <spacer name="salesSr32">
-                         <property name="orientation">
-                          <enum>Qt::Horizontal</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>40</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                      </layout>
-                     </item>
                      <item row="3" column="0">
                       <widget class="QLabel" name="selectSubtotalL0">
                        <property name="font">
@@ -5330,6 +5123,94 @@ QComboBox QAbstractItemView {
                        <property name="readOnly">
                         <bool>true</bool>
                        </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QFrame" name="spinFrame0">
+                       <layout class="QGridLayout" name="gridLayout_154">
+                        <property name="spacing">
+                         <number>0</number>
+                        </property>
+                        <item row="0" column="2">
+                         <widget class="QPushButton" name="add0">
+                          <property name="font">
+                           <font>
+                            <family>Open Sans</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="cursor">
+                           <cursorShape>PointingHandCursor</cursorShape>
+                          </property>
+                          <property name="focusPolicy">
+                           <enum>Qt::NoFocus</enum>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true"/>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                          <property name="icon">
+                           <iconset resource="../resources/gui.qrc">
+                            <normaloff>:/spinBox/add</normaloff>:/spinBox/add</iconset>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="0">
+                         <widget class="QPushButton" name="substract0">
+                          <property name="font">
+                           <font>
+                            <family>Open Sans</family>
+                            <pointsize>10</pointsize>
+                           </font>
+                          </property>
+                          <property name="cursor">
+                           <cursorShape>PointingHandCursor</cursorShape>
+                          </property>
+                          <property name="focusPolicy">
+                           <enum>Qt::NoFocus</enum>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true"/>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                          <property name="icon">
+                           <iconset resource="../resources/gui.qrc">
+                            <normaloff>:/spinBox/substract</normaloff>:/spinBox/substract</iconset>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="1">
+                         <widget class="QLineEdit" name="spinLine0">
+                          <property name="font">
+                           <font>
+                            <family>Open Sans</family>
+                           </font>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true"/>
+                          </property>
+                          <property name="inputMask">
+                           <string/>
+                          </property>
+                          <property name="text">
+                           <string/>
+                          </property>
+                          <property name="maxLength">
+                           <number>7</number>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
+                          <property name="readOnly">
+                           <bool>false</bool>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
                       </widget>
                      </item>
                     </layout>
@@ -8725,7 +8606,7 @@ QComboBox QAbstractItemView {
                   <string notr="true"/>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>1</number>
                  </property>
                  <widget class="QWidget" name="page16">
                   <layout class="QGridLayout" name="gridLayout_20">
@@ -9015,20 +8896,20 @@ QComboBox QAbstractItemView {
                        </item>
                       </layout>
                      </item>
-                     <item>
-                      <spacer name="horizontalSpacer_93">
-                       <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>50</width>
-                         <height>38</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
                     </layout>
+                   </item>
+                   <item row="1" column="0">
+                    <spacer name="verticalSpacer_12">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                   </layout>
                  </widget>
@@ -9339,14 +9220,14 @@ QComboBox QAbstractItemView {
                       </layout>
                      </item>
                      <item>
-                      <spacer name="horizontalSpacer_102">
+                      <spacer name="verticalSpacer_13">
                        <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
+                        <enum>Qt::Vertical</enum>
                        </property>
                        <property name="sizeHint" stdset="0">
                         <size>
-                         <width>40</width>
-                         <height>10</height>
+                         <width>20</width>
+                         <height>40</height>
                         </size>
                        </property>
                       </spacer>
@@ -11646,7 +11527,7 @@ QComboBox QAbstractItemView {
                  <item row="0" column="1">
                   <layout class="QGridLayout" name="gridLayout_153">
                    <item row="0" column="1">
-                    <widget class="QPushButton" name="arrow43_2">
+                    <widget class="QPushButton" name="arrow67">
                      <property name="cursor">
                       <cursorShape>PointingHandCursor</cursorShape>
                      </property>
@@ -11666,7 +11547,7 @@ QComboBox QAbstractItemView {
                     </widget>
                    </item>
                    <item row="0" column="2">
-                    <widget class="QPushButton" name="arrow44_2">
+                    <widget class="QPushButton" name="arrow68">
                      <property name="cursor">
                       <cursorShape>PointingHandCursor</cursorShape>
                      </property>
@@ -11686,7 +11567,7 @@ QComboBox QAbstractItemView {
                     </widget>
                    </item>
                    <item row="0" column="0">
-                    <widget class="QPushButton" name="arrow42_2">
+                    <widget class="QPushButton" name="arrow66">
                      <property name="cursor">
                       <cursorShape>PointingHandCursor</cursorShape>
                      </property>
@@ -11706,7 +11587,7 @@ QComboBox QAbstractItemView {
                     </widget>
                    </item>
                    <item row="0" column="3">
-                    <widget class="QPushButton" name="arrow45_2">
+                    <widget class="QPushButton" name="arrow69">
                      <property name="cursor">
                       <cursorShape>PointingHandCursor</cursorShape>
                      </property>

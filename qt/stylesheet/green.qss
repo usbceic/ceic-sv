@@ -4,7 +4,7 @@
 
 /*Configurar el color de fondo de la ventana*/
 #centralwidget{
-     background-color: rgb(12, 158, 255);
+     background-color: rgb(8, 204, 23);
 }
 
 /*Configurar estilo por defecto del boton de nombre de usuario*/
@@ -22,7 +22,7 @@
 
 /*Configurar estilo del boton de nombre de usuario cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
 #userBn0:pressed, #userBn0::hover {
-    background-color: rgb(22, 129, 222);
+    background-color: rgb(8, 166, 1);
     border-style: inset;
 }
 
@@ -223,7 +223,7 @@
 }
 
 /*Configuración del estilo de todos los line edit en modo de solo lectura*/
-#lineE0[readOnly="false"], #lineE1[readOnly="false"], #lineE2[readOnly="true"], #lineE3[readOnly="true"], #lineE4[readOnly="true"], #lineE5[readOnly="true"], #lineE6[readOnly="true"], #lineE7[readOnly="true"], #lineE8[readOnly="true"], #lineE9[readOnly="true"], #lineE10[readOnly="true"], #lineE11[readOnly="true"], #lineE12[readOnly="true"], #lineE13[readOnly="true"], #lineE14[readOnly="true"], #lineE15[readOnly="true"], #lineE16[readOnly="true"], #lineE17[readOnly="true"], #lineE18[readOnly="true"], #lineE19[readOnly="true"], #lineE20[readOnly="true"], #lineE21[readOnly="true"], #lineE22[readOnly="true"], #lineE23[readOnly="true"], #lineE24[readOnly="true"], #lineE25[readOnly="true"], #lineE26[readOnly="true"], #lineE27[readOnly="true"], #lineE28[readOnly="true"], #lineE29[readOnly="true"], #lineE30[readOnly="true"], #lineE31[readOnly="true"], #lineE32[readOnly="true"], #lineE33[readOnly="true"], #lineE34[readOnly="true"], #lineE35[readOnly="true"], #lineE36[readOnly="true"], #lineE37[readOnly="true"], #lineE38[readOnly="true"], #lineE39[readOnly="true"], #lineE40[readOnly="true"], #lineE41[readOnly="true"], #lineE42[readOnly="true"], #lineE43[readOnly="true"], #lineE44[readOnly="true"], #lineE45[readOnly="true"], #lineE46[readOnly="true"], #lineE47[readOnly="true"], #lineE48[readOnly="true"], #lineE49[readOnly="true"], #lineE50[readOnly="true"], #lineE51[readOnly="true"], #lineE52[readOnly="true"], #lineE53[readOnly="true"], #lineE54[readOnly="true"], #lineE55[readOnly="true"], #lineE56[readOnly="true"], #lineE57[readOnly="true"], #lineE58[readOnly="true"], #lineE59[readOnly="true"], #lineE60[readOnly="true"], #lineE61[readOnly="true"], #lineE62[readOnly="true"], #lineE63[readOnly="true"], #lineE64[readOnly="true"], #lineE65[readOnly="true"], #lineE66[readOnly="true"], #lineE67[readOnly="true"], #lineE68[readOnly="true"], #lineE69[readOnly="true"], #lineE70[readOnly="true"], #lineE71[readOnly="true"], #lineE72[readOnly="true"], #lineE73[readOnly="true"], #lineE74[readOnly="true"], #lineE75[readOnly="true"], #lineE76[readOnly="true"], #lineE77[readOnly="true"], #lineE78[readOnly="true"], #lineE79[readOnly="true"], #lineE80[readOnly="true"], #lineE81[readOnly="true"], #lineE82[readOnly="true"], #lineE83[readOnly="true"], #lineE84[readOnly="true"], #lineE85[readOnly="true"], #lineE86[readOnly="true"], #lineE87[readOnly="true"], #lineE88[readOnly="true"], #lineE89[readOnly="true"], #lineE90[readOnly="true"], #lineE91[readOnly="true"], #lineE92[readOnly="true"], #lineE93[readOnly="true"], #lineE94[readOnly="true"], #lineE95[readOnly="true"], #lineE96[readOnly="true"], #lineE97[readOnly="true"], #lineE98[readOnly="true"], #lineE99[readOnly="true"], #lineE100[readOnly="true"], #lineE101[readOnly="true"], #lineE102[readOnly="true"], #lineE103[readOnly="true"], #lineE104[readOnly="true"], #lineE105[readOnly="true"], #lineE106[readOnly="true"], #lineE107[readOnly="true"], #lineE108[readOnly="true"], #lineE109[readOnly="true"], #lineE110[readOnly="true"], #lineE111[readOnly="true"], #lineE112[readOnly="true"], #lineE113[readOnly="true"], #lineE114[readOnly="true"], #lineE115[readOnly="true"], #lineE116[readOnly="true"], #lineE117[readOnly="true"], #lineE118[readOnly="true"], #lineE119[readOnly="true"], #lineE120[readOnly="true"], #lineE121[readOnly="true"], #lineE122[readOnly="true"], #lineE123[readOnly="true"], #lineE124[readOnly="true"], #lineE125[readOnly="true"], #lineE126[readOnly="true"], #lineE127[readOnly="true"], #lineE128[readOnly="true"], #lineE129[readOnly="true"], #lineE130[readOnly="true"], #lineE131[readOnly="true"], #lineE132[readOnly="true"], #lineE133[readOnly="true"], #lineE134[readOnly="true"], #lineE135[readOnly="true"], #lineE136[readOnly="true"], #lineE137[readOnly="true"], #lineE138[readOnly="true"], #lineE139[readOnly="true"], #lineE140[readOnly="true"], #lineE141[readOnly="true"], #lineE142[readOnly="true"], #lineE143[readOnly="true"], #lineE144[readOnly="true"], #lineE145[readOnly="true"], #lineE146[readOnly="true"], #lineE147[readOnly="true"], #lineE148[readOnly="true"], #lineE149[readOnly="true"]{
+#lineE0[readOnly="true"], #lineE1[readOnly="true"], #lineE2[readOnly="true"], #lineE3[readOnly="true"], #lineE4[readOnly="true"], #lineE5[readOnly="true"], #lineE6[readOnly="true"], #lineE7[readOnly="true"], #lineE8[readOnly="true"], #lineE9[readOnly="true"], #lineE10[readOnly="true"], #lineE11[readOnly="true"], #lineE12[readOnly="true"], #lineE13[readOnly="true"], #lineE14[readOnly="true"], #lineE15[readOnly="true"], #lineE16[readOnly="true"], #lineE17[readOnly="true"], #lineE18[readOnly="true"], #lineE19[readOnly="true"], #lineE20[readOnly="true"], #lineE21[readOnly="true"], #lineE22[readOnly="true"], #lineE23[readOnly="true"], #lineE24[readOnly="true"], #lineE25[readOnly="true"], #lineE26[readOnly="true"], #lineE27[readOnly="true"], #lineE28[readOnly="true"], #lineE29[readOnly="true"], #lineE30[readOnly="true"], #lineE31[readOnly="true"], #lineE32[readOnly="true"], #lineE33[readOnly="true"], #lineE34[readOnly="true"], #lineE35[readOnly="true"], #lineE36[readOnly="true"], #lineE37[readOnly="true"], #lineE38[readOnly="true"], #lineE39[readOnly="true"], #lineE40[readOnly="true"], #lineE41[readOnly="true"], #lineE42[readOnly="true"], #lineE43[readOnly="true"], #lineE44[readOnly="true"], #lineE45[readOnly="true"], #lineE46[readOnly="true"], #lineE47[readOnly="true"], #lineE48[readOnly="true"], #lineE49[readOnly="true"], #lineE50[readOnly="true"], #lineE51[readOnly="true"], #lineE52[readOnly="true"], #lineE53[readOnly="true"], #lineE54[readOnly="true"], #lineE55[readOnly="true"], #lineE56[readOnly="true"], #lineE57[readOnly="true"], #lineE58[readOnly="true"], #lineE59[readOnly="true"], #lineE60[readOnly="true"], #lineE61[readOnly="true"], #lineE62[readOnly="true"], #lineE63[readOnly="true"], #lineE64[readOnly="true"], #lineE65[readOnly="true"], #lineE66[readOnly="true"], #lineE67[readOnly="true"], #lineE68[readOnly="true"], #lineE69[readOnly="true"], #lineE70[readOnly="true"], #lineE71[readOnly="true"], #lineE72[readOnly="true"], #lineE73[readOnly="true"], #lineE74[readOnly="true"], #lineE75[readOnly="true"], #lineE76[readOnly="true"], #lineE77[readOnly="true"], #lineE78[readOnly="true"], #lineE79[readOnly="true"], #lineE80[readOnly="true"], #lineE81[readOnly="true"], #lineE82[readOnly="true"], #lineE83[readOnly="true"], #lineE84[readOnly="true"], #lineE85[readOnly="true"], #lineE86[readOnly="true"], #lineE87[readOnly="true"], #lineE88[readOnly="true"], #lineE89[readOnly="true"], #lineE90[readOnly="true"], #lineE91[readOnly="true"], #lineE92[readOnly="true"], #lineE93[readOnly="true"], #lineE94[readOnly="true"], #lineE95[readOnly="true"], #lineE96[readOnly="true"], #lineE97[readOnly="true"], #lineE98[readOnly="true"], #lineE99[readOnly="true"], #lineE100[readOnly="true"], #lineE101[readOnly="true"], #lineE102[readOnly="true"], #lineE103[readOnly="true"], #lineE104[readOnly="true"], #lineE105[readOnly="true"], #lineE106[readOnly="true"], #lineE107[readOnly="true"], #lineE108[readOnly="true"], #lineE109[readOnly="true"], #lineE110[readOnly="true"], #lineE111[readOnly="true"], #lineE112[readOnly="true"], #lineE113[readOnly="true"], #lineE114[readOnly="true"], #lineE115[readOnly="true"], #lineE116[readOnly="true"], #lineE117[readOnly="true"], #lineE118[readOnly="true"], #lineE119[readOnly="true"], #lineE120[readOnly="true"], #lineE121[readOnly="true"], #lineE122[readOnly="true"], #lineE123[readOnly="true"], #lineE124[readOnly="true"], #lineE125[readOnly="true"], #lineE126[readOnly="true"], #lineE127[readOnly="true"], #lineE128[readOnly="true"], #lineE129[readOnly="true"], #lineE130[readOnly="true"], #lineE131[readOnly="true"], #lineE132[readOnly="true"], #lineE133[readOnly="true"], #lineE134[readOnly="true"], #lineE135[readOnly="true"], #lineE136[readOnly="true"], #lineE137[readOnly="true"], #lineE138[readOnly="true"], #lineE139[readOnly="true"], #lineE140[readOnly="true"], #lineE141[readOnly="true"], #lineE142[readOnly="true"], #lineE143[readOnly="true"], #lineE144[readOnly="true"], #lineE145[readOnly="true"], #lineE146[readOnly="true"], #lineE147[readOnly="true"], #lineE148[readOnly="true"], #lineE149[readOnly="true"]{
     border-style: inset;
     border-color: silver;
     background-color: whitesmoke;
@@ -241,7 +241,7 @@
 ***********************************/
 
 /*Configuración del estilo por defecto de todos los comboBox*/
-#cbox0, #cbox1, #cbox2, #cbox3, #cbox4, #cbox5, #cbox6, #cbox7, #cbox8, #cbox9, #cbox10, #cbox11, #cbox12, #cbox13, #cbox14, #cbox15, #cbox16, #cbox17, #cbox18, #cbox19, #cbox20{
+#cbox0, #cbox1, #cbox2, #cbox3, #cbox4, #cbox5, #cbox6, #cbox7, #cbox8, #cbox9, #cbox10, #cbox11, #cbox12, #cbox13, #cbox14, #cbox15, #cbox16, #cbox17, #cbox18, #cbox19, #cbox20, #cbox21, #cbox22, #cbox23, #cbox24, #cbox25, #cbox26, #cbox27, #cbox28, #cbox29{
     color: black;
     border: 1px solid dimgray;
     border-radius: 3px;
@@ -250,13 +250,13 @@
 }
 
 /*Configuración del estilo de todos los comboBox cuando estan en uso*/
-#cbox0::on, #cbox1::on, #cbox2::on, #cbox3::on, #cbox4::on, #cbox5::on, #cbox6::on, #cbox7::on, #cbox8::on, #cbox9::on, #cbox10::on, #cbox11::on, #cbox12::on, #cbox13::on, #cbox14::on, #cbox15::on, #cbox16::on, #cbox17::on, #cbox18::on, #cbox19::on, #cbox20::on{
+#cbox0::on, #cbox1::on, #cbox2::on, #cbox3::on, #cbox4::on, #cbox5::on, #cbox6::on, #cbox7::on, #cbox8::on, #cbox9::on, #cbox10::on, #cbox11::on, #cbox12::on, #cbox13::on, #cbox14::on, #cbox15::on, #cbox16::on, #cbox17::on, #cbox18::on, #cbox19::on, #cbox20::on, #cbox21::on, #cbox22::on, #cbox23::on, #cbox24::on, #cbox25::on, #cbox26::on, #cbox27::on, #cbox28::on, #cbox29::on{
     padding-top: 10px;
     padding-left: 4px;
 }
 
 /*Configuración del estilo de todos los comboBox cuando se despliegan*/
-#cbox0::drop-down, #cbox1::drop-down, #cbox2::drop-down, #cbox3::drop-down, #cbox4::drop-down, #cbox5::drop-down, #cbox6::drop-down, #cbox7::drop-down, #cbox8::drop-down, #cbox9::drop-down, #cbox10::drop-down, #cbox11::drop-down, #cbox12::drop-down, #cbox13::drop-down, #cbox14::drop-down, #cbox15::drop-down, #cbox16::drop-down, #cbox17::drop-down, #cbox18::drop-down, #cbox19::drop-down, #cbox20::drop-down{
+#cbox0::drop-down, #cbox1::drop-down, #cbox2::drop-down, #cbox3::drop-down, #cbox4::drop-down, #cbox5::drop-down, #cbox6::drop-down, #cbox7::drop-down, #cbox8::drop-down, #cbox9::drop-down, #cbox10::drop-down, #cbox11::drop-down, #cbox12::drop-down, #cbox13::drop-down, #cbox14::drop-down, #cbox15::drop-down, #cbox16::drop-down, #cbox17::drop-down, #cbox18::drop-down, #cbox19::drop-down, #cbox20::drop-down, #cbox21::drop-down, #cbox22::drop-down, #cbox23::drop-down, #cbox24::drop-down, #cbox25::drop-down, #cbox26::drop-down, #cbox27::drop-down, #cbox28::drop-down, #cbox29::drop-down{
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 15px;
@@ -268,12 +268,12 @@
 }
 
 /*Configuración del estilo de la flecha de todos los comboBox*/
-#cbox0::down-arrow, #cbox1::down-arrow, #cbox2::down-arrow, #cbox3::down-arrow, #cbox4::down-arrow, #cbox5::down-arrow, #cbox6::down-arrow, #cbox7::down-arrow, #cbox8::down-arrow, #cbox9::down-arrow, #cbox10::down-arrow, #cbox11::down-arrow, #cbox12::down-arrow, #cbox13::down-arrow, #cbox14::down-arrow, #cbox15::down-arrow, #cbox16::down-arrow, #cbox17::down-arrow, #cbox18::down-arrow, #cbox19::down-arrow, #cbox20::down-arrow{
-    image: url(:/arrows/down_arrow);
+#cbox0::down-arrow, #cbox1::down-arrow, #cbox2::down-arrow, #cbox3::down-arrow, #cbox4::down-arrow, #cbox5::down-arrow, #cbox6::down-arrow, #cbox7::down-arrow, #cbox8::down-arrow, #cbox9::down-arrow, #cbox10::down-arrow, #cbox11::down-arrow, #cbox12::down-arrow, #cbox13::down-arrow, #cbox14::down-arrow, #cbox15::down-arrow, #cbox16::down-arrow, #cbox17::down-arrow, #cbox18::down-arrow, #cbox19::down-arrow, #cbox20::down-arrow, #cbox21::down-arrow, #cbox22::down-arrow, #cbox23::down-arrow, #cbox24::down-arrow, #cbox25::down-arrow, #cbox26::down-arrow, #cbox27::down-arrow, #cbox28::down-arrow, #cbox29::down-arrow{
+    image: url(:/arrows/down);
 }
 
 /*Configuración del estilo de la flecha de todos los comboBox cuando se despliegan*/
-#cbox0::drop-arrow::on, #cbox1::drop-arrow::on, #cbox2::drop-arrow::on, #cbox3::drop-arrow::on, #cbox4::drop-arrow::on, #cbox5::drop-arrow::on, #cbox6::drop-arrow::on, #cbox7::drop-arrow::on, #cbox8::drop-arrow::on, #cbox9::drop-arrow::on, #cbox10::drop-arrow::on, #cbox11::drop-arrow::on, #cbox12::drop-arrow::on, #cbox13::drop-arrow::on, #cbox14::drop-arrow::on, #cbox15::drop-arrow::on, #cbox16::drop-arrow::on, #cbox17::drop-arrow::on, #cbox18::drop-arrow::on, #cbox19::drop-arrow::on, #cbox20::drop-arrow::on{
+#cbox0::drop-arrow::on, #cbox1::drop-arrow::on, #cbox2::drop-arrow::on, #cbox3::drop-arrow::on, #cbox4::drop-arrow::on, #cbox5::drop-arrow::on, #cbox6::drop-arrow::on, #cbox7::drop-arrow::on, #cbox8::drop-arrow::on, #cbox9::drop-arrow::on, #cbox10::drop-arrow::on, #cbox11::drop-arrow::on, #cbox12::drop-arrow::on, #cbox13::drop-arrow::on, #cbox14::drop-arrow::on, #cbox15::drop-arrow::on, #cbox16::drop-arrow::on, #cbox17::drop-arrow::on, #cbox18::drop-arrow::on, #cbox19::drop-arrow::on, #cbox20::drop-arrow::on, #cbox21::drop-arrow::on, #cbox22::drop-arrow::on, #cbox23::drop-arrow::on, #cbox24::drop-arrow::on, #cbox25::drop-arrow::on, #cbox26::drop-arrow::on, #cbox27::drop-arrow::on, #cbox28::drop-arrow::on, #cbox29::drop-arrow::on{
     top: 1px;
     left: 1px;
 }
@@ -281,7 +281,7 @@
 
 
 /*Configuración del estilo del menu desplegado de todos los comboBox*/
-#cbox0 QAbstractItemView, #cbox1 QAbstractItemView, #cbox2 QAbstractItemView, #cbox3 QAbstractItemView, #cbox4 QAbstractItemView, #cbox5 QAbstractItemView, #cbox6 QAbstractItemView, #cbox7 QAbstractItemView, #cbox8 QAbstractItemView, #cbox9 QAbstractItemView, #cbox10 QAbstractItemView, #cbox11 QAbstractItemView, #cbox12 QAbstractItemView, #cbox13 QAbstractItemView, #cbox14 QAbstractItemView, #cbox15 QAbstractItemView, #cbox16 QAbstractItemView, #cbox17 QAbstractItemView, #cbox18 QAbstractItemView, #cbox19 QAbstractItemView, #cbox20 QAbstractItemView{
+#cbox0 QAbstractItemView, #cbox1 QAbstractItemView, #cbox2 QAbstractItemView, #cbox3 QAbstractItemView, #cbox4 QAbstractItemView, #cbox5 QAbstractItemView, #cbox6 QAbstractItemView, #cbox7 QAbstractItemView, #cbox8 QAbstractItemView, #cbox9 QAbstractItemView, #cbox10 QAbstractItemView, #cbox11 QAbstractItemView, #cbox12 QAbstractItemView, #cbox13 QAbstractItemView, #cbox14 QAbstractItemView, #cbox15 QAbstractItemView, #cbox16 QAbstractItemView, #cbox17 QAbstractItemView, #cbox18 QAbstractItemView, #cbox19 QAbstractItemView, #cbox20 QAbstractItemView, #cbox21 QAbstractItemView, #cbox22 QAbstractItemView, #cbox23 QAbstractItemView, #cbox24 QAbstractItemView, #cbox25 QAbstractItemView, #cbox26 QAbstractItemView, #cbox27 QAbstractItemView, #cbox28 QAbstractItemView, #cbox29 QAbstractItemView{
     border: 1px solid dimgray;
     border-radius: 3px;
     padding: 1px 6px 1px 1px;
@@ -312,7 +312,7 @@
 
 /*Configuración del estilo por defecto de la flecha de todos los DataTimeEdit*/
 #dtE0::down-arrow, #dtE1::down-arrow{
-    image: url(:/arrows/down_arrow);
+    image: url(:/arrows/down);
     border-color: transparent;
 }
 
@@ -438,4 +438,45 @@
 /*Imágen al presionar el indicador marcado*/
 #rbutton0::indicator::checked:pressed, #rbutton1::indicator::checked:pressed, #rbutton2::indicator::checked:pressed, #rbutton3::indicator::checked:pressed, #rbutton4::indicator::checked:pressed, #rbutton5::indicator::checked:pressed, #rbutton6::indicator::checked:pressed, #rbutton7::indicator::checked:pressed, #rbutton8::indicator::checked:pressed, #rbutton9::indicator::checked:pressed, #rbutton10::indicator::checked:pressed, #rbutton11::indicator::checked:pressed, #rbutton12::indicator::checked:pressed, #rbutton13::indicator::checked:pressed, #rbutton14::indicator::checked:pressed, #rbutton15::indicator::checked:pressed, #rbutton16::indicator::checked:pressed, #rbutton17::indicator::checked:pressed, #rbutton18::indicator::checked:pressed, #rbutton19::indicator::checked:pressed, #rbutton20::indicator::checked:pressed{
     image: url(:rbutton/checked-focus);
+}
+
+/***********************************
+* Custom SpinBox
+***********************************/
+
+/*Configurar el estilo por defecto de los botones para agregar y quitar*/
+#add0, #substract0{
+    border: 1px solid transparent;
+    border-radius: 3px;
+    min-width: 2em;
+    padding: 2px;
+}
+
+/*Configurar el estilo de los botones para agregar y quitar cuando se pasa por encima de ellos o son presionados*/
+#add0:hover, #add0:pressed, #substract0:hover, #substract0:pressed{
+    background-color: whitesmoke;
+}
+
+/*Configuración del estilo por defecto del line edit*/
+#spinLine0{
+    padding: 2px;
+    text-align: center;
+    border: 1px outset transparent;
+    border-right-color: dimgray;
+    border-left-color: dimgray;
+}
+
+/*Configuración del estilo del line edit en modo de solo lectura*/
+#spinLine0[readOnly="true"]{
+    border-style: inset;
+    border-color: silver;
+    background-color: whitesmoke;
+}
+
+/*Connfiguración del estilo por defecto del QFrame*/
+#spinFrame0{
+    background-color: white;
+    border: 1px outset dimgray;
+    border-radius: 3px;
+    padding: -9px;
 }

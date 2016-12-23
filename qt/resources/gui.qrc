@@ -7,7 +7,12 @@
     <file alias="top_arrow">../images/top_arrow.png</file>
     <file alias="prev_arrow">../images/prev_arrow.png</file>
     <file alias="next_arrow">../images/next_arrow.png</file>
-    <file alias="down_arrow">../images/down_arrow.png</file>
+    <file alias="down">../images/down_arrow.png</file>
+    <file alias="up">../images/up_arrow.png</file>
+  </qresource>
+  <qresource prefix="spinBox">
+    <file alias="add">../images/add.png</file>
+    <file alias="substract">../images/substract.png</file>
   </qresource>
   <qresource prefix="rbutton">
     <file alias="checked-focus">../images/rbutton-checked-focus.png</file>
