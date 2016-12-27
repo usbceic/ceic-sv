@@ -9,7 +9,7 @@
 ### Como configurar y correr la aplicación ###
 
 * Esta aplicación trabaja con Python, Qt y PostgreSQL
-* Para correr la aplicación mediante la consola correr el comando *python system.py*
+* Para correr la aplicación mediante la consola utilizar el comando *python ceicsv.py*
 
 ## Requisitos ##
 * Sistemas operativos soportados: 
