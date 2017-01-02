@@ -2,7 +2,6 @@
 -- Hecho por Christian Oliveros
 
 -- Funcion de Checkeo al hacer login (db_user)
-DROP TYPE IF EXISTS check_password_type;
 
 CREATE TYPE check_password_type
 AS (
