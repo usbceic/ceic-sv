@@ -119,6 +119,7 @@ CREATE TABLE client (
 	lastname TEXT NOT NULL,
 	phone TEXT DEFAULT NULL,
 	debt_permission BOOLEAN NOT NULL DEFAULT false,
+	book_permission BOOLEAN NOT NULL DEFAULT true,
 	blocked BOOLEAN NOT NULL DEFAULT false,
 	balance NUMERIC NOT NULL DEFAULT 0
 	        CONSTRAINT exp_client_valid_balance
@@ -267,7 +268,9 @@ CREATE TABLE reverse_service_list (
 
 -- Tabla de transferencias
 CREATE TABLE transfer (
-	id UUID NOT NULL DEFAULT uuid_generate_v4(),
+	id UUID DEFAULT uuid_generate_v4()
+	   CONSTRAINT pk_transfer
+	   PRIMARY KEY,
 	ci INTEGER NOT NULL
 	   CONSTRAINT fk_transfer_client
 	   REFERENCES client (ci),
@@ -283,9 +286,11 @@ CREATE TABLE transfer (
     description TEXT NOT NULL
 );
 
--- Tabla de Registro de Operaciones
+-- Tabla de Registro de Operaciones de Caja
 CREATE TABLE operation_log (
-	id UUID NOT NULL DEFAULT uuid_generate_v4(),
+	id UUID DEFAULT uuid_generate_v4()
+	   CONSTRAINT pk_operation_log
+	   PRIMARY KEY,
 	clerk TEXT NOT NULL
 	      CONSTRAINT fk_operation_log_db_user
 	      REFERENCES db_user (username),
@@ -308,4 +313,117 @@ CREATE TABLE operation_log (
 	cash_total NUMERIC NOT NULL,
 	-- Dinero desde el comienzo de trimestre
 	total_money NUMERIC NOT NULL
+);
+
+
+-- Tabla de lenguajes validos
+CREATE TABLE valid_language (
+	lang_name TEXT 
+	          CONSTRAINT pk_valid_language
+	          PRIMARY KEY
+);
+
+-- Tabla de Libros
+CREATE TABLE book (
+	id UUID DEFAULT uuid_generate_v4()
+	   CONSTRAINT pk_book
+	   PRIMARY KEY,
+	title TEXT NOT NULL,
+	isbn TEXT DEFAULT NULL
+	     CONSTRAINT ak_book
+	     UNIQUE,
+	edition INTEGER NOT NULL DEFAULT 1
+	        CONSTRAINT exp_book_valid_edition
+	        CHECK (edition > 0),
+	book_year DATE NOT NULL,
+	lang TEXT NOT NULL
+	     CONSTRAINT fk_book_valid_language
+	     REFERENCES valid_language (lang_name),
+	quantity INTEGER NOT NULL DEFAULT 1
+	         CONSTRAINT exp_book_valid_quantity
+	         CHECK (quantity > 0),
+	quantity_lent INTEGER NOT NULL DEFAULT 0
+	              CONSTRAINT exp_book_valid_quantity_lent
+	              CHECK (quantity_lent >= 0)
+);
+
+-- Tabla de Asignaturas
+CREATE TABLE subject (
+	subject_code TEXT
+	             CONSTRAINT pk_subject
+	             PRIMARY KEY,
+	subject_name TEXT NOT NULL
+);
+
+-- Tabla de Autores
+CREATE TABLE author (
+	firstname TEXT NOT NULL,
+	lastname TEXT NOT NULL,
+	middlename TEXT DEFAULT NULL,
+	second_lastname TEXT DEFAULT NULL,
+	birthdate DATE DEFAULT NULL,
+	nationality TEXT DEFAULT NULl,
+	CONSTRAINT pk_author
+	PRIMARY KEY (firstname, lastname, middlename, second_lastname, birthdate, nationality)
+);
+
+-- Tabla que asocia libros con asignaturas
+CREATE TABLE associated_with (
+	book_id UUID NOT NULL
+	        CONSTRAINT fk_associated_with_book
+	        REFERENCES book (id),
+	subject_code TEXT NOT NULL
+	             CONSTRAINT fk_associated_with_subject
+	             REFERENCES subject (subject_code)
+	             ON UPDATE CASCADE,
+	CONSTRAINT pk_associated_with
+	PRIMARY KEY (book_id, subject_code)
+);
+
+
+-- Tabla de Quien escribio el libro
+CREATE TABLE written_by (
+	book_id UUID NOT NULL
+	        CONSTRAINT fk_written_by_book
+	        REFERENCES book (id),
+	firstname TEXT NOT NULL,
+	lastname TEXT NOT NULL,
+	middlename TEXT DEFAULT NULL,
+	second_lastname TEXT DEFAULT NULL,
+	birthdate DATE DEFAULT NULL,
+	nationality TEXT DEFAULT NULl,
+	CONSTRAINT fk_written_by_author
+	FOREIGN KEY (firstname, lastname, middlename, second_lastname, birthdate, nationality)
+	REFERENCES author (firstname, lastname, middlename, second_lastname, birthdate, nationality),
+	CONSTRAINT pk_written_by
+	PRIMARY KEY (book_id, firstname, lastname, middlename, second_lastname, birthdate, nationality)
+);
+
+
+CREATE TABLE lent_to (
+	book_id UUID NOT NULL
+	        CONSTRAINT fk_lent_to_book
+	        REFERENCES book (id),
+	ci INTEGER NOT NULL
+	   CONSTRAINT fk_lent_to_client
+	   REFERENCES client (ci),
+	lender_clerk TEXT NOT NULL
+	      CONSTRAINT fk_lent_to_db_user_lender
+	      REFERENCES db_user (username),
+	-- Condiciones del Libro principalmente
+	start_description TEXT NOT NULL,
+	start_time TIMESTAMP NOT NULL DEFAULT NOW(),
+	estimated_return_time TIMESTAMP NOT NULL
+	                      CONSTRAINT exp_lent_to_valid_estimated_return_time
+	                      CHECK (start_time <= estimated_return_time),
+	receiver_clerk TEXT DEFAULT NULL
+	      CONSTRAINT fk_lent_to_db_user_receiver
+	      REFERENCES db_user (username),
+	return_time TIMESTAMP DEFAULT NULL
+	            CONSTRAINT exp_lent_to_valid_return_time
+	            CHECK ((receiver_clerk IS NULL AND return_time IS NULL) OR (receiver_clerk IS NOT NULL AND return_time IS NOT NULL AND start_time <= return_time)),
+	-- Condiciones del Libro principalmente
+	return_description TEXT DEFAULT NULL
+	                   CONSTRAINT exp_lent_to_valid_return_description
+	                   CHECK ((receiver_clerk IS NULL AND return_description IS NULL) OR (receiver_clerk IS NOT NULL AND return_description IS NOT NULL))
 );

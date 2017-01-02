@@ -554,4 +554,4 @@ BEFORE INSERT OR UPDATE ON service_list
 FOR EACH ROW EXECUTE PROCEDURE service_list_integrity();
 
 
--- TODO hacer trigger de reverse_list y de transfer. Trigger de integridad de operation_log
+-- TODO hacer trigger de reverse_list y de transfer. Trigger de integridad de operation_log. Trigger de revisar si es posible prestar libro a cliente

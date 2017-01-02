@@ -1,11 +1,6 @@
 -- Base de Datos del Sistema de Ventas del CEIC
 -- Hecho por Christian Oliveros
 
-
--- Quitar funciones
-DROP FUNCTION IF EXISTS check_password(TEXT, TEXT);
-
-
 -- Quitar triggers si existian
 DROP TRIGGER IF EXISTS service_list_integrity ON service_list;
 
@@ -26,7 +21,25 @@ DROP TRIGGER IF EXISTS lot_new_insert ON lot;
 DROP TRIGGER IF EXISTS client_integrity ON client;
 
 
+-- Quitar funciones
+DROP FUNCTION IF EXISTS check_password(TEXT, TEXT);
+
+
 -- Quitar tablas si existian
+DROP TABLE IF EXISTS lent_to;
+
+DROP TABLE IF EXISTS written_by;
+
+DROP TABLE IF EXISTS associated_with;
+
+DROP TABLE IF EXISTS author;
+
+DROP TABLE IF EXISTS subject;
+
+DROP TABLE IF EXISTS book;
+
+DROP TABLE IF EXISTS valid_language;
+
 DROP TABLE IF EXISTS operation_log;
 
 DROP TABLE IF EXISTS transfer;
