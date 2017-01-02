@@ -9,8 +9,8 @@ CREATE TABLE db_user (
 	username TEXT 
 	         CONSTRAINT pk_db_user
 	         PRIMARY KEY,
-    password TEXT NOT NULL,
-    name TEXT NOT NULL,
+    user_password TEXT NOT NULL,
+    firstname TEXT NOT NULL,
     lastname TEXT NOT NULL,
     email TEXT NOT NULL,
     permission_mask INTEGER NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE db_user (
 
 -- Tabla de proveedores
 CREATE TABLE provider (
-	name TEXT NOT NULL
+	provider_name TEXT NOT NULL
 	     CONSTRAINT pk_provider
 	     PRIMARY KEY,
 	phone TEXT,
@@ -38,7 +38,7 @@ CREATE TABLE product (
 	id UUID DEFAULT uuid_generate_v4() 
 	   CONSTRAINT pk_product
 	   PRIMARY KEY,
-	name TEXT NOT NULL,
+	product_name TEXT NOT NULL,
 	price NUMERIC NOT NULL
 	      CONSTRAINT exp_product_valid_price
 	      CHECK (price >= 0),
@@ -66,7 +66,7 @@ CREATE TABLE lot (
 	PRIMARY KEY (id, product_id),
     provider_id TEXT NOT NULL
              CONSTRAINT fk_lot_provider
-             REFERENCES provider (name)
+             REFERENCES provider (provider_name)
              ON UPDATE CASCADE,
     received_by TEXT NOT NULL
                 CONSTRAINT fk_lot_db_user
@@ -97,7 +97,7 @@ CREATE TABLE service (
 	id UUID DEFAULT uuid_generate_v4() 
 	   CONSTRAINT pk_service
 	   PRIMARY KEY,
-	name TEXT NOT NULL,
+	service_name TEXT NOT NULL,
 	price NUMERIC NOT NULL
 	      CONSTRAINT exp_service_valid_price
 	      CHECK (price >= 0),
@@ -115,7 +115,7 @@ CREATE TABLE client (
 	carnet TEXT DEFAULT NULL
 	       CONSTRAINT ak_client
 	       UNIQUE,
-	name TEXT NOT NULL,
+	firstname TEXT NOT NULL,
 	lastname TEXT NOT NULL,
 	phone TEXT DEFAULT NULL,
 	debt_permission BOOLEAN NOT NULL DEFAULT false,
@@ -135,8 +135,8 @@ CREATE TABLE purchase (
 	   CONSTRAINT fk_purchase_client
 	   REFERENCES client (ci),
 	clerk TEXT NOT NULL
-	            CONSTRAINT fk_purchase_db_user
-	            REFERENCES db_user (username),
+	      CONSTRAINT fk_purchase_db_user
+	      REFERENCES db_user (username),
 	total NUMERIC NOT NULL DEFAULT 0
 	      CONSTRAINT exp_purchase_valid_total
 	      CHECK (total >= 0),
@@ -230,6 +230,10 @@ CREATE TABLE reverse_product_list (
 	REFERENCES  product_list(product_id, purchase_id),
 	CONSTRAINT pk_reverse_product_list
 	PRIMARY KEY (product_id, purchase_id),
+	clerk TEXT NOT NULL
+	      CONSTRAINT fk_reverse_product_list_db_user
+	      REFERENCES db_user (username),
+	reverse_date TIMESTAMP NOT NULL DEFAULT NOW(),
 	-- Cantidad del producto que fue retornada. Para calculos de dinero devuelto
 	amount INTEGER NOT NULL
            CONSTRAINT exp_product_list_valid_amount
@@ -246,9 +250,31 @@ CREATE TABLE reverse_service_list (
 	REFERENCES  service_list(service_id, purchase_id),
 	CONSTRAINT pk_reverse_service_list
 	PRIMARY KEY (service_id, purchase_id),
+	clerk TEXT NOT NULL
+	      CONSTRAINT fk_reverse_service_list_db_user
+	      REFERENCES db_user (username),
+	reverse_date TIMESTAMP NOT NULL DEFAULT NOW(),
 	-- Cantidad del servicio que fue retornada. Para calculos de dinero devuelto
 	amount INTEGER NOT NULL
            CONSTRAINT exp_reverse_service_list_valid_amount
            CHECK (amount > 0),
+    description TEXT NOT NULL
+);
+
+-- Tabla de transferencias
+CREATE TABLE transfer (
+	id UUID NOT NULL DEFAULT uuid_generate_v4(),
+	ci INTEGER NOT NULL
+	   CONSTRAINT fk_transfer_client
+	   REFERENCES client (ci),
+	clerk TEXT NOT NULL
+	      CONSTRAINT fk_transfer_db_user
+	      REFERENCES db_user (username),
+	transfer_date TIMESTAMP NOT NULL DEFAULT NOW(),
+	amount INTEGER NOT NULL
+           CONSTRAINT exp_transfer_valid_amount
+           CHECK (amount > 0),
+    bank TEXT NOT NULL,
+    confirmation_code TEXT NOT NULL,
     description TEXT NOT NULL
 );

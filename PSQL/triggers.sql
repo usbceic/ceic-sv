@@ -20,7 +20,7 @@ BEGIN
                        current_timestamp, 
                        current_user, 
                        OLD.username, 
-                       OLD.name || ' ' || OLD.lastname;
+                       OLD.firstname || ' ' || OLD.lastname;
          NEW.creation_date := OLD.creation_date;
       END IF;
       -- Modificacion invalida de last_login
@@ -29,7 +29,7 @@ BEGIN
                        current_timestamp, 
                        current_user, 
                        OLD.username, 
-                       OLD.name || ' ' || OLD.lastname;
+                       OLD.firstname || ' ' || OLD.lastname;
          NEW.last_login := OLD.last_login;
       END IF;
       RETURN NEW;
@@ -249,7 +249,7 @@ BEGIN
          RAISE EXCEPTION '[%] - El usuario "%" ha intendado el balance del cliente: %. Pero ya no se puede endeudar mas', 
                        current_timestamp, 
                        current_user, 
-                       OLD.name || ' ' || OLD.lastname;
+                       OLD.firstname || ' ' || OLD.lastname;
          RETURN NULL;
       END IF;
       RETURN NEW;
@@ -552,3 +552,6 @@ LANGUAGE plpgsql;
 CREATE TRIGGER service_list_integrity
 BEFORE INSERT OR UPDATE ON service_list
 FOR EACH ROW EXECUTE PROCEDURE service_list_integrity();
+
+
+-- TODO hacer trigger de reverse_list y de transfer
