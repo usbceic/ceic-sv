@@ -387,6 +387,8 @@ END;
 $purchase_payed_validation$  
 LANGUAGE plpgsql;
 
+-- TODO terminar y arreglar esto
+
 
 -- Tabla de pagos de orden de compra (checkout)
 -- Trigger de evitar modificaciones ilegales a checkout y si es pagable contra el balance
@@ -452,6 +454,8 @@ BEGIN
 END;
 $checkout_integrity$  
 LANGUAGE plpgsql;
+
+-- TODO terminar y arreglar esto
 
 CREATE TRIGGER checkout_integrity
 BEFORE INSERT OR UPDATE ON checkout
