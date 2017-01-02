@@ -142,7 +142,7 @@ CREATE TABLE purchase (
 	      CHECK (total >= 0),
 	-- Calculo del interes es el siguiente TotalPagar = total * (1 + interest)
 	interest NUMERIC NOT NULL DEFAULT 0
-	         CONSTRAINT exp_purchase_valid_total
+	         CONSTRAINT exp_purchase_interest
 	         CHECK (interest >= 0),
 	purchase_date TIMESTAMP NOT NULL DEFAULT NOW(),
 	locked BOOLEAN NOT NULL DEFAULT false,
@@ -173,7 +173,7 @@ CREATE TABLE checkout (
 	       CONSTRAINT exp_checkout_valid_amount
 	       CHECK (amount > 0),
 	with_balance BOOLEAN NOT NULL DEFAULT false,
-	description TEXT NOT NULL -- Aqui va si fue con tarjeta de credito o efectivo, etc,
+	description TEXT NOT NULL, -- Aqui va si fue con tarjeta de credito o efectivo, etc,
 	payed BOOLEAN NOT NULL DEFAULT false
 );
 
@@ -228,7 +228,7 @@ CREATE TABLE reverse_product_list (
 	CONSTRAINT fk_reverse_product_list_service_list
 	FOREIGN KEY (product_id, purchase_id)
 	REFERENCES  product_list(product_id, purchase_id),
-	CONSTRAINT pk_product_list
+	CONSTRAINT pk_reverse_product_list
 	PRIMARY KEY (product_id, purchase_id),
 	-- Cantidad del producto que fue retornada. Para calculos de dinero devuelto
 	amount INTEGER NOT NULL
