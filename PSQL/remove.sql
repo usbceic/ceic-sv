@@ -5,6 +5,7 @@
 -- Quitar funciones
 DROP FUNCTION IF EXISTS check_password(TEXT, TEXT);
 
+
 -- Quitar triggers si existian
 DROP TRIGGER IF EXISTS service_list_integrity ON service_list;
 
@@ -24,7 +25,10 @@ DROP TRIGGER IF EXISTS lot_new_insert ON lot;
 
 DROP TRIGGER IF EXISTS client_integrity ON client;
 
+
 -- Quitar tablas si existian
+DROP TABLE IF EXISTS operation_log;
+
 DROP TABLE IF EXISTS transfer;
 
 DROP TABLE IF EXISTS reverse_service_list;
@@ -53,5 +57,8 @@ DROP TABLE IF EXISTS db_user;
 
 
 -- Quitar types
-
 DROP TYPE IF EXISTS check_password_type;
+
+
+-- Quitar extensiones
+DROP EXTENSION IF EXISTS "uuid-ossp";

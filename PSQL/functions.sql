@@ -22,3 +22,8 @@ $check_password$
     RETURNING firstname, lastname, email, permission_mask, profile, description;
 $check_password$  
 LANGUAGE SQL;
+
+-- TODO hacer trigger de devoluciones por saldo (No cash)
+-- TODO hacer funcion de actualizacion de cierre de turno/dia/trimestre que calcule todo 
+-- (Contar entradas cash en checkout y entrada de dinero por transferencia. No contar como entrada checkout pagados con saldo)
+-- (Contar salidas de dinero por devoluciones pagadas con cash)

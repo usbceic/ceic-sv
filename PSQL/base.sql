@@ -238,6 +238,8 @@ CREATE TABLE reverse_product_list (
 	amount INTEGER NOT NULL
            CONSTRAINT exp_product_list_valid_amount
            CHECK (amount > 0),
+    -- Si el dinero devuelo fue en efectivo de caja
+    cash BOOLEAN DEFAULT true,
     description TEXT NOT NULL	
 );
 
@@ -258,6 +260,8 @@ CREATE TABLE reverse_service_list (
 	amount INTEGER NOT NULL
            CONSTRAINT exp_reverse_service_list_valid_amount
            CHECK (amount > 0),
+    -- Si el dinero devuelo fue en efectivo de caja
+    cash BOOLEAN DEFAULT true,
     description TEXT NOT NULL
 );
 
@@ -277,4 +281,31 @@ CREATE TABLE transfer (
     bank TEXT NOT NULL,
     confirmation_code TEXT NOT NULL,
     description TEXT NOT NULL
+);
+
+-- Tabla de Registro de Operaciones
+CREATE TABLE operation_log (
+	id UUID NOT NULL DEFAULT uuid_generate_v4(),
+	clerk TEXT NOT NULL
+	      CONSTRAINT fk_operation_log_db_user
+	      REFERENCES db_user (username),
+	-- op_type
+	-- 0 es Apertura/Cierre de trimestre
+	-- 1 es Apertura/Cierre de Dia
+	-- 2 es Apertura/Cierre de Turno de Persona
+	-- 3 es Correcion
+	-- 4 es Retiro/Devolucion de Dinero (Si se tomo de caja marcar de ahi como menos dinero, ademas del balance negativo)
+	op_type INTEGER NOT NULL,
+	open_record BOOLEAN DEFAULT false
+	            CONSTRAINT exp_operation_log_valid_open_record
+	            CHECK (open_record IS NULL OR (op_type = 0 OR op_type = 1 OR op_type = 2)),
+	recorded TIMESTAMP NOT NULL DEFAULT NOW(),
+	-- Movimientos por transferencia / Dinero no en Caja ya contabilizado
+	transfer_balance NUMERIC NOT NULL DEFAULT 0,
+	-- Movimientos en efectivo
+	cash_balance NUMERIC NOT NULL DEFAULT 0,
+	-- Efectivo actual en caja
+	cash_total NUMERIC NOT NULL,
+	-- Dinero desde el comienzo de trimestre
+	total_money NUMERIC NOT NULL
 );
