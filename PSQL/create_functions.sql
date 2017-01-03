@@ -59,6 +59,16 @@ END;
 $get_users_info$  
 LANGUAGE plpgsql;
 
+-- Funcion ver la informacion de un usuario dado su username (db_user)
+CREATE OR REPLACE FUNCTION get_user_info(uname TEXT)
+RETURNS SETOF user_info_type AS 
+$get_user_info$
+    SELECT username, firstname, lastname, email, permission_mask, profile, description, creation_date, last_login
+    FROM db_user
+    WHERE username = $1;
+$get_user_info$  
+LANGUAGE SQL;
+
 -- TODO hacer trigger de devoluciones por saldo (No cash)
 -- TODO hacer funcion de actualizacion de cierre de turno/dia/trimestre que calcule todo 
 -- (Contar entradas cash en checkout y entrada de dinero por transferencia. No contar como entrada checkout pagados con saldo)

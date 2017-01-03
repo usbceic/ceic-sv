@@ -2,6 +2,8 @@
 -- Hecho por Christian Oliveros
 
 -- Quitar funciones Generales si existen
+DROP FUNCTION IF EXISTS get_user_info(TEXT);
+
 DROP FUNCTION IF EXISTS get_users_info(BOOLEAN, BOOLEAN);
 
 DROP FUNCTION IF EXISTS lost_password(TEXT, TEXT);
