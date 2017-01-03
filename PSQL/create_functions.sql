@@ -21,6 +21,17 @@ $check_password$
 $check_password$  
 LANGUAGE SQL;
 
+-- Funcion para cambiar la contrasena de usuario y devolver su email (db_user)
+CREATE OR REPLACE FUNCTION lost_password(uname TEXT, pass TEXT)
+RETURNS SETOF TEXT AS 
+$lost_password$
+    UPDATE db_user
+    SET user_password = $2
+    WHERE username = $1
+    RETURNING email;
+$lost_password$  
+LANGUAGE SQL;
+
 -- TODO hacer trigger de devoluciones por saldo (No cash)
 -- TODO hacer funcion de actualizacion de cierre de turno/dia/trimestre que calcule todo 
 -- (Contar entradas cash en checkout y entrada de dinero por transferencia. No contar como entrada checkout pagados con saldo)
