@@ -4,7 +4,7 @@
 
 /*Configurar el color de fondo de la ventana*/
 #centralwidget{
-     background-color: rgb(12, 158, 255);
+     background-color: rgb(8, 204, 23);
 }
 
 /*Configurar estilo por defecto del boton de nombre de usuario*/
@@ -22,7 +22,7 @@
 
 /*Configurar estilo del boton de nombre de usuario cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
 #userBn0:pressed, #userBn0::hover {
-    background-color: rgb(22, 129, 222);
+    background-color: rgb(8, 166, 1);
     border-style: inset;
 }
 
@@ -81,7 +81,7 @@
 ***********************************/
 
 /*Configurar el estilo de los groupBox*/
-#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox5, #groupBox6, #groupBox16, #groupBox17{
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox5, #groupBox6, #groupBox16, #groupBox17, #groupBox23{
    background-color:  rgb(238, 238, 238);
    border: 0px solid dimgray;
    padding: 1px;
@@ -223,7 +223,7 @@
 }
 
 /*Configuración del estilo de todos los line edit en modo de solo lectura*/
-#lineE0[readOnly="false"], #lineE1[readOnly="false"], #lineE2[readOnly="true"], #lineE3[readOnly="true"], #lineE4[readOnly="true"], #lineE5[readOnly="true"], #lineE6[readOnly="true"], #lineE7[readOnly="true"], #lineE8[readOnly="true"], #lineE9[readOnly="true"], #lineE10[readOnly="true"], #lineE11[readOnly="true"], #lineE12[readOnly="true"], #lineE13[readOnly="true"], #lineE14[readOnly="true"], #lineE15[readOnly="true"], #lineE16[readOnly="true"], #lineE17[readOnly="true"], #lineE18[readOnly="true"], #lineE19[readOnly="true"], #lineE20[readOnly="true"], #lineE21[readOnly="true"], #lineE22[readOnly="true"], #lineE23[readOnly="true"], #lineE24[readOnly="true"], #lineE25[readOnly="true"], #lineE26[readOnly="true"], #lineE27[readOnly="true"], #lineE28[readOnly="true"], #lineE29[readOnly="true"], #lineE30[readOnly="true"], #lineE31[readOnly="true"], #lineE32[readOnly="true"], #lineE33[readOnly="true"], #lineE34[readOnly="true"], #lineE35[readOnly="true"], #lineE36[readOnly="true"], #lineE37[readOnly="true"], #lineE38[readOnly="true"], #lineE39[readOnly="true"], #lineE40[readOnly="true"], #lineE41[readOnly="true"], #lineE42[readOnly="true"], #lineE43[readOnly="true"], #lineE44[readOnly="true"], #lineE45[readOnly="true"], #lineE46[readOnly="true"], #lineE47[readOnly="true"], #lineE48[readOnly="true"], #lineE49[readOnly="true"], #lineE50[readOnly="true"], #lineE51[readOnly="true"], #lineE52[readOnly="true"], #lineE53[readOnly="true"], #lineE54[readOnly="true"], #lineE55[readOnly="true"], #lineE56[readOnly="true"], #lineE57[readOnly="true"], #lineE58[readOnly="true"], #lineE59[readOnly="true"], #lineE60[readOnly="true"], #lineE61[readOnly="true"], #lineE62[readOnly="true"], #lineE63[readOnly="true"], #lineE64[readOnly="true"], #lineE65[readOnly="true"], #lineE66[readOnly="true"], #lineE67[readOnly="true"], #lineE68[readOnly="true"], #lineE69[readOnly="true"], #lineE70[readOnly="true"], #lineE71[readOnly="true"], #lineE72[readOnly="true"], #lineE73[readOnly="true"], #lineE74[readOnly="true"], #lineE75[readOnly="true"], #lineE76[readOnly="true"], #lineE77[readOnly="true"], #lineE78[readOnly="true"], #lineE79[readOnly="true"], #lineE80[readOnly="true"], #lineE81[readOnly="true"], #lineE82[readOnly="true"], #lineE83[readOnly="true"], #lineE84[readOnly="true"], #lineE85[readOnly="true"], #lineE86[readOnly="true"], #lineE87[readOnly="true"], #lineE88[readOnly="true"], #lineE89[readOnly="true"], #lineE90[readOnly="true"], #lineE91[readOnly="true"], #lineE92[readOnly="true"], #lineE93[readOnly="true"], #lineE94[readOnly="true"], #lineE95[readOnly="true"], #lineE96[readOnly="true"], #lineE97[readOnly="true"], #lineE98[readOnly="true"], #lineE99[readOnly="true"], #lineE100[readOnly="true"], #lineE101[readOnly="true"], #lineE102[readOnly="true"], #lineE103[readOnly="true"], #lineE104[readOnly="true"], #lineE105[readOnly="true"], #lineE106[readOnly="true"], #lineE107[readOnly="true"], #lineE108[readOnly="true"], #lineE109[readOnly="true"], #lineE110[readOnly="true"], #lineE111[readOnly="true"], #lineE112[readOnly="true"], #lineE113[readOnly="true"], #lineE114[readOnly="true"], #lineE115[readOnly="true"], #lineE116[readOnly="true"], #lineE117[readOnly="true"], #lineE118[readOnly="true"], #lineE119[readOnly="true"], #lineE120[readOnly="true"], #lineE121[readOnly="true"], #lineE122[readOnly="true"], #lineE123[readOnly="true"], #lineE124[readOnly="true"], #lineE125[readOnly="true"], #lineE126[readOnly="true"], #lineE127[readOnly="true"], #lineE128[readOnly="true"], #lineE129[readOnly="true"], #lineE130[readOnly="true"], #lineE131[readOnly="true"], #lineE132[readOnly="true"], #lineE133[readOnly="true"], #lineE134[readOnly="true"], #lineE135[readOnly="true"], #lineE136[readOnly="true"], #lineE137[readOnly="true"], #lineE138[readOnly="true"], #lineE139[readOnly="true"], #lineE140[readOnly="true"], #lineE141[readOnly="true"], #lineE142[readOnly="true"], #lineE143[readOnly="true"], #lineE144[readOnly="true"], #lineE145[readOnly="true"], #lineE146[readOnly="true"], #lineE147[readOnly="true"], #lineE148[readOnly="true"], #lineE149[readOnly="true"]{
+#lineE0[readOnly="true"], #lineE1[readOnly="true"], #lineE2[readOnly="true"], #lineE3[readOnly="true"], #lineE4[readOnly="true"], #lineE5[readOnly="true"], #lineE6[readOnly="true"], #lineE7[readOnly="true"], #lineE8[readOnly="true"], #lineE9[readOnly="true"], #lineE10[readOnly="true"], #lineE11[readOnly="true"], #lineE12[readOnly="true"], #lineE13[readOnly="true"], #lineE14[readOnly="true"], #lineE15[readOnly="true"], #lineE16[readOnly="true"], #lineE17[readOnly="true"], #lineE18[readOnly="true"], #lineE19[readOnly="true"], #lineE20[readOnly="true"], #lineE21[readOnly="true"], #lineE22[readOnly="true"], #lineE23[readOnly="true"], #lineE24[readOnly="true"], #lineE25[readOnly="true"], #lineE26[readOnly="true"], #lineE27[readOnly="true"], #lineE28[readOnly="true"], #lineE29[readOnly="true"], #lineE30[readOnly="true"], #lineE31[readOnly="true"], #lineE32[readOnly="true"], #lineE33[readOnly="true"], #lineE34[readOnly="true"], #lineE35[readOnly="true"], #lineE36[readOnly="true"], #lineE37[readOnly="true"], #lineE38[readOnly="true"], #lineE39[readOnly="true"], #lineE40[readOnly="true"], #lineE41[readOnly="true"], #lineE42[readOnly="true"], #lineE43[readOnly="true"], #lineE44[readOnly="true"], #lineE45[readOnly="true"], #lineE46[readOnly="true"], #lineE47[readOnly="true"], #lineE48[readOnly="true"], #lineE49[readOnly="true"], #lineE50[readOnly="true"], #lineE51[readOnly="true"], #lineE52[readOnly="true"], #lineE53[readOnly="true"], #lineE54[readOnly="true"], #lineE55[readOnly="true"], #lineE56[readOnly="true"], #lineE57[readOnly="true"], #lineE58[readOnly="true"], #lineE59[readOnly="true"], #lineE60[readOnly="true"], #lineE61[readOnly="true"], #lineE62[readOnly="true"], #lineE63[readOnly="true"], #lineE64[readOnly="true"], #lineE65[readOnly="true"], #lineE66[readOnly="true"], #lineE67[readOnly="true"], #lineE68[readOnly="true"], #lineE69[readOnly="true"], #lineE70[readOnly="true"], #lineE71[readOnly="true"], #lineE72[readOnly="true"], #lineE73[readOnly="true"], #lineE74[readOnly="true"], #lineE75[readOnly="true"], #lineE76[readOnly="true"], #lineE77[readOnly="true"], #lineE78[readOnly="true"], #lineE79[readOnly="true"], #lineE80[readOnly="true"], #lineE81[readOnly="true"], #lineE82[readOnly="true"], #lineE83[readOnly="true"], #lineE84[readOnly="true"], #lineE85[readOnly="true"], #lineE86[readOnly="true"], #lineE87[readOnly="true"], #lineE88[readOnly="true"], #lineE89[readOnly="true"], #lineE90[readOnly="true"], #lineE91[readOnly="true"], #lineE92[readOnly="true"], #lineE93[readOnly="true"], #lineE94[readOnly="true"], #lineE95[readOnly="true"], #lineE96[readOnly="true"], #lineE97[readOnly="true"], #lineE98[readOnly="true"], #lineE99[readOnly="true"], #lineE100[readOnly="true"], #lineE101[readOnly="true"], #lineE102[readOnly="true"], #lineE103[readOnly="true"], #lineE104[readOnly="true"], #lineE105[readOnly="true"], #lineE106[readOnly="true"], #lineE107[readOnly="true"], #lineE108[readOnly="true"], #lineE109[readOnly="true"], #lineE110[readOnly="true"], #lineE111[readOnly="true"], #lineE112[readOnly="true"], #lineE113[readOnly="true"], #lineE114[readOnly="true"], #lineE115[readOnly="true"], #lineE116[readOnly="true"], #lineE117[readOnly="true"], #lineE118[readOnly="true"], #lineE119[readOnly="true"], #lineE120[readOnly="true"], #lineE121[readOnly="true"], #lineE122[readOnly="true"], #lineE123[readOnly="true"], #lineE124[readOnly="true"], #lineE125[readOnly="true"], #lineE126[readOnly="true"], #lineE127[readOnly="true"], #lineE128[readOnly="true"], #lineE129[readOnly="true"], #lineE130[readOnly="true"], #lineE131[readOnly="true"], #lineE132[readOnly="true"], #lineE133[readOnly="true"], #lineE134[readOnly="true"], #lineE135[readOnly="true"], #lineE136[readOnly="true"], #lineE137[readOnly="true"], #lineE138[readOnly="true"], #lineE139[readOnly="true"], #lineE140[readOnly="true"], #lineE141[readOnly="true"], #lineE142[readOnly="true"], #lineE143[readOnly="true"], #lineE144[readOnly="true"], #lineE145[readOnly="true"], #lineE146[readOnly="true"], #lineE147[readOnly="true"], #lineE148[readOnly="true"], #lineE149[readOnly="true"]{
     border-style: inset;
     border-color: silver;
     background-color: whitesmoke;
@@ -241,7 +241,7 @@
 ***********************************/
 
 /*Configuración del estilo por defecto de todos los comboBox*/
-#cbox0, #cbox1, #cbox2, #cbox3, #cbox4, #cbox5, #cbox6, #cbox7, #cbox8, #cbox9, #cbox10, #cbox11, #cbox12, #cbox13, #cbox14, #cbox15, #cbox16, #cbox17, #cbox18, #cbox19, #cbox20{
+#cbox0, #cbox1, #cbox2, #cbox3, #cbox4, #cbox5, #cbox6, #cbox7, #cbox8, #cbox9, #cbox10, #cbox11, #cbox12, #cbox13, #cbox14, #cbox15, #cbox16, #cbox17, #cbox18, #cbox19, #cbox20, #cbox21, #cbox22, #cbox23, #cbox24, #cbox25, #cbox26, #cbox27, #cbox28, #cbox29{
     color: black;
     border: 1px solid dimgray;
     border-radius: 3px;
@@ -250,13 +250,13 @@
 }
 
 /*Configuración del estilo de todos los comboBox cuando estan en uso*/
-#cbox0::on, #cbox1::on, #cbox2::on, #cbox3::on, #cbox4::on, #cbox5::on, #cbox6::on, #cbox7::on, #cbox8::on, #cbox9::on, #cbox10::on, #cbox11::on, #cbox12::on, #cbox13::on, #cbox14::on, #cbox15::on, #cbox16::on, #cbox17::on, #cbox18::on, #cbox19::on, #cbox20::on{
+#cbox0::on, #cbox1::on, #cbox2::on, #cbox3::on, #cbox4::on, #cbox5::on, #cbox6::on, #cbox7::on, #cbox8::on, #cbox9::on, #cbox10::on, #cbox11::on, #cbox12::on, #cbox13::on, #cbox14::on, #cbox15::on, #cbox16::on, #cbox17::on, #cbox18::on, #cbox19::on, #cbox20::on, #cbox21::on, #cbox22::on, #cbox23::on, #cbox24::on, #cbox25::on, #cbox26::on, #cbox27::on, #cbox28::on, #cbox29::on{
     padding-top: 10px;
     padding-left: 4px;
 }
 
 /*Configuración del estilo de todos los comboBox cuando se despliegan*/
-#cbox0::drop-down, #cbox1::drop-down, #cbox2::drop-down, #cbox3::drop-down, #cbox4::drop-down, #cbox5::drop-down, #cbox6::drop-down, #cbox7::drop-down, #cbox8::drop-down, #cbox9::drop-down, #cbox10::drop-down, #cbox11::drop-down, #cbox12::drop-down, #cbox13::drop-down, #cbox14::drop-down, #cbox15::drop-down, #cbox16::drop-down, #cbox17::drop-down, #cbox18::drop-down, #cbox19::drop-down, #cbox20::drop-down{
+#cbox0::drop-down, #cbox1::drop-down, #cbox2::drop-down, #cbox3::drop-down, #cbox4::drop-down, #cbox5::drop-down, #cbox6::drop-down, #cbox7::drop-down, #cbox8::drop-down, #cbox9::drop-down, #cbox10::drop-down, #cbox11::drop-down, #cbox12::drop-down, #cbox13::drop-down, #cbox14::drop-down, #cbox15::drop-down, #cbox16::drop-down, #cbox17::drop-down, #cbox18::drop-down, #cbox19::drop-down, #cbox20::drop-down, #cbox21::drop-down, #cbox22::drop-down, #cbox23::drop-down, #cbox24::drop-down, #cbox25::drop-down, #cbox26::drop-down, #cbox27::drop-down, #cbox28::drop-down, #cbox29::drop-down{
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 15px;
@@ -268,12 +268,12 @@
 }
 
 /*Configuración del estilo de la flecha de todos los comboBox*/
-#cbox0::down-arrow, #cbox1::down-arrow, #cbox2::down-arrow, #cbox3::down-arrow, #cbox4::down-arrow, #cbox5::down-arrow, #cbox6::down-arrow, #cbox7::down-arrow, #cbox8::down-arrow, #cbox9::down-arrow, #cbox10::down-arrow, #cbox11::down-arrow, #cbox12::down-arrow, #cbox13::down-arrow, #cbox14::down-arrow, #cbox15::down-arrow, #cbox16::down-arrow, #cbox17::down-arrow, #cbox18::down-arrow, #cbox19::down-arrow, #cbox20::down-arrow{
-    image: url(:/arrows/down_arrow);
+#cbox0::down-arrow, #cbox1::down-arrow, #cbox2::down-arrow, #cbox3::down-arrow, #cbox4::down-arrow, #cbox5::down-arrow, #cbox6::down-arrow, #cbox7::down-arrow, #cbox8::down-arrow, #cbox9::down-arrow, #cbox10::down-arrow, #cbox11::down-arrow, #cbox12::down-arrow, #cbox13::down-arrow, #cbox14::down-arrow, #cbox15::down-arrow, #cbox16::down-arrow, #cbox17::down-arrow, #cbox18::down-arrow, #cbox19::down-arrow, #cbox20::down-arrow, #cbox21::down-arrow, #cbox22::down-arrow, #cbox23::down-arrow, #cbox24::down-arrow, #cbox25::down-arrow, #cbox26::down-arrow, #cbox27::down-arrow, #cbox28::down-arrow, #cbox29::down-arrow{
+    image: url(:/arrows/down);
 }
 
 /*Configuración del estilo de la flecha de todos los comboBox cuando se despliegan*/
-#cbox0::drop-arrow::on, #cbox1::drop-arrow::on, #cbox2::drop-arrow::on, #cbox3::drop-arrow::on, #cbox4::drop-arrow::on, #cbox5::drop-arrow::on, #cbox6::drop-arrow::on, #cbox7::drop-arrow::on, #cbox8::drop-arrow::on, #cbox9::drop-arrow::on, #cbox10::drop-arrow::on, #cbox11::drop-arrow::on, #cbox12::drop-arrow::on, #cbox13::drop-arrow::on, #cbox14::drop-arrow::on, #cbox15::drop-arrow::on, #cbox16::drop-arrow::on, #cbox17::drop-arrow::on, #cbox18::drop-arrow::on, #cbox19::drop-arrow::on, #cbox20::drop-arrow::on{
+#cbox0::drop-arrow::on, #cbox1::drop-arrow::on, #cbox2::drop-arrow::on, #cbox3::drop-arrow::on, #cbox4::drop-arrow::on, #cbox5::drop-arrow::on, #cbox6::drop-arrow::on, #cbox7::drop-arrow::on, #cbox8::drop-arrow::on, #cbox9::drop-arrow::on, #cbox10::drop-arrow::on, #cbox11::drop-arrow::on, #cbox12::drop-arrow::on, #cbox13::drop-arrow::on, #cbox14::drop-arrow::on, #cbox15::drop-arrow::on, #cbox16::drop-arrow::on, #cbox17::drop-arrow::on, #cbox18::drop-arrow::on, #cbox19::drop-arrow::on, #cbox20::drop-arrow::on, #cbox21::drop-arrow::on, #cbox22::drop-arrow::on, #cbox23::drop-arrow::on, #cbox24::drop-arrow::on, #cbox25::drop-arrow::on, #cbox26::drop-arrow::on, #cbox27::drop-arrow::on, #cbox28::drop-arrow::on, #cbox29::drop-arrow::on{
     top: 1px;
     left: 1px;
 }
@@ -281,7 +281,7 @@
 
 
 /*Configuración del estilo del menu desplegado de todos los comboBox*/
-#cbox0 QAbstractItemView, #cbox1 QAbstractItemView, #cbox2 QAbstractItemView, #cbox3 QAbstractItemView, #cbox4 QAbstractItemView, #cbox5 QAbstractItemView, #cbox6 QAbstractItemView, #cbox7 QAbstractItemView, #cbox8 QAbstractItemView, #cbox9 QAbstractItemView, #cbox10 QAbstractItemView, #cbox11 QAbstractItemView, #cbox12 QAbstractItemView, #cbox13 QAbstractItemView, #cbox14 QAbstractItemView, #cbox15 QAbstractItemView, #cbox16 QAbstractItemView, #cbox17 QAbstractItemView, #cbox18 QAbstractItemView, #cbox19 QAbstractItemView, #cbox20 QAbstractItemView{
+#cbox0 QAbstractItemView, #cbox1 QAbstractItemView, #cbox2 QAbstractItemView, #cbox3 QAbstractItemView, #cbox4 QAbstractItemView, #cbox5 QAbstractItemView, #cbox6 QAbstractItemView, #cbox7 QAbstractItemView, #cbox8 QAbstractItemView, #cbox9 QAbstractItemView, #cbox10 QAbstractItemView, #cbox11 QAbstractItemView, #cbox12 QAbstractItemView, #cbox13 QAbstractItemView, #cbox14 QAbstractItemView, #cbox15 QAbstractItemView, #cbox16 QAbstractItemView, #cbox17 QAbstractItemView, #cbox18 QAbstractItemView, #cbox19 QAbstractItemView, #cbox20 QAbstractItemView, #cbox21 QAbstractItemView, #cbox22 QAbstractItemView, #cbox23 QAbstractItemView, #cbox24 QAbstractItemView, #cbox25 QAbstractItemView, #cbox26 QAbstractItemView, #cbox27 QAbstractItemView, #cbox28 QAbstractItemView, #cbox29 QAbstractItemView{
     border: 1px solid dimgray;
     border-radius: 3px;
     padding: 1px 6px 1px 1px;
@@ -312,7 +312,7 @@
 
 /*Configuración del estilo por defecto de la flecha de todos los DataTimeEdit*/
 #dtE0::down-arrow, #dtE1::down-arrow{
-    image: url(:/arrows/down_arrow);
+    image: url(:/arrows/down);
     border-color: transparent;
 }
 
@@ -349,4 +349,134 @@
     padding: 2px 2px 2px 2x;
     min-height:8em;
     selection-background-color:rgb(245,245,245);
+}
+
+/***********************************
+* Tablas
+***********************************/
+
+/*Configuración general de las tablas*/
+#table0, #table1, #table2, #table3, #table4, #table5, #table6, #table7, #table8, #table9, #table10, #table11, #table12{
+    color: black;
+    background-color: white;
+}
+
+/*Estilo de los cabezales horizontales*/
+#table0 QHeaderView::section:horizontal, #table1 QHeaderView::section:horizontal, #table2 QHeaderView::section:horizontal, #table3 QHeaderView::section:horizontal, #table4 QHeaderView::section:horizontal, #table5 QHeaderView::section:horizontal, #table6 QHeaderView::section:horizontal, #table7 QHeaderView::section:horizontal, #table8 QHeaderView::section:horizontal, #table9 QHeaderView::section:horizontal, #table10 QHeaderView::section:horizontal, #table11 QHeaderView::section:horizontal, #table12 QHeaderView::section:horizontal{
+    color: black;
+    padding: 6px;
+    font-size: 12pt;
+    border-width: 1px;
+    border-style: solid;
+    border-color: dimgray;
+    border-right-color: transparent;
+    border-left-color: transparent;
+    background-color: white;
+}
+
+/*Estilo de los cabezales verticales*/
+#table0 QHeaderView::section:vertical, #table1 QHeaderView::section:vertical, #table2 QHeaderView::section:vertical, #table3 QHeaderView::section:vertical, #table4 QHeaderView::section:vertical, #table5 QHeaderView::section:vertical, #table6 QHeaderView::section:vertical, #table7 QHeaderView::section:vertical, #table8 QHeaderView::section:vertical, #table9 QHeaderView::section:vertical, #table10 QHeaderView::section:vertical, #table11 QHeaderView::section:vertical, #table12 QHeaderView::section:vertical{
+    padding: 2px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: dimgray;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    background-color: white;
+}
+
+/*Estilo del boton de la esquina superior izquierda de la tabla*/
+#table0 QTableCornerButton::section, #table1 QTableCornerButton::section, #table2 QTableCornerButton::section, #table3 QTableCornerButton::section, #table4 QTableCornerButton::section, #table5 QTableCornerButton::section, #table6 QTableCornerButton::section, #table7 QTableCornerButton::section, #table8 QTableCornerButton::section, #table9 QTableCornerButton::section, #table10 QTableCornerButton::section, #table11 QTableCornerButton::section, #table12 QTableCornerButton::section{
+    background-color: white;
+    border-width: 1px;
+    border-style: solid;
+    border-color: dimgray;
+    border-left-color: transparent;
+}
+
+/*Estilo de los items seleccionados*/
+#table0::item:selected, #table1::item:selected, #table2::item:selected, #table3::item:selected, #table4::item:selected, #table5::item:selected, #table6::item:selected, #table7::item:selected, #table8::item:selected, #table9::item:selected, #table10::item:selected, #table11::item:selected, #table12::item:selected{
+    background-color: whitesmoke;
+    selection-color: black;
+}
+
+/***********************************
+* RadioButton
+***********************************/
+
+/*Dimensiones del indicador*/
+#rbutton0::indicator, #rbutton1::indicator, #rbutton2::indicator, #rbutton3::indicator, #rbutton4::indicator, #rbutton5::indicator, #rbutton6::indicator, #rbutton7::indicator, #rbutton8::indicator, #rbutton9::indicator, #rbutton10::indicator, #rbutton11::indicator, #rbutton12::indicator, #rbutton13::indicator, #rbutton14::indicator, #rbutton15::indicator, #rbutton16::indicator, #rbutton17::indicator, #rbutton18::indicator, #rbutton19::indicator, #rbutton20::indicator{
+    width: 13px;
+    height: 13px;
+}
+
+/*Imágen por defecto del indicador desmarcado*/
+#rbutton0::indicator::unchecked, #rbutton1::indicator::unchecked, #rbutton2::indicator::unchecked, #rbutton3::indicator::unchecked, #rbutton4::indicator::unchecked, #rbutton5::indicator::unchecked, #rbutton6::indicator::unchecked, #rbutton7::indicator::unchecked, #rbutton8::indicator::unchecked, #rbutton9::indicator::unchecked, #rbutton10::indicator::unchecked, #rbutton11::indicator::unchecked, #rbutton12::indicator::unchecked, #rbutton13::indicator::unchecked, #rbutton14::indicator::unchecked, #rbutton15::indicator::unchecked, #rbutton16::indicator::unchecked, #rbutton17::indicator::unchecked, #rbutton18::indicator::unchecked, #rbutton19::indicator::unchecked, #rbutton20::indicator::unchecked{
+    image: url(:rbutton/unchecked);
+}
+
+/*Imágen al pasar por encima del indicador desmarcado*/
+#rbutton0::indicator::unchecked:hover, #rbutton1::indicator::unchecked:hover, #rbutton2::indicator::unchecked:hover, #rbutton3::indicator::unchecked:hover, #rbutton4::indicator::unchecked:hover, #rbutton5::indicator::unchecked:hover, #rbutton6::indicator::unchecked:hover, #rbutton7::indicator::unchecked:hover, #rbutton8::indicator::unchecked:hover, #rbutton9::indicator::unchecked:hover, #rbutton10::indicator::unchecked:hover, #rbutton11::indicator::unchecked:hover, #rbutton12::indicator::unchecked:hover, #rbutton13::indicator::unchecked:hover, #rbutton14::indicator::unchecked:hover, #rbutton15::indicator::unchecked:hover, #rbutton16::indicator::unchecked:hover, #rbutton17::indicator::unchecked:hover, #rbutton18::indicator::unchecked:hover, #rbutton19::indicator::unchecked:hover, #rbutton20::indicator::unchecked:hover{
+    image: url(:rbutton/unchecked-focus);
+}
+
+/*Imágen al presionar el indicador desmarcado*/
+#rbutton0::indicator::unchecked:pressed, #rbutton1::indicator::unchecked:pressed, #rbutton2::indicator::unchecked:pressed, #rbutton3::indicator::unchecked:pressed, #rbutton4::indicator::unchecked:pressed, #rbutton5::indicator::unchecked:pressed, #rbutton6::indicator::unchecked:pressed, #rbutton7::indicator::unchecked:pressed, #rbutton8::indicator::unchecked:pressed, #rbutton9::indicator::unchecked:pressed, #rbutton10::indicator::unchecked:pressed, #rbutton11::indicator::unchecked:pressed, #rbutton12::indicator::unchecked:pressed, #rbutton13::indicator::unchecked:pressed, #rbutton14::indicator::unchecked:pressed, #rbutton15::indicator::unchecked:pressed, #rbutton16::indicator::unchecked:pressed, #rbutton17::indicator::unchecked:pressed, #rbutton18::indicator::unchecked:pressed, #rbutton19::indicator::unchecked:pressed, #rbutton20::indicator::unchecked:pressed{
+    image: url(:rbutton/unchecked-focus);
+}
+
+/*Imágen por defecto del indicador marcado*/
+#rbutton0::indicator::checked, #rbutton1::indicator::checked, #rbutton2::indicator::checked, #rbutton3::indicator::checked, #rbutton4::indicator::checked, #rbutton5::indicator::checked, #rbutton6::indicator::checked, #rbutton7::indicator::checked, #rbutton8::indicator::checked, #rbutton9::indicator::checked, #rbutton10::indicator::checked, #rbutton11::indicator::checked, #rbutton12::indicator::checked, #rbutton13::indicator::checked, #rbutton14::indicator::checked, #rbutton15::indicator::checked, #rbutton16::indicator::checked, #rbutton17::indicator::checked, #rbutton18::indicator::checked, #rbutton19::indicator::checked, #rbutton20::indicator::checked{
+    image: url(:rbutton/checked);
+}
+
+/*Imágen al pasar por encima del indicador marcado*/
+#rbutton0::indicator::checked:hover, #rbutton1::indicator::checked:hover, #rbutton2::indicator::checked:hover, #rbutton3::indicator::checked:hover, #rbutton4::indicator::checked:hover, #rbutton5::indicator::checked:hover, #rbutton6::indicator::checked:hover, #rbutton7::indicator::checked:hover, #rbutton8::indicator::checked:hover, #rbutton9::indicator::checked:hover, #rbutton10::indicator::checked:hover, #rbutton11::indicator::checked:hover, #rbutton12::indicator::checked:hover, #rbutton13::indicator::checked:hover, #rbutton14::indicator::checked:hover, #rbutton15::indicator::checked:hover, #rbutton16::indicator::checked:hover, #rbutton17::indicator::checked:hover, #rbutton18::indicator::checked:hover, #rbutton19::indicator::checked:hover, #rbutton20::indicator::checked:hover{
+    image: url(:rbutton/checked-focus);
+}
+
+/*Imágen al presionar el indicador marcado*/
+#rbutton0::indicator::checked:pressed, #rbutton1::indicator::checked:pressed, #rbutton2::indicator::checked:pressed, #rbutton3::indicator::checked:pressed, #rbutton4::indicator::checked:pressed, #rbutton5::indicator::checked:pressed, #rbutton6::indicator::checked:pressed, #rbutton7::indicator::checked:pressed, #rbutton8::indicator::checked:pressed, #rbutton9::indicator::checked:pressed, #rbutton10::indicator::checked:pressed, #rbutton11::indicator::checked:pressed, #rbutton12::indicator::checked:pressed, #rbutton13::indicator::checked:pressed, #rbutton14::indicator::checked:pressed, #rbutton15::indicator::checked:pressed, #rbutton16::indicator::checked:pressed, #rbutton17::indicator::checked:pressed, #rbutton18::indicator::checked:pressed, #rbutton19::indicator::checked:pressed, #rbutton20::indicator::checked:pressed{
+    image: url(:rbutton/checked-focus);
+}
+
+/***********************************
+* Custom SpinBox
+***********************************/
+
+/*Configurar el estilo por defecto de los botones para agregar y quitar*/
+#add0, #substract0{
+    border: 1px solid transparent;
+    border-radius: 3px;
+    min-width: 2em;
+    padding: 2px;
+}
+
+/*Configurar el estilo de los botones para agregar y quitar cuando se pasa por encima de ellos o son presionados*/
+#add0:hover, #add0:pressed, #substract0:hover, #substract0:pressed{
+    background-color: whitesmoke;
+}
+
+/*Configuración del estilo por defecto del line edit*/
+#spinLine0{
+    padding: 2px;
+    text-align: center;
+    border: 1px outset transparent;
+    border-right-color: dimgray;
+    border-left-color: dimgray;
+}
+
+/*Configuración del estilo del line edit en modo de solo lectura*/
+#spinLine0[readOnly="true"]{
+    border-style: inset;
+    border-color: silver;
+    background-color: whitesmoke;
+}
+
+/*Connfiguración del estilo por defecto del QFrame*/
+#spinFrame0{
+    background-color: white;
+    border: 1px outset dimgray;
+    border-radius: 3px;
+    padding: -9px;
 }

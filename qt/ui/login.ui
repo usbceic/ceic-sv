@@ -30,11 +30,17 @@
      background-color: rgb(12, 158, 255);
 }
 
+/*Configurar el color de fondo de cada pagina del Stacked*/
 #pag0, #pag1, #page2 {
     background-color: transparent;
     padding: -8px;
 }
 
+/***********************************
+* Botones
+***********************************/
+
+/*Estilo por defecto de los iconos de foto de perfil*/
 #pubutton0, #pubutton6 {
     background-color: rgb(245, 245, 245);
     border-width: 1px;
@@ -45,6 +51,7 @@
     padding: 2px;
 }
 
+/*Estilo por defecto de los iconos de usuario y contraseña*/
 #pubutton1,  #pubutton2 {
     background-color: transparent;
     border-style: outset;
@@ -55,28 +62,18 @@
     padding: 1px;
 }
 
-#gbox0, #gbox2, #gbox3, #gbox4 {
-    background-color: rgb(245,245,245);
-    padding: -8px;
-}
-
-#lineEd0, #lineEd1, #lineEd2, #lineEd3, #lineEd4, #lineEd5, #lineEd6, #lineEd7, #lineEd8, #lineEd9, #lineEd10, #lineEd11, #lineEd12, #lineEd13, #lineEd14 {
-    color: dimgray;
-    border-style: outset;
-    min-width: 5.5em;
-    padding: 2px;
-    background-color: transparent;
-}
-
+/*Estilo por defecto por defecto del botón de olvidé mi contraseña*/
 #pubutton3 {
     color: dimgray;
     background-color: transparent;
 }
 
+/*Configuración del estilo al pasar por encima y presionar el botón de olvidé mi contraseña*/
 #pubutton3:hover, #pubutton3:pressed {
     color: black;
 }
 
+/*Estilo por defecto de los botones para iniciar sesión y crear usuario*/
 #pubutton4, #pubutton7 {
     color:  rgb(12, 158, 255);
     border-style: outset;
@@ -85,27 +82,55 @@
     background-color: rgb(245,245,245);
 }
 
+/*Configuración del estilo al pasar por encima y presionar los botones para iniciar sesión y crear usuario*/
 #pubutton4:hover, #pubutton4:pressed, #pubutton7:hover, #pubutton7:pressed {
     background-color: rgb(240,240,240);
 }
 
+/*Estilo por defecto del botón para ir a la pantalla de registro*/
 #pubutton5 {
     color: rgb(245, 245, 245);
     background-color: transparent;
 }
 
+/*Configuración del estilo al pasar por encima y presionar el botón para ir a la pantalla de registro*/
 #pubutton5:hover, #pubutton5:pressed {
     color: rgb(255, 255, 255);
 }
 
+/*Estilo por defecto de los botones para volver atrás*/
 #pubutton8, #pubutton9 {
     color: rgb(245, 245, 245);
     background-color: transparent;
     padding: 0px;
 }
 
+/*Configuración del estilo al pasar por encima y presionar os botones para volver atrás*/
 #pubutton8:hover, #pubutton8:pressed, #pubutton9:hover, #pubutton9:pressed {
     color: rgb(255, 255, 255);
+}
+
+/***********************************
+* GroupBox
+***********************************/
+
+/*Configuración del estilo de todos los GroupBox */
+#gbox0, #gbox2, #gbox3, #gbox4 {
+    background-color: rgb(245,245,245);
+    padding: -8px;
+}
+
+/***********************************
+* LineEdit
+***********************************/
+
+/*Configuración del estilo de todos los LineEdit de la interfáz*/
+#lineEd0, #lineEd1, #lineEd2, #lineEd3, #lineEd4, #lineEd5, #lineEd6, #lineEd7, #lineEd8, #lineEd9, #lineEd10, #lineEd11, #lineEd12, #lineEd13, #lineEd14 {
+    color: dimgray;
+    border-style: outset;
+    min-width: 5.5em;
+    padding: 2px;
+    background-color: transparent;
 }
 
 /***********************************
