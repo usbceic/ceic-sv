@@ -1,6 +1,15 @@
 -- Base de Datos del Sistema de Ventas del CEIC
 -- Hecho por Christian Oliveros
 
+-- Funcion de Creacion de Usuario (db_user)
+CREATE OR REPLACE FUNCTION create_db_user(uname TEXT, pass TEXT, firstname TEXT, lastname TEXT, email TEXT, permission_mask INTEGER, profile TEXT DEFAULT NULL, description TEXT DEFAULT NULL)
+RETURNS VOID AS 
+$create_db_user$
+    INSERT INTO db_user 
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW());
+$create_db_user$  
+LANGUAGE SQL;
+
 -- Funcion de Checkeo al hacer login (db_user)
 CREATE OR REPLACE FUNCTION check_password(uname TEXT, pass TEXT)
 RETURNS SETOF check_password_type AS 

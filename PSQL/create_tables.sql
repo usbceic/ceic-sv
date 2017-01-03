@@ -12,7 +12,7 @@ CREATE TABLE db_user (
     email TEXT NOT NULL,
     permission_mask INTEGER NOT NULL,
     profile TEXT DEFAULT NULL,
-    description TEXT,
+    description TEXT DEFAULT NULL,
     creation_date TIMESTAMP NOT NULL DEFAULT NOW(),
     last_login TIMESTAMP NOT NULL DEFAULT NOW()
 );
