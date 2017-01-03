@@ -25,7 +25,8 @@ import sys
 from sessionManager import loginGUI
 from guiManager import adminGUI
 from PyQt4.QtGui import QApplication
-from PyQt4.QtCore import Qt
+from PyQt4.QtCore import Qt, QTimer
+from DBManager import *
 
 ####################################################################################################################################
 ## PROGRAMA PRINCIPAL:
@@ -34,12 +35,14 @@ from PyQt4.QtCore import Qt
 def displayLogin():
     loginApp = QApplication(sys.argv)
     loginWindow = loginGUI()
-    loginWindow.show()
+    loginWindow.splash.show()
+    QTimer.singleShot(5000, lambda: loginWindow.splash.hide())
+    QTimer.singleShot(5500, lambda: loginWindow.show())
     return loginApp.exec_()
 
-def displayMainWindow(mode):
+def displayMainWindow(mode, dbm):
     MainWindowApp = QApplication(sys.argv)
-    if mode == 0: MainWindow = adminGUI()
+    if mode == 0: MainWindow = adminGUI(dbm)
     #elif mode == 1: MainWindow = sellerGUI()
     #else: MainWindow = collaboratorGUI()
     MainWindow.show()
@@ -48,6 +51,8 @@ def displayMainWindow(mode):
 if __name__ == '__main__':
     # Inicializar interfaz:
     log = displayLogin()
+    #db = DBManager("carlos", "curtis", True)
+    #xd = displayMainWindow(0, db)
 
 ####################################################################################################################################
 ## FIN :)
