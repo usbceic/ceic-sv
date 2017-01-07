@@ -4,7 +4,7 @@
 
 /*Configurar el color de fondo de la ventana*/
 #centralwidget{
-    background: #2196F3;
+    background: #FFEB3B;
     color: #212121;
 }
 
@@ -25,7 +25,7 @@
 
 /* Configuración de los titulos*/
 #label1, #label2, #label3 {
-    background: #BBDEFB;
+    background: #FFF9C4;
 }
 
 /***********************************
@@ -34,7 +34,7 @@
 
 /*Estilo por defecto de los iconos de foto de perfil*/
 #pubutton0, #pubutton6,  #pubutton10 {
-    background: #BBDEFB;
+    background: #FFF9C4;
     border: 1px solid transparent;
     border-radius: 45px;
     min-width: 6em;
@@ -65,10 +65,10 @@
 
 /*Estilo por defecto de los botones para acceder/continuar/aceptar*/
 #pubutton4, #pubutton7, #pubutton12, #pubutton13 {
-    color: #FFFFFF;
+    color: #212121;
     border: 1px outset #BDBDBD;
     border-radius: 2px;
-    background: #2196F3;
+    background: #FFEB3B;
     min-height: 3em;
     min-width: 2em;
     padding: 2px;
@@ -76,12 +76,12 @@
 
 /*Configuración del estilo al pasar por encima y presionar los botones para acceder/continuar/aceptar*/
 #pubutton4:hover,  #pubutton7:hover, #pubutton12:hover,  #pubutton13:hover, #pubutton4:pressed, #pubutton7:pressed, #pubutton12:pressed, #pubutton13:pressed {
-    background:  #1976D2;
+    background: #FBC02D;
 }
 
 /*Estilo por defecto de los botones para limpiar/cancelar*/
 #pubutton20, #pubutton21, #pubutton22, #pubutton23 {
-    color: #2196F3;
+    color: #FFEB3B;
     border: 1px solid transparent;
     background: transparent;
     min-height: 3em;
@@ -90,7 +90,7 @@
 
 /*Configuración del estilo al pasar por encima y presionar los botones para limpiar/cancelar*/
 #pubutton20:hover, #pubutton21:hover, #pubutton22:hover, #pubutton23:hover, #pubutton20:pressed, #pubutton21:pressed, #pubutton22:pressed, #pubutton23:pressed {
-    color: #1976D2;
+    color: #FBC02D;
 }
 
 
@@ -116,7 +116,7 @@
 
 /*Configuración del estilo al pasar por encima y presionar os botones para volver atrás*/
 #pubutton8:hover, #pubutton8:pressed, #pubutton9:hover, #pubutton9:pressed {
-    background: #1976D2;
+    background: #FBC02D;
 }
 
 /***********************************
@@ -126,7 +126,7 @@
 /*Configuración del estilo de todos los GroupBox */
 #gbox0, #gbox2, #gbox3, #gbox4 {
     padding: -8px;
-    background: #FFFFFF;
+    background: transparent;
 }
 
 /***********************************
@@ -149,7 +149,7 @@
 /*Configuración del estilo por defecto de todos los comboBox*/
 #cobox0, #cobox1{
     color: #212121;
-    border: 0px solid dimgray;
+    border: 0px solid #BDBDBD;
     border-radius: 3px;
     padding: 1px 1px 1px 4px;
     min-width: 9em;
@@ -167,8 +167,8 @@
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 15px;
-    border-left-width: 0px solid transparent;
-    border-top-right-radius: 3px;
+    border-left: 0px solid transparent;
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
     border-bottom-right-radius: 3px;
 }
 
@@ -185,10 +185,10 @@
 
 /*Configuración del estilo del menu desplegado de todos los comboBox*/
 #cobox0 QAbstractItemView, #cobox1 QAbstractItemView{
-    border: 1px solid dimgray;
+    border: 1px solid #BDBDBD;
     border-radius: 3px;
     padding: 1px 6px 1px 1px;
     min-width: 14em;
-    selection-background-color: dimgray;
-    background: #FFFFFF;
+    selection-background: #BDBDBD;
+    background: #212121;
 }

@@ -76,7 +76,7 @@
 
 /*Configuración del estilo al pasar por encima y presionar los botones para acceder/continuar/aceptar*/
 #pubutton4:hover,  #pubutton7:hover, #pubutton12:hover,  #pubutton13:hover, #pubutton4:pressed, #pubutton7:pressed, #pubutton12:pressed, #pubutton13:pressed {
-    background:  #1976D2;
+    background: #1976D2;
 }
 
 /*Estilo por defecto de los botones para limpiar/cancelar*/
@@ -126,7 +126,7 @@
 /*Configuración del estilo de todos los GroupBox */
 #gbox0, #gbox2, #gbox3, #gbox4 {
     padding: -8px;
-    background: #FFFFFF;
+    background: transparent;
 }
 
 /***********************************
@@ -149,7 +149,7 @@
 /*Configuración del estilo por defecto de todos los comboBox*/
 #cobox0, #cobox1{
     color: #212121;
-    border: 0px solid dimgray;
+    border: 0px solid #BDBDBD;
     border-radius: 3px;
     padding: 1px 1px 1px 4px;
     min-width: 9em;
@@ -167,8 +167,8 @@
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 15px;
-    border-left-width: 0px solid transparent;
-    border-top-right-radius: 3px;
+    border-left: 0px solid transparent;
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
     border-bottom-right-radius: 3px;
 }
 
@@ -185,10 +185,10 @@
 
 /*Configuración del estilo del menu desplegado de todos los comboBox*/
 #cobox0 QAbstractItemView, #cobox1 QAbstractItemView{
-    border: 1px solid dimgray;
+    border: 1px solid #BDBDBD;
     border-radius: 3px;
     padding: 1px 6px 1px 1px;
     min-width: 14em;
-    selection-background-color: dimgray;
+    selection-background: #BDBDBD;
     background: #FFFFFF;
 }

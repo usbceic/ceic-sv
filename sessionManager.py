@@ -74,7 +74,7 @@ class loginGUI(QMainWindow, loginWindow):
         #---------------------------------------------------------------------------------------------------------------------------
 
         # Interfaz
-        QMainWindow.__init__(self, parent)
+        super(loginGUI, self).__init__(parent)
         self.setupUi(self)
 
         self.splash_img = QPixmap("qt/images/splash.png")
@@ -119,7 +119,7 @@ class loginGUI(QMainWindow, loginWindow):
             if self.db.checkUser(user, password):
                 self.lineEd0.setText("")
                 self.lineEd1.setText("")
-                self.ceicsvlb.setFocus()
+                self.label0.setFocus()
                 self.mainWindow = adminGUI(self.db, self)
                 self.back = self.mainWindow.userBn0
                 self.back.clicked.connect(self.back_pressed)
@@ -133,13 +133,13 @@ class loginGUI(QMainWindow, loginWindow):
     def setupPage0(self):
         self.lineEd0.setPlaceholderText("Usuario")
         self.lineEd1.setPlaceholderText("Contraseña")
-        self.ceicsvlb.setFocus()
+        self.label0.setFocus()
 
     def setupPage1(self):
         self.lineEd2.setPlaceholderText("Usuario")
         self.lineEd3.setPlaceholderText("Nombre")
         self.lineEd4.setPlaceholderText("Apellido")
-        self.lineEd5.setPlaceholderText("Número de teléfono")
+        #self.lineEd5.setPlaceholderText("Número de teléfono")
         self.lineEd6.setPlaceholderText("Correo electrónico")
         self.lineEd7.setPlaceholderText("Contraseña")
         self.lineEd8.setPlaceholderText("Confirmar contraseña")
@@ -149,8 +149,8 @@ class loginGUI(QMainWindow, loginWindow):
         self.lineEd10.setPlaceholderText("Nombre de usuario")
         self.lineEd11.setPlaceholderText("Nueva contraseña")
         self.lineEd12.setPlaceholderText("Confirmar contraseña")
-        self.lineEd13.setPlaceholderText("Administrador o Master")
-        self.lineEd14.setPlaceholderText("Contraseña")
+        #self.lineEd13.setPlaceholderText("Administrador o Master")
+        #self.lineEd14.setPlaceholderText("Contraseña")
 
     def on_pubutton3_pressed(self):
         if self.click():
@@ -193,11 +193,11 @@ class loginGUI(QMainWindow, loginWindow):
 
     def mousePressEvent(self, QMouseEvent):
         position = QMouseEvent.pos().y()
-        if position >= 425 or position <= 369 or 391 <= position <= 403: self.ceicsvlb.setFocus()
+        if position >= 425 or position <= 369 or 391 <= position <= 403: self.label0.setFocus()
 
     def mouseReleaseEvent(self, QMouseEvent):
         position = QCursor().pos().y()
-        if position >= 425 or position <= 369 or 391 <= position <= 403: self.ceicsvlb.setFocus()
+        if position >= 425 or position <= 369 or 391 <= position <= 403: self.label0.setFocus()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return:
@@ -220,7 +220,7 @@ class dialog0GUI(QDialog, dialog0):
         #---------------------------------------------------------------------------------------------------------------------------
 
         # Interfaz
-        QMainWindow.__init__(self, parent)
+        super(dialog0GUI, self).__init__(parent)
         self.setupUi(self)
 
 class dialog1GUI(QDialog, dialog1):
@@ -234,7 +234,7 @@ class dialog1GUI(QDialog, dialog1):
         #---------------------------------------------------------------------------------------------------------------------------
 
         # Interfaz
-        QMainWindow.__init__(self, parent)
+        super(dialog1GUI, self).__init__(parent)
         self.setupUi(self)
         self.setFixedSize(self.width(), self.height())
         self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)

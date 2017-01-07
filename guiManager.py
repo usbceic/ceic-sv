@@ -42,14 +42,14 @@ from DBManager import *
 
 # Paths
 UIpath = "qt/ui/"
-stylePath = "qt/stylesheet/"
+stylePath = "qt/stylesheet/MainWindow/"
 productPath = "images/inventory/"
 
 # UI
 MainUI = "material.ui"
 
 # Styles
-styles = ["black.qss", "default.qss", "fuchsia.qss", "green.qss", "orange.qss", "purple.qss", "red.qss", "yellow.qss"]
+styles = ["teal.qss", "default.qss", "pink.qss", "green.qss", "orange.qss", "purple.qss", "red.qss", "yellow.qss"]
 LEpopup = "LEpopup.qss"
 
 # Interfaz .ui creada con qt designer
@@ -92,7 +92,7 @@ class adminGUI(QMainWindow, form_class):
         #---------------------------------------------------------------------------------------------------------------------------
 
         # Interfaz
-        QMainWindow.__init__(self, parent)
+        super(adminGUI, self).__init__(parent)
         self.setupUi(self)
 
         # Manejador de la base de datos
@@ -151,6 +151,10 @@ class adminGUI(QMainWindow, form_class):
         # Refrescar todos los elementos de la interfaz
         self.refresh()
 
+        # Se establece la pagina de caja por defecto
+        self.MainStacked.setCurrentIndex(0)
+        self.MainTitle.setText("Caja")
+
     #-------------------------------------------------------------------------------------------------------------------------------
     # Configuraciones básicas de la ventana
     #-------------------------------------------------------------------------------------------------------------------------------
@@ -207,6 +211,179 @@ class adminGUI(QMainWindow, form_class):
     # Cambiar el tema de la interfáz
     def setStyle(self, name):
         if self.click(): self.setStyleSheet(getStyle(name))
+
+    def setupLE(self):
+
+        self.lineE0.setPlaceholderText("Balance")
+        self.lineE1.setPlaceholderText("Efectivo")
+        self.lineE2.setPlaceholderText("Transferencias")
+        self.lineE3.setPlaceholderText("Deudas")
+
+        self.lineE4.setPlaceholderText("Monto")
+        self.lineE31.setPlaceholderText("Monto")
+        self.lineE32.setPlaceholderText("Monto")
+
+        self.lineE5.setPlaceholderText("Estado")
+        self.lineE6.setPlaceholderText("Inicio")
+        self.lineE7.setPlaceholderText("Ventas")
+        self.lineE8.setPlaceholderText("Ingresos")
+        self.lineE9.setPlaceholderText("Egresos")
+        self.lineE10.setPlaceholderText("Ganancias")
+
+        self.lineE11.setPlaceholderText("Nombre")
+        self.lineE12.setPlaceholderText("Inicio")
+        self.lineE13.setPlaceholderText("Ventas")
+        self.lineE14.setPlaceholderText("Ingresos")
+        self.lineE15.setPlaceholderText("Egresos")
+        self.lineE16.setPlaceholderText("Ganancias")
+
+        # Ventas
+        self.lineE17.setPlaceholderText("Cédula")
+        self.lineE18.setPlaceholderText("Nombre")
+        self.lineE19.setPlaceholderText("Apellido")
+        self.lineE20.setPlaceholderText("Saldo")
+        self.lineE21.setPlaceholderText("Total")
+        self.lineE22.setPlaceholderText("Pagar")
+
+        self.lineE23.setPlaceholderText("Producto")
+        self.lineE24.setPlaceholderText("Precio")
+        self.lineE25.setPlaceholderText("Subtotal")
+
+        self.lineE26.setPlaceholderText("Nombre")
+        self.lineE27.setPlaceholderText("Precio")
+        self.lineE28.setPlaceholderText("Categoria")
+        self.lineE29.setPlaceholderText("Lotes")
+        self.lineE30.setPlaceholderText("Disponibilidad")
+
+        self.lineE33.setPlaceholderText("Producto")
+        self.lineE34.setPlaceholderText("Proveedor")
+        self.lineE35.setPlaceholderText("Costo")
+        self.lineE36.setPlaceholderText("Caducidad")
+        self.lineE37.setPlaceholderText("Cantidad")
+        self.lineE38.setPlaceholderText("Disponibles")
+
+        self.lineE39.setPlaceholderText("Nombre")
+        self.lineE40.setPlaceholderText("Fecha de inicio")
+        self.lineE41.setPlaceholderText("Fecha de cierre")
+        self.lineE42.setPlaceholderText("Días laborados")
+        self.lineE43.setPlaceholderText("Ventas totales")
+        self.lineE44.setPlaceholderText("Ingresos")
+        self.lineE45.setPlaceholderText("Egresos")
+        self.lineE46.setPlaceholderText("Ganancias")
+
+        self.lineE47.setPlaceholderText("Cédula")
+        self.lineE48.setPlaceholderText("Nombre")
+        self.lineE49.setPlaceholderText("Apellido")
+        self.lineE50.setPlaceholderText("Saldo")
+        self.lineE51.setPlaceholderText("Déposito")
+
+        self.lineE52.setPlaceholderText("Cédula")
+        self.lineE53.setPlaceholderText("Nombre")
+        self.lineE54.setPlaceholderText("Apellido")
+        self.lineE55.setPlaceholderText("Teléfono")
+        self.lineE56.setPlaceholderText("Correo")
+
+        self.lineE57.setPlaceholderText("Cédula")
+        self.lineE58.setPlaceholderText("Nombre")
+        self.lineE59.setPlaceholderText("Apellido")
+        self.lineE60.setPlaceholderText("Teléfono")
+        self.lineE61.setPlaceholderText("Correo")
+
+        self.lineE62.setPlaceholderText("Usuario")
+        self.lineE63.setPlaceholderText("Nombre")
+        self.lineE64.setPlaceholderText("Apellido")
+        self.lineE65.setPlaceholderText("Teléfono")
+        self.lineE66.setPlaceholderText("Correo")
+        self.lineE67.setPlaceholderText("Contraseña")
+        self.lineE68.setPlaceholderText("Rango")
+
+        self.lineE69.setPlaceholderText("Usuario")
+        self.lineE70.setPlaceholderText("Nombre")
+        self.lineE71.setPlaceholderText("Apellido")
+        self.lineE72.setPlaceholderText("Teléfono")
+        self.lineE73.setPlaceholderText("Correo")
+        self.lineE74.setPlaceholderText("Contraseña")
+
+        self.lineE75.setPlaceholderText("Usuario")
+        self.lineE76.setPlaceholderText("Nombre")
+        self.lineE77.setPlaceholderText("Apellido")
+        self.lineE78.setPlaceholderText("Teléfono")
+        self.lineE79.setPlaceholderText("Correo")
+        self.lineE80.setPlaceholderText("Contraseña")
+
+        self.lineE81.setPlaceholderText("Usuario")
+        self.lineE82.setPlaceholderText("Nombre")
+        self.lineE83.setPlaceholderText("Apellido")
+        self.lineE84.setPlaceholderText("Teléfono")
+        self.lineE85.setPlaceholderText("Correo")
+        self.lineE86.setPlaceholderText("Contraseña")
+        self.lineE87.setPlaceholderText("Rango")
+
+        self.lineE88.setPlaceholderText("R.I.F.")
+        self.lineE89.setPlaceholderText("Tasa (%)")
+        self.lineE90.setPlaceholderText("Tasa (%)")
+
+        self.lineE91.setPlaceholderText("Cédula")
+        self.lineE92.setPlaceholderText("Nombre")
+        self.lineE93.setPlaceholderText("Apellido")
+        self.lineE94.setPlaceholderText("Código")
+        self.lineE95.setPlaceholderText("Titulo")
+        self.lineE96.setPlaceholderText("Autor")
+        self.lineE97.setPlaceholderText("Entrega")
+
+        self.lineE98.setPlaceholderText("Titulo")
+        self.lineE99.setPlaceholderText("Año")
+        self.lineE100.setPlaceholderText("Edición")
+        self.lineE101.setPlaceholderText("Editorial")
+        self.lineE102.setPlaceholderText("Lenguaje")
+        self.lineE103.setPlaceholderText("ISBN")
+        self.lineE104.setPlaceholderText("Copias")
+        self.lineE105.setPlaceholderText("BookID")
+
+        self.lineE106.setPlaceholderText("BookID")
+        self.lineE107.setPlaceholderText("Titulo")
+        self.lineE108.setPlaceholderText("Año")
+        self.lineE109.setPlaceholderText("Edición")
+        self.lineE110.setPlaceholderText("Editorial")
+        self.lineE111.setPlaceholderText("Lenguaje")
+        self.lineE112.setPlaceholderText("ISBN")
+        self.lineE113.setPlaceholderText("Disponibles")
+
+        self.lineE114.setPlaceholderText("Código")
+        self.lineE115.setPlaceholderText("Nombre")
+        self.lineE116.setPlaceholderText("Código")
+        self.lineE117.setPlaceholderText("Nombre")
+
+        self.lineE118.setPlaceholderText("Nombre")
+        self.lineE119.setPlaceholderText("Año")
+        self.lineE120.setPlaceholderText("País")
+        self.lineE121.setPlaceholderText("Nombre")
+        self.lineE122.setPlaceholderText("Año")
+        self.lineE123.setPlaceholderText("País")
+
+        self.lineE124.setPlaceholderText("BookID")
+        self.lineE125.setPlaceholderText("Título")
+        self.lineE126.setPlaceholderText("Año")
+        self.lineE127.setPlaceholderText("Edición")
+        self.lineE128.setPlaceholderText("Año")
+        self.lineE129.setPlaceholderText("País")
+        self.lineE130.setPlaceholderText("BookID")
+        self.lineE131.setPlaceholderText("Título")
+        self.lineE132.setPlaceholderText("Año")
+        self.lineE133.setPlaceholderText("Edición")
+        self.lineE134.setPlaceholderText("Año")
+        self.lineE135.setPlaceholderText("País")
+
+        self.lineE136.setPlaceholderText("BookID")
+        self.lineE137.setPlaceholderText("Título")
+        self.lineE138.setPlaceholderText("Año")
+        self.lineE139.setPlaceholderText("Edición")
+        self.lineE140.setPlaceholderText("Nombre")
+        self.lineE141.setPlaceholderText("BookID")
+        self.lineE142.setPlaceholderText("Título")
+        self.lineE143.setPlaceholderText("Año")
+        self.lineE144.setPlaceholderText("Edición")
+        self.lineE145.setPlaceholderText("Nombre")
 
     # Método para buscar en un LineEdit
     def setupSearchBar(self, listLE, itemsList, numValidator = False):
@@ -321,21 +498,52 @@ class adminGUI(QMainWindow, form_class):
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
 
+        #self.setupLE()
+
     #-------------------------------------------------------------------------------------------------------------------------------
     # Configuración de los botones para cambio de página de los stacked:
     #-------------------------------------------------------------------------------------------------------------------------------
 
     # Cambio de página en MainStacked
-    def on_home_pressed(self): self.setPage(self.MainStacked, 0)      # Cambiar a la página principal
-    def on_sales_pressed(self): self.setPage(self.MainStacked, 1)     # Cambiar a la página de ventas
-    def on_inventory_pressed(self): self.setPage(self.MainStacked, 2) # Cambiar a la página de inventario
-    def on_querys_pressed(self): self.setPage(self.MainStacked, 3)    # Cambiar a la página de consultas
-    def on_loans_pressed(self): self.setPage(self.MainStacked, 4)     # Cambiar a la página de préstamos
-    def on_books_pressed(self): self.setPage(self.MainStacked, 5)     # Cambiar a la página de libros
-    def on_clients_pressed(self): self.setPage(self.MainStacked, 6)   # Cambiar a la página de clientes
-    def on_users_pressed(self): self.setPage(self.MainStacked, 7)     # Cambiar a la página de usuarios
-    def on_configure_pressed(self): self.setPage(self.MainStacked, 8) # Cambiar a la página de configuraciones
-    def on_help_pressed(self): self.setPage(self.MainStacked, 9)      # Cambiar a la página de ayuda
+    def on_home_pressed(self):
+        self.setPage(self.MainStacked, 0)      # Cambiar a la página principal
+        self.MainTitle.setText("Caja")
+
+    def on_sales_pressed(self):
+        self.setPage(self.MainStacked, 1)     # Cambiar a la página de ventas
+        self.MainTitle.setText("Ventas")
+
+    def on_inventory_pressed(self):
+        self.setPage(self.MainStacked, 2) # Cambiar a la página de inventario
+        self.MainTitle.setText("Inventario")
+
+    def on_querys_pressed(self):
+        self.setPage(self.MainStacked, 3)    # Cambiar a la página de consultas
+        self.MainTitle.setText("Consultas")
+
+    def on_loans_pressed(self):
+        self.setPage(self.MainStacked, 4)     # Cambiar a la página de préstamos
+        self.MainTitle.setText("Préstamos")
+
+    def on_books_pressed(self):
+        self.setPage(self.MainStacked, 5)     # Cambiar a la página de libros
+        self.MainTitle.setText("Libros")
+
+    def on_clients_pressed(self):
+        self.setPage(self.MainStacked, 6)   # Cambiar a la página de clientes
+        self.MainTitle.setText("Clientes")
+
+    def on_users_pressed(self):
+        self.setPage(self.MainStacked, 7)     # Cambiar a la página de usuarios
+        self.MainTitle.setText("Usuarios")
+
+    def on_configure_pressed(self):
+        self.setPage(self.MainStacked, 8) # Cambiar a la página de configuraciones
+        self.MainTitle.setText("Configuraciones")
+
+    def on_help_pressed(self):
+        self.setPage(self.MainStacked, 9)      # Cambiar a la página de ayuda
+        self.MainTitle.setText("Ayuda")
 
     # Cambio de página en subStacked
     def on_arrow1_pressed(self): self.changePage(self.subStacked3)
@@ -398,14 +606,14 @@ class adminGUI(QMainWindow, form_class):
     # Configuración de los botones de cambio de color de la interfáz
     #-------------------------------------------------------------------------------------------------------------------------------
 
-    def on_blackGUI_pressed(self): self.setStyle(styles[0])
-    def on_blueGUI_pressed(self): self.setStyle(styles[1])
-    def on_fuchsiaGUI_pressed(self): self.setStyle(styles[2])
-    def on_greenGUI_pressed(self): self.setStyle(styles[3])
-    def on_orangeGUI_pressed(self): self.setStyle(styles[4])
-    def on_purpleGUI_pressed(self): self.setStyle(styles[5])
-    def on_redGUI_pressed(self): self.setStyle(styles[6])
-    def on_yellowGUI_pressed(self): self.setStyle(styles[7])
+    def on_theme0_pressed(self): self.setStyle(styles[1])
+    def on_theme1_pressed(self): self.setStyle(styles[5])
+    def on_theme2_pressed(self): self.setStyle(styles[3])
+    def on_theme3_pressed(self): self.setStyle(styles[4])
+    def on_theme4_pressed(self): self.setStyle(styles[6])
+    def on_theme5_pressed(self): self.setStyle(styles[7])
+    def on_theme6_pressed(self): self.setStyle(styles[2])
+    def on_theme7_pressed(self): self.setStyle(styles[0])
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Configuración de botones del inventario

@@ -21,9 +21,10 @@
     <file alias="checked">../images/rbutton-checked.png</file>
   </qresource>
   <qresource prefix="login">
+    <file alias="camera">../images/camera.png</file>
+    <file alias="conf">../images/tools.png</file>
     <file alias="users">../images/users.png</file>
     <file alias="user">../images/user.png</file>
-    <file alias="logo">../images/logo.png</file>
     <file alias="password">../images/password.png</file>
   </qresource>
   <qresource prefix="color">
