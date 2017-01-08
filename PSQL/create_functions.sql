@@ -21,7 +21,8 @@ $check_password$
 $check_password$  
 LANGUAGE SQL;
 
--- Funcion para cambiar la contrasena de usuario y devolver su email (db_user)
+-- Funcion para cambiar la contrasena de usuario y devolver su email (db_user).
+-- PELIGROSO DEJAR QUE USUARIOS USEN ESTO A LO LOCO
 CREATE OR REPLACE FUNCTION lost_password(uname TEXT, pass TEXT)
 RETURNS SETOF TEXT AS 
 $lost_password$
@@ -31,6 +32,20 @@ $lost_password$
     RETURNING email;
 $lost_password$  
 LANGUAGE SQL;
+
+-- Funcion para cambiar contrasena de usuario dado la contrasena anterior
+-- Devuelve true si ocurrio el cambio
+CREATE OR REPLACE FUNCTION change_password(uname TEXT, oldpssw TEXT, newpssw TEXT)
+RETURNS BOOLEAN AS
+$change_password$
+BEGIN
+	UPDATE db_user
+	SET user_password = $3
+	WHERE username = $1 AND user_password = $2;
+	RETURN FOUND;
+END;
+$change_password$
+LANGUAGE plpgsql;
 
 -- Funcion obtener la informacion de los usuarios del sistema (sin contrasena) (db_user)
 CREATE OR REPLACE FUNCTION get_users_info(orderByLastLogin BOOLEAN DEFAULT true, descendingOrderByLastLogin BOOLEAN DEFAULT false)
@@ -68,6 +83,7 @@ $get_user_info$
     WHERE username = $1;
 $get_user_info$  
 LANGUAGE SQL;
+
 
 -- TODO hacer trigger de devoluciones por saldo (No cash)
 -- TODO hacer funcion de actualizacion de cierre de turno/dia/trimestre que calcule todo 
