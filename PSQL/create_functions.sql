@@ -33,8 +33,9 @@ $lost_password$
 $lost_password$  
 LANGUAGE SQL;
 
--- Funcion para cambiar contrasena de usuario dado la contrasena anterior
+-- Funcion para cambiar contrasena de usuario dado la contrasena anterior (db_user)
 -- Devuelve true si ocurrio el cambio
+-- MAS SEGURA QUE LA FUNCION ANTERIOR
 CREATE OR REPLACE FUNCTION change_password(uname TEXT, oldpssw TEXT, newpssw TEXT)
 RETURNS BOOLEAN AS
 $change_password$
@@ -46,6 +47,44 @@ BEGIN
 END;
 $change_password$
 LANGUAGE plpgsql;
+
+-- Funcion para actualizar informacion de usuario, Requiere su contrasena. NO CAMBIA CONTRASENA NI PERMISOS
+-- Devuelve true si ocurrio el cambio
+CREATE OR REPLACE FUNCTION update_user(
+	username TEXT, 
+	user_password TEXT, 
+	firstname TEXT DEFAULT NULL, 
+	lastname TEXT DEFAULT NULL, 
+	email TEXT DEFAULT NULL, 
+	profile TEXT DEFAULT NULL, 
+	description TEXT DEFAULT NULL)
+RETURNS BOOLEAN AS
+$update_user$
+BEGIN
+	UPDATE db_user AS U
+	SET firstname = COALESCE(update_user.firstname, U.firstname),
+	    lastname = COALESCE(update_user.lastname, U.lastname),
+	    email = COALESCE(update_user.email, U.email),
+	    profile = COALESCE(update_user.profile, U.profile),
+	    description = COALESCE(update_user.description, U.description)
+	WHERE U.username = update_user.username AND U.user_password = update_user.user_password;
+	RETURN FOUND;
+END;
+$update_user$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION update_permission_mask(username TEXT, permission_mask INTEGER)
+RETURNS BOOLEAN AS
+$update_permission_mask$
+BEGIN
+	UPDATE db_user AS U
+	SET permission_mask = update_permission_mask.permission_mask
+	WHERE U.username = update_permission_mask.username;
+	RETURN FOUND;
+END;
+$update_permission_mask$
+LANGUAGE plpgsql;
+
 
 -- Funcion obtener la informacion de los usuarios del sistema (sin contrasena) (db_user)
 CREATE OR REPLACE FUNCTION get_users_info(orderByLastLogin BOOLEAN DEFAULT true, descendingOrderByLastLogin BOOLEAN DEFAULT false)
