@@ -73,6 +73,8 @@ class Product(this.Base):
 
     # Relaciones
     lot  = relationship("lot")
+    product_list = relationship("product_list")
+    reverse_product_list = relationship("reverse_product_list")
 
 # Tabla de lotes
 class Lot(this.Base):
@@ -106,6 +108,10 @@ class Service(this.Base):
     available    = Column(Boolean, nullable=False, default=False)
     description  = Column(String)
     category     = Column(String)
+
+    # Relaciones
+    service_list = relationship("service_list")
+    reverse_service_list = relationship("reverse_service_list")
 
 # Tabla de clientes
 class Client(this.Base):
@@ -142,6 +148,9 @@ class Purchase(this.Base):
     payed_date    = Column(DateTime, default=None)
     payed_to      = Column(String, default=None)
 
+    # Relaciones
+    product_list = relationship("product_list")
+
 # Tabla de pagos de orden de compra
 class Checkout(this.Base):
     # Nombre
@@ -159,11 +168,11 @@ class Checkout(this.Base):
 # Tabla de lista de productos de orden de compra
 class Product_list(this.Base):
     # Nombre
-    __tablename__ = 'product_List'
+    __tablename__ = 'product_list'
 
     # Atributos
-    product_id  = Column(UUID, nullable=False, primary_key=True)
-    purchase_id = Column(UUID, nullable=False, primary_key=True)
+    product_id  = Column(UUID, nullable=False, ForeignKey('product.product_id'), primary_key=True)
+    purchase_id = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
     price       = Column(Numeric, nullable=False, default=0)
     amount      = Column(Integer, nullable=False)
     locked      = Column(Boolean, nullable=False, default=False)
@@ -175,8 +184,8 @@ class Service_list(this.Base):
     __tablename__ = 'service_list'
 
     # Atributos
-    service_id  = Column(UUID, nullable=False, primary_key=True)
-    purchase_id = Column(UUID, nullable=False, primary_key=True)
+    service_id  = Column(UUID, nullable=False, ForeignKey('service.service_id'), primary_key=True)
+    purchase_id = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
     price       = Column(Numeric, nullable=False, default=0)
     amount      = Column(Integer, nullable=False)
     locked      = Column(Boolean, nullable=False, default=False)
@@ -188,8 +197,8 @@ class Reverse_product_list(this.Base):
     __tablename__ = 'reverse_product_list'
 
     # Atributos
-    product_id   = Column(UUID, nullable=False, primary_key=True)
-    purchase_id  = Column(UUID, nullable=False, primary_key=True)
+    product_id   = Column(UUID, nullable=False, ForeignKey('product.product_id'), primary_key=True)
+    purchase_id  = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
     clerk        = Column(String, nullable=False)
     reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount       = Column(Integer, nullable=False)
@@ -202,8 +211,8 @@ class Reverse_service_list(this.Base):
     __tablename__ = 'reverse_service_list'
 
     # Atributos
-    service_id   = Column(UUID, nullable=False, primary_key=True)
-    purchase_id  = Column(UUID, nullable=False, primary_key=True)
+    service_id   = Column(UUID, nullable=False, ForeignKey('service.service_id'), primary_key=True)
+    purchase_id  = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
     clerk        = Column(String, nullable=False)
     reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount       = Column(Integer, nullable=False)
