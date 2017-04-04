@@ -51,7 +51,7 @@ class Provider(this.Base):
     __tablename__ = 'provider'
 
     # Atributos
-    provider_id     = Column(String, nullable=False, primary_key=True)
+    provider_name   = Column(String, nullable=False, primary_key=True)
     phone           = Column(String)
     email           = Column(String)
     pay_information = Column(String, nullable=False)
@@ -104,7 +104,7 @@ class Lot(this.Base):
     # Constraints
     __table_args__ = (
         ForeignKeyConstraint(['product_id'], ['product.product_id']),
-        ForeignKeyConstraint(['provider_id'], ['provider.provider_id']),
+        ForeignKeyConstraint(['provider_id'], ['provider.provider_name']),
         ForeignKeyConstraint(['received_by'], ['users.username']),
     )
 
