@@ -28,6 +28,10 @@ class User(this.Base):
 
     # Relaciones
     lot  = relationship("lot")
+    purchase  = relationship("purchase")
+    reverse_product_list = relationship("reverse_product_list")
+    reverse_service_list = relationship("reverse_service_list")
+    transfer  = relationship("transfer")
 
     def __repr__(self):
        return "<User(username='%s', password='%s',  firstname='%s', lastname='%s', email=='%s', creation_date=='%s', last_login=='%s')>" % (
@@ -130,6 +134,10 @@ class Client(this.Base):
     balance         = Column(Numeric, nullable=False, default=0)
     last_seen       = Column(DateTime, default=datetime.datetime.now())
 
+    # Relaciones
+    purchase  = relationship("purchase")
+    transfer  = relationship("transfer")
+
 # Tabla de Compras
 class Purchase(this.Base):
     # Nombre
@@ -137,8 +145,8 @@ class Purchase(this.Base):
 
     # Atributos
     purchase_id   = Column(UUID, default=uuid_generate_v4(), primary_key=True)
-    ci            = Column(Integer, nullable=False)
-    clerk         = Column(String, nullable=False)
+    ci            = Column(Integer, nullable=False, ForeignKey('client.ci'))
+    clerk         = Column(String, nullable=False, ForeignKey('users.username'))
     total         = Column(Numeric, nullable=False, default=0)
     interest      = Column(Numeric, nullable=False, default=0)
     purchase_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
@@ -146,9 +154,10 @@ class Purchase(this.Base):
     debt          = Column(Boolean, nullable=False, default=False)
     payed         = Column(Boolean, nullable=False, default=False)
     payed_date    = Column(DateTime, default=None)
-    payed_to      = Column(String, default=None)
+    payed_to      = Column(String, default=None, ForeignKey('users.username'))
 
     # Relaciones
+    checkout = relationship("checkout")
     product_list = relationship("product_list")
 
 # Tabla de pagos de orden de compra
@@ -158,7 +167,7 @@ class Checkout(this.Base):
 
     # Atributos
     checkout_id  = Column(UUID, nullable=False, default=uuid_generate_v4(), primary_key=True)
-    purchase_id  = Column(UUID, nullable=False, primary_key=True)
+    purchase_id  = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
     pay_date     = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount       = Column(Numeric, nullable=False)
     with_balance = Column(Boolean, nullable=False, default=False)
@@ -199,7 +208,7 @@ class Reverse_product_list(this.Base):
     # Atributos
     product_id   = Column(UUID, nullable=False, ForeignKey('product.product_id'), primary_key=True)
     purchase_id  = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
-    clerk        = Column(String, nullable=False)
+    clerk        = Column(String, nullable=False, ForeignKey('users.username'))
     reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount       = Column(Integer, nullable=False)
     cash         = Column(Boolean, default=True)
@@ -213,7 +222,7 @@ class Reverse_service_list(this.Base):
     # Atributos
     service_id   = Column(UUID, nullable=False, ForeignKey('service.service_id'), primary_key=True)
     purchase_id  = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
-    clerk        = Column(String, nullable=False)
+    clerk        = Column(String, nullable=False, ForeignKey('users.username'))
     reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount       = Column(Integer, nullable=False)
     cash         = Column(Boolean, default=True)
@@ -226,8 +235,8 @@ class Transfer(this.Base):
 
     # Atributos
     transfer_id       = Column(UUID, default=uuid_generate_v4(), primary_key=True)
-    ci                = Column(Integer, nullable=False)
-    clerk             = Column(String, nullable=False)
+    ci                = Column(Integer, nullable=False, ForeignKey('client.ci'))
+    clerk             = Column(String, nullable=False, ForeignKey('users.username'))
     transfer_date     = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount            = Column(Integer, nullable=False)
     bank              = Column(String, nullable=False)
