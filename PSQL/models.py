@@ -35,16 +35,11 @@ class User(this.Base):
     transfer             = relationship("transfer")
     operation_log        = relationship("operation_log")
 
+    # Representación de una instancia de la clase
     def __repr__(self):
-       return "<User(username='%s', password='%s',  firstname='%s', lastname='%s', email=='%s', creation_date=='%s', last_login=='%s')>" % (
-                            self.username,
-                            self.password,
-                            self.firstname,
-                            self.lastname,
-                            self.email,
-                            str(self.creation_date),
-                            str(self.last_login)
-                            )
+        kwargs = (self.username, self.password, self.firstname, self.lastname, self.email, str(self.creation_date), str(self.last_login))
+        template = "<User(username='%s', password='%s',  firstname='%s', lastname='%s', email=='%s', creation_date=='%s', last_login=='%s')>"
+        return  template % kwargs
 
 # Tabla de proveedores
 class Provider(this.Base):
@@ -61,6 +56,12 @@ class Provider(this.Base):
 
     # Relaciones
     lot  = relationship("lot")
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.provider_name, self.phone, self.email, self.pay_information, self.description, self.category)
+        template = "<Provider(provider_name='%s', phone='%s', email='%s', pay_information='%s', description=='%s', category=='%s')>"
+        return  template % kwargs
 
 # Tabla de productos
 class Product(this.Base):
@@ -89,6 +90,12 @@ class Product(this.Base):
     lot                  = relationship("lot")
     product_list         = relationship("product_list")
     reverse_product_list = relationship("reverse_product_list")
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.product_id, self.product_name, self.price, self.remaining, self.remaining_lots, self.available, self.description, self.category)
+        template = "<Product(product_id='%s', product_name='%s', price='%s', remaining='%s', remaining_lots=='%s', available=='%s', description=='%s', category=='%s')>"
+        return  template % kwargs
 
 # Tabla de lotes
 class Lot(this.Base):
@@ -128,6 +135,14 @@ class Lot(this.Base):
         ForeignKeyConstraint(['received_by'], ['users.username']),
     )
 
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.lot_id, self.product_id, self.provider_id, self.received_by, self.cost, self.quantity, self.adquisition_date, self.perishable,
+            self.expiration_date, self.available, self.current, self.description, self.category,)
+        template = "<Lot(lot_id='%s', product_id='%s', provider_id='%s', received_by='%s', cost='%s',  quantity='%s',  adquisition_date='%s',  perishable='%s', "
+        template += "expiration_date='%s', available='%s', current='%s', description=='%s', category=='%s')>"
+        return  template % kwargs
+
 # Tabla de servicios
 class Service(this.Base):
     # Nombre
@@ -150,6 +165,12 @@ class Service(this.Base):
     # Relaciones
     service_list         = relationship("service_list")
     reverse_service_list = relationship("reverse_service_list")
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.service_id, self.service_name, self.price, self.available, self.description, self.category)
+        template = "<Service(service_id='%s', service_name='%s', price='%s', ravailable=='%s', description=='%s', category=='%s')>"
+        return  template % kwargs
 
 # Tabla de clientes
 class Client(this.Base):
@@ -177,6 +198,14 @@ class Client(this.Base):
     # Relaciones
     purchase  = relationship("purchase")
     transfer  = relationship("transfer")
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.ci, self.carnet, self.firstname, self.lastname, self.phone, self.debt_permission, self.book_permission, self.blocked,
+            self.balance, self.last_seen)
+        template = "<Client(ci='%s', carnet='%s', firstname='%s', lastname='%s', phone=='%s', debt_permission=='%s', book_permission=='%s', "
+        template += "blocked=='%s', balance=='%s', last_seen=='%s')>"
+        return  template % kwargs
 
 # Tabla de Compras
 class Purchase(this.Base):
