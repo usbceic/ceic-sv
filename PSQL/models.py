@@ -38,7 +38,7 @@ class User(this.Base):
 class Provider(this.Base):
     __tablename__ = 'provider'
 
-    provider_name   = Column(String, nullable=False)
+    provider_name   = Column(String, nullable=False, primary_key=True)
     phone           = Column(String)
     email           = Column(String)
     pay_information = Column(String, nullable=False)
@@ -49,7 +49,7 @@ class Provider(this.Base):
 class Product(this.Base):
     __tablename__ = 'product'
 
-    product_id     = Column(UUID, default=uuid_generate_v4())
+    product_id     = Column(UUID, default=uuid_generate_v4(), primary_key=True)
     product_name   = Column(String, nullable=False)
     price          = Column(Numeric, nullable=False)
     remaining      = Column(Integer, nullable=False, default=0)
@@ -62,8 +62,8 @@ class Product(this.Base):
 class Lot(this.Base):
     __tablename__ = 'lot'
 
-    lot_id           = Column(UUID, nullable=False, default=uuid_generate_v4())
-    product_id       = Column(UUID, nullable=False)
+    lot_id           = Column(UUID, nullable=False, default=uuid_generate_v4(), primary_key=True)
+    product_id       = Column(UUID, nullable=False, primary_key=True)
     provider_id      = Column(String, nullable=False)
     received_by      = Column(String, nullable=False)
     cost             = Column(Numeric, nullable=False)
@@ -80,7 +80,7 @@ class Lot(this.Base):
 class Service(this.Base):
     __tablename__ = 'service'
 
-    service_id   = Column(UUID, default=uuid_generate_v4())
+    service_id   = Column(UUID, default=uuid_generate_v4(), primary_key=True)
     service_name = Column(String, nullable=False)
     price        = Column(Numeric, nullable=False)
     available    = Column(Boolean, nullable=False, default=False)
@@ -91,7 +91,7 @@ class Service(this.Base):
 class Client(this.Base):
     __tablename__ = 'client'
 
-    ci              = Column(Integer)
+    ci              = Column(Integer, primary_key=True)
     carnet          = Column(String, default=None)
     firstname       = Column(String, nullable=False)
     lastname        = Column(String, nullable=False)
@@ -106,7 +106,7 @@ class Client(this.Base):
 class Purchase(this.Base):
     __tablename__ = 'purchase'
 
-    purchase_id   = Column(UUID, default=uuid_generate_v4())
+    purchase_id   = Column(UUID, default=uuid_generate_v4(), primary_key=True)
     ci            = Column(Integer, nullable=False)
     clerk         = Column(String, nullable=False)
     total         = Column(Numeric, nullable=False, default=0)
@@ -122,8 +122,8 @@ class Purchase(this.Base):
 class Checkout(this.Base):
     __tablename__ = 'checkout'
 
-    checkout_id  = Column(UUID, nullable=False, default=uuid_generate_v4())
-    purchase_id  = Column(UUID, nullable=False)
+    checkout_id  = Column(UUID, nullable=False, default=uuid_generate_v4(), primary_key=True)
+    purchase_id  = Column(UUID, nullable=False, primary_key=True)
     pay_date     = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount       = Column(Numeric, nullable=False)
     with_balance = Column(Boolean, nullable=False, default=False)
@@ -134,8 +134,8 @@ class Checkout(this.Base):
 class Product_list(this.Base):
     __tablename__ = 'product_List'
 
-    product_id  = Column(UUID, nullable=False)
-    purchase_id = Column(UUID, nullable=False)
+    product_id  = Column(UUID, nullable=False, primary_key=True)
+    purchase_id = Column(UUID, nullable=False, primary_key=True)
     price       = Column(Numeric, nullable=False, default=0)
     amount      = Column(Integer, nullable=False)
     locked      = Column(Boolean, nullable=False, default=False)
@@ -145,8 +145,8 @@ class Product_list(this.Base):
 class Service_list(this.Base):
     __tablename__ = 'service_list'
 
-    service_id  = Column(UUID, nullable=False)
-    purchase_id = Column(UUID, nullable=False)
+    service_id  = Column(UUID, nullable=False, primary_key=True)
+    purchase_id = Column(UUID, nullable=False, primary_key=True)
     price       = Column(Numeric, nullable=False, default=0)
     amount      = Column(Integer, nullable=False)
     locked      = Column(Boolean, nullable=False, default=False)
@@ -156,8 +156,8 @@ class Service_list(this.Base):
 class Reverse_product_list(this.Base):
     __tablename__ = 'reverse_product_list'
 
-    product_id   = Column(UUID, nullable=False)
-    purchase_id  = Column(UUID, nullable=False)
+    product_id   = Column(UUID, nullable=False, primary_key=True)
+    purchase_id  = Column(UUID, nullable=False, primary_key=True)
     clerk        = Column(String, nullable=False)
     reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount       = Column(Integer, nullable=False)
@@ -168,8 +168,8 @@ class Reverse_product_list(this.Base):
 class Reverse_service_list(this.Base):
     __tablename__ = 'reverse_service_list'
 
-    service_id   = Column(UUID, nullable=False)
-    purchase_id  = Column(UUID, nullable=False)
+    service_id   = Column(UUID, nullable=False, primary_key=True)
+    purchase_id  = Column(UUID, nullable=False, primary_key=True)
     clerk        = Column(String, nullable=False)
     reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount       = Column(Integer, nullable=False)
@@ -180,7 +180,7 @@ class Reverse_service_list(this.Base):
 class Transfer(this.Base):
     __tablename__ = 'transfer'
 
-    transfer_id       = Column(UUID, default=uuid_generate_v4())
+    transfer_id       = Column(UUID, default=uuid_generate_v4(), primary_key=True)
     ci                = Column(Integer, nullable=False)
     clerk             = Column(String, nullable=False)
     transfer_date     = Column(DateTime, nullable=False, default=datetime.datetime.now())
@@ -193,7 +193,7 @@ class Transfer(this.Base):
 class Operation_log(this.Base):
     __tablename__ = 'operation_log'
 
-    operation_log_id = Column(UUID, default=uuid_generate_v4())
+    operation_log_id = Column(UUID, default=uuid_generate_v4(), primary_key=True)
     clerk            = Column(String, nullable=False)
     op_type          = Column(Integer, nullable=False)
     open_record      = Column(Boolean, default=False)
@@ -207,13 +207,13 @@ class Operation_log(this.Base):
 class Valid_language(this.Base):
     __tablename__ = 'valid_language'
 
-    lang_name = Column(String)
+    lang_name = Column(String, primary_key=True)
 
 # Tabla de Libros
 class Book(this.Base):
     __tablename__ = 'book'
 
-    book_id       = Column(UUID, default=uuid_generate_v4())
+    book_id       = Column(UUID, default=uuid_generate_v4(), primary_key=True)
     title         = Column(String, nullable=False)
     isbn          = Column(String, default=None)
     edition       = Column(Integer, nullable=False, default=1)
@@ -226,46 +226,46 @@ class Book(this.Base):
 class Subject(this.Base):
     __tablename__ = 'subject'
 
-    subject_code = Column(String)
+    subject_code = Column(String, primary_key=True)
     subject_name = Column(String, nullable=False)
 
 # Tabla de Autores
 class Author(this.Base):
     __tablename__ = 'author'
 
-    firstname       = Column(String, nullable=False)
-    lastname        = Column(String, nullable=False)
-    middlename      = Column(String, default=None)
-    second_lastname = Column(String, default=None)
-    birthdate       = Column(Date, default=None)
-    nationality     = Column(String, default=None)
+    firstname       = Column(String, nullable=False, primary_key=True)
+    lastname        = Column(String, nullable=False, primary_key=True)
+    middlename      = Column(String, default=None, primary_key=True)
+    second_lastname = Column(String, default=None, primary_key=True)
+    birthdate       = Column(Date, default=None, primary_key=True)
+    nationality     = Column(String, default=None, primary_key=True)
 
 # Tabla que asocia libros con asignaturas
 class Associated_with(this.Base):
     __tablename__ = 'associated'
 
-    book_id      = Column(UUID, nullable=False)
-    subject_code = Column(String, nullable=False)
+    book_id      = Column(UUID, nullable=False, primary_key=True)
+    subject_code = Column(String, nullable=False, primary_key=True)
 
 # Tabla de Quien escribio el libro
 class Written_by(this.Base):
     __tablename__ = 'written_by'
 
-    book_id         = Column(UUID, nullable=False)
-    firstname       = Column(String, nullable=False)
-    lastname        = Column(String, nullable=False)
-    middlename      = Column(String, default=None)
-    second_lastname = Column(String, default=None)
-    birthdate       = Column(Date, default=None)
-    nationality     = Column(String, default=None)
+    book_id         = Column(UUID, nullable=False, primary_key=True)
+    firstname       = Column(String, nullable=False, primary_key=True)
+    lastname        = Column(String, nullable=False, primary_key=True)
+    middlename      = Column(String, default=None, primary_key=True)
+    second_lastname = Column(String, default=None, primary_key=True)
+    birthdate       = Column(Date, default=None, primary_key=True)
+    nationality     = Column(String, default=None, primary_key=True)
 
 # Tabla de préstamos
 class Lent_to(this.Base):
     __tablename__ = 'lent_to'
 
-    book_id               = Column(UUID, nullable=False)
-    ci                    = Column(Integer, nullable=False)
-    lender_clerk          = Column(String, nullable=False)
+    book_id               = Column(UUID, nullable=False, primary_key=True)
+    ci                    = Column(Integer, nullable=False, primary_key=True)
+    lender_clerk          = Column(String, nullable=False, primary_key=True)
     start_description     = Column(String, nullable=False)
     start_time            = Column(DateTime, nullable=False, default=datetime.datetime.now())
     estimated_return_time = Column(DateTime, nullable=False)
