@@ -51,8 +51,7 @@ class Provider(this.Base):
     __tablename__ = 'provider'
 
     # Atributos
-    provider_id     = Column(Integer, primary_key=True)
-    provider_name   = Column(String, nullable=False, primary_key=True)
+    provider_id     = Column(String, nullable=False, primary_key=True)
     phone           = Column(String)
     email           = Column(String)
     pay_information = Column(String, nullable=False)
