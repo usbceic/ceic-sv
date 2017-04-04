@@ -4,7 +4,7 @@ import datetime
 
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Boolean, Integer, String, DateTime, Date, Numeric, ForeignKeyConstraint
+from sqlalchemy import Column, Boolean, Integer, String, DateTime, Date, Numeric, ForeignKeyConstraint, CheckConstraint
 from guid import GUID
 
 this = sys.modules[__name__]
@@ -77,6 +77,14 @@ class Product(this.Base):
     description    = Column(String)
     category       = Column(String)
 
+    # Constraints
+    __table_args__ = (
+        # Verificaciones
+        CheckConstraint('price >= 0', name='exp_product_valid_price'),
+        CheckConstraint('remaining >= 0', name='exp_product_valid_remaining'),
+        CheckConstraint('remaining_lots >= 0', name='exp_product_valid_remaining_lots'),
+    )
+
     # Relaciones
     lot                  = relationship("lot")
     product_list         = relationship("product_list")
@@ -104,6 +112,17 @@ class Lot(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Verificaciones
+        CheckConstraint('cost >= 0', name='exp_lot_valid_cost'),
+        CheckConstraint('quantity >= 0', name='exp_lot_valid_quantity'),
+        CheckConstraint('NOT available OR (available AND quantity > 0)', name='exp_lot_valid_available'),
+        CheckConstraint('NOT current OR (available AND current)', name='exp_lot_valid_current'),
+        CheckConstraint(
+            '(NOT perishable AND expiration_date IS NULL) OR (perishable AND expiration_date IS NOT NULL AND adquisition_date <= expiration_date)',
+            name='exp_lot_valid_expiration_date'
+        ),
+
+        # Claves foraneas
         ForeignKeyConstraint(['product_id'], ['product.product_id']),
         ForeignKeyConstraint(['provider_id'], ['provider.provider_name']),
         ForeignKeyConstraint(['received_by'], ['users.username']),
@@ -121,6 +140,12 @@ class Service(this.Base):
     available    = Column(Boolean, nullable=False, default=False)
     description  = Column(String)
     category     = Column(String)
+
+    # Constraints
+    __table_args__ = (
+        # Verificaciones
+        CheckConstraint('price >= 0', name='exp_service_valid_price'),
+    )
 
     # Relaciones
     service_list         = relationship("service_list")
@@ -142,6 +167,12 @@ class Client(this.Base):
     blocked         = Column(Boolean, nullable=False, default=False)
     balance         = Column(Numeric, nullable=False, default=0)
     last_seen       = Column(DateTime, default=datetime.datetime.now())
+
+    # Constraints
+    __table_args__ = (
+        # Verificaciones
+        CheckConstraint('balance >= 0 OR debt_permission', name='exp_client_valid_balance'),
+    )
 
     # Relaciones
     purchase  = relationship("purchase")
@@ -167,6 +198,14 @@ class Purchase(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Verificaciones
+        CheckConstraint('total >= 0', name='exp_purchase_valid_total'),
+        CheckConstraint('interest >= 0', name='exp_purchase_valid_interest'),
+        CheckConstraint('(payed AND locked) OR NOT payed', name='exp_purchase_valid_payed'),
+        CheckConstraint('(payed AND payed_date IS NOT NULL) OR (NOT payed AND payed_date IS NULL)', name='exp_purchase_valid_payed_date'),
+        CheckConstraint('(payed AND payed_to IS NOT NULL) OR (NOT payed AND payed_to IS NULL)', name='exp_purchase_valid_payed_to'),
+
+        # Claves foraneas
         ForeignKeyConstraint(['ci'], ['client.ci']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
         ForeignKeyConstraint(['payed_to'], ['users.username']),
@@ -192,6 +231,10 @@ class Checkout(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Verificaciones
+        CheckConstraint('amount > 0', name='exp_checkout_valid_amount'),
+
+        # Claves foraneas
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
     )
 
@@ -210,6 +253,12 @@ class Product_list(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Verificaciones
+        CheckConstraint('price > 0', name='exp_product_list_valid_price'),
+        CheckConstraint('amount > 0', name='exp_product_list_valid_amount'),
+        CheckConstraint('(payed AND locked) OR NOT payed', name='exp_product_list_valid_payed'),
+
+        # Claves foraneas
         ForeignKeyConstraint(['product_id'], ['product.product_id']),
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
     )
@@ -229,6 +278,12 @@ class Service_list(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Verificaciones
+        CheckConstraint('price > 0', name='exp_service_list_valid_price'),
+        CheckConstraint('amount > 0', name='exp_service_list_valid_amount'),
+        CheckConstraint('(payed AND locked) OR NOT payed', name='exp_service_list_valid_payed'),
+
+        # Claves foraneas
         ForeignKeyConstraint(['service_id'], ['service.service_id']),
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
     )
@@ -249,6 +304,10 @@ class Reverse_product_list(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Verificaciones
+        CheckConstraint('amount > 0', name='exp_reverse_product_list_valid_amount'),
+
+        # Claves foraneas
         ForeignKeyConstraint(['product_id'], ['product.product_id']),
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
@@ -270,6 +329,10 @@ class Reverse_service_list(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Verificaciones
+        CheckConstraint('amount > 0', name='exp_reverse_service_list_valid_amount'),
+
+        # Claves foraneas
         ForeignKeyConstraint(['service_id'], ['service.service_id']),
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
@@ -292,6 +355,10 @@ class Transfer(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Verificaciones
+        CheckConstraint('amount > 0', name='exp_transfer_valid_amount'),
+
+        # Claves foraneas
         ForeignKeyConstraint(['ci'], ['client.ci']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
     )
@@ -314,6 +381,10 @@ class Operation_log(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Verificaciones
+        CheckConstraint('open_record IS NULL OR (op_type = 0 OR op_type = 1 OR op_type = 2)', name='exp_operation_log_valid_open_record'),
+
+        # Claves foraneas
         ForeignKeyConstraint(['clerk'], ['users.username']),
     )
 
@@ -345,6 +416,12 @@ class Book(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Verificaciones
+        CheckConstraint('edition > 0', name='exp_book_valid_edition'),
+        CheckConstraint('quantity > 0', name='exp_book_valid_quantity'),
+        CheckConstraint('quantity_lent >= 0', name='exp_book_valid_quantity_lent'),
+
+        # Claves foraneas
         ForeignKeyConstraint(['lang'], ['valid_language.lang_name']),
     )
 
@@ -391,6 +468,7 @@ class Associated_with(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Claves foraneas
         ForeignKeyConstraint(['book_id'], ['book.book_id']),
         ForeignKeyConstraint(['subject_code'], ['subject.subject_code']),
     )
@@ -411,6 +489,7 @@ class Written_by(this.Base):
 
     # Constraints
     __table_args__ = (
+        # Claves foraneas
         ForeignKeyConstraint(['book_id'], ['book.book_id']),
         ForeignKeyConstraint(
             ['firstname', 'lastname', 'middlename', 'second_lastname', 'birthdate', 'nationality'],
@@ -432,4 +511,24 @@ class Lent_to(this.Base):
     estimated_return_time = Column(DateTime, nullable=False)
     receiver_clerk        = Column(String, default=None)
     return_time           = Column(DateTime, default=None)
-    return_description    = Column(String, default=None)"""
+    return_description    = Column(String, default=None)
+
+    # Constraints
+    __table_args__ = (
+        # Verificaciones
+        CheckConstraint('start_time <= estimated_return_time', name='exp_lent_to_valid_estimated_return_time'),
+        CheckConstraint(
+            '(receiver_clerk IS NULL AND return_time IS NULL) OR (receiver_clerk IS NOT NULL AND return_time IS NOT NULL AND start_time <= return_time)',
+            name='exp_lent_to_valid_valid_return_time'
+        ),
+        CheckConstraint(
+            '(receiver_clerk IS NULL AND return_description IS NULL) OR (receiver_clerk IS NOT NULL AND return_description IS NOT NULL)',
+            name='exp_lent_to_valid_return_description'
+        ),
+
+        # Claves foraneas
+        ForeignKeyConstraint(['book_id'], ['book.book_id']),
+        ForeignKeyConstraint(['ci'], ['client.ci']),
+        ForeignKeyConstraint(['lender_clerk'], ['users.username']),
+        ForeignKeyConstraint(['receiver_clerk'], ['users.username']),
+    )"""
