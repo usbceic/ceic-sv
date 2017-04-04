@@ -158,7 +158,7 @@ class Client(this.Base):
 
     # Atributos
     ci              = Column(Integer, primary_key=True)
-    carnet          = Column(String, default=None)
+    carnet          = Column(String, default=None, unique=True)
     firstname       = Column(String, nullable=False)
     lastname        = Column(String, nullable=False)
     phone           = Column(String, default=None)
@@ -407,7 +407,7 @@ class Book(this.Base):
     # Atributos
     book_id       = Column(GUID(), primary_key=True)
     title         = Column(String, nullable=False)
-    isbn          = Column(String, default=None)
+    isbn          = Column(String, default=None, unique=True)
     edition       = Column(Integer, nullable=False, default=1)
     book_year     = Column(Date, nullable=False)
     lang          = Column(String, nullable=False)
