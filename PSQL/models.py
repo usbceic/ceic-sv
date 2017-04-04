@@ -123,8 +123,8 @@ class Lot(this.Base):
         ),
 
         # Claves foraneas
-        ForeignKeyConstraint(['product_id'], ['product.product_id']),
-        ForeignKeyConstraint(['provider_id'], ['provider.provider_name']),
+        ForeignKeyConstraint(['product_id'], ['product.product_id'], onupdate="CASCADE", ondelete="CASCADE"),
+        ForeignKeyConstraint(['provider_id'], ['provider.provider_name'], onupdate="CASCADE"),
         ForeignKeyConstraint(['received_by'], ['users.username']),
     )
 
@@ -470,7 +470,7 @@ class Associated_with(this.Base):
     __table_args__ = (
         # Claves foraneas
         ForeignKeyConstraint(['book_id'], ['book.book_id']),
-        ForeignKeyConstraint(['subject_code'], ['subject.subject_code']),
+        ForeignKeyConstraint(['subject_code'], ['subject.subject_code'], onupdate="CASCADE"),
     )
 
 # Tabla de Quien escribio el libro
