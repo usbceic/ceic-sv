@@ -342,9 +342,11 @@ class Written_by(this.Base):
     nationality     = Column(String, default=None, primary_key=True)
 
     # Constraints
-    ForeignKeyConstraint(
-        ['firstname', 'lastname', 'middlename', 'second_lastname', 'birthdate', 'nationality'],
-        ['author.firstname', 'author.lastname', 'author.middlename', 'author.second_lastname', 'author.birthdate', 'author.nationality']
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ['firstname', 'lastname', 'middlename', 'second_lastname', 'birthdate', 'nationality'],
+            ['author.firstname', 'author.lastname', 'author.middlename', 'author.second_lastname', 'author.birthdate', 'author.nationality']
+        )
     )
 
 """# Tabla de préstamos
