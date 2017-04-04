@@ -51,6 +51,7 @@ class Provider(this.Base):
     __tablename__ = 'provider'
 
     # Atributos
+    provider_id     = Column(Integer, primary_key=True)
     provider_name   = Column(String, nullable=False, primary_key=True)
     phone           = Column(String)
     email           = Column(String)
@@ -191,7 +192,7 @@ class Checkout(this.Base):
 
     # Constraints
     __table_args__ = (
-        ForeignKeyConstraint(['purchase_id'], ['purchse.purchase_id']),
+        ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
     )
 
 # Tabla de lista de productos de orden de compra
@@ -210,7 +211,7 @@ class Product_list(this.Base):
     # Constraints
     __table_args__ = (
         ForeignKeyConstraint(['product_id'], ['product.product_id']),
-        ForeignKeyConstraint(['purchase_id'], ['purchse.purchase_id']),
+        ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
     )
 
 # Tabla de lista de servicios de orden de compra
@@ -229,7 +230,7 @@ class Service_list(this.Base):
     # Constraints
     __table_args__ = (
         ForeignKeyConstraint(['service_id'], ['service.service_id']),
-        ForeignKeyConstraint(['purchase_id'], ['purchse.purchase_id']),
+        ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
     )
 
 # Tabla de lista de productos de orden de compra
@@ -249,7 +250,7 @@ class Reverse_product_list(this.Base):
     # Constraints
     __table_args__ = (
         ForeignKeyConstraint(['product_id'], ['product.product_id']),
-        ForeignKeyConstraint(['purchase_id'], ['purchse.purchase_id']),
+        ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
     )
 
@@ -270,7 +271,7 @@ class Reverse_service_list(this.Base):
     # Constraints
     __table_args__ = (
         ForeignKeyConstraint(['service_id'], ['service.service_id']),
-        ForeignKeyConstraint(['purchase_id'], ['purchse.purchase_id']),
+        ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
     )
 
@@ -344,7 +345,7 @@ class Book(this.Base):
 
     # Constraints
     __table_args__ = (
-        ForeignKeyConstraint(['lang'], ['valid_language.language_name']),
+        ForeignKeyConstraint(['lang'], ['valid_language.lang_name']),
     )
 
     # Relaciones
