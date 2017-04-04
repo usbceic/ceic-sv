@@ -27,11 +27,12 @@ class User(this.Base):
     last_login      = Column(DateTime, nullable=False, default=datetime.datetime.now())
 
     # Relaciones
-    lot  = relationship("lot")
-    purchase  = relationship("purchase")
+    lot                  = relationship("lot")
+    purchase             = relationship("purchase")
     reverse_product_list = relationship("reverse_product_list")
     reverse_service_list = relationship("reverse_service_list")
-    transfer  = relationship("transfer")
+    transfer             = relationship("transfer")
+    operation_log        = relationship("operation_log")
 
     def __repr__(self):
        return "<User(username='%s', password='%s',  firstname='%s', lastname='%s', email=='%s', creation_date=='%s', last_login=='%s')>" % (
@@ -76,8 +77,8 @@ class Product(this.Base):
     category       = Column(String)
 
     # Relaciones
-    lot  = relationship("lot")
-    product_list = relationship("product_list")
+    lot                  = relationship("lot")
+    product_list         = relationship("product_list")
     reverse_product_list = relationship("reverse_product_list")
 
 # Tabla de lotes
@@ -114,7 +115,7 @@ class Service(this.Base):
     category     = Column(String)
 
     # Relaciones
-    service_list = relationship("service_list")
+    service_list         = relationship("service_list")
     reverse_service_list = relationship("reverse_service_list")
 
 # Tabla de clientes
@@ -157,7 +158,7 @@ class Purchase(this.Base):
     payed_to      = Column(String, default=None, ForeignKey('users.username'))
 
     # Relaciones
-    checkout = relationship("checkout")
+    checkout     = relationship("checkout")
     product_list = relationship("product_list")
 
 # Tabla de pagos de orden de compra
@@ -250,7 +251,7 @@ class Operation_log(this.Base):
 
     # Atributos
     operation_log_id = Column(UUID, default=uuid_generate_v4(), primary_key=True)
-    clerk            = Column(String, nullable=False)
+    clerk            = Column(String, nullable=False, ForeignKey('users.username'))
     op_type          = Column(Integer, nullable=False)
     open_record      = Column(Boolean, default=False)
     recorded         = Column(DateTime, nullable=False, default=datetime.datetime.now())
@@ -267,6 +268,9 @@ class Valid_language(this.Base):
     # Atributos
     lang_name = Column(String, primary_key=True)
 
+    # Relaciones
+    book = relationship("book")
+
 # Tabla de Libros
 class Book(this.Base):
     # Nombre
@@ -278,9 +282,13 @@ class Book(this.Base):
     isbn          = Column(String, default=None)
     edition       = Column(Integer, nullable=False, default=1)
     book_year     = Column(Date, nullable=False)
-    lang          = Column(String, nullable=False)
+    lang          = Column(String, nullable=False, ForeignKey('valid_language.language_name'))
     quantity      = Column(Integer, nullable=False, default=1)
     quantity_lent = Column(Integer, nullable=False, default=0)
+
+    # Relaciones
+    associated_with = relationship("associated_with")
+    written_by = relationship("written_by")
 
 # Tabla de Asignaturas
 class Subject(this.Base):
@@ -290,6 +298,9 @@ class Subject(this.Base):
     # Atributos
     subject_code = Column(String, primary_key=True)
     subject_name = Column(String, nullable=False)
+
+    # Relaciones
+    associated_with = relationship("associated_with")
 
 # Tabla de Autores
 class Author(this.Base):
@@ -304,14 +315,17 @@ class Author(this.Base):
     birthdate       = Column(Date, default=None, primary_key=True)
     nationality     = Column(String, default=None, primary_key=True)
 
+    # Relaciones
+    written_by = relationship("written_by")
+
 # Tabla que asocia libros con asignaturas
 class Associated_with(this.Base):
     # Nombre
-    __tablename__ = 'associated'
+    __tablename__ = 'associated_with'
 
     # Atributos
-    book_id      = Column(UUID, nullable=False, primary_key=True)
-    subject_code = Column(String, nullable=False, primary_key=True)
+    book_id      = Column(UUID, nullable=False, ForeignKey('book.book_id'), primary_key=True)
+    subject_code = Column(String, nullable=False, ForeignKey('subject.subject_code'), primary_key=True)
 
 # Tabla de Quien escribio el libro
 class Written_by(this.Base):
@@ -319,7 +333,7 @@ class Written_by(this.Base):
     __tablename__ = 'written_by'
 
     # Atributos
-    book_id         = Column(UUID, nullable=False, primary_key=True)
+    book_id         = Column(UUID, nullable=False, ForeignKey('book.book_id'), primary_key=True)
     firstname       = Column(String, nullable=False, primary_key=True)
     lastname        = Column(String, nullable=False, primary_key=True)
     middlename      = Column(String, default=None, primary_key=True)
@@ -327,7 +341,13 @@ class Written_by(this.Base):
     birthdate       = Column(Date, default=None, primary_key=True)
     nationality     = Column(String, default=None, primary_key=True)
 
-# Tabla de préstamos
+    # Constraints
+    ForeignKeyConstraint(
+        ['firstname', 'lastname', 'middlename', 'second_lastname', 'birthdate', 'nationality'],
+        ['author.firstname', 'author.lastname', 'author.middlename', 'author.second_lastname', 'author.birthdate', 'author.nationality']
+    )
+
+"""# Tabla de préstamos
 class Lent_to(this.Base):
     # Nombre
     __tablename__ = 'lent_to'
@@ -341,4 +361,4 @@ class Lent_to(this.Base):
     estimated_return_time = Column(DateTime, nullable=False)
     receiver_clerk        = Column(String, default=None)
     return_time           = Column(DateTime, default=None)
-    return_description    = Column(String, default=None)
+    return_description    = Column(String, default=None)"""
