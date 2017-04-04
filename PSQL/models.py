@@ -88,9 +88,9 @@ class Lot(this.Base):
 
     # Atributos
     lot_id           = Column(UUID, nullable=False, default=uuid_generate_v4(), primary_key=True)
-    product_id       = Column(UUID, nullable=False, ForeignKey('product.product_id'), primary_key=True)
-    provider_id      = Column(String, nullable=False, ForeignKey('product.provider_id'))
-    received_by      = Column(String, nullable=False, ForeignKey('users.username'))
+    product_id       = Column(UUID, nullable=False, primary_key=True)
+    provider_id      = Column(String, nullable=False)
+    received_by      = Column(String, nullable=False)
     cost             = Column(Numeric, nullable=False)
     quantity         = Column(Integer, nullable=False)
     adquisition_date = Column(Date, nullable=False, default=datetime.datetime.now())
@@ -100,6 +100,13 @@ class Lot(this.Base):
     current          = Column(Boolean, nullable=False, default=False)
     description      = Column(String)
     category         = Column(String)
+
+    # Constraints
+    __table_args__ = (
+        ForeignKeyConstraint(['product_id'], ['product.product_id']),
+        ForeignKeyConstraint(['provider_id'], ['provider.provider_id']),
+        ForeignKeyConstraint(['received_by'], ['users.username'])
+    )
 
 # Tabla de servicios
 class Service(this.Base):
@@ -146,8 +153,8 @@ class Purchase(this.Base):
 
     # Atributos
     purchase_id   = Column(UUID, default=uuid_generate_v4(), primary_key=True)
-    ci            = Column(Integer, nullable=False, ForeignKey('client.ci'))
-    clerk         = Column(String, nullable=False, ForeignKey('users.username'))
+    ci            = Column(Integer, nullable=False)
+    clerk         = Column(String, nullable=False)
     total         = Column(Numeric, nullable=False, default=0)
     interest      = Column(Numeric, nullable=False, default=0)
     purchase_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
@@ -155,7 +162,14 @@ class Purchase(this.Base):
     debt          = Column(Boolean, nullable=False, default=False)
     payed         = Column(Boolean, nullable=False, default=False)
     payed_date    = Column(DateTime, default=None)
-    payed_to      = Column(String, default=None, ForeignKey('users.username'))
+    payed_to      = Column(String, default=None)
+
+    # Constraints
+    __table_args__ = (
+        ForeignKeyConstraint(['ci'], ['client.ci']),
+        ForeignKeyConstraint(['clerk'], ['users.username']),
+        ForeignKeyConstraint(['payed_to'], ['users.username'])
+    )
 
     # Relaciones
     checkout     = relationship("checkout")
@@ -168,12 +182,17 @@ class Checkout(this.Base):
 
     # Atributos
     checkout_id  = Column(UUID, nullable=False, default=uuid_generate_v4(), primary_key=True)
-    purchase_id  = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
+    purchase_id  = Column(UUID, nullable=False, primary_key=True)
     pay_date     = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount       = Column(Numeric, nullable=False)
     with_balance = Column(Boolean, nullable=False, default=False)
     description  = Column(String, nullable=False)
     payed        = Column(Boolean, nullable=False, default=False)
+
+    # Constraints
+    __table_args__ = (
+        ForeignKeyConstraint(['purchase_id'], ['purchse.purchase_id'])
+    )
 
 # Tabla de lista de productos de orden de compra
 class Product_list(this.Base):
@@ -181,12 +200,18 @@ class Product_list(this.Base):
     __tablename__ = 'product_list'
 
     # Atributos
-    product_id  = Column(UUID, nullable=False, ForeignKey('product.product_id'), primary_key=True)
-    purchase_id = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
+    product_id  = Column(UUID, nullable=False, primary_key=True)
+    purchase_id = Column(UUID, nullable=False, primary_key=True)
     price       = Column(Numeric, nullable=False, default=0)
     amount      = Column(Integer, nullable=False)
     locked      = Column(Boolean, nullable=False, default=False)
     payed       = Column(Boolean, nullable=False, default=False)
+
+    # Constraints
+    __table_args__ = (
+        ForeignKeyConstraint(['product_id'], ['product.product_id']),
+        ForeignKeyConstraint(['purchase_id'], ['purchse.purchase_id'])
+    )
 
 # Tabla de lista de servicios de orden de compra
 class Service_list(this.Base):
@@ -194,12 +219,18 @@ class Service_list(this.Base):
     __tablename__ = 'service_list'
 
     # Atributos
-    service_id  = Column(UUID, nullable=False, ForeignKey('service.service_id'), primary_key=True)
-    purchase_id = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
+    service_id  = Column(UUID, nullable=False, primary_key=True)
+    purchase_id = Column(UUID, nullable=False, primary_key=True)
     price       = Column(Numeric, nullable=False, default=0)
     amount      = Column(Integer, nullable=False)
     locked      = Column(Boolean, nullable=False, default=False)
     payed       = Column(Boolean, nullable=False, default=False)
+
+    # Constraints
+    __table_args__ = (
+        ForeignKeyConstraint(['service_id'], ['service.service_id']),
+        ForeignKeyConstraint(['purchase_id'], ['purchse.purchase_id'])
+    )
 
 # Tabla de lista de productos de orden de compra
 class Reverse_product_list(this.Base):
@@ -207,13 +238,20 @@ class Reverse_product_list(this.Base):
     __tablename__ = 'reverse_product_list'
 
     # Atributos
-    product_id   = Column(UUID, nullable=False, ForeignKey('product.product_id'), primary_key=True)
-    purchase_id  = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
-    clerk        = Column(String, nullable=False, ForeignKey('users.username'))
+    product_id   = Column(UUID, nullable=False, primary_key=True)
+    purchase_id  = Column(UUID, nullable=False, primary_key=True)
+    clerk        = Column(String, nullable=False)
     reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount       = Column(Integer, nullable=False)
     cash         = Column(Boolean, default=True)
     description  = Column(String, nullable=False)
+
+    # Constraints
+    __table_args__ = (
+        ForeignKeyConstraint(['product_id'], ['product.product_id']),
+        ForeignKeyConstraint(['purchase_id'], ['purchse.purchase_id']),
+        ForeignKeyConstraint(['clerk'], ['users.username'])
+    )
 
 # Tabla de reversar lista de servicios de orden de compra
 class Reverse_service_list(this.Base):
@@ -221,13 +259,20 @@ class Reverse_service_list(this.Base):
     __tablename__ = 'reverse_service_list'
 
     # Atributos
-    service_id   = Column(UUID, nullable=False, ForeignKey('service.service_id'), primary_key=True)
-    purchase_id  = Column(UUID, nullable=False, ForeignKey('purchase.purchase_id'), primary_key=True)
-    clerk        = Column(String, nullable=False, ForeignKey('users.username'))
+    service_id   = Column(UUID, nullable=False, primary_key=True)
+    purchase_id  = Column(UUID, nullable=False, primary_key=True)
+    clerk        = Column(String, nullable=False)
     reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount       = Column(Integer, nullable=False)
     cash         = Column(Boolean, default=True)
     description  = Column(String, nullable=False)
+
+    # Constraints
+    __table_args__ = (
+        ForeignKeyConstraint(['service_id'], ['service.service_id']),
+        ForeignKeyConstraint(['purchase_id'], ['purchse.purchase_id']),
+        ForeignKeyConstraint(['clerk'], ['users.username'])
+    )
 
 # Tabla de transferencias
 class Transfer(this.Base):
@@ -236,13 +281,19 @@ class Transfer(this.Base):
 
     # Atributos
     transfer_id       = Column(UUID, default=uuid_generate_v4(), primary_key=True)
-    ci                = Column(Integer, nullable=False, ForeignKey('client.ci'))
-    clerk             = Column(String, nullable=False, ForeignKey('users.username'))
+    ci                = Column(Integer, nullable=False)
+    clerk             = Column(String, nullable=False)
     transfer_date     = Column(DateTime, nullable=False, default=datetime.datetime.now())
     amount            = Column(Integer, nullable=False)
     bank              = Column(String, nullable=False)
     confirmation_code = Column(String, nullable=False)
     description       = Column(String, nullable=False)
+
+    # Constraints
+    __table_args__ = (
+        ForeignKeyConstraint(['ci'], ['client.ci']),
+        ForeignKeyConstraint(['clerk'], ['users.username'])
+    )
 
 # Tabla de Registro de Operaciones de Caja
 class Operation_log(this.Base):
@@ -251,7 +302,7 @@ class Operation_log(this.Base):
 
     # Atributos
     operation_log_id = Column(UUID, default=uuid_generate_v4(), primary_key=True)
-    clerk            = Column(String, nullable=False, ForeignKey('users.username'))
+    clerk            = Column(String, nullable=False)
     op_type          = Column(Integer, nullable=False)
     open_record      = Column(Boolean, default=False)
     recorded         = Column(DateTime, nullable=False, default=datetime.datetime.now())
@@ -259,6 +310,11 @@ class Operation_log(this.Base):
     cash_balance     = Column(Numeric, nullable=False, default=0)
     cash_total       = Column(Numeric, nullable=False)
     total_money      = Column(Numeric, nullable=False)
+
+    # Constraints
+    __table_args__ = (
+        ForeignKeyConstraint(['clerk'], ['users.username'])
+    )
 
 # Tabla de lenguajes validos
 class Valid_language(this.Base):
@@ -282,9 +338,14 @@ class Book(this.Base):
     isbn          = Column(String, default=None)
     edition       = Column(Integer, nullable=False, default=1)
     book_year     = Column(Date, nullable=False)
-    lang          = Column(String, nullable=False, ForeignKey('valid_language.language_name'))
+    lang          = Column(String, nullable=False)
     quantity      = Column(Integer, nullable=False, default=1)
     quantity_lent = Column(Integer, nullable=False, default=0)
+
+    # Constraints
+    __table_args__ = (
+        ForeignKeyConstraint(['language'], ['valid_language.language_name'])
+    )
 
     # Relaciones
     associated_with = relationship("associated_with")
@@ -324,8 +385,14 @@ class Associated_with(this.Base):
     __tablename__ = 'associated_with'
 
     # Atributos
-    book_id      = Column(UUID, nullable=False, ForeignKey('book.book_id'), primary_key=True)
-    subject_code = Column(String, nullable=False, ForeignKey('subject.subject_code'), primary_key=True)
+    book_id      = Column(UUID, nullable=False, primary_key=True)
+    subject_code = Column(String, nullable=False, primary_key=True)
+
+    # Constraints
+    __table_args__ = (
+        ForeignKeyConstraint(['book'], ['book.book_id']),
+        ForeignKeyConstraint(['subject_code'], ['subject.subject_code'])
+    )
 
 # Tabla de Quien escribio el libro
 class Written_by(this.Base):
@@ -333,7 +400,7 @@ class Written_by(this.Base):
     __tablename__ = 'written_by'
 
     # Atributos
-    book_id         = Column(UUID, nullable=False, ForeignKey('book.book_id'), primary_key=True)
+    book_id         = Column(UUID, nullable=False, primary_key=True)
     firstname       = Column(String, nullable=False, primary_key=True)
     lastname        = Column(String, nullable=False, primary_key=True)
     middlename      = Column(String, default=None, primary_key=True)
@@ -343,6 +410,7 @@ class Written_by(this.Base):
 
     # Constraints
     __table_args__ = (
+        ForeignKeyConstraint(['book'], ['book.book_id']),
         ForeignKeyConstraint(
             ['firstname', 'lastname', 'middlename', 'second_lastname', 'birthdate', 'nationality'],
             ['author.firstname', 'author.lastname', 'author.middlename', 'author.second_lastname', 'author.birthdate', 'author.nationality']
