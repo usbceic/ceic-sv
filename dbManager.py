@@ -108,7 +108,7 @@ clientsColumns = """ID integer CONSTRAINT must_be_different_ID UNIQUE,
 ## MANEJADOR DE LA BASE DE DATOS:
 ####################################################################################################################################
 
-class DBManager:
+class dbManager:
     #-------------------------------------------------------------------------------------------------------------------------------
     # Constructor de la clase
     #-------------------------------------------------------------------------------------------------------------------------------
@@ -901,4 +901,4 @@ class DBManager:
 
 # Pruebas de archivo
 if __name__ == '__main__':
-    DBManager("sistema_ventas", "hola", True)
+    dbManager("sistema_ventas", "hola", True)

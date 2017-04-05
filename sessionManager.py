@@ -33,7 +33,7 @@ from PyQt4.QtGui import QMainWindow, QDialog, QApplication, QLineEdit, QCursor, 
 from PyQt4.QtCore import Qt, QMetaObject, QEvent, pyqtSignal, QTimer
 
 # Manejador de la base de datos
-from DBManager import DBManager
+from dbManager import dbManager
 
 # Manejador de la ventana principal del programa
 from guiManager import adminGUI
@@ -81,7 +81,7 @@ class loginGUI(QMainWindow, loginWindow):
         self.splash = QSplashScreen(self.splash_img, Qt.WindowStaysOnTopHint)
 
         self.sessionOn = False
-        self.db = DBManager("carlos", "curtis", True)
+        self.db = dbManager("sistema_ventas", "hola", True)
         self.mail = emailManager(googleServer, "ceicsvoficial@gmail.com", "pizzabrownie")
 
         self.userDef = False
