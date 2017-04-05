@@ -676,7 +676,6 @@ class Written_by(this.Base):
         template = "<Written_by(book_id='%s', firstname='%s', lastname='%s', middlename='%s', second_lastname='%s', birthdate='%s', nacionality=='%s')>"
         return  template % kwargs
 
-"""
 #==================================================================================================================================================================================
 # Tabla de préstamos
 #==================================================================================================================================================================================
@@ -688,7 +687,7 @@ class Lent_to(this.Base):
     book_id               = Column(GUID(), nullable=False, primary_key=True)
     ci                    = Column(Integer, nullable=False, primary_key=True)
     lender_clerk          = Column(String, nullable=False, primary_key=True)
-    start_description     = Column(String, nullable=False)
+    start_description     = Column(String, nullable=False, primary_key=True)
     start_time            = Column(DateTime, nullable=False, default=datetime.datetime.now())
     estimated_return_time = Column(DateTime, nullable=False)
     receiver_clerk        = Column(String, default=None)
@@ -714,4 +713,11 @@ class Lent_to(this.Base):
         ForeignKeyConstraint(['lender_clerk'], ['users.username']),
         ForeignKeyConstraint(['receiver_clerk'], ['users.username']),
     )
-"""
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (str(self.book_id), str(self.ci), self.lender_clerk, self.start_description, str(self.start_time), str(self.estimated_return_time),
+            self.receiver_clerk, str(self.return_time), self.return_description)
+        template = "<Written_by(book_id='%s', ci='%s', lender_clerk='%s', start_description='%s', start_time='%s', estimated_return_time='%s', "
+        template += "receiver_clerk=='%s', return_time=='%s', return_description=='%s')>"
+        return  template % kwargs
