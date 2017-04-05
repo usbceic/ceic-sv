@@ -514,6 +514,12 @@ class Book(this.Base):
     associated_with = relationship("associated_with")
     written_by = relationship("written_by")
 
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.book_id, self.title, self.isbn, self.edition, self.book_year, self.lang, self.quantity, self.quantity_lent)
+        template = "<Book(book_id='%s', title='%s', isbn='%s', edition='%s', book_year='%s', lang=='%s', quantity='%s', quantity_lent=='%s')>"
+        return  template % kwargs
+
 # Tabla de Asignaturas
 class Subject(this.Base):
     # Nombre
@@ -525,6 +531,12 @@ class Subject(this.Base):
 
     # Relaciones
     associated_with = relationship("associated_with")
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.subject_code, self.subject_name)
+        template = "<Subject(subject_code='%s', subject_name='%s')>"
+        return  template % kwargs
 
 # Tabla de Autores
 class Author(this.Base):
@@ -542,6 +554,12 @@ class Author(this.Base):
     # Relaciones
     written_by = relationship("written_by")
 
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.firstname, self.lastname, self.middlename, self.second_lastname, self.birthdate, self.nacionality)
+        template = "<Author(firstname='%s', lastname='%s', middlename='%s', second_lastname='%s', birthdate='%s', nacionality=='%s')>"
+        return  template % kwargs
+
 # Tabla que asocia libros con asignaturas
 class Associated_with(this.Base):
     # Nombre
@@ -557,6 +575,12 @@ class Associated_with(this.Base):
         ForeignKeyConstraint(['book_id'], ['book.book_id']),
         ForeignKeyConstraint(['subject_code'], ['subject.subject_code'], onupdate="CASCADE"),
     )
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.book_id, self.subject_code)
+        template = "<Associated_with(book_id='%s', subject_code='%s')>"
+        return  template % kwargs
 
 # Tabla de Quien escribio el libro
 class Written_by(this.Base):
@@ -581,6 +605,12 @@ class Written_by(this.Base):
             ['author.firstname', 'author.lastname', 'author.middlename', 'author.second_lastname', 'author.birthdate', 'author.nationality']
         ),
     )
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.book_id, self.firstname, self.lastname, self.middlename, self.second_lastname, self.birthdate, self.nacionality)
+        template = "<Written_by(book_id='%s', firstname='%s', lastname='%s', middlename='%s', second_lastname='%s', birthdate='%s', nacionality=='%s')>"
+        return  template % kwargs
 
 """# Tabla de préstamos
 class Lent_to(this.Base):
