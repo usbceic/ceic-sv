@@ -13,142 +13,77 @@
 
 # Carlos Serrada, cserradag96@gmail.com
 # Christian Oliveros, 01christianol01@gmail.com
-# José Acevedo, joseluisacevedo1995@gmail.com
-# David Cabeza, cabezadavide@gmail.com
-# Pablo Betancourt, pablodbc30@gmail.com
 
 ####################################################################################################################################
 ## MODÚLOS:
 ####################################################################################################################################
 
+import sys
 import datetime
-from psycopg2 import connect
+from psycopg2 import connect, ProgrammingError
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from os import mkdir
+from os.path import isdir, join
 
 ####################################################################################################################################
 ## CONSTANTES:
 ####################################################################################################################################
 
 #-----------------------------------------------------------------------------------------------------------------------------------
-# Tablas
+# Modelo PostgreSQL
 #-----------------------------------------------------------------------------------------------------------------------------------
 
-# Nombre de la tabla de productos
-productsTable = "products"
+modelPath = "PSQL/old"             # Ruta donde se encuentra el modelo sql
 
-# Columnas de la tabla de productos
-productsColumns = """productID SERIAL PRIMARY KEY,
-                    name text,
-                    price numeric,
-                    category text,
-                    remaining integer DEFAULT 0,
-                    remainingLots integer DEFAULT 0,
-                    currentLot integer DEFAULT 0,
-                    available boolean DEFAULT false"""
+modelCreator = [
+    "create_extensions.sql",    # Crear extensiones
+    "create_types.sql",         # Crear tipos y enums
+    "create_tables.sql",        # Crear tablas
+    "create_functions.sql",     # Crear funciones generales
+    "create_triggers.sql",      # Crear triggers y sus funciones
+]
 
-# Nombre de la tabla de lotes General, para especifica de producto ver lots_ID
-lotsTable = "lots_"
+modelKiller = [
+    "remove_triggers.sql",      # Eliminar triggers y sus funciones
+    "remove_functions.sql",     # Eliminar funciones generales
+    "remove_tables.sql",        # Eliminar tablas
+    "remove_extensions.sql",    # Eliminar extensiones
+    "remove_types.sql",         # Eliminar tipos y enums
+]
 
-# Columnas de la tabla de lotes especificos de un producto
-lotsColumns = """lotID SERIAL PRIMARY KEY,
-<<<<<<< HEAD
-				cost numeric,
-				quantity integer,
-				category text,
-                adquisition date DEFAULT now(),                
-                provider text, 
-                perishable boolean DEFAULT false,
-                expiration date,               
-=======
-                cost numeric,
-                quantity integer,
-                adquisition date DEFAULT now(),
-                provider text,
-                perishable boolean DEFAULT false,
-                expiration date,
->>>>>>> remotes/origin/master
-                available boolean DEFAULT false"""
+userTable = "db_user"                             # Tabla de usuarios
+providerTable = "provider"                        # Tabla de proveedores
+productTable = "product"                          # Tabla de productos
+lotTable = "lot"                                  # Tabla de lotes
+serviceTable = "service"                          # Tabla de servicios
+clientTable = "client"                            # Tabla de clientes
+purchaseTable = "purchase"                        # Tabla de compras
+checkoutTable = "checkout"                        # Tabla de pagos de orden de compra
+productListTable = "product_list"                 # Tabla de lista de productos de orden de compra
+serviceListTable = "service_list"                 # Tabla de lista de servicios de orden de compra
+reverseProductListTable = "reverse_product_list"  # Tabla de lista de productos de orden de compra
+reverseServiceListTable = "reverse_service_list"  # Tabla de reversar lista de servicios de orden de compra
+transferTable = "transfer"                        # Tabla de transferencias
+operationLogTable = "operation_log"               # Tabla de registro de operaciones de caja
+languageTable = "valid_language"                  # Tabla de lenguajes validos
+bookTable = "book"                                # Tabla de libros
+subjectTable = "subject"                          # Tabla de asignaturas
+authorTable = "author"                            # Tabla de autores
+associatedWithTable = "associated_with"           # Tabla que asocia libros con asignaturas
+writtenByTable = "written_by"                     # Tabla que asocia libros con autores
+lenToTable = "lent_to"                            # Tabla de préstamos de libros
 
-# Nombre de la tabla de servicios
-servicesTable = "services"
+#-----------------------------------------------------------------------------------------------------------------------------------
+# Varios
+#-----------------------------------------------------------------------------------------------------------------------------------
 
-# Columnas de la tabla de productos
-servicesColumns = """serviceID SERIAL PRIMARY KEY,
-                    name text,
-                    price numeric,
-                    category text,
-                    available boolean DEFAULT false"""
-
-# Nombre de la tabla de operaciones de caja
-registerOpTable = "registerOp"
-
-# Columna de la tabla de operaciones de caja
-registerOpColumns = """opID SERIAL PRIMARY KEY,
-<<<<<<< HEAD
-						username text REFERENCES login(username),
-						opType integer NOT NULL,
-                        openRecord boolean,
-						IDReferenced integer,
-						quantity integer,
-						opBalance numeric DEFAULT 0,
-						totalBalance numeric NOT NULL,
-                        description text,
-						recorded timestamp DEFAULT now()"""
-=======
-                        username text REFERENCES login(username),
-                        opType integer NOT NULL,
-                        openRecord boolean,
-                        IDReferenced integer,
-                        quantity integer,
-                        opBalance numeric DEFAULT 0,
-                        totalBalance numeric NOT NULL,
-                        description text,
-                        recorded timestamp DEFAULT now()"""
->>>>>>> remotes/origin/master
-
-loginTable = "login"
-
-loginColumns = """username text CONSTRAINT must_be_different_username UNIQUE,
-<<<<<<< HEAD
-				password text NOT NULL,
-				name text NOT NULL,
-				email text NOT NULL,
-				permissionsMask integer NOT NULL,
-				description text,
-				lastLogin timestamp DEFAULT now()"""
-=======
-                password text NOT NULL,
-                name text NOT NULL,
-                email text NOT NULL,
-                permissionsMask integer NOT NULL,
-                description text,
-                lastLogin timestamp DEFAULT now()"""
->>>>>>> remotes/origin/master
-
-clientsTable = "clients"
-
-clientsColumns = """ID integer CONSTRAINT must_be_different_ID UNIQUE,
-<<<<<<< HEAD
-					name text NOT NULL,
-					lastName text NOT NULL,
-					phone text NOT NULL,
-					balance numeric DEFAULT 0,
-					debtPermission boolean DEFAULT false,
-					lastSeen date DEFAULT now()"""
-=======
-                    name text NOT NULL,
-                    lastName text NOT NULL,
-                    phone text NOT NULL,
-                    balance numeric DEFAULT 0,
-                    debtPermission boolean DEFAULT false,
-                    lastSeen date DEFAULT now()"""
->>>>>>> remotes/origin/master
+backupPath = "Backup/"
 
 ####################################################################################################################################
 ## MANEJADOR DE LA BASE DE DATOS:
 ####################################################################################################################################
 
-class DBManager:
+class dbManager:
     #-------------------------------------------------------------------------------------------------------------------------------
     # Constructor de la clase
     #-------------------------------------------------------------------------------------------------------------------------------
@@ -163,112 +98,16 @@ class DBManager:
 
         # Modalidad de primer inicio del programa
         if firstInit:
-            self.createTable(productsTable, productsColumns, True)    # Tabla que registra cada producto diferente en el inventario
-<<<<<<< HEAD
-            self.createTable(servicesTable, servicesColumns, True)	# Tabla de servicios
-            self.createTable(loginTable, loginColumns, True)			# Tabla de Login
-            self.createTable(clientsTable, clientsColumns, True)		# Tabla de clientes
-=======
-            self.createTable(servicesTable, servicesColumns, True)  # Tabla de servicios
-            self.createTable(loginTable, loginColumns, True)            # Tabla de Login
-            self.createTable(clientsTable, clientsColumns, True)        # Tabla de clientes
->>>>>>> remotes/origin/master
+            self.executeFiles(modelKiller)   # Eliminar el modelo existente
+            self.executeFiles(modelCreator)  # Crear un nuevo modelo
 
-            #Pruebas de Usuario
-            self.createUser("Hola","hola","PRIVATE SNAFU","coreoCaliente@gmail.com")
-            self.createUser("Test2","test2","Soy Prueba","google@hotmail.com")
-<<<<<<< HEAD
-            print(self.getUsersInfo(orderByLastLogin=True))
-            print(self.checkUser("Hola", "a"))
-            print(self.getUsersInfo(orderByLastLogin=True))
-            print(self.checkUser("Hola", "hola"))
-            print(self.getUsersInfo(orderByLastLogin=True))
-
-            # Pruebas de correctitud (Borrar luego)
-            self.createProduct("Dona", 499.99)
-            self.createProduct("Pizza", 699.99)
-            self.createProduct("Memes", 100000000)
-            print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
-            self.deleteProduct(1)
-            print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
-            self.createLot(2, 10.5, 50, adquisitionDate=datetime.datetime.now().date().isoformat())
-            self.createLot(2, 1.5, 5, adquisitionDate=datetime.date(1998, 8,15).isoformat())
-            print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
-            print(self.getLots(False))
-            self.updateLot(2, 2, quantity=100, available=True)
-            print(self.getLots(False))
-            print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
-            self.deleteLot(2, 2)
-            print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
-            self.createLot(2, 1.5, 5, adquisitionDate=datetime.date(1998, 8,15).isoformat(), expirationDate=datetime.date(1998, 8,30).isoformat())
-            print(self.getExpiredLotsOfProduct(2))
-=======
-            #print(self.getUsersInfo(orderByLastLogin=True))
-            #print(self.checkUser("Hola", "a"))
-            #print(self.getUsersInfo(orderByLastLogin=True))
-            #print(self.checkUser("Hola", "hola"))
-            #print(self.getUsersInfo(orderByLastLogin=True))
-
-            # Pruebas de correctitud (Borrar luego)
-            self.createProduct("Dona", 499.99, "Comida")
-            self.createProduct("Pizza", 699.99, "Comida")
-            self.createProduct("Memes", 100000000, "Otros")
-            #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
-            self.deleteProduct(1)
-            #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
-            self.createLot(2, 10.5, 50, adquisitionDate=datetime.datetime.now().date().isoformat())
-            self.createLot(2, 1.5, 5, adquisitionDate=datetime.date(1998, 8,15).isoformat())
-            #print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
-            #print(self.getLots(False))
-            self.updateLot(2, 2, quantity=100, available=True)
-            #print(self.getLots(False))
-            #print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
-            self.deleteLot(2, 2)
-            #print(self.getProductByNameOrID(productID = 2, onlyAvailables = False))
-            self.createLot(2, 1.5, 5, adquisitionDate=datetime.date(1998, 8,15).isoformat(), expirationDate=datetime.date(1998, 8,30).isoformat())
-            #print(self.getExpiredLotsOfProduct(2))
->>>>>>> remotes/origin/master
-            #print(self.getProducts(onlyAvailables = False))
-            #print(self.getProductByNameOrID(productID = 1, onlyAvailables = False))
-            #print(self.getItemInfo(productsTable, ["name"]))
-
-            # Pruebas de Clientes
-            self.createClient(2425512, "Juan", "Porlamar", "0414-3278450")
-            self.createClient(2425513, "Pedro", "Porlamar", "0414-3278451")
-            self.createClient(2425514, "Paco", "Juarez", "0414-3278452")
-<<<<<<< HEAD
-            print(self.searchClient(ID=2425512))
-            print(self.searchClient(name="pedro"))
-            print(self.searchClient(lastName="lamar"))
-            print(self.checkClient(2425512))
-            print(self.checkClient(0))
-=======
-            #print(self.searchClient(ID=2425512))
-            #print(self.searchClient(name="pedro"))
-            #print(self.searchClient(lastName="lamar"))
-            #print(self.checkClient(2425512))
-            #print(self.checkClient(0))
->>>>>>> remotes/origin/master
+            self.createUser("Hola", "hola", "PRIVATE", "SNAFU", "coreoCaliente@gmail.com")
+            self.createUser("Test2","test2","Soy", "Prueba","google@hotmail.com")
+            print(self.getUsersInfo())
+            print(self.getUserInfo("Hola"))
 
             #Prueba de Backup
-            self.backupTable(clientsTable, "")
-
-            #Prueba de Restore 1
-            self.dropTable(clientsTable)
-            self.restoreTable(clientsTable,clientsColumns,"")
-<<<<<<< HEAD
-            print(self.searchClient(lastName="lamar"))
-
-            #Prueba de Restore 2
-            self.restoreTable(clientsTable,clientsColumns,"",drop=False)
-            print(self.searchClient(lastName="lamar"))
-=======
-            #print(self.searchClient(lastName="lamar"))
-
-            #Prueba de Restore 2
-            self.restoreTable(clientsTable,clientsColumns,"",drop=False)
-            #print(self.searchClient(lastName="lamar"))
->>>>>>> remotes/origin/master
+            self.backupTable(clientTable, backupPath)
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Destructor de la clase
@@ -278,11 +117,11 @@ class DBManager:
         if self._con is not None and self._cur is not None:
             try:
                 self.closeDB()
-                print("Se ha cerrado correctamente la base de datos")
+                print("\nSe ha cerrado correctamente la base de datos\n")
             except:
-                print("La base de datos ya está cerrada")
+                print("\nLa base de datos ya está cerrada\n")
         else:
-            print("La base de datos ya está cerrada")
+            print("\nLa base de datos ya está cerrada\n")
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Métodos de control de la base de datos
@@ -295,59 +134,146 @@ class DBManager:
 
     # Verifica si una tabla ya existe
     def tableExists(self, table):
-<<<<<<< HEAD
-    	action = "SELECT to_regclass(%s)"
-    	self._cur.execute(action, ("public." + table,))
-    	return self._cur.fetchall()[0][0] is not None
-=======
         action = "SELECT to_regclass(%s)"
         self._cur.execute(action, ("public." + table,))
         return self._cur.fetchall()[0][0] is not None
->>>>>>> remotes/origin/master
-
-    # Crear una tabla en la base de datos
-    def createTable(self, table, columns, forceDrop=False):
-        action = "CREATE TABLE " + table + "(" + columns + ")"
-
-        if self.tableExists(table):
-<<<<<<< HEAD
-        	if forceDrop:
-	            print("La tabla " + table + " ya existe, se intentará eliminar y crear una nueva")
-	            # Se elimina
-	            self.dropTable(table)
-	        else:
-	        	print("La tabla " + table + " ya existe, NO se creara una nueva")
-	        	return
-=======
-            if forceDrop:
-                print("La tabla " + table + " ya existe, se intentará eliminar y crear una nueva")
-                # Se elimina
-                self.dropTable(table)
-            else:
-                print("La tabla " + table + " ya existe, NO se creara una nueva")
-                return
->>>>>>> remotes/origin/master
-
-        # Se intenta crear una tabla nueva
-        try:
-            self._cur.execute(action)
-            print("Se ha creado la tabla " + table + " correctamente.")
-
-        # Si no se pudo se trata otra vez
-        except:
-            print("Error creando la tabla " + table + " se intentará crearla otra vez")
-            # Se intenta crear de nuevo
-            try:
-                self._cur.execute(action)
-                print("Se ha creado la tabla " + table + " correctamente.")
-
-            # Si no se puede hay algún error grave en la base de datos
-            except: print("ERROR: No se pudo crear la tabla " + table)
 
     # Eliminar una tabla en la base de datos
     def dropTable(self, table):
-        print("Eliminando tabla: " + table)
+        print("\nEliminando tabla: " + table)
         self._cur.execute("DROP TABLE " + table)
+
+    # Método para ejecutar una lista de archivos .sql
+    def executeFiles(self, files):
+        print("")
+        for file in files:
+            try:
+                fullPath = join(modelPath, file)
+                self._cur.execute(open(fullPath, 'r').read())
+                print("Ejecutado correctamente: "+fullPath)
+
+            except ProgrammingError as psqlError:
+                print("[ERROR] Se ha encontrado un problema al ejecutar: " + fullPath)
+                print(psqlError)
+
+            except FileNotFoundError:
+                print("[ERROR] No se pudo encontrar el archivo: " + fullpath)
+
+            except:
+                print("Ha ocurrido un error inesperado:", sys.exc_info()[0])
+
+    # Método para hacer BackUp a una tabla
+    # Si no se especifica customName se llamara como la tabla
+    def backupTable(self, table, savePath, customName=None):
+        if not isdir(savePath): mkdir(savePath)      # Verificar que exista carpeta de salida
+
+        if customName is None: tmp = table + ".sql"  # Establecer nombre de la abla por defecto
+        else: tmp = customName + ".sql"              # Estalecer el nombre personalizado
+        fullPath = join(savePath, tmp)               # Se crea la ruta completa
+
+        print("\nCreando Backup de la tabla " + table + " en: " + fullPath)
+
+        try:
+            # Intentar hacer el BackUp
+            with open(fullPath, 'w') as backup:
+                self._cur.copy_to(backup, table)
+                backup.close()
+            print("BackUp creado satisfactoreamente.")
+
+        except:
+            print("Ha ocurrido un error inesperado:", sys.exc_info()[0])
+
+    # Método para restaurar una tabla desde un BackUp
+    # Si no se especifica customName se buscara archivo con mismo nombre de la tabla
+    # En condiciones normales se deberia dropear la tabla y crearla de nuevo
+    """def restoreTable(self, table, columns, filePath, customName=None, drop=True):
+        if customName is None: tmp = table + ".sql"
+        else: tmp = customName + ".sql"
+        fullPath = join(filePath, tmp)
+
+        print("\nRestaurando la tabla " + table + " desde: " + fullPath)
+
+        try:
+            backup = open(file, 'r')
+
+        except FileNotFoundError:
+            print("[ERROR] No se pudo encontrar el archivo: " + fullpath)
+
+        except:
+            print("[ERROR] No se pudo abrir el archivo: " + file)
+
+        else:
+            if not drop and self.tableExists(table):
+                print("[ADVERTENCIA] La tabla " + table + "existe y no fue vuelta a crear. Pueden ocurrir errores con los datos")
+
+            self.createTable(table, columns, drop)
+            try:
+                self._cur.copy_from(f, table)
+                print("Tabla restaurada satisfactoriamente")
+
+            except Exception as e:
+                print("[ERROR] No se pudieron copiar los datos a la tabla")
+                print(e)
+            backup.close()"""
+
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Métodos asociados a la tabla de usuarios
+    #-------------------------------------------------------------------------------------------------------------------------------
+
+    # Crear un usuario nuevo
+    def createUser(self, userName, password, firstName, lastName, email, permissionsMask=0):
+        action = "SELECT create_db_user(%s, %s, %s, %s, %s, %s);"
+        kwargs = (userName, password, firstName, lastName, email, permissionsMask,)
+
+        try:
+            self._cur.execute(action, kwargs)
+            print("\nSe ha creado el usuario " + userName + " satisfactoriamente")
+            return True
+
+        except:
+            print("\nNo se pudo crear el usuario: " + userName)
+            return False
+
+    # Verificar correspondencia de usuario y contraseña para el login
+    def check_password(self, userName, password):
+        action = "SELECT check_password(%s, %s)"
+        kwargs = (userName, password,)
+
+        self._cur.execute(action, kwargs)
+        query = self._cur.fetchall()
+
+        if len(query) == 1: return True
+        return False
+
+    # Obtener la info de los usuarios (sin contraseña)
+    def getUsersInfo(self, orderByLastLogin=False, descendentingOrderLastLogin=False):
+        action = "SELECT get_users_info(%s, %s)"
+        kwargs = (orderByLastLogin, descendentingOrderLastLogin,)
+
+        try:
+            self._cur.execute(action, kwargs)
+            return self._cur.fetchall()
+
+        except:
+            print("\n[ERROR] No se pudo realizar la consulta")
+            return None
+
+    # Obtener la info de un usuario dado su username
+    def getUserInfo(self, userName):
+        action = "SELECT get_user_info(%s)"
+        kwargs = (userName,)
+
+        try:
+            self._cur.execute(action, kwargs)
+            return self._cur.fetchall()
+
+        except:
+            print("\n[ERROR] No se pudo realizar la consulta")
+            return None
+
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Métodos varios
+    #-------------------------------------------------------------------------------------------------------------------------------
 
     # Obtener informacion personalizada de una tabla (Recomendado para productos y lotes)
     def getItemInfo(self, table, params = [], mode = 0):
@@ -363,1174 +289,6 @@ class DBManager:
         self._cur.execute(action)
         return self._cur.fetchall()
 
-    # Hacer BackUp a Tabla, si no se quiere nombre especial solo se llamara como la tabla
-    def backupTable(self, table, directoryName, specialFilename=None):
-        if specialFilename is None:
-            file = directoryName + table + ".sql"
-        else:
-            file = directoryName + specialFilename + ".sql"
-
-        print("Haciendo Backup a la tabla " + table + " en la ubicacion: " + file)
-        with open(file, 'w') as f:
-            self._cur.copy_to(f, table)
-            f.close()
-
-    # Restaurar Tabla desde un BackUp, si no se quiere nombre especial solo se buscara archivo como la tabla
-    # En condiciones normales se deberia dropear la tabla y crearla de nuevo
-    def restoreTable(self, table, columns, directoryName, specialFilename=None, drop=True):
-        if specialFilename is None:
-            file = directoryName + table + ".sql"
-        else:
-            file = directoryName + specialFilename + ".sql"
-
-        print("Restaurando la tabla " + table + " usando el Backup en la ubicacion: " + file)
-        try:
-            f = open(file, 'r')
-        except:
-            print("Error no se pudo abrir el archivo: " + file)
-        else:
-            if not drop and self.tableExists(table):
-                print("Adevertencia: La tabla " + table + "existe y no fue vuelta a crear. Pueden ocurrir errores con los datos")
-            self.createTable(table, columns, drop)
-            try:
-                self._cur.copy_from(f, table)
-                print("Tabla Restaurada")
-            except Exception as e:
-                print("Error al copiar datos a la tabla")
-                print(e)
-            f.close()
-
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Métodos de control de los productos (INVENTARIO)
-    #-------------------------------------------------------------------------------------------------------------------------------
-
-    # Crear producto
-    def createProduct(self, name, price, category = ""):
-<<<<<<< HEAD
-    	# Crear row de producto en tabla prodructs
-=======
-        # Crear row de producto en tabla prodructs
->>>>>>> remotes/origin/master
-        self._cur.execute("INSERT INTO products(name, price, category) VALUES (%s,%s,%s) RETURNING productID",(name, price, category))
-        # Crear la tabla lots_(serial de producto) para guardar los lotes relacionados a producto
-        self.createTable(lotsTable+str(self._cur.fetchall()[0][0]), lotsColumns, True)
-
-    # Buscar producto por nombre o por el productID
-    def getProductByNameOrID(self, name = None, productID = None, caseInsensitive = False, onlyAvailables = True):
-        action = """SELECT * FROM products WHERE"""
-        kwargs = ()
-
-        if productID is None and name is None: return []
-
-        if onlyAvailables: action = action + " available = true AND ("
-
-<<<<<<< HEAD
-        if productID is not None: 
-        	action = action + " productID = %s"
-        	kwargs = kwargs + (productID,)
-=======
-        if productID is not None:
-            action = action + " productID = %s"
-            kwargs = kwargs + (productID,)
->>>>>>> remotes/origin/master
-
-        if name is not None:
-            if productID is not None: action = action + " OR"
-            action = action + " name SIMILAR TO %s"
-            kwargs = kwargs + ("%"+name+"%",)
-<<<<<<< HEAD
-            if caseInsensitive: 
-            	action = action + " OR LOWER(name) SIMILAR TO %s"
-            	kwargs = kwargs + ("%"+name.lower()+"%",)
-=======
-            if caseInsensitive:
-                action = action + " OR LOWER(name) SIMILAR TO %s"
-                kwargs = kwargs + ("%"+name.lower()+"%",)
->>>>>>> remotes/origin/master
-
-        if onlyAvailables: action = action + " )"
-
-        self._cur.execute(action, kwargs)
-        return self._cur.fetchall()
-
-    # Retornar productID asociado al nombre de un producto
-    def getProductID(self, name):
-        action = "SELECT productID FROM products WHERE name SIMILAR TO '%" + name + "%'"
-        self._cur.execute(action)
-        return self._cur.fetchall()[0][0]
-
-    # Actualizar información de un producto
-<<<<<<< HEAD
-    def updateProduct(self, productID, name = None, price = None, currentLot =None, available = None):
-        if name is None and price is None and available is None: return
-
-        kwargs = ()
-        action = "UPDATE products SET"
-
-        if name is not None: 
-        	action = action + " name = %s"
-        	kwargs = kwargs + (name,)
-
-        if price is not None:
-            if name is not None: action = action + ","
-            action = action + " price = %s"
-            kwargs = kwargs + (price,)
-
-        if currentLot is not None:
-        	if name is not None or price is not None: action = action + ","
-        	action = action + " currentLot = %s"
-        	kwargs = kwargs + (currentLot,)
-
-        if available is not None:
-            if name is not None or price is not None or currentLot is not None: action = action + ","
-            action = action + " available = %s"
-            kwargs = kwargs + (available,)
-
-=======
-    def updateProduct(self, productID, name=None, price=None, remaining=None, remainingLots=None, currentLot=None, available=None):
-        if (name or price or remaining or remainingLots or available) == None: return
-
-        kwargs = ()
-        action = "UPDATE products SET"
-
-        if name != None:
-            action = action + " name = %s"
-            kwargs = kwargs + (name,)
-
-        if price != None:
-            if name != None: action = action + ","
-            action = action + " price = %s"
-            kwargs = kwargs + (price,)
-
-        if remaining != None:
-            if (name or price) != None: action = action + ","
-            action = action + " remaining = %s"
-            kwargs = kwargs + (remaining,)
-
-        if remainingLots != None:
-            if (name or price or remaining) != None: action = action + ","
-            action = action + " remainingLots = %s"
-            kwargs = kwargs + (remainingLots,)
-
-        if currentLot != None:
-            if (name or price or remaining or remainingLots) != None: action = action + ","
-            action = action + " currentLot = %s"
-            kwargs = kwargs + (currentLot,)
-
-        if available != None:
-            if (name or price or remaining or remainingLots or currentLot) != None: action = action + ","
-            action = action + " available = %s"
-            kwargs = kwargs + (available,)
-
->>>>>>> remotes/origin/master
-        action = action + " WHERE productID = %s"
-        kwargs = kwargs + (productID,)
-        self._cur.execute(action,kwargs)
-
-    # Eliminar un producto
-    def deleteProduct(self, productID):
-        print("Eliminando producto: " + str(productID))
-        try:
-<<<<<<< HEAD
-        	print("Eliminando la tabla de lotes relacionada con producto: " + str(productID))
-        	self.dropTable(lotsTable+str(productID))
-        except:
-        	print("Tabla no existia o ID de producto invalido")
-=======
-            print("Eliminando la tabla de lotes relacionada con producto: " + str(productID))
-            self.dropTable(lotsTable+str(productID))
-        except:
-            print("Tabla no existia o ID de producto invalido")
->>>>>>> remotes/origin/master
-        action = "DELETE FROM products WHERE productID = %s"
-        kwargs = (productID,)
-        self._cur.execute(action,kwargs)
-
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Métodos de control de los lotes de productos (INVENTARIO)
-    #-------------------------------------------------------------------------------------------------------------------------------
-
-    # Crear Lote
-<<<<<<< HEAD
-    def createLot(self, productID, cost, quantity, category = "", provider="", adquisitionDate=None, expirationDate=None):
-    	if quantity == 0:
-    		print("Error, no se pueden añadir lotes vacios")
-    		return
-
-    	kwargs = (cost, quantity, category, provider)
-    	action = "INSERT INTO " + lotsTable + str(productID) + "(cost, quantity, category, provider"
-    	
-    	if adquisitionDate is not None:
-    		action = action + ", adquisition"
-
-    	if expirationDate is not None:
-    		action = action + ", perishable, expiration"
-
-    	action = action +") VALUES (%s,%s,%s,%s"
-    	
-    	if adquisitionDate is not None:
-    		action = action + ",%s"
-    		kwargs = kwargs + (adquisitionDate,)
-
-    	if expirationDate is not None:
-    		action = action + ",true,%s"
-    		kwargs = kwargs + (expirationDate,)
-
-    	action = action + ")"
-=======
-    def createLot(self, productID, cost, quantity, provider="", adquisitionDate=None, expirationDate=None):
-        if quantity == 0:
-            print("Error, no se pueden añadir lotes vacios")
-            return
-
-        kwargs = (cost, quantity, provider)
-        action = "INSERT INTO " + lotsTable + str(productID) + "(cost, quantity, provider"
-
-        if adquisitionDate is not None:
-            action = action + ", adquisition"
-
-        if expirationDate is not None:
-            action = action + ", perishable, expiration"
-
-        action = action +") VALUES (%s,%s,%s"
-
-        if adquisitionDate is not None:
-            action = action + ",%s"
-            kwargs = kwargs + (adquisitionDate,)
-
-        if expirationDate is not None:
-            action = action + ",true,%s"
-            kwargs = kwargs + (expirationDate,)
-
-        action = action + ")"
->>>>>>> remotes/origin/master
-
-        self._cur.execute(action, kwargs)
-
-    # Obtener toda la info de los lotes asociados a un producto
-    def getLotsInfoByProductID(self, productID, onlyAvailables = True):
-<<<<<<< HEAD
-     	action = "SELECT * FROM " + lotsTable + str(productID)
-     	if onlyAvailables:
-     		action = action + "WHERE available = true"
-     	self._cur.execute(action)
-     	return self._cur.fetchall()
-
-    # Obtener el productID y el nombre de los productos
-    def getLots(self, onlyAvailables = True):
-    	action = "SELECT productID FROM products"
-    	if onlyAvailables:
-    		action = action + " WHERE available = true"
-    	self._cur.execute(action)
-    	productIDs = self._cur.fetchall()
-    	resp = {}
-    	for productID in productIDs:
-    		resp[productID[0]] = self.getLotsInfoByProductID(productID[0], onlyAvailables)
-    	return resp
-    	
-
-    # Cambiar informacion de un lote
-    def updateLot(self, productID, lotID, cost=None, quantity=None, category=None, provider=None, adquisitionDate=None, perishable = None, expirationDate=None, available=None):
-    	if cost is None and quantity is None and category is None \
-    		and provider is None and adquisitionDate is None \
-    		and expirationDate is None and available is None:
-    		return
-
-    	action = "UPDATE " + lotsTable + str(productID) + " SET"
-    	kwargs = ()
-
-    	if quantity is not None or available is not None:
-    		self._cur.execute("SELECT quantity, available FROM " + lotsTable + str(productID) + " WHERE lotID = %s", (lotID,) )
-    		preChange = self._cur.fetchall()[0]
-    		kwargsProduct = ()
-    		actionProduct = "UPDATE products SET "
-    		changeRequired =  False
-    		if available is not None:
-    			action = action + " available = %s,"
-    			kwargs = kwargs + (available,)
-    			if preChange[1] and not available:
-    				changeRequired = True
-    				actionProduct = actionProduct + " currentLot = CASE WHEN currentLot = %s THEN 0 ELSE currentLot END,  remainingLots = remainingLots-1,"
-    				kwargsProduct = kwargsProduct + (lotID,)
-    				if quantity is None:
-    					actionProduct = actionProduct + "remaining = remaining + %s"
-    					kwargsProduct = kwargsProduct + (-preChange[0],)
-    			elif not preChange[1] and available:
-    				changeRequired = True
-    				actionProduct = actionProduct + " currentLot = CASE WHEN currentLot = 0 THEN %s ELSE currentLot END,  remainingLots = remainingLots+1,"
-    				kwargsProduct = kwargsProduct + (lotID,)
-    				if quantity is None:
-    					actionProduct = actionProduct + "remaining = remaining + %s"
-    					kwargsProduct = kwargsProduct + (preChange[0],)
-
-    		if quantity is not None:
-    			action = action + " quantity = %s,"
-    			kwargs = kwargs + (quantity,)
-    			if preChange[1]:
-    				changeRequired = True
-    				actionProduct = actionProduct + "remaining = remaining + %s"
-    				if available is not None and not available:
-    					kwargsProduct = kwargsProduct + (-preChange[0],)
-    				else:
-    					kwargsProduct = kwargsProduct + (quantity-preChange[0],)
-    			elif not preChange[1] and available is not None and available:
-    				changeRequired = True
-    				actionProduct = actionProduct + "remaining = remaining + %s"
-    				kwargsProduct = kwargsProduct + (quantity,)
-
-    		if changeRequired:
-	    		actionProduct = actionProduct + " WHERE productID = %s"
-	    		kwargsProduct = kwargsProduct + (productID,)
-	    		self._cur.execute(actionProduct, kwargsProduct)
-
-    	
-
-    	if cost is not None:
-    		action = action + " cost = %s,"
-    		kwargs = kwargs + (cost,)
-
-    	if category is not None:
-    		action = action + " category = %s,"
-    		kwargs = kwargs + (category,)
-
-    	if provider is not None:
-    		action = action + " provider = %s,"
-    		kwargs = kwargs + (provider,)
-
-    	if adquisitionDate is not None:
-    		action = action + " adquisition = %s,"
-    		kwargs = kwargs + (adquisitionDate,)
-
-    	if perishable is not None and expirationDate is None:
-    		action = action + " perishable = %s,"
-    		kwargs = kwargs + (perishable,)
-
-
-    	if expirationDate is not None:
-    		action = action + " perishable = True, expiration = %s,"
-    		kwargs = kwargs + (expirationDate,)
-
-    	action = action[:len(action)-1] + " WHERE lotId = %s"
-    	kwargs = kwargs + (lotID,)
-
-    	self._cur.execute(action, kwargs)
-
-    # Borrar lote
-    def deleteLot(self, productID, lotID):
-    	self._cur.execute("SELECT quantity, available FROM " + lotsTable + str(productID) + " WHERE lotID = %s", (lotID,) )
-    	preChange = self._cur.fetchall()[0]
-
-    	if preChange[1]:
-    		actionProduct = """
-    		UPDATE products SET 
-    			remaining = remaining + %s, 
-    			remainingLots = remainingLots-1,
-    			currentLot = 
-    			CASE WHEN currentLot = %s THEN
-    				0
-    			ELSE
-    				currentLot
-    			END
-    		WHERE productID = %s;
-    		"""
-    		self._cur.execute(actionProduct, (-preChange[0], lotID, productID))
-
-    	action = "DELETE FROM " + lotsTable + str(productID) + " WHERE lotID = %s"
-    	self._cur.execute(action, (lotID,))
-=======
-        action = "SELECT * FROM " + lotsTable + str(productID)
-        if onlyAvailables:
-            action = action + "WHERE available = true"
-        self._cur.execute(action)
-        return self._cur.fetchall()
-
-    # Obtener el productID y el nombre de los productos
-    def getLots(self, onlyAvailables = True):
-        action = "SELECT productID FROM products"
-        if onlyAvailables:
-            action = action + " WHERE available = true"
-        self._cur.execute(action)
-        productIDs = self._cur.fetchall()
-        resp = {}
-        for productID in productIDs:
-            resp[productID[0]] = self.getLotsInfoByProductID(productID[0], onlyAvailables)
-        return resp
-
-
-    # Cambiar informacion de un lote
-    def updateLot(self, productID, lotID, cost=None, quantity=None, provider=None, adquisitionDate=None, perishable = None, expirationDate=None, available=None):
-        if cost is None and quantity is None \
-            and provider is None and adquisitionDate is None \
-            and expirationDate is None and available is None:
-            return
-
-        action = "UPDATE " + lotsTable + str(productID) + " SET"
-        kwargs = ()
-
-        if quantity is not None or available is not None:
-            self._cur.execute("SELECT quantity, available FROM " + lotsTable + str(productID) + " WHERE lotID = %s", (lotID,) )
-            preChange = self._cur.fetchall()[0]
-            kwargsProduct = ()
-            actionProduct = "UPDATE products SET "
-            changeRequired =  False
-            if available is not None:
-                action = action + " available = %s,"
-                kwargs = kwargs + (available,)
-                if preChange[1] and not available:
-                    changeRequired = True
-                    actionProduct = actionProduct + " currentLot = CASE WHEN currentLot = %s THEN 0 ELSE currentLot END,  remainingLots = remainingLots-1,"
-                    kwargsProduct = kwargsProduct + (lotID,)
-                    if quantity is None:
-                        actionProduct = actionProduct + "remaining = remaining + %s"
-                        kwargsProduct = kwargsProduct + (-preChange[0],)
-                elif not preChange[1] and available:
-                    changeRequired = True
-                    actionProduct = actionProduct + " currentLot = CASE WHEN currentLot = 0 THEN %s ELSE currentLot END,  remainingLots = remainingLots+1,"
-                    kwargsProduct = kwargsProduct + (lotID,)
-                    if quantity is None:
-                        actionProduct = actionProduct + "remaining = remaining + %s"
-                        kwargsProduct = kwargsProduct + (preChange[0],)
-
-            if quantity is not None:
-                action = action + " quantity = %s,"
-                kwargs = kwargs + (quantity,)
-                if preChange[1]:
-                    changeRequired = True
-                    actionProduct = actionProduct + "remaining = remaining + %s"
-                    if available is not None and not available:
-                        kwargsProduct = kwargsProduct + (-preChange[0],)
-                    else:
-                        kwargsProduct = kwargsProduct + (quantity-preChange[0],)
-                elif not preChange[1] and available is not None and available:
-                    changeRequired = True
-                    actionProduct = actionProduct + "remaining = remaining + %s"
-                    kwargsProduct = kwargsProduct + (quantity,)
-
-            if changeRequired:
-                actionProduct = actionProduct + " WHERE productID = %s"
-                kwargsProduct = kwargsProduct + (productID,)
-                self._cur.execute(actionProduct, kwargsProduct)
-
-        if cost is not None:
-            action = action + " cost = %s,"
-            kwargs = kwargs + (cost,)
-
-        if provider is not None:
-            action = action + " provider = %s,"
-            kwargs = kwargs + (provider,)
-
-        if adquisitionDate is not None:
-            action = action + " adquisition = %s,"
-            kwargs = kwargs + (adquisitionDate,)
-
-        if perishable is not None and expirationDate is None:
-            action = action + " perishable = %s,"
-            kwargs = kwargs + (perishable,)
-
-        if expirationDate is not None:
-            action = action + " perishable = True, expiration = %s,"
-            kwargs = kwargs + (expirationDate,)
-
-        action = action[:len(action)-1] + " WHERE lotId = %s"
-        kwargs = kwargs + (lotID,)
-
-        self._cur.execute(action, kwargs)
-
-    # Borrar lote
-    def deleteLot(self, productID, lotID):
-        self._cur.execute("SELECT quantity, available FROM " + lotsTable + str(productID) + " WHERE lotID = %s", (lotID,) )
-        preChange = self._cur.fetchall()[0]
-
-        if preChange[1]:
-            actionProduct = """
-            UPDATE products SET
-                remaining = remaining + %s,
-                remainingLots = remainingLots-1,
-                currentLot =
-                CASE WHEN currentLot = %s THEN
-                    0
-                ELSE
-                    currentLot
-                END
-            WHERE productID = %s;
-            """
-            self._cur.execute(actionProduct, (-preChange[0], lotID, productID))
-
-        action = "DELETE FROM " + lotsTable + str(productID) + " WHERE lotID = %s"
-        self._cur.execute(action, (lotID,))
->>>>>>> remotes/origin/master
-
-
-    # Buscar lotes vencidos de un producto o que estan cerca de vencerse
-    def getExpiredLotsOfProduct(self, productID, nearFutureDate=None):
-<<<<<<< HEAD
-    	action = "SELECT * FROM " + lotsTable + str(productID) + " WHERE perishable AND (expiration <= now()"
-    	kwargs = ()
-    	if nearFutureDate is not None:
-    		action = action + " OR expiration <= %s"
-    		kwargs = kwargs + (nearFutureDate,)
-    	action = action + ")"
-    	self._cur.execute(action, kwargs)
-    	return self._cur.fetchall()
-
-	#-------------------------------------------------------------------------------------------------------------------------------
-    # Métodos de control de SERVICIOS
-    #-------------------------------------------------------------------------------------------------------------------------------
-
-    # Crear un nuevo servicio
-    def createService(self, name, price, category="", available=False):
-    	action = "INSERT INTO services(name,price,category,available) VALUES (%s,%s,%s,%s)"
-    	self._cur.execute(action,(name, price, category, available))
-
-    # Obtener informacion de todos los servicios
-    def servicesInfo(self, onlyAvailables=True):
-    	action = "SELECT * FROM services"
-    	if onlyAvailables:
-    		action = action + " WHERE available = true"
-		self._cur.execute(action)
-		return self._cur.fetchall()
-
-	# Modificar un servicio
-	def updateService(self, serviceID, name=None, price=None, category=None, available=None):
-		if name is None and price is None and category is None and available is None:
-			return
-
-		action = "UPDATE services SET"
-		kwargs = ()
-
-		if name is not None:
-			action = action + " name = %s,"
-			kwargs = kwargs + (name,)
-
-		if price is not None:
-			action = action + " price = %s,"
-			kwargs = kwargs + (price,)
-
-		if category is not None:
-			action = action + " category = %s,"
-			kwargs = kwargs + (category,)
-
-		if available is not None:
-			action = action + " available = %s,"
-			kwargs = kwargs + (available,)
-
-		action = action[:len(action)-1] + " WHERE serviceID = %s"
-    	kwargs = kwargs + (serviceID,)
-    	self._cur.execute(action, kwargs)
-
-    # Borrar un servicio
-    def deleteService(self, serviceID):
-    	action = "DELETE FROM services WHERE serviceID = %s"
-    	self._cur.execute(action, (serviceID,))
-
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Métodos de control de LOGIN
-    #-------------------------------------------------------------------------------------------------------------------------------
-
-    # Crear usuario
-    def createUser(self, username, password, name, email, permissionsMask=0):
-    	action = "INSERT INTO login(username, password, name, email, permissionsMask) VALUES(%s,%s,%s,%s,%s)"
-    	try:
-    		self._cur.execute(action, (username, password, name, email, permissionsMask))
-    		print("Usuario " + username + " ha sido creado")
-    		return True
-    	except:
-    		print("Usuario " + username + " ya existente")
-    		return False
-
-    # Verificar identidad de persona entrando a usuario
-    def checkUser(self, username, password):
-    	action = "UPDATE login SET lastLogin = now() WHERE username = %s AND password = %s RETURNING name, permissionsMask"
-    	self._cur.execute(action, (username, password))
-    	resp = self._cur.fetchall()
-    	if len(resp) != 0:
-    		return resp[0]
-    	return None
-
-    # Verificar si un email esta asociado a un usario
-    def checkUserByEmail(self, email):
-    	action = "SELECT username, name, email, permissionsMask, lastLogin FROM login WHERE email = %s"
-    	self._cur.execute(action, (email,))
-    	resp = self._cur.fetchall()
-    	if len(resp) != 0:
-    		return resp[0]
-    	return None
-
-    # Modificar Usuario
-    def updateUser(self, username, password=None, name=None, email=None, permissionsMask=None):
-    	if password is None and name is None and permissionsMask is None:
-    		return
-    	action = "UPDATE login SET"
-    	kwargs = ()
-    	if password is not None:
-    		action = action + " password = %s,"
-    		kwargs = kwargs + (password,)
-
-    	if name is not None:
-    		action = action + " name = %s,"
-    		kwargs = kwargs + (name,)
-
-    	if email is not None:
-    		action = action + " email = %s,"
-    		kwargs = kwargs + (email,)
-
-    	if permissionsMask is not None:
-    		action = action + " permissionsMask = %s,"
-    		kwargs = kwargs + (permissionsMask,)
-
-    	action = action[:len(action)-1] + " WHERE username = %s"
-    	kwargs = kwargs + (username,)
-    	self._cur.execute(action, kwargs)
-
-    # Borrar Usuario
-    def deleteUser(self, username):
-    	action = "DELETE FROM login WHERE username = %s"
-    	print("Borrando usuario: " + str(username))
-    	self._cur.execute(action, (username,))
-
-    # Obtener lista de usuarios, sus permisos y ultimo login. Ordenado por nombre por Default
-    def getUsersInfo(self, orderByLastLogin=False, descendentingOrderLastLogin=False):
-    	action = "SELECT username, name, email, permissionsMask, lastLogin FROM login ORDER by"
-    	
-    	if orderByLastLogin:
-    		action = action + " lastLogin"
-    		if descendentingOrderLastLogin:
-    			action = action + " DESC"
-    		action = action + ","
-
-    	action = action + " name"
-
-    	self._cur.execute(action)
-    	return self._cur.fetchall()
-
-    # Obtener informacion de usuario por username
-    def getUserBasicInfo(self, username):
-    	action = "SELECT name, email, permissionsMask, lastLogin FROM login WHERE username = %s"
-    	self._cur.execute(action, (username,))
-    	if len(resp) != 0:
-    		return resp[0]
-    	return None
-
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Métodos de control de CLIENTS
-    #-------------------------------------------------------------------------------------------------------------------------------
-    
-    # Crear Cliente
-    def createClient(self, ID, name="", lastName="", phone="", balance=0, debtPermission=False):
-    	action = "INSERT INTO clients(ID,name,lastName,phone,balance,debtPermission) VALUES(%s,%s,%s,%s,%s,%s)"
-    	kwargs = (ID, name, lastName, phone, balance, debtPermission)
-    	try:
-    		self._cur.execute(action, kwargs)
-    		print("Cliente " + str(ID) + "ha sido creado")
-    		return True
-    	except:
-    		print("Cliente " + str(ID) + "ya existente")
-    		return False
-
-
-    # Buscar Cliente por ID, nombre o apellido
-    def searchClient(self, ID=None, name=None, lastName=None):
-    	if ID is None and name is None and lastName is None:
-    		return []
-
-    	action = "SELECT * FROM clients WHERE "
-    	kwargs = ()
-    	if ID is not None:
-    		action = action + "ID = %s"
-    		kwargs = kwargs + (ID,)
-
-    	if name is not None:
-    		if ID is not None:
-    			action = action + " OR "
-    		action = action + "LOWER(name) SIMILAR TO %s"
-    		kwargs = kwargs + ("%"+name.lower()+"%",) 
-
-    	if lastName is not None:
-    		if ID is not None or name is not None:
-    			action = action + " OR "
-    		action = action + "LOWER(lastName) SIMILAR TO %s"
-    		kwargs = kwargs + ("%"+lastName.lower()+"%",) 
-
-    	self._cur.execute(action, kwargs)
-    	return self._cur.fetchall()
-
-    # Buscar Cliente por ID y actualizar su ultima visita
-    def checkClient(self, ID):
-    	action = "UPDATE clients SET lastSeen = now() WHERE ID = %s RETURNING *"
-    	self._cur.execute(action, (ID,))
-    	resp = self._cur.fetchall()
-    	if len(resp) != 0:
-    		return resp[0]
-    	else:
-    		return None
-
-    # Buscar Clientes con deudas
-    def indebtClients(self):
-    	action = "SELECT * FROM clients WHERE balance < 0"
-    	self._cur.execute(action)
-    	return self._cur.fetchall()
-
-    # Buscar Clientes que no se han contectado antes de una fecha (inclusive)
-    def searchClientsByDate(self, date):
-    	action = "SELECT * FROM clients WHERE lastSeen <= %s"
-    	self._cur.execute(action)
-    	return self._cur.fetchall()
-
-    # Actualizar un Cliente
-    def updateClient(self, ID, name=None, lastName=None, phone=None, balance=None, debtPermission=None):
-    	if name is None and lastName is None and phone is None and balance is None and debtPermission is None:
-    		return
-
-		action = "UPDATE clients SET"
-		kwargs = ()
-
-		if name is not None:
-			action = action + " name = %s,"
-			kwargs = kwargs + (name,)
-
-		if lastName is not None:
-			action = action + " lastName = %s,"
-			kwargs = kwargs + (lastName,)
-
-		if phone is not None:
-			action = action + " phone = %s,"
-			kwargs = kwargs + (phone,)
-
-		if balance is not None:
-			action = action + " balance = %s,"
-			kwargs = kwargs + (balance,)
-
-		if debtPermission is not None:
-			action = action + " debtPermission = %s,"
-			kwargs = kwargs + (debtPermission,)
-
-		action = action[:len(action)-1] + " WHERE ID = %s"
-    	kwargs = kwargs + (ID,)
-    	self._cur.execute(action, kwargs)
-
-	# Eliminar Cliente, por default no se eliminan clientes con deudas
-	def deleteClient(self, ID, eliminateIndebt=False):
-		action = "DELETE FROM clients WHERE ID = %s"
-		if not eliminateIndebt:
-			action = action + " AND balance >= 0"
-		else:
-			print("Advertencia: Procediendo a eliminar cliente " + str(ID) + " aunque tenga deudas")
-
-		self._cur.execute(action, (ID,))
-
-	# Eliminar Clientes anteriores a una fecha (inclusive), por default no se eliminan clientes con deudas 
-	def deleteClientsByDate(self, date, eliminateIndebt=False):
-		action = "DELETE FROM clients WHERE lastSeen <= %s"
-		if not eliminateIndebt:
-			action = action + " AND balance >= 0"
-		else:
-			print("Advertencia: Procediendo a eliminar clientes aunque tengan deudas")
-
-		self._cur.execute(action, (date,))
-
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Métodos de control de Operaciones de Caja
-    #-------------------------------------------------------------------------------------------------------------------------------
-
-    # Ultima aparicion de Apertura/Cerrado de Caja/Dia/Periodo Contable
-    def opTypeLastAppeareance(self, opType, openRecord=None):
-        if 0 > opType or 2 < opType:
-            print("Tipo de operacion Invalido")
-            return None
-
-        
-        action = "SELECT * FROM registerOp WHERE opType = %s AND recorded = (SELECT MAX(recorded) FROM registerOp WHERE opType = %s)"
-        kwargs = (opType, opType)
-
-        if openRecord is not None:
-            action = action + " AND openRecord = %s"
-            kwargs = kwargs + (openRecord,)
-
-        self._cur.execute(action, kwargs)
-        resp = self._cur.fetchall()
-        if len(resp) != 0:
-            return resp[0]
-        else:
-            return None
-
-    # Si el tipo de operacion esta abierta
-    def opTypeIsOpen(self, opType):
-        if 0 > opType or 2 < opType:
-            print("Tipo de operacion Invalido")
-            return None
-
-        last = self.opTypeLastAppeareance(opType)
-        if last is None:
-            return False
-
-        return last[3]
-
-    # Obtener la ultima operacion
-    def getLastOperation(self):
-        action = "SELECT * FROM registerOp WHERE recorded = (SELECT MAX(recorded) FROM registerOp)"
-        self._cur.execute(action)
-        return self._cur.fetchall()
-
-=======
-        action = "SELECT * FROM " + lotsTable + str(productID) + " WHERE perishable AND (expiration <= now()"
-        kwargs = ()
-        if nearFutureDate is not None:
-            action = action + " OR expiration <= %s"
-            kwargs = kwargs + (nearFutureDate,)
-        action = action + ")"
-        self._cur.execute(action, kwargs)
-        return self._cur.fetchall()
-
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Métodos de control de SERVICIOS
-    #-------------------------------------------------------------------------------------------------------------------------------
-
-    # Crear un nuevo servicio
-    def createService(self, name, price, category="", available=False):
-        action = "INSERT INTO services(name,price,category,available) VALUES (%s,%s,%s,%s)"
-        self._cur.execute(action,(name, price, category, available))
-
-    # Obtener informacion de todos los servicios
-    def servicesInfo(self, onlyAvailables=True):
-        action = "SELECT * FROM services"
-        if onlyAvailables:
-            action = action + " WHERE available = true"
-        self._cur.execute(action)
-        return self._cur.fetchall()
-
-    # Modificar un servicio
-    def updateService(self, serviceID, name=None, price=None, category=None, available=None):
-        if name is None and price is None and category is None and available is None:
-            return
-
-        action = "UPDATE services SET"
-        kwargs = ()
-
-        if name is not None:
-            action = action + " name = %s,"
-            kwargs = kwargs + (name,)
-
-        if price is not None:
-            action = action + " price = %s,"
-            kwargs = kwargs + (price,)
-
-        if category is not None:
-            action = action + " category = %s,"
-            kwargs = kwargs + (category,)
-
-        if available is not None:
-            action = action + " available = %s,"
-            kwargs = kwargs + (available,)
-
-        action = action[:len(action)-1] + " WHERE serviceID = %s"
-        kwargs = kwargs + (serviceID,)
-        self._cur.execute(action, kwargs)
-
-    # Borrar un servicio
-    def deleteService(self, serviceID):
-        action = "DELETE FROM services WHERE serviceID = %s"
-        self._cur.execute(action, (serviceID,))
-
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Métodos de control de LOGIN
-    #-------------------------------------------------------------------------------------------------------------------------------
-
-    # Crear usuario
-    def createUser(self, username, password, name, email, permissionsMask=0):
-        action = "INSERT INTO login(username, password, name, email, permissionsMask) VALUES(%s,%s,%s,%s,%s)"
-        try:
-            self._cur.execute(action, (username, password, name, email, permissionsMask))
-            print("Usuario " + username + " ha sido creado")
-            return True
-        except:
-            print("Usuario " + username + " ya existente")
-            return False
-
-    # Verificar identidad de persona entrando a usuario
-    def checkUser(self, username, password):
-        action = "UPDATE login SET lastLogin = now() WHERE username = %s AND password = %s RETURNING name, permissionsMask"
-        self._cur.execute(action, (username, password))
-        resp = self._cur.fetchall()
-        if len(resp) != 0:
-            return resp[0]
-        return None
-
-    # Verificar si un email esta asociado a un usario
-    def checkUserByEmail(self, email):
-        action = "SELECT username, name, email, permissionsMask, lastLogin FROM login WHERE email = %s"
-        self._cur.execute(action, (email,))
-        resp = self._cur.fetchall()
-        if len(resp) != 0:
-            return resp[0]
-        return None
-
-    # Modificar Usuario
-    def updateUser(self, username, password=None, name=None, email=None, permissionsMask=None):
-        if password is None and name is None and permissionsMask is None:
-            return
-        action = "UPDATE login SET"
-        kwargs = ()
-        if password is not None:
-            action = action + " password = %s,"
-            kwargs = kwargs + (password,)
-
-        if name is not None:
-            action = action + " name = %s,"
-            kwargs = kwargs + (name,)
-
-        if email is not None:
-            action = action + " email = %s,"
-            kwargs = kwargs + (email,)
-
-        if permissionsMask is not None:
-            action = action + " permissionsMask = %s,"
-            kwargs = kwargs + (permissionsMask,)
-
-        action = action[:len(action)-1] + " WHERE username = %s"
-        kwargs = kwargs + (username,)
-        self._cur.execute(action, kwargs)
-
-    # Borrar Usuario
-    def deleteUser(self, username):
-        action = "DELETE FROM login WHERE username = %s"
-        print("Borrando usuario: " + str(username))
-        self._cur.execute(action, (username,))
-
-    # Obtener lista de usuarios, sus permisos y ultimo login. Ordenado por nombre por Default
-    def getUsersInfo(self, orderByLastLogin=False, descendentingOrderLastLogin=False):
-        action = "SELECT username, name, email, permissionsMask, lastLogin FROM login ORDER by"
-
-        if orderByLastLogin:
-            action = action + " lastLogin"
-            if descendentingOrderLastLogin:
-                action = action + " DESC"
-            action = action + ","
-
-        action = action + " name"
-
-        self._cur.execute(action)
-        return self._cur.fetchall()
-
-    # Obtener informacion de usuario por username
-    def getUserBasicInfo(self, username):
-        action = "SELECT name, email, permissionsMask, lastLogin FROM login WHERE username = %s"
-        self._cur.execute(action, (username,))
-        if len(resp) != 0:
-            return resp[0]
-        return None
-
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Métodos de control de CLIENTS
-    #-------------------------------------------------------------------------------------------------------------------------------
-
-    # Crear Cliente
-    def createClient(self, ID, name="", lastName="", phone="", balance=0, debtPermission=False):
-        action = "INSERT INTO clients(ID,name,lastName,phone,balance,debtPermission) VALUES(%s,%s,%s,%s,%s,%s)"
-        kwargs = (ID, name, lastName, phone, balance, debtPermission)
-        try:
-            self._cur.execute(action, kwargs)
-            print("Cliente " + str(ID) + "ha sido creado")
-            return True
-        except:
-            print("Cliente " + str(ID) + "ya existente")
-            return False
-
-
-    # Buscar Cliente por ID, nombre o apellido
-    def searchClient(self, ID=None, name=None, lastName=None):
-        if ID is None and name is None and lastName is None:
-            return []
-
-        action = "SELECT * FROM clients WHERE "
-        kwargs = ()
-        if ID is not None:
-            action = action + "ID = %s"
-            kwargs = kwargs + (ID,)
-
-        if name is not None:
-            if ID is not None:
-                action = action + " OR "
-            action = action + "LOWER(name) SIMILAR TO %s"
-            kwargs = kwargs + ("%"+name.lower()+"%",)
-
-        if lastName is not None:
-            if ID is not None or name is not None:
-                action = action + " OR "
-            action = action + "LOWER(lastName) SIMILAR TO %s"
-            kwargs = kwargs + ("%"+lastName.lower()+"%",)
-
-        self._cur.execute(action, kwargs)
-        return self._cur.fetchall()
-
-    # Buscar Cliente por ID y actualizar su ultima visita
-    def checkClient(self, ID):
-        action = "UPDATE clients SET lastSeen = now() WHERE ID = %s RETURNING *"
-        self._cur.execute(action, (ID,))
-        resp = self._cur.fetchall()
-        if len(resp) != 0:
-            return resp[0]
-        else:
-            return None
-
-    # Buscar Clientes con deudas
-    def indebtClients(self):
-        action = "SELECT * FROM clients WHERE balance < 0"
-        self._cur.execute(action)
-        return self._cur.fetchall()
-
-    # Buscar Clientes que no se han contectado antes de una fecha (inclusive)
-    def searchClientsByDate(self, date):
-        action = "SELECT * FROM clients WHERE lastSeen <= %s"
-        self._cur.execute(action)
-        return self._cur.fetchall()
-
-    # Actualizar un Cliente
-    def updateClient(self, ID, name=None, lastName=None, phone=None, balance=None, debtPermission=None):
-        if name is None and lastName is None and phone is None and balance is None and debtPermission is None:
-            return
-
-        action = "UPDATE clients SET"
-        kwargs = ()
-
-        if name is not None:
-            action = action + " name = %s,"
-            kwargs = kwargs + (name,)
-
-        if lastName is not None:
-            action = action + " lastName = %s,"
-            kwargs = kwargs + (lastName,)
-
-        if phone is not None:
-            action = action + " phone = %s,"
-            kwargs = kwargs + (phone,)
-
-        if balance is not None:
-            action = action + " balance = %s,"
-            kwargs = kwargs + (balance,)
-
-        if debtPermission is not None:
-            action = action + " debtPermission = %s,"
-            kwargs = kwargs + (debtPermission,)
-
-        action = action[:len(action)-1] + " WHERE ID = %s"
-        kwargs = kwargs + (ID,)
-        self._cur.execute(action, kwargs)
-
-    # Eliminar Cliente, por default no se eliminan clientes con deudas
-    def deleteClient(self, ID, eliminateIndebt=False):
-        action = "DELETE FROM clients WHERE ID = %s"
-        if not eliminateIndebt:
-            action = action + " AND balance >= 0"
-        else:
-            print("Advertencia: Procediendo a eliminar cliente " + str(ID) + " aunque tenga deudas")
-
-        self._cur.execute(action, (ID,))
-
-    # Eliminar Clientes anteriores a una fecha (inclusive), por default no se eliminan clientes con deudas
-    def deleteClientsByDate(self, date, eliminateIndebt=False):
-        action = "DELETE FROM clients WHERE lastSeen <= %s"
-        if not eliminateIndebt:
-            action = action + " AND balance >= 0"
-        else:
-            print("Advertencia: Procediendo a eliminar clientes aunque tengan deudas")
-
-        self._cur.execute(action, (date,))
-
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Métodos de control de Operaciones de Caja
-    #-------------------------------------------------------------------------------------------------------------------------------
-
-    # Ultima aparicion de Apertura/Cerrado de Caja/Dia/Periodo Contable
-    def opTypeLastAppeareance(self, opType, openRecord=None):
-        if 0 > opType or 2 < opType:
-            print("Tipo de operacion Invalido")
-            return None
-
-
-        action = "SELECT * FROM registerOp WHERE opType = %s AND recorded = (SELECT MAX(recorded) FROM registerOp WHERE opType = %s)"
-        kwargs = (opType, opType)
-
-        if openRecord is not None:
-            action = action + " AND openRecord = %s"
-            kwargs = kwargs + (openRecord,)
-
-        self._cur.execute(action, kwargs)
-        resp = self._cur.fetchall()
-        if len(resp) != 0:
-            return resp[0]
-        else:
-            return None
-
-    # Si el tipo de operacion esta abierta
-    def opTypeIsOpen(self, opType):
-        if 0 > opType or 2 < opType:
-            print("Tipo de operacion Invalido")
-            return None
-
-        last = self.opTypeLastAppeareance(opType)
-        if last is None:
-            return False
-
-        return last[3]
-
-    # Obtener la ultima operacion
-    def getLastOperation(self):
-        action = "SELECT * FROM registerOp WHERE recorded = (SELECT MAX(recorded) FROM registerOp)"
-        self._cur.execute(action)
-        return self._cur.fetchall()
-
->>>>>>> remotes/origin/master
-    # Cerrar Caja
-    def closeRegister(self, username, description="Cierre de Caja"):
-        if not self.opTypeIsOpen(2):
-            print("Caja ya estaba cerrada")
-            return
-
-        last = self.getLastOperation()
-
-        action = "INSERT INTO registerOp(username,opType,openRecord,opBalance,totalBalance,description) VALUES(%s,'2','false','0',%s,%s)"
-        kwargs = (username, last[7], description) # totalBalance
-        self._cur.execute(action, kwargs)
-
-    # Cerrar dia
-    def closeDay(self, username, correction=0, description="Cierre de Dia"):
-        if not self.opTypeIsOpen(1):
-            print("Dia ya estaba cerrada")
-            return
-        self.closeRegister(username)
-        last = self.getLastOperation()
-
-        action = "INSERT INTO registerOp(username,opType,openRecord,opBalance,totalBalance,description) VALUES(%s,'1','false',%s,%s,%s)"
-        kwargs = (username, correction, last[7]+correction, description) # totalBalance
-        self._cur.execute(action, kwargs)
-
-    # Cerrar Periodo Contable. Se hace Backup
-    def closeAccountingPeriod(self, username, correction=0, description="Cierre de Periodo"):
-        if not self.opTypeIsOpen(0):
-            print("Periodo Contable ya estaba cerrada")
-            return
-        self.closeDay(username)
-        last = self.getLastOperation()
-        action = "INSERT INTO registerOp(username,opType,openRecord,opBalance,totalBalance,description) VALUES(%s,'0','false',%s,%s,%s)"
-        kwargs = (username, correction, last[7]+correction, description) # totalBalance
-        self._cur.execute(action, kwargs)
-
-
-    # Abrir periodo Contable (Normalmente deberia ser un trimestre)
-<<<<<<< HEAD
-    # Se 
-=======
-    # Se
->>>>>>> remotes/origin/master
-
-####################################################################################################################################
-## FIN :)
-####################################################################################################################################
-
 # Pruebas de archivo
 if __name__ == '__main__':
-<<<<<<< HEAD
-	DBManager("sistema_ventas", "hola", True)
-=======
-    DBManager("sistema_ventas", "hola", True)
->>>>>>> remotes/origin/master
+    dbManager("postgres", "iron-man", True)
