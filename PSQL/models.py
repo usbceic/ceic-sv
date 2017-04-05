@@ -246,8 +246,8 @@ class Purchase(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.purchase_id), str(self.ci), self.clerk, str(self.total), str(self.interest), str(self.purchase_date), str(self.locked), str(self.debt), str(self.payed),
-            str(self.payed_date), str(self.payed_to))
+        kwargs = (str(self.purchase_id), str(self.ci), self.clerk, str(self.total), str(self.interest), str(self.purchase_date), str(self.locked),
+            str(self.debt), str(self.payed), str(self.payed_date), str(self.payed_to))
         template = "<Purchase(purchase_id='%s', ci='%s', clerk='%s', total='%s', interest='%s', purchase_date=='%s', locked=='%s', debt=='%s', "
         template += "payed=='%s', payed_date=='%s', payed_to=='%s')>"
         return  template % kwargs
@@ -432,7 +432,7 @@ class Transfer(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.transfer_id), str(self.ci), self.clerk, self.transfer_date, str(self.amount), self.bank, self.confirmation_code, self.description)
+        kwargs = (str(self.transfer_id), str(self.ci), self.clerk, str(self.transfer_date), str(self.amount), self.bank, self.confirmation_code, self.description)
         template = "<Transfer(transfer_id='%s', ci='%s', clerk='%s', transfer_date='%s', amount='%s', bank=='%s', confirmation_code='%s', description=='%s')>"
         return  template % kwargs
 
@@ -463,8 +463,10 @@ class Operation_log(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.operation_log_id, self.clerk, self.op_type, self.open_record, self.recorded, self.transfer_balance, self.cash_balance, self.cash_total, str(self.total_money))
-        template = "<Operation_log(operation_log_id='%s', clerk='%s', op_type='%s', open_record='%s', recorded='%s', transfer_balance=='%s', cash_balance='%s', cash_total=='%s', total_money='%s')>"
+        kwargs = (str(self.operation_log_id), self.clerk, str(self.op_type), str(self.open_record), str(self.recorded), str(self.transfer_balance),
+            str(self.cash_balance), str(self.cash_total), str(self.total_money))
+        template = "<Operation_log(operation_log_id='%s', clerk='%s', op_type='%s', open_record='%s', recorded='%s', transfer_balance=='%s', "
+        template += "cash_balance='%s', cash_total=='%s', total_money='%s')>"
         return  template % kwargs
 
 # Tabla de lenguajes validos
@@ -516,7 +518,7 @@ class Book(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.book_id, self.title, self.isbn, self.edition, self.book_year, self.lang, str(self.quantity), str(self.quantity_lent))
+        kwargs = (str(self.book_id), self.title, self.isbn, str(self.edition), str(self.book_year), self.lang, str(self.quantity), str(self.quantity_lent))
         template = "<Book(book_id='%s', title='%s', isbn='%s', edition='%s', book_year='%s', lang=='%s', quantity='%s', quantity_lent=='%s')>"
         return  template % kwargs
 
@@ -556,7 +558,7 @@ class Author(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.firstname, self.lastname, self.middlename, self.second_lastname, self.birthdate, self.nacionality)
+        kwargs = (self.firstname, self.lastname, self.middlename, self.second_lastname, str(self.birthdate), self.nacionality)
         template = "<Author(firstname='%s', lastname='%s', middlename='%s', second_lastname='%s', birthdate='%s', nacionality=='%s')>"
         return  template % kwargs
 
@@ -578,7 +580,7 @@ class Associated_with(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.book_id, self.subject_code)
+        kwargs = (str(self.book_id), self.subject_code)
         template = "<Associated_with(book_id='%s', subject_code='%s')>"
         return  template % kwargs
 
@@ -608,7 +610,7 @@ class Written_by(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.book_id, self.firstname, self.lastname, self.middlename, self.second_lastname, self.birthdate, self.nacionality)
+        kwargs = (str(self.book_id), self.firstname, self.lastname, self.middlename, self.second_lastname, str(self.birthdate), self.nacionality)
         template = "<Written_by(book_id='%s', firstname='%s', lastname='%s', middlename='%s', second_lastname='%s', birthdate='%s', nacionality=='%s')>"
         return  template % kwargs
 
