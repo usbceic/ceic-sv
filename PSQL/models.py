@@ -93,7 +93,7 @@ class Product(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.product_id, self.product_name, self.price, self.remaining, self.remaining_lots, self.available, self.description, self.category)
+        kwargs = (str(self.product_id), self.product_name, str(self.price), str(self.remaining), str(self.remaining_lots), str(self.available), self.description, self.category)
         template = "<Product(product_id='%s', product_name='%s', price='%s', remaining='%s', remaining_lots=='%s', available=='%s', description=='%s', category=='%s')>"
         return  template % kwargs
 
@@ -137,8 +137,8 @@ class Lot(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.lot_id, self.product_id, self.provider_id, self.received_by, self.cost, self.quantity, self.adquisition_date, self.perishable,
-            self.expiration_date, self.available, self.current, self.description, self.category,)
+        kwargs = (str(self.lot_id), str(self.product_id), self.provider_id, self.received_by, str(self.cost), str(self.quantity), str(self.adquisition_date), str(self.perishable),
+            str(self.expiration_date), str(self.available), str(self.current), self.description, self.category,)
         template = "<Lot(lot_id='%s', product_id='%s', provider_id='%s', received_by='%s', cost='%s',  quantity='%s',  adquisition_date='%s',  perishable='%s', "
         template += "expiration_date='%s', available='%s', current='%s', description=='%s', category=='%s')>"
         return  template % kwargs
@@ -168,7 +168,7 @@ class Service(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.service_id, self.service_name, self.price, self.available, self.description, self.category)
+        kwargs = (str(self.service_id), self.service_name, str(self.price), str(self.available), self.description, self.category)
         template = "<Service(service_id='%s', service_name='%s', price='%s', ravailable=='%s', description=='%s', category=='%s')>"
         return  template % kwargs
 
@@ -201,8 +201,8 @@ class Client(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.ci, self.carnet, self.firstname, self.lastname, self.phone, self.debt_permission, self.book_permission, self.blocked,
-            self.balance, self.last_seen)
+        kwargs = (str(self.ci), self.carnet, self.firstname, self.lastname, self.phone, str(self.debt_permission), str(self.book_permission), str(self.blocked),
+            str(self.balance), str(self.last_seen))
         template = "<Client(ci='%s', carnet='%s', firstname='%s', lastname='%s', phone=='%s', debt_permission=='%s', book_permission=='%s', "
         template += "blocked=='%s', balance=='%s', last_seen=='%s')>"
         return  template % kwargs
@@ -246,8 +246,8 @@ class Purchase(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.purchase_id, self.ci, self.clerk, self.total, self.interest, self.purchase_date, self.locked, self.debt, self.payed,
-            self.payed_date, self.payed_to)
+        kwargs = (str(self.purchase_id), str(self.ci), self.clerk, str(self.total), str(self.interest), str(self.purchase_date), str(self.locked), str(self.debt), str(self.payed),
+            str(self.payed_date), str(self.payed_to))
         template = "<Purchase(purchase_id='%s', ci='%s', clerk='%s', total='%s', interest='%s', purchase_date=='%s', locked=='%s', debt=='%s', "
         template += "payed=='%s', payed_date=='%s', payed_to=='%s')>"
         return  template % kwargs
@@ -277,7 +277,7 @@ class Checkout(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.checkout_id, self.purchase_id, self.pay_date, self.amount, self.with_balance, self.description, self.payed)
+        kwargs = (str(self.checkout_id), str(self.purchase_id), str(self.pay_date), str(self.amount), str(self.with_balance), self.description, str(self.payed))
         template = "<Checkout(checkout_id='%s', purchase_id='%s', pay_date='%s', amount='%s', with_balance=='%s', description=='%s', payed=='%s')>"
         return  template % kwargs
 
@@ -308,7 +308,7 @@ class Product_list(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.product_id, self.purchase_id, self.price, self.amount, self.locked, self.payed)
+        kwargs = (str(self.product_id), str(self.purchase_id), str(self.price), str(self.amount), str(self.locked), str(self.payed))
         template = "<Product_list(product_id='%s', purchase_id='%s', price='%s', amount='%s', locked=='%s', payed=='%s')>"
         return  template % kwargs
 
@@ -339,7 +339,7 @@ class Service_list(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.service_id, self.purchase_id, self.price, self.amount, self.locked, self.payed)
+        kwargs = (str(self.service_id), str(self.purchase_id), str(self.price), str(self.amount), str(self.locked), str(self.payed))
         template = "<Service_list(service_id='%s', purchase_id='%s', price='%s', amount='%s', locked=='%s', payed=='%s')>"
         return  template % kwargs
 
@@ -370,7 +370,7 @@ class Reverse_product_list(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.product_id, self.purchase_id, self.clerk, self.reverse_date, self.amount, self.cash, self.description)
+        kwargs = (str(self.product_id), str(self.purchase_id), self.clerk, str(self.reverse_date), str(self.amount), str(self.cash), self.description)
         template = "<Reverse_product_list(product_id='%s', purchase_id='%s', clerk='%s', reverse_date='%s', amount='%s', cash=='%s', description=='%s')>"
         return  template % kwargs
 
@@ -401,7 +401,7 @@ class Reverse_service_list(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.product_id, self.purchase_id, self.clerk, self.reverse_date, self.amount, self.cash, self.description)
+        kwargs = (str(self.product_id), str(self.purchase_id), self.clerk, str(self.reverse_date), str(self.amount), str(self.cash), self.description)
         template = "<Reverse_service_list(service_id='%s', purchase_id='%s', clerk='%s', reverse_date='%s', amount='%s', cash=='%s', description=='%s')>"
         return  template % kwargs
 
@@ -432,7 +432,7 @@ class Transfer(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.transfer_id, self.ci, self.clerk, self.transfer_date, self.amount, self.bank, self.confirmation_code, self.description)
+        kwargs = (str(self.transfer_id), str(self.ci), self.clerk, self.transfer_date, str(self.amount), self.bank, self.confirmation_code, self.description)
         template = "<Transfer(transfer_id='%s', ci='%s', clerk='%s', transfer_date='%s', amount='%s', bank=='%s', confirmation_code='%s', description=='%s')>"
         return  template % kwargs
 
@@ -463,7 +463,7 @@ class Operation_log(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.operation_log_id, self.clerk, self.op_type, self.open_record, self.recorded, self.transfer_balance, self.cash_balance, self.cash_total, self.total_money)
+        kwargs = (self.operation_log_id, self.clerk, self.op_type, self.open_record, self.recorded, self.transfer_balance, self.cash_balance, self.cash_total, str(self.total_money))
         template = "<Operation_log(operation_log_id='%s', clerk='%s', op_type='%s', open_record='%s', recorded='%s', transfer_balance=='%s', cash_balance='%s', cash_total=='%s', total_money='%s')>"
         return  template % kwargs
 
@@ -516,7 +516,7 @@ class Book(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.book_id, self.title, self.isbn, self.edition, self.book_year, self.lang, self.quantity, self.quantity_lent)
+        kwargs = (self.book_id, self.title, self.isbn, self.edition, self.book_year, self.lang, str(self.quantity), str(self.quantity_lent))
         template = "<Book(book_id='%s', title='%s', isbn='%s', edition='%s', book_year='%s', lang=='%s', quantity='%s', quantity_lent=='%s')>"
         return  template % kwargs
 
