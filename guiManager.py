@@ -34,7 +34,7 @@ from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter,
 QFileDialog, QIcon
 
 # Módulo manejador de la base de datos
-from DBManager import *
+from dbManager import *
 
 ####################################################################################################################################
 ## CONSTANTES:
