@@ -244,6 +244,14 @@ class Purchase(this.Base):
     checkout     = relationship("checkout")
     product_list = relationship("product_list")
 
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.purchase_id, self.ci, self.clerk, self.total, self.interest, self.purchase_date, self.locked, self.debt, self.payed,
+            self.payed_date, self.payed_to)
+        template = "<Purchase(purchase_id='%s', ci='%s', clerk='%s', total='%s', interest='%s', purchase_date=='%s', locked=='%s', debt=='%s', "
+        template += "payed=='%s', payed_date=='%s', payed_to=='%s')>"
+        return  template % kwargs
+
 # Tabla de pagos de orden de compra
 class Checkout(this.Base):
     # Nombre
@@ -266,6 +274,12 @@ class Checkout(this.Base):
         # Claves foraneas
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
     )
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.checkout_id, self.purchase_id, self.pay_date, self.amount, self.with_balance, self.description, self.payed)
+        template = "<Checkout(checkout_id='%s', purchase_id='%s', pay_date='%s', amount='%s', with_balance=='%s', description=='%s', payed=='%s')>"
+        return  template % kwargs
 
 # Tabla de lista de productos de orden de compra
 class Product_list(this.Base):
@@ -292,6 +306,12 @@ class Product_list(this.Base):
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
     )
 
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.product_id, self.purchase_id, self.price, self.amount, self.locked, self.payed)
+        template = "<Product_list(product_id='%s', purchase_id='%s', price='%s', amount='%s', locked=='%s', payed=='%s')>"
+        return  template % kwargs
+
 # Tabla de lista de servicios de orden de compra
 class Service_list(this.Base):
     # Nombre
@@ -316,6 +336,12 @@ class Service_list(this.Base):
         ForeignKeyConstraint(['service_id'], ['service.service_id']),
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
     )
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.service_id, self.purchase_id, self.price, self.amount, self.locked, self.payed)
+        template = "<Service_list(service_id='%s', purchase_id='%s', price='%s', amount='%s', locked=='%s', payed=='%s')>"
+        return  template % kwargs
 
 # Tabla de lista de productos de orden de compra
 class Reverse_product_list(this.Base):
@@ -342,6 +368,12 @@ class Reverse_product_list(this.Base):
         ForeignKeyConstraint(['clerk'], ['users.username']),
     )
 
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.product_id, self.purchase_id, self.clerk, self.reverse_date, self.amount, self.cash, self.description)
+        template = "<Reverse_product_list(product_id='%s', purchase_id='%s', clerk='%s', reverse_date='%s', amount='%s', cash=='%s', description=='%s')>"
+        return  template % kwargs
+
 # Tabla de reversar lista de servicios de orden de compra
 class Reverse_service_list(this.Base):
     # Nombre
@@ -366,6 +398,12 @@ class Reverse_service_list(this.Base):
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
     )
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.product_id, self.purchase_id, self.clerk, self.reverse_date, self.amount, self.cash, self.description)
+        template = "<Reverse_service_list(service_id='%s', purchase_id='%s', clerk='%s', reverse_date='%s', amount='%s', cash=='%s', description=='%s')>"
+        return  template % kwargs
 
 # Tabla de transferencias
 class Transfer(this.Base):
@@ -392,6 +430,12 @@ class Transfer(this.Base):
         ForeignKeyConstraint(['clerk'], ['users.username']),
     )
 
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.transfer_id, self.ci, self.clerk, self.transfer_date, self.amount, self.bank, self.confirmation_code, self.description)
+        template = "<Transfer(transfer_id='%s', ci='%s', clerk='%s', transfer_date='%s', amount='%s', bank=='%s', confirmation_code='%s', description=='%s')>"
+        return  template % kwargs
+
 # Tabla de Registro de Operaciones de Caja
 class Operation_log(this.Base):
     # Nombre
@@ -417,6 +461,12 @@ class Operation_log(this.Base):
         ForeignKeyConstraint(['clerk'], ['users.username']),
     )
 
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.operation_log_id, self.clerk, self.op_type, self.open_record, self.recorded, self.transfer_balance, self.cash_balance, self.cash_total, self.total_money)
+        template = "<Operation_log(operation_log_id='%s', clerk='%s', op_type='%s', open_record='%s', recorded='%s', transfer_balance=='%s', cash_balance='%s', cash_total=='%s', total_money='%s')>"
+        return  template % kwargs
+
 # Tabla de lenguajes validos
 class Valid_language(this.Base):
     # Nombre
@@ -427,6 +477,12 @@ class Valid_language(this.Base):
 
     # Relaciones
     book = relationship("book")
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (self.lang_name)
+        template = "<Valid_language(lang_name='%s')>"
+        return  template % kwargs
 
 # Tabla de Libros
 class Book(this.Base):
