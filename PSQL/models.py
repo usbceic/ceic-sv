@@ -22,7 +22,7 @@ import sys
 import datetime
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Boolean, Integer, String, DateTime, Date, Numeric, ForeignKeyConstraint, CheckConstraint
+from sqlalchemy import Column, Boolean, Integer, String, DateTime, Date, Numeric, ForeignKeyConstraint, CheckConstraint, ForeignKey
 from custom_types import GUID
 
 ###################################################################################################################################################################################
@@ -53,7 +53,8 @@ class User(this.Base):
 
     # Relaciones
     lot                  = relationship("Lot")
-    purchase             = relationship("Purchase")
+    purchase_clerk       = relationship("Purchase", foreign_keys="Purchase.clerk")
+    purchase_payed_to    = relationship("Purchase", foreign_keys="Purchase.payed_to")
     reverse_product_list = relationship("Reverse_product_list")
     reverse_service_list = relationship("Reverse_service_list")
     transfer             = relationship("Transfer")
@@ -259,7 +260,7 @@ class Purchase(this.Base):
     debt          = Column(Boolean, nullable=False, default=False)
     payed         = Column(Boolean, nullable=False, default=False)
     payed_date    = Column(DateTime, default=None)
-    #payed_to      = Column(String, default=None)
+    payed_to      = Column(String, default=None)
 
     # Constraints
     __table_args__ = (
@@ -268,12 +269,12 @@ class Purchase(this.Base):
         CheckConstraint('interest >= 0', name='exp_purchase_valid_interest'),
         CheckConstraint('(payed AND locked) OR NOT payed', name='exp_purchase_valid_payed'),
         CheckConstraint('(payed AND payed_date IS NOT NULL) OR (NOT payed AND payed_date IS NULL)', name='exp_purchase_valid_payed_date'),
-        #CheckConstraint('(payed AND payed_to IS NOT NULL) OR (NOT payed AND payed_to IS NULL)', name='exp_purchase_valid_payed_to'),
+        CheckConstraint('(payed AND payed_to IS NOT NULL) OR (NOT payed AND payed_to IS NULL)', name='exp_purchase_valid_payed_to'),
 
         # Claves foraneas
         ForeignKeyConstraint(['ci'], ['client.ci']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
-        #ForeignKeyConstraint(['payed_to'], ['users.username']),
+        ForeignKeyConstraint(['payed_to'], ['users.username']),
     )
 
     # Relaciones
