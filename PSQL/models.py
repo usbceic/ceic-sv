@@ -23,7 +23,7 @@ import datetime
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Boolean, Integer, String, DateTime, Date, Numeric, ForeignKeyConstraint, CheckConstraint
-from guid import GUID
+from custom_types import GUID
 
 ###################################################################################################################################################################################
 ## DECLARACIÓN DEL MODELO:
@@ -48,8 +48,8 @@ class User(this.Base):
     permission_mask = Column(Integer, nullable=False)
     profile         = Column(String, default="")
     description     = Column(String, default="")
-    creation_date   = Column(DateTime, nullable=False, default=datetime.datetime.now())
-    last_login      = Column(DateTime, nullable=False, default=datetime.datetime.now())
+    creation_date   = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    last_login      = Column(DateTime, nullable=False, default=datetime.datetime.now)
 
     # Relaciones
     lot                  = relationship("Lot")
@@ -97,7 +97,7 @@ class Product(this.Base):
     __tablename__ = 'product'
 
     # Atributos
-    product_id     = Column(GUID(), primary_key=True)
+    product_id     = Column(GUID, primary_key=True, default=GUID.random_value)
     product_name   = Column(String, nullable=False)
     price          = Column(Numeric, nullable=False)
     remaining      = Column(Integer, nullable=False, default=0)
@@ -133,13 +133,13 @@ class Lot(this.Base):
     __tablename__ = 'lot'
 
     # Atributos
-    lot_id           = Column(GUID(), nullable=False, primary_key=True)
-    product_id       = Column(GUID(), nullable=False, primary_key=True)
+    lot_id           = Column(GUID, nullable=False, primary_key=True, default=GUID.random_value)
+    product_id       = Column(GUID, nullable=False, primary_key=True)
     provider_id      = Column(String, nullable=False)
     received_by      = Column(String, nullable=False)
     cost             = Column(Numeric, nullable=False)
     quantity         = Column(Integer, nullable=False)
-    adquisition_date = Column(Date, nullable=False, default=datetime.datetime.now())
+    adquisition_date = Column(Date, nullable=False, default=datetime.datetime.now)
     perishable       = Column(Boolean, nullable=False, default=False)
     expiration_date  = Column(Date)
     available        = Column(Boolean, nullable=False, default=False)
@@ -181,7 +181,7 @@ class Service(this.Base):
     __tablename__ = 'service'
 
     # Atributos
-    service_id   = Column(GUID(), primary_key=True)
+    service_id   = Column(GUID, primary_key=True, default=GUID.random_value)
     service_name = Column(String, nullable=False)
     price        = Column(Numeric, nullable=False)
     available    = Column(Boolean, nullable=False, default=False)
@@ -221,7 +221,7 @@ class Client(this.Base):
     book_permission = Column(Boolean, nullable=False, default=True)
     blocked         = Column(Boolean, nullable=False, default=False)
     balance         = Column(Numeric, nullable=False, default=0)
-    last_seen       = Column(DateTime, default=datetime.datetime.now())
+    last_seen       = Column(DateTime, default=datetime.datetime.now)
 
     # Constraints
     __table_args__ = (
@@ -249,12 +249,12 @@ class Purchase(this.Base):
     __tablename__ = 'purchase'
 
     # Atributos
-    purchase_id   = Column(GUID(), primary_key=True)
+    purchase_id   = Column(GUID, primary_key=True, default=GUID.random_value)
     ci            = Column(Integer, nullable=False)
     clerk         = Column(String, nullable=False)
     total         = Column(Numeric, nullable=False, default=0)
     interest      = Column(Numeric, nullable=False, default=0)
-    purchase_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
+    purchase_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
     locked        = Column(Boolean, nullable=False, default=False)
     debt          = Column(Boolean, nullable=False, default=False)
     payed         = Column(Boolean, nullable=False, default=False)
@@ -296,9 +296,9 @@ class Checkout(this.Base):
     __tablename__ = 'checkout'
 
     # Atributos
-    checkout_id  = Column(GUID(), nullable=False, primary_key=True)
-    purchase_id  = Column(GUID(), nullable=False, primary_key=True)
-    pay_date     = Column(DateTime, nullable=False, default=datetime.datetime.now())
+    checkout_id  = Column(GUID, nullable=False, primary_key=True, default=GUID.random_value)
+    purchase_id  = Column(GUID, nullable=False, primary_key=True)
+    pay_date     = Column(DateTime, nullable=False, default=datetime.datetime.now)
     amount       = Column(Numeric, nullable=False)
     with_balance = Column(Boolean, nullable=False, default=False)
     description  = Column(String, nullable=False)
@@ -327,8 +327,8 @@ class Product_list(this.Base):
     __tablename__ = 'product_list'
 
     # Atributos
-    product_id  = Column(GUID(), nullable=False, primary_key=True)
-    purchase_id = Column(GUID(), nullable=False, primary_key=True)
+    product_id  = Column(GUID, nullable=False, primary_key=True)
+    purchase_id = Column(GUID, nullable=False, primary_key=True)
     price       = Column(Numeric, nullable=False, default=0)
     amount      = Column(Integer, nullable=False)
     locked      = Column(Boolean, nullable=False, default=False)
@@ -360,8 +360,8 @@ class Service_list(this.Base):
     __tablename__ = 'service_list'
 
     # Atributos
-    service_id  = Column(GUID(), nullable=False, primary_key=True)
-    purchase_id = Column(GUID(), nullable=False, primary_key=True)
+    service_id  = Column(GUID, nullable=False, primary_key=True)
+    purchase_id = Column(GUID, nullable=False, primary_key=True)
     price       = Column(Numeric, nullable=False, default=0)
     amount      = Column(Integer, nullable=False)
     locked      = Column(Boolean, nullable=False, default=False)
@@ -393,10 +393,10 @@ class Reverse_product_list(this.Base):
     __tablename__ = 'reverse_product_list'
 
     # Atributos
-    product_id   = Column(GUID(), nullable=False, primary_key=True)
-    purchase_id  = Column(GUID(), nullable=False, primary_key=True)
+    product_id   = Column(GUID, nullable=False, primary_key=True)
+    purchase_id  = Column(GUID, nullable=False, primary_key=True)
     clerk        = Column(String, nullable=False)
-    reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
+    reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
     amount       = Column(Integer, nullable=False)
     cash         = Column(Boolean, default=True)
     description  = Column(String, nullable=False)
@@ -426,10 +426,10 @@ class Reverse_service_list(this.Base):
     __tablename__ = 'reverse_service_list'
 
     # Atributos
-    service_id   = Column(GUID(), nullable=False, primary_key=True)
-    purchase_id  = Column(GUID(), nullable=False, primary_key=True)
+    service_id   = Column(GUID, nullable=False, primary_key=True)
+    purchase_id  = Column(GUID, nullable=False, primary_key=True)
     clerk        = Column(String, nullable=False)
-    reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now())
+    reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
     amount       = Column(Integer, nullable=False)
     cash         = Column(Boolean, default=True)
     description  = Column(String, nullable=False)
@@ -459,10 +459,10 @@ class Transfer(this.Base):
     __tablename__ = 'transfer'
 
     # Atributos
-    transfer_id       = Column(GUID(), primary_key=True)
+    transfer_id       = Column(GUID, primary_key=True, default=GUID.random_value)
     ci                = Column(Integer, nullable=False)
     clerk             = Column(String, nullable=False)
-    transfer_date     = Column(DateTime, nullable=False, default=datetime.datetime.now())
+    transfer_date     = Column(DateTime, nullable=False, default=datetime.datetime.now)
     amount            = Column(Integer, nullable=False)
     bank              = Column(String, nullable=False)
     confirmation_code = Column(String, nullable=False)
@@ -492,11 +492,11 @@ class Operation_log(this.Base):
     __tablename__ = 'operation_log'
 
     # Atributos
-    operation_log_id = Column(GUID(), primary_key=True)
+    operation_log_id = Column(GUID, primary_key=True, default=GUID.random_value)
     clerk            = Column(String, nullable=False)
     op_type          = Column(Integer, nullable=False)
     open_record      = Column(Boolean, default=False)
-    recorded         = Column(DateTime, nullable=False, default=datetime.datetime.now())
+    recorded         = Column(DateTime, nullable=False, default=datetime.datetime.now)
     transfer_balance = Column(Numeric, nullable=False, default=0)
     cash_balance     = Column(Numeric, nullable=False, default=0)
     cash_total       = Column(Numeric, nullable=False)
@@ -546,7 +546,7 @@ class Book(this.Base):
     __tablename__ = 'book'
 
     # Atributos
-    book_id       = Column(GUID(), primary_key=True)
+    book_id       = Column(GUID, primary_key=True, default=GUID.random_value)
     title         = Column(String, nullable=False)
     isbn          = Column(String, default=None, unique=True)
     edition       = Column(Integer, nullable=False, default=1)
@@ -628,7 +628,7 @@ class Associated_with(this.Base):
     __tablename__ = 'associated_with'
 
     # Atributos
-    book_id      = Column(GUID(), nullable=False, primary_key=True)
+    book_id      = Column(GUID, nullable=False, primary_key=True)
     subject_code = Column(String, nullable=False, primary_key=True)
 
     # Constraints
@@ -652,7 +652,7 @@ class Written_by(this.Base):
     __tablename__ = 'written_by'
 
     # Atributos
-    book_id         = Column(GUID(), nullable=False, primary_key=True)
+    book_id         = Column(GUID, nullable=False, primary_key=True)
     firstname       = Column(String, nullable=False, primary_key=True)
     lastname        = Column(String, nullable=False, primary_key=True)
     middlename      = Column(String, default=None, primary_key=True)
@@ -684,11 +684,11 @@ class Lent_to(this.Base):
     __tablename__ = 'lent_to'
 
     # Atributos
-    book_id               = Column(GUID(), nullable=False, primary_key=True)
+    book_id               = Column(GUID, nullable=False, primary_key=True)
     ci                    = Column(Integer, nullable=False, primary_key=True)
     lender_clerk          = Column(String, nullable=False, primary_key=True)
     start_description     = Column(String, nullable=False, primary_key=True)
-    start_time            = Column(DateTime, nullable=False, default=datetime.datetime.now(), primary_key=True)
+    start_time            = Column(DateTime, nullable=False, default=datetime.datetime.now, primary_key=True)
     estimated_return_time = Column(DateTime, nullable=False)
     receiver_clerk        = Column(String, default=None)
     return_time           = Column(DateTime, default=None)
