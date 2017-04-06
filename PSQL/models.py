@@ -52,12 +52,12 @@ class User(this.Base):
     last_login      = Column(DateTime, nullable=False, default=datetime.datetime.now())
 
     # Relaciones
-    lot                  = relationship("lot")
-    purchase             = relationship("purchase")
-    reverse_product_list = relationship("reverse_product_list")
-    reverse_service_list = relationship("reverse_service_list")
-    transfer             = relationship("transfer")
-    operation_log        = relationship("operation_log")
+    lot                  = relationship("Lot")
+    purchase             = relationship("Purchase")
+    reverse_product_list = relationship("Reverse_product_list")
+    reverse_service_list = relationship("Reverse_service_list")
+    transfer             = relationship("Transfer")
+    operation_log        = relationship("Operation_log")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -81,7 +81,7 @@ class Provider(this.Base):
     category        = Column(String)
 
     # Relaciones
-    lot  = relationship("lot")
+    lot  = relationship("Lot")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -115,9 +115,9 @@ class Product(this.Base):
     )
 
     # Relaciones
-    lot                  = relationship("lot")
-    product_list         = relationship("product_list")
-    reverse_product_list = relationship("reverse_product_list")
+    lot                  = relationship("Lot")
+    product_list         = relationship("Product_list")
+    reverse_product_list = relationship("Reverse_product_list")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -195,8 +195,8 @@ class Service(this.Base):
     )
 
     # Relaciones
-    service_list         = relationship("service_list")
-    reverse_service_list = relationship("reverse_service_list")
+    service_list         = relationship("Service_list")
+    reverse_service_list = relationship("Reverse_service_list")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -230,8 +230,8 @@ class Client(this.Base):
     )
 
     # Relaciones
-    purchase  = relationship("purchase")
-    transfer  = relationship("transfer")
+    purchase  = relationship("Purchase")
+    transfer  = relationship("Transfer")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -259,7 +259,7 @@ class Purchase(this.Base):
     debt          = Column(Boolean, nullable=False, default=False)
     payed         = Column(Boolean, nullable=False, default=False)
     payed_date    = Column(DateTime, default=None)
-    payed_to      = Column(String, default=None)
+    #payed_to      = Column(String, default=None)
 
     # Constraints
     __table_args__ = (
@@ -268,17 +268,17 @@ class Purchase(this.Base):
         CheckConstraint('interest >= 0', name='exp_purchase_valid_interest'),
         CheckConstraint('(payed AND locked) OR NOT payed', name='exp_purchase_valid_payed'),
         CheckConstraint('(payed AND payed_date IS NOT NULL) OR (NOT payed AND payed_date IS NULL)', name='exp_purchase_valid_payed_date'),
-        CheckConstraint('(payed AND payed_to IS NOT NULL) OR (NOT payed AND payed_to IS NULL)', name='exp_purchase_valid_payed_to'),
+        #CheckConstraint('(payed AND payed_to IS NOT NULL) OR (NOT payed AND payed_to IS NULL)', name='exp_purchase_valid_payed_to'),
 
         # Claves foraneas
         ForeignKeyConstraint(['ci'], ['client.ci']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
-        ForeignKeyConstraint(['payed_to'], ['users.username']),
+        #ForeignKeyConstraint(['payed_to'], ['users.username']),
     )
 
     # Relaciones
-    checkout     = relationship("checkout")
-    product_list = relationship("product_list")
+    checkout     = relationship("Checkout")
+    product_list = relationship("Product_list")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -530,7 +530,7 @@ class Valid_language(this.Base):
     lang_name = Column(String, primary_key=True)
 
     # Relaciones
-    book = relationship("book")
+    book = relationship("Book")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -567,8 +567,8 @@ class Book(this.Base):
     )
 
     # Relaciones
-    associated_with = relationship("associated_with")
-    written_by = relationship("written_by")
+    associated_with = relationship("Associated_with")
+    written_by = relationship("Written_by")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -588,7 +588,7 @@ class Subject(this.Base):
     subject_name = Column(String, nullable=False)
 
     # Relaciones
-    associated_with = relationship("associated_with")
+    associated_with = relationship("Associated_with")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -612,7 +612,7 @@ class Author(this.Base):
     nationality     = Column(String, default=None, primary_key=True)
 
     # Relaciones
-    written_by = relationship("written_by")
+    written_by = relationship("Written_by")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -688,7 +688,7 @@ class Lent_to(this.Base):
     ci                    = Column(Integer, nullable=False, primary_key=True)
     lender_clerk          = Column(String, nullable=False, primary_key=True)
     start_description     = Column(String, nullable=False, primary_key=True)
-    start_time            = Column(DateTime, nullable=False, default=datetime.datetime.now())
+    start_time            = Column(DateTime, nullable=False, default=datetime.datetime.now(), primary_key=True)
     estimated_return_time = Column(DateTime, nullable=False)
     receiver_clerk        = Column(String, default=None)
     return_time           = Column(DateTime, default=None)
