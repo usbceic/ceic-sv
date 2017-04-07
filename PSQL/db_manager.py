@@ -51,4 +51,40 @@ class DBManager(object):
 
 # Prueba
 if __name__ == '__main__':
-    DBManager("sistema_ventas", "hola", True)
+    m = DBManager("sistema_ventas", "hola", False)
+    l = Valid_language(lang_name="ES")
+    m.session.add(l)
+    try:
+        m.session.commit()
+    except Exception as e:
+        print("Excepcion de Lenguaje:", e)
+        m.session.rollback()
+    
+    try:
+        b = m.session.query(Book).filter_by(title="Prueba", lang=l.lang_name).one()
+    except Exception as e:
+        print("Excepcion de Libro:", e)
+        import datetime
+        b = Book(title="Prueba", book_year=datetime.datetime.now(), lang=l.lang_name)
+        m.session.add(b)
+        m.session.commit()
+
+
+
+    
+
+    s = Subject(subject_code="CI123", subject_name="Test")
+    m.session.add(s)
+    try:
+        m.session.commit()
+    except Exception as e:
+        print("Excepcion de Materia:", e)
+        m.session.rollback()
+        s = m.session.query(Subject).filter_by(subject_code="CI123").one()
+
+    print("Soy b", b)
+    s.books.append(b)
+    m.session.commit()
+    for book in s.books:
+        print(book)
+

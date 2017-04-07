@@ -52,13 +52,15 @@ class User(this.Base):
     last_login      = Column(DateTime, nullable=False, default=datetime.datetime.now)
 
     # Relaciones
-    lot                  = relationship("Lot")
-    purchase_clerk       = relationship("Purchase", foreign_keys="Purchase.clerk")
-    purchase_payed_to    = relationship("Purchase", foreign_keys="Purchase.payed_to")
-    reverse_product_list = relationship("Reverse_product_list")
-    reverse_service_list = relationship("Reverse_service_list")
-    transfer             = relationship("Transfer")
-    operation_log        = relationship("Operation_log")
+    lot                  	= relationship("Lot")
+    purchase_clerk       	= relationship("Purchase", foreign_keys="Purchase.clerk")
+    purchase_payed_to    	= relationship("Purchase", foreign_keys="Purchase.payed_to")
+    reverse_product_list 	= relationship("Reverse_product_list")
+    reverse_service_list 	= relationship("Reverse_service_list")
+    transfer             	= relationship("Transfer")
+    operation_log        	= relationship("Operation_log")
+    lent_to_lender_clerk 	= relationship("Lent_to", foreign_keys="Lent_to.lender_clerk")
+    lent_to_receiver_clerk 	= relationship("Lent_to", foreign_keys="Lent_to.receiver_clerk")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -521,6 +523,23 @@ class Operation_log(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
+# Tabla que asocia libros con asignaturas
+#==================================================================================================================================================================================
+class Associated_with(this.Base):
+    # Nombre
+    __tablename__ = 'associated_with'
+
+    # Atributos
+    book_id      = Column(GUID, ForeignKey('book.book_id', onupdate="CASCADE", ondelete="CASCADE"), nullable=False, primary_key=True)
+    subject_code = Column(String, ForeignKey('subject.subject_code', onupdate="CASCADE", ondelete="CASCADE"), nullable=False, primary_key=True)
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (str(self.book_id), self.subject_code)
+        template = "<Associated_with(book_id='%s', subject_code='%s')>"
+        return  template % kwargs
+
+#==================================================================================================================================================================================
 # Tabla de lenguajes validos
 #==================================================================================================================================================================================
 class Valid_language(this.Base):
@@ -568,7 +587,7 @@ class Book(this.Base):
     )
 
     # Relaciones
-    associated_with = relationship("Associated_with")
+    subjects = relationship("Subject", secondary="associated_with", back_populates="books")
     written_by = relationship("Written_by")
 
     # Representación de una instancia de la clase
@@ -589,7 +608,7 @@ class Subject(this.Base):
     subject_name = Column(String, nullable=False)
 
     # Relaciones
-    associated_with = relationship("Associated_with")
+    books = relationship("Book", secondary="associated_with", back_populates="subjects")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -619,30 +638,6 @@ class Author(this.Base):
     def __repr__(self):
         kwargs = (self.firstname, self.lastname, self.middlename, self.second_lastname, str(self.birthdate), self.nacionality)
         template = "<Author(firstname='%s', lastname='%s', middlename='%s', second_lastname='%s', birthdate='%s', nacionality=='%s')>"
-        return  template % kwargs
-
-#==================================================================================================================================================================================
-# Tabla que asocia libros con asignaturas
-#==================================================================================================================================================================================
-class Associated_with(this.Base):
-    # Nombre
-    __tablename__ = 'associated_with'
-
-    # Atributos
-    book_id      = Column(GUID, nullable=False, primary_key=True)
-    subject_code = Column(String, nullable=False, primary_key=True)
-
-    # Constraints
-    __table_args__ = (
-        # Claves foraneas
-        ForeignKeyConstraint(['book_id'], ['book.book_id']),
-        ForeignKeyConstraint(['subject_code'], ['subject.subject_code'], onupdate="CASCADE"),
-    )
-
-    # Representación de una instancia de la clase
-    def __repr__(self):
-        kwargs = (str(self.book_id), self.subject_code)
-        template = "<Associated_with(book_id='%s', subject_code='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================
