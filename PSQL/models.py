@@ -540,6 +540,38 @@ class Associated_with(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
+# Tabla de Quien escribio el libro
+#==================================================================================================================================================================================
+class Written_by(this.Base):
+    # Nombre
+    __tablename__ = 'written_by'
+
+    # Atributos
+    book_id         = Column(GUID, nullable=False, primary_key=True)
+    firstname       = Column(String, nullable=False, primary_key=True)
+    lastname        = Column(String, nullable=False, primary_key=True)
+    middlename      = Column(String, default=None, primary_key=True)
+    second_lastname = Column(String, default=None, primary_key=True)
+    birthdate       = Column(Date, default=None, primary_key=True)
+    nationality     = Column(String, default=None, primary_key=True)
+
+    # Constraints
+    __table_args__ = (
+        # Claves foraneas
+        ForeignKeyConstraint(['book_id'], ['book.book_id']),
+        ForeignKeyConstraint(
+            ['firstname', 'lastname', 'middlename', 'second_lastname', 'birthdate', 'nationality'],
+            ['author.firstname', 'author.lastname', 'author.middlename', 'author.second_lastname', 'author.birthdate', 'author.nationality']
+        ),
+    )
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (str(self.book_id), self.firstname, self.lastname, self.middlename, self.second_lastname, str(self.birthdate), self.nacionality)
+        template = "<Written_by(book_id='%s', firstname='%s', lastname='%s', middlename='%s', second_lastname='%s', birthdate='%s', nacionality=='%s')>"
+        return  template % kwargs
+
+#==================================================================================================================================================================================
 # Tabla de lenguajes validos
 #==================================================================================================================================================================================
 class Valid_language(this.Base):
@@ -588,7 +620,7 @@ class Book(this.Base):
 
     # Relaciones
     subjects = relationship("Subject", secondary="associated_with", back_populates="books")
-    written_by = relationship("Written_by")
+    written_by = relationship("Author", secondary="written_by", back_populates="books")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -632,44 +664,12 @@ class Author(this.Base):
     nationality     = Column(String, default=None, primary_key=True)
 
     # Relaciones
-    written_by = relationship("Written_by")
+    books = relationship("Book", secondary="written_by", back_populates="written_by")
 
     # Representación de una instancia de la clase
     def __repr__(self):
         kwargs = (self.firstname, self.lastname, self.middlename, self.second_lastname, str(self.birthdate), self.nacionality)
         template = "<Author(firstname='%s', lastname='%s', middlename='%s', second_lastname='%s', birthdate='%s', nacionality=='%s')>"
-        return  template % kwargs
-
-#==================================================================================================================================================================================
-# Tabla de Quien escribio el libro
-#==================================================================================================================================================================================
-class Written_by(this.Base):
-    # Nombre
-    __tablename__ = 'written_by'
-
-    # Atributos
-    book_id         = Column(GUID, nullable=False, primary_key=True)
-    firstname       = Column(String, nullable=False, primary_key=True)
-    lastname        = Column(String, nullable=False, primary_key=True)
-    middlename      = Column(String, default=None, primary_key=True)
-    second_lastname = Column(String, default=None, primary_key=True)
-    birthdate       = Column(Date, default=None, primary_key=True)
-    nationality     = Column(String, default=None, primary_key=True)
-
-    # Constraints
-    __table_args__ = (
-        # Claves foraneas
-        ForeignKeyConstraint(['book_id'], ['book.book_id']),
-        ForeignKeyConstraint(
-            ['firstname', 'lastname', 'middlename', 'second_lastname', 'birthdate', 'nationality'],
-            ['author.firstname', 'author.lastname', 'author.middlename', 'author.second_lastname', 'author.birthdate', 'author.nationality']
-        ),
-    )
-
-    # Representación de una instancia de la clase
-    def __repr__(self):
-        kwargs = (str(self.book_id), self.firstname, self.lastname, self.middlename, self.second_lastname, str(self.birthdate), self.nacionality)
-        template = "<Written_by(book_id='%s', firstname='%s', lastname='%s', middlename='%s', second_lastname='%s', birthdate='%s', nacionality=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================

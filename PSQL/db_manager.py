@@ -51,7 +51,7 @@ class DBManager(object):
 
 # Prueba
 if __name__ == '__main__':
-    m = DBManager("sistema_ventas", "hola", False)
+    m = DBManager("sistema_ventas", "hola", True)
     l = Valid_language(lang_name="ES")
     m.session.add(l)
     try:
