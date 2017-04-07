@@ -85,6 +85,10 @@ if __name__ == '__main__':
     print("Soy b", b)
     s.books.append(b)
     m.session.commit()
+    print("-----------------------------------")
     for book in s.books:
         print(book)
+
+    for subjects in b.subjects:
+        print(subjects)
 
