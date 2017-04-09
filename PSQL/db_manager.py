@@ -27,10 +27,16 @@ from passlib.hash import bcrypt
 ## DECLARACIÓN DEL MANEJADOR:
 ###################################################################################################################################################################################
 
-class DBManager(object):
-    """docstring for DBManager"""
+class dbManager(object):
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE LA CLASE dbManager:
+    #==============================================================================================================================================================================
+
+    """
+    Método de creación de la clase
+    """
     def __init__(self, name, password, debug=False, dropAll=False):
-        super(DBManager, self).__init__()
+        super(dbManager, self).__init__()
         self.session = startSession(name, password, debug, dropAll)
 
     #==============================================================================================================================================================================
@@ -55,7 +61,7 @@ class DBManager(object):
      - Retorna False:
         * Cuando el usuario NO existe
     """
-    def userExist(self, username, active=True):
+    def existUser(self, username, active=True):
         count = self.session.query(User).filter_by(username=username, active=active).count()
         if count == 0:
             print("El usuario " + username + " NO existe")
@@ -73,7 +79,7 @@ class DBManager(object):
         * Cuando no se puede crear
     """
     def createUser(self, username, password, firstname, lastname, email, permission_mask):
-        if not self.userExist(username):
+        if not self.existUser(username):
             newUser = User(username=username, password=bcrypt.hash(password), firstname=firstname, lastname=lastname, email=email, permission_mask=permission_mask)
             self.session.add(newUser)
             try:
@@ -98,7 +104,7 @@ class DBManager(object):
         * Cuando no se puede eliminar (desactivar) por alguna razón
     """
     def deleteUser(self, username):
-        if self.userExist(username):
+        if self.existUser(username):
             try:
                 self.session.execute(update(User).where(User.username==username).values(active=False))
                 self.session.commit()
@@ -119,7 +125,7 @@ class DBManager(object):
         * Cuando los datos NO coinciden con los almacenados en la base de datos
     """
     def checkPassword(self, username, password):
-        if self.userExist(username):
+        if self.existUser(username):
             hashedPass = self.session.query(User.password).filter_by(username=username).one()[0]
             if bcrypt.verify(password, hashedPass):
                 print("Información de inicio de sesión válidada correctamente")
@@ -182,7 +188,7 @@ class DBManager(object):
         * Cuando no pudo cambiarse el perfil por alguna otra razón
     """
     def updateUserProfile(self, username, newProfile):
-        if self.userExist(username):
+        if self.existUser(username):
             try:
                 self.session.execute(update(User).where(User.username==username).values(profile=newProfile))
                 self.session.commit()
@@ -203,7 +209,7 @@ class DBManager(object):
         * Cuando no pudo cambiarse el rango por alguna otra razón
     """
     def updateUserRange(self, username, newRange):
-        if self.userExist(username):
+        if self.existUser(username):
             if self.validRange(newRange):
                 try:
                     self.session.execute(update(User).where(User.username==username).values(permission_mask=newRange))
@@ -226,7 +232,7 @@ class DBManager(object):
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
     def updateUserInfo(self, username, firstname=None, lastname=None, email=None):
-        if self.userExist(username):
+        if self.existUser(username):
             values = {}
             if firstname != None: values["firstname"] = firstname
             if lastname != None: values["lastname"] = lastname
@@ -269,7 +275,7 @@ class DBManager(object):
 
     # Método para verificar que un cliente existe.
     # Retorna true cuando el cliente existe y false en caso contario
-    def clientExist(self, ci):
+    def existClient(self, ci):
         count = self.session.query(Client).filter_by(ci=ci).count()
         if count == 0:
             print("El cliente con ci " + str(ci) + " NO existe")
@@ -280,7 +286,7 @@ class DBManager(object):
 
     # Método para buscar clientes.
     # Retorna queryset de los clientes que cumplan el filtro
-    def clientSearch(self, ci=None, firstname=None, lastname=None):
+    def getClient(self, ci=None, firstname=None, lastname=None):
         if ci is None and firstname is None and lastname is None:
             return self.session.query(Client).all()
 
@@ -299,8 +305,8 @@ class DBManager(object):
 
     # Método para crear un cliente nuevo
     # Retorna true cuando el cliente es creado satisfactoreamente y false cuando no se puede crear o cuando ya existia el cliente
-    def clientCreate(self, ci, firstname, lastname, carnet=None, phone=None, debt_permission=None, book_permission=None):
-        if self.clientExist(ci):
+    def createClient(self, ci, firstname, lastname, carnet=None, phone=None, debt_permission=None, book_permission=None):
+        if self.existClient(ci):
             return False
 
         kwargs = {
@@ -341,7 +347,7 @@ class DBManager(object):
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
     def clientUpdate(self, ciOriginal, ci=None, firstname=None, lastname=None, carnet=None, phone=None, debt_permission=None, book_permission=None, blocked=None, last_seen=None):
-        if self.clientExist(ciOriginal):
+        if self.existClient(ciOriginal):
             values = {}
             if ci != None: values["ci"] = ci
             if firstname != None: values["firstname"] = firstname
@@ -383,7 +389,7 @@ class DBManager(object):
     retorna True si existe
     retorna False si no existe
     '''
-    def providerExists(self,name):
+    def existProvider(self,name):
         count = self.session.query(User).filter_by(username=username).count()
         if count == 0:
             print("El proveedor " + name + " no existe")
@@ -399,7 +405,7 @@ class DBManager(object):
     Genera una excepcion cuando algo sale mal
     '''
     def addProvider(self,name,pay_information,phone = None, email = None, description = None, category = None):
-        if(self.providerExists(name)):
+        if(self.existProvider(name)):
             return False
         kwargs = {
             'name' : name,
@@ -439,7 +445,7 @@ class DBManager(object):
      - Retorna False:
         * Cuando el producto NO existe
     """
-    def productExist(self, product_name, active=True):
+    def existProduct(self, product_name, active=True):
         count = self.session.query(Product).filter_by(product_name=product_name.lower().strip(), active=active).count()
         if count == 0:
             print("El producto " + product_name + " NO existe")
@@ -457,7 +463,7 @@ class DBManager(object):
         * Cuando no se puede crear
     """
     def createProduct(self, product_name, price, category=""):
-        if not self.productExist(product_name):
+        if not self.existProduct(product_name):
             newUser = Product(product_name=product_name.lower().strip(), price=price, category=category)
             self.session.add(newUser)
             try:
@@ -494,7 +500,7 @@ class DBManager(object):
      - Retorna None cuando no existe un producto con el nombre especificado
     """
     def getProductID(self, product_name):
-        if productExist(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name.lower().strip()).one()[0]
+        if existProduct(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name.lower().strip()).one()[0]
         else: return None
 
     """
@@ -506,7 +512,7 @@ class DBManager(object):
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
     def updateProduct(self, product_name, new_product_name=None, price=None, description=None, category=None):
-        if self.productExist(product_name):
+        if self.existProduct(product_name):
             values = {}
             if new_product_name != None: values["product_name"] = new_product_name.lower().strip()
             if price != None: values["price"] = price
@@ -533,7 +539,7 @@ class DBManager(object):
         * Cuando no se puede eliminar (desactivar) por alguna razón
     """
     def deleteProduct(self, product_name):
-        if productExist(product_name):
+        if existProduct(product_name):
             try:
                 self.session.execute(update(Product).where(Product.product_name==product_name.lower().strip()).values(active=False))
                 self.session.commit()
@@ -556,7 +562,7 @@ class DBManager(object):
      - Retorna False:
         * Cuando el producto NO existe
     """
-    def lotExist(self, lot_id, available=True):
+    def existLot(self, lot_id, available=True):
         count = self.session.query(Lot).filter_by(lot_id=lot_id, available=available).count()
         if count == 0:
             print("El loto " + lot_id + " NO existe")
@@ -576,7 +582,7 @@ class DBManager(object):
         * Cuando NO se puede crear por alguna otra razón
     """
     def createLot(self, product_name, provider_name, received_by, cost, quantity, expiration_date=None):
-        if self.providerExists(provider_name) and self.productExist(product_name) and self.userExist(received_by):
+        if self.existProvider(provider_name) and self.existProduct(product_name) and self.existUser(received_by):
             kwargs = {
                 "product_id"  : self.getProductID(product_name),
                 "provider_id" : provider_name,
@@ -610,10 +616,10 @@ class DBManager(object):
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
     def updateLot(self, lot_id, product_name=None, provider_id=None, cost=None, quantity=None, remaining=None, expiration_date=None):
-        if self.lotExist(lot_id):
+        if self.existLot(lot_id):
             values = {}
-            if product_name != None and self.productExist(product_name): values["product_id"] = self.getProductID(product_name)
-            if provider_id != None and self.providerExists(provider_id): values["provider_id"] = provider_id
+            if product_name != None and self.existProduct(product_name): values["product_id"] = self.getProductID(product_name)
+            if provider_id != None and self.existProvider(provider_id): values["provider_id"] = provider_id
             if cost != None: values["cost"] = cost
             if quantity != None: values["quantity"] = quantity
             if remaining != None and remaining <= quantity: values["remaining"] = remaining
@@ -646,7 +652,7 @@ class DBManager(object):
         * Cuando NO logra marcar el lote como no disponible
     """
     def deleteLot(self, lot_id):
-        if lotExist(lot_id):
+        if existLot(lot_id):
             try:
                 self.session.execute(update(Lot).where(Lot.lot_id==lot_id).values(available=False))
                 self.session.commit()
@@ -664,7 +670,7 @@ class DBManager(object):
 
     # Método para verificar que un servicio existe.
     # Retorna true cuando el servicio existe y false en caso contario
-    def serviceExist(self, service_id):
+    def existService(self, service_id):
         count = self.session.query(Service).filter_by(service_id=service_id).count()
         if count == 0:
             print("El servicio con id " + str(service_id) + " NO existe")
@@ -675,7 +681,7 @@ class DBManager(object):
 
     # Método para buscar servicios.
     # Retorna queryset de los servicios que cumplan el filtro. Los bound son cerrados
-    def serviceSearch(self, service_id=None, service_name=None, available=None, price_lower_bound=None, price_upper_bound=None):
+    def getService(self, service_id=None, service_name=None, available=None, price_lower_bound=None, price_upper_bound=None):
         if service_id is None and service_name is None and available is None and price_lower_bound is None and price_upper_bound is None:
             return self.session.query(Service).all()
 
@@ -700,7 +706,7 @@ class DBManager(object):
 
     # Método para crear un servicio nuevo
     # Retorna true cuando el servicio es creado satisfactoreamente y false cuando no se puede crear o cuando ya existia el servicio
-    def serviceCreate(self, service_name, price, available=None, description=None, category=None):
+    def createService(self, service_name, price, available=None, description=None, category=None):
         kwargs = {
             'service_name' : service_name,
             'price' : price,
@@ -734,8 +740,8 @@ class DBManager(object):
         * Cuando el servicioo no existe
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
-    def serviceUpdate(self, service_id, service_name=None, price=None, available=None, description=None, category=None):
-        if self.serviceExist(service_id):
+    def updateService(self, service_id, service_name=None, price=None, available=None, description=None, category=None):
+        if self.existService(service_id):
             values = {}
             if service_name != None: values["service_name"] = service_name
             if price != None: values["price"] = price
@@ -759,7 +765,7 @@ class DBManager(object):
 
 # Prueba
 if __name__ == '__main__':
-    m = DBManager("sistema_ventas", "hola")
+    m = dbManager("sistema_ventas", "hola")
 
     """
     Insert Example
@@ -851,20 +857,20 @@ if __name__ == '__main__':
 
     """
     print("\nPrueba de Cliente y Busqueda\n")
-    m.clientCreate(42, "Kurt", "Cobain")
-    m.clientCreate(666, "Kurtis", "Cobain", carnet="12345")
-    print(m.clientSearch(ci=42))
-    print(m.clientSearch(ci=43))
-    print(m.clientSearch(firstname="kurt"))
+    m.createClient(42, "Kurt", "Cobain")
+    m.createClient(666, "Kurtis", "Cobain", carnet="12345")
+    print(m.getClient(ci=42))
+    print(m.getClient(ci=43))
+    print(m.getClient(firstname="kurt"))
     """
     """
     print("\nPrueba de Cliente y Update\n")
-    m.clientCreate(777, "David", "Grohl", carnet="123456")
-    print(m.clientSearch(ci=777))
+    m.createClient(777, "David", "Grohl", carnet="123456")
+    print(m.getClient(ci=777))
     m.clientUpdate(777, debt_permission=False)
-    print(m.clientSearch(ci=777))
+    print(m.getClient(ci=777))
     m.clientCheckIn(777)
-    print(m.clientSearch(ci=777))
+    print(m.getClient(ci=777))
     """
 
     """Pruebas de los métodos para usuarios"""
@@ -873,13 +879,13 @@ if __name__ == '__main__':
     print("\nPrueba del método createProduct\n")
     m.createProduct("Agua", 1100)
 
-    m.serviceCreate("ExtraLifes", 1)
-    print(m.serviceSearch(service_name="ExtraLifes"))
-    m.serviceCreate("ExtraLifes*2", 2)
+    m.createService("ExtraLifes", 1)
+    print(m.getService(service_name="ExtraLifes"))
+    m.createService("ExtraLifes*2", 2)
     print("------------")
-    print(m.serviceSearch(service_name="ExtraLifes"))
+    print(m.getService(service_name="ExtraLifes"))
     print("------------")
-    print(m.serviceSearch(price_lower_bound=0))
+    print(m.getService(price_lower_bound=0))
     print("------------")
-    print(m.serviceSearch(price_lower_bound=0, price_upper_bound=1))
+    print(m.getService(price_lower_bound=0, price_upper_bound=1))
 
