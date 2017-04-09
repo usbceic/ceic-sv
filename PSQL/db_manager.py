@@ -38,6 +38,17 @@ class DBManager(object):
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     """
+    Método para verificar que un rango es válido
+     - Retorna True:
+        * Cuando el rango es un número entero entre 0 y 3
+     - Retorna False:
+        * Cuando el rango no es un número entero entre 0 y 3
+    """
+    def validRange(self, range):
+        if 0 <= range <= 3: return True
+        return False
+
+    """
     Método para verificar que un usuario existe.
      - Retorna True:
         * Cuando el usuario existe
@@ -140,6 +151,29 @@ class DBManager(object):
         return False
 
     """
+    Método para cambiar la el rango de un ususario
+     - Retorna True:
+        * Cuando logra cambiar el rango correctamente
+     - Retorna False:
+        * Cuando el usuario no existe
+        * Cuando no pudo cambiarse el rango por alguna otra razón
+    """
+    def updateUserRange(self, username, newRange):
+        if self.userExist(username):
+            if self.validRange(newRange):
+                try:
+                    self.session.execute(update(User).where(User.username==username).values(permission_mask=newRange))
+                    self.session.commit()
+                    print("Se ha cambiado el rango de " + username + " satisfactoriamente")
+                    return True
+                except Exception as e:
+                    print("Ha ocurrido un error al intentar cambiar el rango del usuario " + username, e)
+                    self.session.rollback()
+                    return False
+            return False
+        return False
+
+    """
     Método para actualizar información de un usuario
      - Retorna True:
         * Cuando logra actualizar la información correctamente
@@ -165,6 +199,26 @@ class DBManager(object):
                 return False
         return False
 
+    """
+    Método para obtener todos los nombres de usuario
+     - Retorna un queryset con todos los nombres de usuario
+    """
+    def getUserNames(self):
+        return self.session.query(User.username).all()
+
+    """
+    Método para obtener información de un usuario
+     - Retorna un queryset con la información básica de un usuario
+    """
+    def getUserInfo(self, username):
+        return self.session.query(User.firstname, User.lastname, User.email, User.profile, User.permission_mask, User.last_login).filter(User.username == username).one()
+
+    """
+    Método para obtener información de todos los usuarios
+     - Retorna un queryset con la información básica de todos los usuarios
+    """
+    def getUsersInfo(self):
+        return self.session.query(User.firstname, User.lastname, User.email, User.profile, User.permission_mask, User.last_login).all()
 
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # MÉTODOS PARA EL CONTROL DE CLIENTES:
@@ -322,8 +376,18 @@ if __name__ == '__main__':
     m.updateUserInfo("tobi", "madara")
     m.updateUserInfo("tobi", lastname="otsutsuki", description="dios ninja")
 
+    # Probar getUserNames
+    print("\nPrueba del método getUserNames\n")
+    print(m.getUserNames())
+
+    # Probar getUserInfo
+    print("\nPrueba del método getUserInfo\n")
+    print(m.getUserInfo("tobi"))
+
+    """
     m.clientCreate(42, "Kurt", "Cobain")
     m.clientCreate(666, "Kurtis", "Cobain", carnet="12345")
     print(m.clientSearch(ci=42))
     print(m.clientSearch(ci=43))
     print(m.clientSearch(firstname="kurt"))
+    """
