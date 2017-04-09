@@ -240,7 +240,7 @@ class Client(this.Base):
     def __repr__(self):
         kwargs = (str(self.ci), self.carnet, self.firstname, self.lastname, self.phone, str(self.debt_permission), str(self.book_permission), str(self.blocked),
             str(self.balance), str(self.last_seen))
-        template = "<Client(ci='%s', carnet='%s', firstname='%s', lastname='%s', phone=='%s', debt_permission=='%s', book_permission=='%s', "
+        template = "<Client(ci=='%s', carnet=='%s', firstname=='%s', lastname=='%s', phone=='%s', debt_permission=='%s', book_permission=='%s', "
         template += "blocked=='%s', balance=='%s', last_seen=='%s')>"
         return  template % kwargs
 
