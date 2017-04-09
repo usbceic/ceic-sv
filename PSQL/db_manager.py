@@ -34,10 +34,22 @@ class dbManager(object):
 
     """
     Método de creación de la clase
+     - Inicia la sesión con la base de datos
     """
     def __init__(self, name, password, debug=False, dropAll=False):
         super(dbManager, self).__init__()
         self.session = startSession(name, password, debug, dropAll)
+
+     """
+    Método de destrucción de la clase
+     - Cierra la sesión con la base de datos
+    """
+    def __del__(self):
+        try:
+            self.session.close()
+            print("Se ha cerrado correctamente la base de datos")
+        except:
+            print("La base de datos ya está cerrada")
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE USUARIOS:
@@ -570,8 +582,8 @@ class dbManager(object):
         else:
             print("El loto " + lot_id + " existe")
             return True
-    """
 
+    """
     Método para crear un lote nuevo
      - Retorna True:
         * Cuando el lote es creado satisfactoreamente
