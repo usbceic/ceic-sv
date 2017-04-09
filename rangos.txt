@@ -3,13 +3,14 @@ Dios:
     - Se crea al instalar el programa
     - Es único y no se puede eliminar
     - Puede crear y eliminar Colaboradores, Vendedores y Administradores
+    - Puede modificar la contraseña de todos los usuarios
     - Puede llevar a cabo operaciones extremas como reseteo completo del programa
 
 Administradores:
     - Puede hacer todo lo que hace un vendedor
-    - Puede consultar y modificar información básica de otros usuarios (incluyendo otros Administradores)
-    - Puede modificar la contraseña de otro usuario (incluyendo otros Administradores)
-    - Puede eliminar colaboradores, Vendedores y Administradores (excepto a el mismo)
+    - Puede consultar información básica de otros usuarios (incluyendo Administradores)
+    - Puede modificar la contraseña de otro usuario (solo Colaboradores y Vendedores)
+    - Puede eliminar colaboradores y Vendedores
     - Puede editar las configuraciones generales del programa
     - Puede registrar pagos de deudas
     - Puede agregar intereses a una deuda
