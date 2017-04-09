@@ -227,13 +227,12 @@ class DBManager(object):
         * Cuando el usuario no existe
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
-    def updateUserInfo(self, username, firstname=None, lastname=None, email=None, description=None):
+    def updateUserInfo(self, username, firstname=None, lastname=None, email=None):
         if self.userExist(username):
             values = {}
             if firstname != None: values["firstname"] = firstname
             if lastname != None: values["lastname"] = lastname
             if email != None: values["email"] = email
-            if description != None: values["description"] = description
             try:
                 self.session.query(User).filter(User.username == username).update(values)
                 self.session.commit()
@@ -439,6 +438,7 @@ if __name__ == '__main__':
 
     """Pruebas de los métodos para usuarios"""
 
+    """
     # Probar createUser
     print("\nPrueba del método createUser\n")
     m.createUser("tobi", "loveurin", "obito", "uchiha", "tobi@akatsuki.com", 3)
@@ -462,7 +462,7 @@ if __name__ == '__main__':
     # Probar updateUserInfo
     print("\nPrueba del método updateUserInfo\n")
     m.updateUserInfo("tobi", "madara")
-    m.updateUserInfo("tobi", lastname="otsutsuki", description="dios ninja")
+    m.updateUserInfo("tobi", lastname="otsutsuki")
 
     # Probar getUserNames
     print("\nPrueba del método getUserNames\n")
@@ -471,6 +471,7 @@ if __name__ == '__main__':
     # Probar getUserInfo
     print("\nPrueba del método getUserInfo\n")
     print(m.getUserInfo("tobi"))
+    """
 
     """
     print("\nPrueba de Cliente y Busqueda\n")
@@ -480,6 +481,7 @@ if __name__ == '__main__':
     print(m.clientSearch(ci=43))
     print(m.clientSearch(firstname="kurt"))
     """
+    """
     print("\nPrueba de Cliente y Update\n")
     m.clientCreate(777, "David", "Grohl", carnet="123456")
     print(m.clientSearch(ci=777))
@@ -487,4 +489,4 @@ if __name__ == '__main__':
     print(m.clientSearch(ci=777))
     m.clientCheckIn(777)
     print(m.clientSearch(ci=777))
-
+    """
