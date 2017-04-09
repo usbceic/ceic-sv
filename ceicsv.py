@@ -13,27 +13,38 @@
 
 # Carlos Serrada, cserradag96@gmail.com
 # Christian Oliveros, 01christianol01@gmail.com
-# José Acevedo, joseluisacevedo1995@gmail.com
-# David Cabeza, cabezadavide@gmail.com
 # Pablo Betancourt, pablodbc30@gmail.com
+
+####################################################################################################################################
+## PATH DE LA APLICACIÓN:
+####################################################################################################################################
+
+from sys import path       # Importación del path del sistema
+from os import getcwd      # Importación de la función para obtener el path actual
+from os.path import join   # Importación de función para unir paths con el formato del sistema
+
+# Agregar las rutas faltanes al path
+path.append(join(getcwd(), "models"))
+path.append(join(getcwd(), "interface"))
+path.append(join(getcwd(), "modules"))
 
 ####################################################################################################################################
 ## MODÚLOS:
 ####################################################################################################################################
 
-import sys
+from sys import argv
 from sessionManager import loginGUI
 from guiManager import adminGUI
 from PyQt4.QtGui import QApplication
 from PyQt4.QtCore import Qt, QTimer
-from dbManager import *
+from db_manager import *
 
 ####################################################################################################################################
 ## PROGRAMA PRINCIPAL:
 ####################################################################################################################################
 
 def displayLogin():
-    loginApp = QApplication(sys.argv)
+    loginApp = QApplication(argv)
     loginWindow = loginGUI()
     loginWindow.splash.show()
     QTimer.singleShot(5000, lambda: loginWindow.splash.hide())
@@ -41,7 +52,7 @@ def displayLogin():
     return loginApp.exec_()
 
 def displayMainWindow(mode, dbm):
-    MainWindowApp = QApplication(sys.argv)
+    MainWindowApp = QApplication(argv)
     if mode == 0: MainWindow = adminGUI(dbm)
     #elif mode == 1: MainWindow = sellerGUI()
     #else: MainWindow = collaboratorGUI()

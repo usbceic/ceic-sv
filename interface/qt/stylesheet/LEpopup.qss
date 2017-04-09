@@ -1,0 +1,8 @@
+QListView {
+    border: 1px solid dimgray;
+    border-radius: 3px;
+    padding: 1.5px 1.5px 1.5px 1.5px;
+    min-width: 6em;
+    min-height: 1.5em;
+    selection-background-color: rgb(200, 200, 200)
+}
