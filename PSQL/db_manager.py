@@ -56,7 +56,7 @@ class DBManager(object):
         * Cuando el usuario NO existe
     """
     def userExist(self, username, active=True):
-        count = self.session.query(User).filter_by(username=username, acitve=acitve).count()
+        count = self.session.query(User).filter_by(username=username, active=active).count()
         if count == 0:
             print("El usuario " + username + " NO existe")
             return False
@@ -140,10 +140,10 @@ class DBManager(object):
     """
     def loginUser(self, username, password):
         if self.checkPassword(username, password):
-           try:
+            try:
                 self.session.execute(update(User).where(User.username==username).values(last_login=datetime.datetime.now))
                 self.session.commit()
-                print("Se ha actualizado la fecha de último inicio de sesión para el usuario  ")
+                print("Se ha actualizado la fecha de último inicio de sesión para el usuario: " + username)
                 return True
             except Exception as e:
                 print("Ha ocurrido un error al intentar la fecha del último inicio de sesión para el usuario " + username, e)
