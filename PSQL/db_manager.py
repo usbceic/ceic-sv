@@ -497,6 +497,31 @@ class DBManager(object):
         if productExist(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name).one()[0]
         else: return None
 
+    """
+    Método para actualizar información de un producto
+     - Retorna True:
+        * Cuando logra actualizar la información correctamente
+     - Retorna False:
+        * Cuando el producto no existe
+        * Cuando no pudo actualizarse la infromación por alguna otra razón
+    """
+    def updateProduct(self, product_name, new_product_name=None, price=None, description=None, category=None):
+        if self.productExist(product_name):
+            values = {}
+            if new_product_name != None: values["product_name"] = new_product_name
+            if price != None: values["price"] = price
+            if description != None: values["description"] = description
+            if category != None: values["category"] = category
+            try:
+                self.session.query(Product).filter(Product.product_name == product_name).update(values)
+                self.session.commit()
+                print("Se ha actualizado la información del producto " + prodcut_name + " satisfactoriamente")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar actualizar la información del producto " + prodcut_name, e)
+                self.session.rollback()
+                return False
+        return False
 
     """
     Método para eliminar (desactivar) un producto
