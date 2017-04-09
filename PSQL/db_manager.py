@@ -238,6 +238,12 @@ class DBManager(object):
             return False
 
 
+    '''
+    Metodo para verificar la existencia de un proveedor
+    retorna True si existe
+    retorna False si no existe
+    '''
+
     def providerExists(self,name):
         count = self.session.query(User).filter_by(username=username).count()
         if count == 0:
@@ -246,6 +252,13 @@ class DBManager(object):
         else:
             print("El proveedor " + name + " ya existe")
             return True
+
+    '''
+    Metodo para agregar un proveedor
+    Retorna True si el proveedor fue agregado con exito
+    Retorna False cuando el proveedor ya existe
+    Genera una excepcion cuando algo sale mal
+    '''
 
     def addProvider(self,name,pay_information,phone = None, email = None, description = None, category = None):
         if(self.providerExists(name)):
