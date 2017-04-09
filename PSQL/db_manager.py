@@ -440,7 +440,7 @@ class DBManager(object):
         * Cuando el producto NO existe
     """
     def productExist(self, product_name, active=True):
-        count = self.session.query(Product).filter_by(product_name=product_name, active=active).count()
+        count = self.session.query(Product).filter_by(product_name=product_name.lower().strip(), active=active).count()
         if count == 0:
             print("El producto " + product_name + " NO existe")
             return False
@@ -458,7 +458,7 @@ class DBManager(object):
     """
     def createProduct(self, product_name, price, category=""):
         if not self.productExist(product_name):
-            newUser = Product(product_name=product_name, price=price, category=category)
+            newUser = Product(product_name=product_name.lower().strip(), price=price, category=category)
             self.session.add(newUser)
             try:
                 self.session.commit()
@@ -479,11 +479,11 @@ class DBManager(object):
     def getProductByNameOrID(self, product_name=None, product_id=None, onlyAvailable=True):
         if product_name == None and product_id == None: return []
         if product_name != None and product_id != None:
-            if onlyAvailable: return self.session.query(Product).filter_by(or_(product_name=product_name, product_id=product_id), available=True).all()
-            return self.session.query(Product).filter_by(or_(product_name=product_name, product_id=product_id)).all()
+            if onlyAvailable: return self.session.query(Product).filter_by(or_(product_name=product_name.lower().strip(), product_id=product_id), available=True).all()
+            return self.session.query(Product).filter_by(or_(product_name=product_name.lower().strip(), product_id=product_id)).all()
         elif product_name != None:
-            if onlyAvailable: return self.session.query(Product).filter_by(product_name=product_name, available=True).all()
-            return self.session.query(Product).filter_by(product_name=product_name).all()
+            if onlyAvailable: return self.session.query(Product).filter_by(product_name=product_name.lower().strip(), available=True).all()
+            return self.session.query(Product).filter_by(product_name=product_name.lower().strip()).all()
         else:
             if onlyAvailable: return self.session.query(Product).filter_by(product_id=product_id, available=True).all()
             return self.session.query(Product).filter_by(product_id=product_id).all()
@@ -494,7 +494,7 @@ class DBManager(object):
      - Retorna None cuando no existe un producto con el nombre especificado
     """
     def getProductID(self, product_name):
-        if productExist(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name).one()[0]
+        if productExist(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name.lower().strip()).one()[0]
         else: return None
 
     """
@@ -513,7 +513,7 @@ class DBManager(object):
             if description != None: values["description"] = description
             if category != None: values["category"] = category
             try:
-                self.session.query(Product).filter(Product.product_name == product_name).update(values)
+                self.session.query(Product).filter_by(product_name=product_name.lower().strip()).update(values)
                 self.session.commit()
                 print("Se ha actualizado la información del producto " + prodcut_name + " satisfactoriamente")
                 return True
@@ -535,7 +535,7 @@ class DBManager(object):
     def deleteProduct(self, product_name):
         if productExist(product_name):
             try:
-                self.session.execute(update(Product).where(Prodcut.product_name==product_name).values(active=False))
+                self.session.execute(update(Product).where(Product.product_name==product_name.lower().strip()).values(active=False))
                 self.session.commit()
                 print("Se ha desactivado el producto: " + product_name)
                 return True
