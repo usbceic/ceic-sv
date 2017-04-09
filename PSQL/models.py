@@ -47,7 +47,7 @@ class User(this.Base):
     email           = Column(String, nullable=False)
     permission_mask = Column(Integer, nullable=False)
     profile         = Column(String, default="")
-    description     = Column(String, default="")
+    active          = Column(Boolean, nullable=False, default=True)
     creation_date   = Column(DateTime, nullable=False, default=datetime.datetime.now)
     last_login      = Column(DateTime, nullable=False, default=datetime.datetime.now)
 

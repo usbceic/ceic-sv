@@ -55,8 +55,8 @@ class DBManager(object):
      - Retorna False:
         * Cuando el usuario NO existe
     """
-    def userExist(self, username):
-        count = self.session.query(User).filter_by(username=username).count()
+    def userExist(self, username, active=True):
+        count = self.session.query(User).filter_by(username=username, acitve=acitve).count()
         if count == 0:
             print("El usuario " + username + " NO existe")
             return False
@@ -89,6 +89,28 @@ class DBManager(object):
             return False
 
     """
+    Método para eliminar (desactivar) un usuario
+     - Retorna True:
+        * Cuando el usuario es eliminado (desactivado) satisfactoreamente
+     - Retorna False:
+        * Cuando el usuario NO existe
+        * Cuando el usuario ya está desactivado
+        * Cuando no se puede eliminar (desactivar) por alguna razón
+    """
+    def deleteUser(self, username):
+        if self.userExist(username):
+            try:
+                self.session.execute(update(User).where(User.username==username).values(active=False))
+                self.session.commit()
+                print("Se ha desactivado el usuario: " + username)
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar desactivar el usuario: " + username, e)
+                self.session.rollback()
+                return False
+        return False
+
+    """
     Método para verificar correspondencia entre usuario y contraseña
      - Retorna True:
         * Cuando los datos coinciden con los almacenados en la base de datos
@@ -104,6 +126,28 @@ class DBManager(object):
                 return True
             else:
                 print("La contraseña no corresponde al usuario especificado")
+                return False
+        return False
+
+    """
+    Método para iniciar sesión. Primero verifica la correspondencia entre username y contraseña con la base de datos y luego actualiza la fecha del último login
+     - Retorna True:
+        * Cuando los datos coinciden con los almacenados en la base de datos y se logra actualizar la fecha de último inicio de sesión del usuario
+     - Retorna False:
+        * Cuando el usuario NO existe
+        * Cuando los datos NO coinciden con los almacenados en la base de datos
+        * Cuando NO se logra actualizar la fecha de último inicio de sesión del usuario por alguna razón
+    """
+    def loginUser(self, username, password):
+        if self.checkPassword(username, password):
+           try:
+                self.session.execute(update(User).where(User.username==username).values(last_login=datetime.datetime.now))
+                self.session.commit()
+                print("Se ha actualizado la fecha de último inicio de sesión para el usuario  ")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error al intentar la fecha del último inicio de sesión para el usuario " + username, e)
+                self.session.rollback()
                 return False
         return False
 
