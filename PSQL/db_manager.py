@@ -31,9 +31,9 @@ from passlib.hash import bcrypt
 
 class DBManager(object):
     """docstring for DBManager"""
-    def __init__(self, name, password, debug=False):
+    def __init__(self, name, password, debug=False, dropAll=False):
         super(DBManager, self).__init__()
-        self.session = startSession(name, password, debug)
+        self.session = startSession(name, password, debug, dropAll)
 
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # MÉTODOS PARA EL CONTROL DE USUARIOS:
