@@ -114,6 +114,54 @@ class DBManager(object):
                 return True
             except Exception as e:
                 print("Ha ocurrido un error al intentar cambiar la contraseña del usuario " + username, e)
+                self.session.rollback()
+                return False
+        return False
+
+    """
+    Método para cambiar la el perfil de un ususario
+     - Retorna True:
+        * Cuando logra cambiar el perfil correctamente
+     - Retorna False:
+        * Cuando el usuario no existe
+        * Cuando no pudo cambiarse el perfil por alguna otra razón
+    """
+    def updateUserProfile(self, username, newProfile):
+        if self.userExist(username):
+            try:
+                self.session.execute(update(User).where(User.username==username).values(profile=newProfile))
+                self.session.commit()
+                print("Se ha cambiado el perfil del ususario " + username + " satisfactoriamente")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error al intentar cambiar el perfil del usuario " + username, e)
+                self.session.rollback()
+                return False
+        return False
+
+    """
+    Método para actualizar información de un usuario
+     - Retorna True:
+        * Cuando logra actualizar la información correctamente
+     - Retorna False:
+        * Cuando el usuario no existe
+        * Cuando no pudo actualizarse la infromación por alguna otra razón
+    """
+    def updateUserInfo(self, username, firstname=None, lastname=None, email=None, description=None):
+        if self.userExist(username):
+            values = {}
+            if firstname != None: values["firstname"] = firstname
+            if lastname != None: values["lastname"] = lastname
+            if email != None: values["email"] = email
+            if description != None: values["description"] = description
+            try:
+                self.session.query(User).filter(User.username == username).update(values)
+                self.session.commit()
+                print("Se ha actualizado la información del ususario " + username + "satisfactoriamente")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar actualizar la información del usuario " + username, e)
+                self.session.rollback()
                 return False
         return False
 
@@ -193,3 +241,12 @@ if __name__ == '__main__':
     m.checkPassword("tobi", "loveurin")
     print("")
     m.checkPassword("tobi", "hateukakashi")
+
+    # Probar updateUserProfile
+    print("\nPrueba del método updateUserProfile\n")
+    m.updateUserProfile("tobi", "xD")
+
+    # Probar updateUserInfo
+    print("\nPrueba del método updateUserInfo\n")
+    m.updateUserInfo("tobi", "madara")
+    m.updateUserInfo("tobi", lastname="otsutsuki", description="dios ninja")
