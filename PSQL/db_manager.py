@@ -20,7 +20,7 @@
 
 from models import *
 from session import startSession
-from sqlalchemy import func, distinct, update
+from sqlalchemy import func, distinct, and_, update
 from passlib.hash import bcrypt
 
 ###################################################################################################################################################################################
@@ -114,8 +114,127 @@ class DBManager(object):
                 return True
             except Exception as e:
                 print("Ha ocurrido un error al intentar cambiar la contraseña del usuario " + username, e)
+                self.session.rollback()
                 return False
         return False
+
+    """
+    Método para cambiar la el perfil de un ususario
+     - Retorna True:
+        * Cuando logra cambiar el perfil correctamente
+     - Retorna False:
+        * Cuando el usuario no existe
+        * Cuando no pudo cambiarse el perfil por alguna otra razón
+    """
+    def updateUserProfile(self, username, newProfile):
+        if self.userExist(username):
+            try:
+                self.session.execute(update(User).where(User.username==username).values(profile=newProfile))
+                self.session.commit()
+                print("Se ha cambiado el perfil del ususario " + username + " satisfactoriamente")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error al intentar cambiar el perfil del usuario " + username, e)
+                self.session.rollback()
+                return False
+        return False
+
+    """
+    Método para actualizar información de un usuario
+     - Retorna True:
+        * Cuando logra actualizar la información correctamente
+     - Retorna False:
+        * Cuando el usuario no existe
+        * Cuando no pudo actualizarse la infromación por alguna otra razón
+    """
+    def updateUserInfo(self, username, firstname=None, lastname=None, email=None, description=None):
+        if self.userExist(username):
+            values = {}
+            if firstname != None: values["firstname"] = firstname
+            if lastname != None: values["lastname"] = lastname
+            if email != None: values["email"] = email
+            if description != None: values["description"] = description
+            try:
+                self.session.query(User).filter(User.username == username).update(values)
+                self.session.commit()
+                print("Se ha actualizado la información del ususario " + username + "satisfactoriamente")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar actualizar la información del usuario " + username, e)
+                self.session.rollback()
+                return False
+        return False
+
+
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS PARA EL CONTROL DE CLIENTES:
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Método para verificar que un cliente existe.
+    # Retorna true cuando el cliente existe y false en caso contario
+    def clientExist(self, ci):
+        count = self.session.query(Client).filter_by(ci=ci).count()
+        if count == 0:
+            print("El cliente con ci " + str(ci) + " NO existe")
+            return False
+        else:
+            print("El cliente con ci " + str(ci) + " existe")
+            return True
+
+    # Método para buscar clientes.
+    # Retorna queryset de los clientes que cumplan el filtro
+    def clientSearch(self, ci=None, firstname=None, lastname=None):
+        if ci is None and firstname is None and lastname is None:
+            return []
+
+        filters = and_()
+        if ci is not None:
+            filters = and_(filters, Client.ci == ci)
+
+        if firstname is not None:
+            filters = and_(filters, Client.firstname.ilike("%"+firstname+"%"))
+
+        if lastname is not None:
+            filters = and_(filters, Client.lastname.ilike("%"+lastname+"%"))
+
+        return self.session.query(Client).filter(*filters).all()
+
+
+    # Método para crear un cliente nuevo
+    # Retorna true cuando el cliente es creado satisfactoreamente y false cuando no se puede crear o cuando ya existia el cliente
+    def clientCreate(self, ci, firstname, lastname, carnet=None, phone=None, debt_permission=None, book_permission=None):
+        if self.clientExist(ci):
+            return False
+
+        kwargs = {
+            'ci' : ci,
+            'firstname' : firstname,
+            'lastname' : lastname
+        }
+
+        if carnet is not None:
+            kwargs['carnet'] = carnet
+
+        if phone is not None:
+            kwargs['phone'] = phone
+
+        if debt_permission is not None:
+            kwargs['debt_permission'] = debt_permission
+
+        if book_permission is not None:
+            kwargs['book_permission'] = book_permission
+
+        newClient = Client(**kwargs)
+        self.session.add(newClient)
+        try:
+            self.session.commit()
+            print("Se ha creado correctamente el cliente " + str(newClient))
+            return True
+        except Exception as e:
+            print("Error al crear el cliente " + str(newClient) +":", e)
+            m.session.rollback()
+            return False
+
 
 ###################################################################################################################################################################################
 ## PRUEBAS:
@@ -193,3 +312,18 @@ if __name__ == '__main__':
     m.checkPassword("tobi", "loveurin")
     print("")
     m.checkPassword("tobi", "hateukakashi")
+
+    # Probar updateUserProfile
+    print("\nPrueba del método updateUserProfile\n")
+    m.updateUserProfile("tobi", "xD")
+
+    # Probar updateUserInfo
+    print("\nPrueba del método updateUserInfo\n")
+    m.updateUserInfo("tobi", "madara")
+    m.updateUserInfo("tobi", lastname="otsutsuki", description="dios ninja")
+
+    m.clientCreate(42, "Kurt", "Cobain")
+    m.clientCreate(666, "Kurtis", "Cobain", carnet="12345")
+    print(m.clientSearch(ci=42))
+    print(m.clientSearch(ci=43))
+    print(m.clientSearch(firstname="kurt"))
