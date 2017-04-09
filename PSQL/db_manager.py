@@ -18,6 +18,8 @@
 ## DEPENDENCIAS:
 ###################################################################################################################################################################################
 
+import datetime
+
 from models import *
 from session import startSession
 from sqlalchemy import func, distinct, and_, update
@@ -29,9 +31,9 @@ from passlib.hash import bcrypt
 
 class DBManager(object):
     """docstring for DBManager"""
-    def __init__(self, name, password, debug=False):
+    def __init__(self, name, password, debug=False, dropAll=False):
         super(DBManager, self).__init__()
-        self.session = startSession(name, password, debug)
+        self.session = startSession(name, password, debug, dropAll)
 
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # MÉTODOS PARA EL CONTROL DE USUARIOS:
@@ -333,6 +335,48 @@ class DBManager(object):
             m.session.rollback()
             return False
 
+    """
+    Método para actualizar información de un cliente
+     - Retorna True:
+        * Cuando logra actualizar la información correctamente
+     - Retorna False:
+        * Cuando el cliente no existe
+        * Cuando no pudo actualizarse la infromación por alguna otra razón
+    """
+    def clientUpdate(self, ciOriginal, ci=None, firstname=None, lastname=None, carnet=None, phone=None, debt_permission=None, book_permission=None, blocked=None, last_seen=None):
+        if self.clientExist(ciOriginal):
+            values = {}
+            if ci != None: values["ci"] = ci
+            if firstname != None: values["firstname"] = firstname
+            if lastname != None: values["lastname"] = lastname
+            if carnet != None: values["carnet"] = carnet
+            if phone != None: values["phone"] = phone
+            if debt_permission != None: values["debt_permission"] = debt_permission
+            if book_permission != None: values["book_permission"] = book_permission
+            if blocked != None: values["blocked"] = blocked
+            if last_seen != None: values["last_seen"] = last_seen
+            try:
+                self.session.query(Client).filter(Client.ci == ciOriginal).update(values)
+                self.session.commit()
+                print("Se ha actualizado la información del cliente " + str(ciOriginal) + " satisfactoriamente")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar actualizar la información del cliente " + str(ciOriginal), e)
+                self.session.rollback()
+                return False
+        return False
+
+    """
+    Método para hacer check in de un cliente
+     - Retorna True:
+        * Cuando logra hacer check in correctamente
+     - Retorna False:
+        * Cuando el cliente no existe
+        * Cuando no pudo hacerse check in por alguna otra razón
+    """
+    def clientCheckIn(self, ci):
+        return self.clientUpdate(ci, last_seen=datetime.datetime.now())
+
 
 ###################################################################################################################################################################################
 ## PRUEBAS:
@@ -340,7 +384,7 @@ class DBManager(object):
 
 # Prueba
 if __name__ == '__main__':
-    m = DBManager("sistema_ventas", "hola", True)
+    m = DBManager("sistema_ventas", "hola")
 
     """
     Insert Example
@@ -429,9 +473,18 @@ if __name__ == '__main__':
     print(m.getUserInfo("tobi"))
 
     """
+    print("\nPrueba de Cliente y Busqueda\n")
     m.clientCreate(42, "Kurt", "Cobain")
     m.clientCreate(666, "Kurtis", "Cobain", carnet="12345")
     print(m.clientSearch(ci=42))
     print(m.clientSearch(ci=43))
     print(m.clientSearch(firstname="kurt"))
     """
+    print("\nPrueba de Cliente y Update\n")
+    m.clientCreate(777, "David", "Grohl", carnet="123456")
+    print(m.clientSearch(ci=777))
+    m.clientUpdate(777, debt_permission=False)
+    print(m.clientSearch(ci=777))
+    m.clientCheckIn(777)
+    print(m.clientSearch(ci=777))
+
