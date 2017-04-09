@@ -393,8 +393,7 @@ class dbManager(object):
     """
     def createProduct(self, product_name, price, category=""):
         if not self.existProduct(product_name):
-            newUser = Product(product_name=product_name.lower().strip(), price=price, category=category)
-            self.session.add(newUser)
+            self.session.add(Product(product_name=product_name.lower().strip(), price=price, category=category))
             try:
                 self.session.commit()
                 print("Se ha creado correctamente el producto: " + product_name)
@@ -792,7 +791,7 @@ class dbManager(object):
         * Cuando el cliente no existe
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
-    def clientUpdate(self, ciOriginal, ci=None, firstname=None, lastname=None, carnet=None, phone=None, debt_permission=None, book_permission=None, blocked=None, last_seen=None):
+    def updateClient(self, ciOriginal, ci=None, firstname=None, lastname=None, carnet=None, phone=None, debt_permission=None, book_permission=None, blocked=None, last_seen=None):
         if self.existClient(ciOriginal):
             values = {}
             if ci != None: values["ci"] = ci
@@ -823,13 +822,37 @@ class dbManager(object):
         * Cuando el cliente no existe
         * Cuando no pudo hacerse check in por alguna otra razón
     """
-    def clientCheckIn(self, ci):
-        return self.clientUpdate(ci, last_seen=datetime.datetime.now())
+    def checkInClient(self, ci):
+        return self.updateClient(ci, last_seen=datetime.datetime.now())
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE COMPRAS (PURCHASE):
     #==============================================================================================================================================================================
 
+    """
+    Método para crear una compra nuevo
+     - Retorna True:
+        * Cuando la compra es creada satisfactoreamente
+     - Retorna False:
+        * Cuando no se puede crear
+    """
+    def createPurchase(self, ci, clerk, total, payed_to = None):
+        if self.existClient(ci) and self.existUser(clerk):
+            kwargs = {"ci" : ci, "clerk" : clerk, "total" : total}
+            if payed_to != None and existUser(payed_to): kwargs.update({"locked" : True, "payed" : True, "payed_to" : payed_to, "payed_date" : datetime.datetime.now()})
+            else: kwargs.update({"debt" : True})
+            self.session.add(Purchase(**kwargs))
+            try:
+                self.session.commit()
+                print("Se ha creado correctamente la compra")
+                return True
+            except Exception as e:
+                print("Error desconocido al intentar crear la compra", e)
+                m.session.rollback()
+                return False
+        else:
+            print("No se puede crear la compra porque NO existe el cliente o el vendedor")
+            return False
 
 ###################################################################################################################################################################################
 ## PRUEBAS:
@@ -939,9 +962,9 @@ if __name__ == '__main__':
     print("\nPrueba de Cliente y Update\n")
     m.createClient(777, "David", "Grohl", carnet="123456")
     print(m.getClient(ci=777))
-    m.clientUpdate(777, debt_permission=False)
+    m.updateClient(777, debt_permission=False)
     print(m.getClient(ci=777))
-    m.clientCheckIn(777)
+    m.checkInClient(777)
     print(m.getClient(ci=777))
     """
 
