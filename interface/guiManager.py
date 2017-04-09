@@ -109,8 +109,21 @@ class adminGUI(QMainWindow, form_class):
         #---------------------------------------------------------------------------------------------------------------------------
 
         # Parametros para buscar en la tabla de productos
-        self.productsParams0 = ["name"]
-        self.productsParams1 = ["product_id", "product_name", "price", "remaining", "remainingLots", "description", "category"]
+        self.productsParams0 = {
+            "product_name" : True,
+            "active"       : True
+        }
+
+        self.productsParams1 = {
+            "product_id"     : True,
+            "product_name"   : True,
+            "price"          : True,
+            "remaining"      : True,
+            "remaining_lots" : True,
+            "description"    : True,
+            "category"       : True,
+            "active"         : True
+        }
 
         # Barras de búsqueda por cédula:
         self.ciSearch = [self.lineE17, self.lineE47, self.lineE52, self.lineE57]
@@ -412,15 +425,21 @@ class adminGUI(QMainWindow, form_class):
 
     # Obtener una lista con los nombres de todos los productos
     def getProductList(self, params, mode = 0):
-        productsList = self.db.getItemInfo(productsTable, params, mode)
-        if len(params) == 1:
+        if mode == 0: params.update({"available" : None})
+        elif mode == 1: params.update({"available" : True})
+        else:  params.update({"available" : False})
+
+        productsList = self.db.getProducts(**params)
+
+        if len(params) == 3:
             productsNames = []
             for i in range(len(productsList)):
                 productsNames += productsList[i]
             return sorted(productsNames)
 
         else:
-            return sorted(productsList, key = lambda product: product[0])
+            print(productsList)
+            return sorted(productsList, key = lambda product: product[1])
 
     # Borrar contenido de uno o más LineEdit:
     def clearLE(self, listLE):
@@ -446,9 +465,9 @@ class adminGUI(QMainWindow, form_class):
 
         table.setRowCount(len(itemsList))
         for i in range(len(itemsList)):
-            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][0]))) # Nombre
-            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][1]))) # Precio
-            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][2]))) # Categoria
+            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][1]))) # Nombre
+            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][2]))) # Precio
+            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][6]))) # Categoria
             table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Cantidad
             table.setItem(i, 4, QTableWidgetItem(str(itemsList[i][4]))) # Lotes
 
@@ -460,14 +479,14 @@ class adminGUI(QMainWindow, form_class):
     # Método para refrescar la interfaz
     def refresh(self):
         # Listas de nombres de los productos
-        self.productsNames = self.getProductList(self.productsParams0, 0)             # Completa
+        self.productsNames = self.getProductList(self.productsParams0)                # Completa
         self.productsNamesAvailable = self.getProductList(self.productsParams0, 1)    # Disponibles
         self.productsNamesNotAvailable = self.getProductList(self.productsParams0, 2) # No disponibles
 
         # Listas con información para las tablas de productos
-        self.productsInfo = self.getProductList(self.productsParams1, 0)              # Completa
-        self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)     # Disponibles
-        self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2)  # No disponibles
+        self.productsInfo = self.getProductList(self.productsParams1)                # Completa
+        self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)    # Disponibles
+        self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2) # No disponibles
 
         # Configuración de la barra de búsqueda de cliente por CI
         self.setupSearchBar(self.ciSearch, clientList, True)

@@ -573,7 +573,7 @@ class dbManager(object):
         if available != None: filters["available"] = available
         if active != None: filters["active"] = active
 
-        return self.session.query(*columns).filter_by(*filters).all()
+        return self.session.query(*columns).filter_by(**filters).all()
 
     """
     Método para actualizar información de un producto
@@ -951,6 +951,9 @@ if __name__ == '__main__':
     print("\nPrueba del método createProduct\n")
     m.createProduct("Agua", 1100)
 
+    print(m.getProducts(product_name=True, product_id=True, active=True))
+
+    """
     m.createService("ExtraLifes", 1)
     print(m.getService(service_name="ExtraLifes"))
     m.createService("ExtraLifes*2", 2)
@@ -960,4 +963,5 @@ if __name__ == '__main__':
     print(m.getService(price_lower_bound=0))
     print("------------")
     print(m.getService(price_lower_bound=0, price_upper_bound=1))
+    """
 

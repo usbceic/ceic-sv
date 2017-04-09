@@ -36,7 +36,7 @@ from PyQt4.uic import loadUiType
 from PyQt4.QtGui import QMainWindow, QDialog, QApplication, QLineEdit, QCursor, QSplashScreen, QPixmap
 
 # Módulo con estructuras de Qt
-from PyQt4.QtCore import Qt, QMetaObject, QEvent, pyqtSignal, QTimer
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal
 
 # Manejador de la base de datos
 from db_manager import dbManager
