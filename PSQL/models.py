@@ -185,11 +185,11 @@ class Service(this.Base):
 
     # Atributos
     service_id   = Column(GUID, primary_key=True, default=GUID.random_value)
-    service_name = Column(String, nullable=False)
+    service_name = Column(String, nullable=False, unique=True)
     price        = Column(Numeric, nullable=False)
     available    = Column(Boolean, nullable=False, default=False)
-    description  = Column(String)
-    category     = Column(String)
+    description  = Column(String, default="")
+    category     = Column(String, default="")
 
     # Constraints
     __table_args__ = (
@@ -204,7 +204,7 @@ class Service(this.Base):
     # Representación de una instancia de la clase
     def __repr__(self):
         kwargs = (str(self.service_id), self.service_name, str(self.price), str(self.available), self.description, self.category)
-        template = "<Service(service_id='%s', service_name='%s', price='%s', ravailable=='%s', description=='%s', category=='%s')>"
+        template = "<Service(service_id=='%s', service_name=='%s', price=='%s', available=='%s', description=='%s', category=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================

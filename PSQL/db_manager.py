@@ -282,7 +282,7 @@ class DBManager(object):
     # Retorna queryset de los clientes que cumplan el filtro
     def clientSearch(self, ci=None, firstname=None, lastname=None):
         if ci is None and firstname is None and lastname is None:
-            return []
+            return self.session.query(Client).all()
 
         filters = and_()
         if ci is not None:
@@ -428,6 +428,100 @@ class DBManager(object):
             self.session.rollback()
             return False
 
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS PARA EL CONTROL DE SERVICIOS:
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Método para verificar que un servicio existe.
+    # Retorna true cuando el servicio existe y false en caso contario
+    def serviceExist(self, service_id):
+        count = self.session.query(Service).filter_by(service_id=service_id).count()
+        if count == 0:
+            print("El servicio con id " + str(service_id) + " NO existe")
+            return False
+        else:
+            print("El servicio con id " + str(service_id) + " existe")
+            return True
+
+    # Método para buscar servicios.
+    # Retorna queryset de los servicios que cumplan el filtro. Los bound son cerrados
+    def serviceSearch(self, service_id=None, service_name=None, available=None, price_lower_bound=None, price_upper_bound=None):
+        if service_id is None and service_name is None and available is None and price_lower_bound is None and price_upper_bound is None:
+            return self.session.query(Service).all()
+
+        filters = and_()
+        if service_id is not None:
+            filters = and_(filters, Service.service_id == service_id)
+
+        if service_name is not None:
+            filters = and_(filters, Service.service_name.ilike("%"+service_name+"%"))
+
+        if available is not None:
+            filters = and_(filters, Service.available == available)
+
+        if price_lower_bound is not None:
+            filters = and_(filters, Service.price >= price_lower_bound)
+
+        if price_upper_bound is not None:
+            filters = and_(filters, Service.price <= price_upper_bound)
+
+        return self.session.query(Service).filter(*filters).all()
+
+
+    # Método para crear un servicio nuevo
+    # Retorna true cuando el servicio es creado satisfactoreamente y false cuando no se puede crear o cuando ya existia el servicio
+    def serviceCreate(self, service_name, price, available=None, description=None, category=None):
+        kwargs = {
+            'service_name' : service_name,
+            'price' : price,
+        }
+
+        if available is not None:
+            kwargs['available'] = available
+
+        if description is not None:
+            kwargs['description'] = description
+
+        if category is not None:
+            kwargs['category'] = category
+
+        newService = Service(**kwargs)
+        self.session.add(newService)
+        try:
+            self.session.commit()
+            print("Se ha creado correctamente el servicio " + str(newService))
+            return True
+        except Exception as e:
+            print("Error al crear el servicio " + str(newService) +":", e)
+            self.session.rollback()
+            return False
+
+    """
+    Método para actualizar información de un servicio
+     - Retorna True:
+        * Cuando logra actualizar la información correctamente
+     - Retorna False:
+        * Cuando el servicioo no existe
+        * Cuando no pudo actualizarse la infromación por alguna otra razón
+    """
+    def serviceUpdate(self, service_id, service_name=None, price=None, available=None, description=None, category=None):
+        if self.serviceExist(service_id):
+            values = {}
+            if service_name != None: values["service_name"] = service_name
+            if price != None: values["price"] = price
+            if available != None: values["available"] = available
+            if description != None: values["description"] = description
+            if category != None: values["category"] = category
+            try:
+                self.session.query(Service).filter(Service.service_id == service_id).update(values)
+                self.session.commit()
+                print("Se ha actualizado la información del servicio " + str(service_id) + " satisfactoriamente")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar actualizar la información del servicio " + str(service_id), e)
+                self.session.rollback()
+                return False
+        return False
 
 ###################################################################################################################################################################################
 ## PRUEBAS:
@@ -542,3 +636,13 @@ if __name__ == '__main__':
     m.clientCheckIn(777)
     print(m.clientSearch(ci=777))
     """
+
+    m.serviceCreate("ExtraLifes", 1)
+    print(m.serviceSearch(service_name="ExtraLifes"))
+    m.serviceCreate("ExtraLifes*2", 2)
+    print("------------")
+    print(m.serviceSearch(service_name="ExtraLifes"))
+    print("------------")
+    print(m.serviceSearch(price_lower_bound=0))
+    print("------------")
+    print(m.serviceSearch(price_lower_bound=0, price_upper_bound=1))
