@@ -232,9 +232,9 @@ class DBManager(object):
             if lastname != None: values["lastname"] = lastname
             if email != None: values["email"] = email
             try:
-                self.session.query(User).filter(User.username == username).update(values)
+                self.session.query(User).filter_by(username=username).update(values)
                 self.session.commit()
-                print("Se ha actualizado la información del ususario " + username + "satisfactoriamente")
+                print("Se ha actualizado la información del ususario " + username + " satisfactoriamente")
                 return True
             except Exception as e:
                 print("Ha ocurrido un error desconocido al intentar actualizar la información del usuario " + username, e)
@@ -433,21 +433,44 @@ class DBManager(object):
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     """
-    Método para verificar que un usuario existe.
+    Método para verificar que un producto existe.
      - Retorna True:
-        * Cuando el usuario existe
+        * Cuando el producto existe
      - Retorna False:
-        * Cuando el usuario NO existe
+        * Cuando el producto NO existe
     """
-    def productExist(self, username, active=True):
-        count = self.session.query(Product).filter_by(username=username, active=active).count()
+    def productExist(self, product_name, active=True):
+        count = self.session.query(Product).filter_by(product_name=product_name, active=active).count()
         if count == 0:
-            print("El usuario " + username + " NO existe")
+            print("El producto " + product_name + " NO existe")
             return False
         else:
-            print("El usuario " + username + " existe")
+            print("El producto " + product_name + " existe")
             return True
 
+    """
+    Método para crear un producto nuevo
+     - Retorna True:
+        * Cuando el producto es creado satisfactoreamente
+     - Retorna False:
+        * Cuando ya existe el producto
+        * Cuando no se puede crear
+    """
+    def createProduct(self, name, price, category=""):
+        if not self.productExist(name):
+            newUser = Product(product_name=name, price=price, category=category)
+            self.session.add(newUser)
+            try:
+                self.session.commit()
+                print("Se ha creado correctamente el producto: " + name)
+                return True
+            except Exception as e:
+                print("Error desconocido al crear el producto: " + name +":", e)
+                m.session.rollback()
+                return False
+        else:
+            print("No se puede crear el producto " + name + " porque ya existe")
+            return False
 
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # MÉTODOS PARA EL CONTROL DE LOTES:
@@ -542,7 +565,7 @@ if __name__ == '__main__':
     # Probar updateUserInfo
     print("\nPrueba del método updateUserInfo\n")
     m.updateUserInfo("tobi", "madara")
-    m.updateUserInfo("tobi", lastname="otsutsuki")
+    m.updateUserInfo("tobi", lastname="uchiha")
 
     # Probar getUserNames
     print("\nPrueba del método getUserNames\n")
@@ -570,3 +593,10 @@ if __name__ == '__main__':
     m.clientCheckIn(777)
     print(m.clientSearch(ci=777))
     """
+
+    """Pruebas de los métodos para usuarios"""
+
+    # Probar createProduct
+    print("\nPrueba del método createProduct\n")
+    m.createProduct("Agua", 1100)
+

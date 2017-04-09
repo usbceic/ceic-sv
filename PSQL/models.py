@@ -82,6 +82,7 @@ class Provider(this.Base):
     pay_information = Column(String, nullable=False)
     description     = Column(String)
     category        = Column(String)
+    active         = Column(Boolean, nullable=False, default=True)
 
     # Relaciones
     lot  = relationship("Lot")
@@ -101,13 +102,14 @@ class Product(this.Base):
 
     # Atributos
     product_id     = Column(GUID, primary_key=True, default=GUID.random_value)
-    product_name   = Column(String, nullable=False)
+    product_name   = Column(String, nullable=False, unique=True)
     price          = Column(Numeric, nullable=False)
     remaining      = Column(Integer, nullable=False, default=0)
     remaining_lots = Column(Integer, nullable=False, default=0)
     available      = Column(Boolean, nullable=False, default=False)
     description    = Column(String)
     category       = Column(String)
+    active         = Column(Boolean, nullable=False, default=True)
 
     # Constraints
     __table_args__ = (
@@ -190,6 +192,7 @@ class Service(this.Base):
     available    = Column(Boolean, nullable=False, default=False)
     description  = Column(String)
     category     = Column(String)
+    active         = Column(Boolean, nullable=False, default=True)
 
     # Constraints
     __table_args__ = (
@@ -225,6 +228,7 @@ class Client(this.Base):
     blocked         = Column(Boolean, nullable=False, default=False)
     balance         = Column(Numeric, nullable=False, default=0)
     last_seen       = Column(DateTime, default=datetime.datetime.now)
+    active         = Column(Boolean, nullable=False, default=True)
 
     # Constraints
     __table_args__ = (
