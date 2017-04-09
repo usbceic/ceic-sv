@@ -139,7 +139,7 @@ class Lot(this.Base):
 
     # Atributos
     lot_id           = Column(GUID, nullable=False, primary_key=True, default=GUID.random_value)
-    product_id       = Column(GUID, nullable=False, primary_key=True)
+    product_id       = Column(GUID, nullable=False)
     provider_id      = Column(String, nullable=False)
     received_by      = Column(String, nullable=False)
     cost             = Column(Numeric, nullable=False)
@@ -147,10 +147,8 @@ class Lot(this.Base):
     adquisition_date = Column(Date, nullable=False, default=datetime.datetime.now)
     perishable       = Column(Boolean, nullable=False, default=False)
     expiration_date  = Column(Date)
-    available        = Column(Boolean, nullable=False, default=False)
+    available        = Column(Boolean, nullable=False, default=True)
     current          = Column(Boolean, nullable=False, default=False)
-    description      = Column(String)
-    category         = Column(String)
 
     # Constraints
     __table_args__ = (

@@ -33,9 +33,9 @@ class DBManager(object):
         super(DBManager, self).__init__()
         self.session = startSession(name, password, debug, dropAll)
 
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE USUARIOS:
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
     """
     Método para verificar que un rango es válido
@@ -263,9 +263,9 @@ class DBManager(object):
     def getUsersInfo(self):
         return self.session.query(User.firstname, User.lastname, User.email, User.profile, User.permission_mask, User.last_login).all()
 
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE CLIENTES:
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
     # Método para verificar que un cliente existe.
     # Retorna true cuando el cliente existe y false en caso contario
@@ -374,9 +374,9 @@ class DBManager(object):
     def clientCheckIn(self, ci):
         return self.clientUpdate(ci, last_seen=datetime.datetime.now())
 
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PROVEEDORES:
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
     '''
     Metodo para verificar la existencia de un proveedor
@@ -428,9 +428,9 @@ class DBManager(object):
             self.session.rollback()
             return False
 
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PRODUCTOS:
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
     """
     Método para verificar que un producto existe.
@@ -508,17 +508,17 @@ class DBManager(object):
     def updateProduct(self, product_name, new_product_name=None, price=None, description=None, category=None):
         if self.productExist(product_name):
             values = {}
-            if new_product_name != None: values["product_name"] = new_product_name
+            if new_product_name != None: values["product_name"] = new_product_name.lower().strip()
             if price != None: values["price"] = price
             if description != None: values["description"] = description
             if category != None: values["category"] = category
             try:
                 self.session.query(Product).filter_by(product_name=product_name.lower().strip()).update(values)
                 self.session.commit()
-                print("Se ha actualizado la información del producto " + prodcut_name + " satisfactoriamente")
+                print("Se ha actualizado la información del producto " + product_name + " satisfactoriamente")
                 return True
             except Exception as e:
-                print("Ha ocurrido un error desconocido al intentar actualizar la información del producto " + prodcut_name, e)
+                print("Ha ocurrido un error desconocido al intentar actualizar la información del producto " + product_name, e)
                 self.session.rollback()
                 return False
         return False
@@ -545,15 +545,122 @@ class DBManager(object):
                 return False
         return False
 
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LOTES:
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
-    # Falta completar xD
+    """
+    Método para verificar que un lote existe.
+     - Retorna True:
+        * Cuando el producto existe
+     - Retorna False:
+        * Cuando el producto NO existe
+    """
+    def lotExist(self, lot_id, available=True):
+        count = self.session.query(Lot).filter_by(lot_id=lot_id, available=available).count()
+        if count == 0:
+            print("El loto " + lot_id + " NO existe")
+            return False
+        else:
+            print("El loto " + lot_id + " existe")
+            return True
+    """
 
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Método para crear un lote nuevo
+     - Retorna True:
+        * Cuando el lote es creado satisfactoreamente
+     - Retorna False:
+        * Cuando NO existe el producto
+        * Cuando NO existe el proveedor
+        * Cuando NO existe el ususario
+        * Cuando NO se puede crear por alguna otra razón
+    """
+    def createLot(self, product_name, provider_name, received_by, cost, quantity, expiration_date=None):
+        if self.providerExists(provider_name) and self.productExist(product_name) and self.userExist(received_by):
+            kwargs = {
+                "product_id"  : self.getProductID(product_name),
+                "provider_id" : provider_name,
+                "received_by" : received_by,
+                "cost"        : cost,
+                "quantity"    : quantity
+            }
+
+            if expirationDate != None:
+                kwargs["perishable"] = True
+                kwargs["expiration_date"] = expiration_date
+
+            self.session.add(Lot(**kwargs))
+
+            try:
+                self.session.commit()
+                print("Se ha creado correctamente el lote")
+                return True
+            except Exception as e:
+                self.session.rollback()
+                print("No se ha podido crear el lote", e)
+                return False
+        return False
+
+    """
+    Método para actualizar información de un lote
+     - Retorna True:
+        * Cuando logra actualizar la información correctamente
+     - Retorna False:
+        * Cuando el lote no existe
+        * Cuando no pudo actualizarse la infromación por alguna otra razón
+    """
+    def updateLot(self, lot_id, product_name=None, provider_id=None, cost=None, quantity=None, remaining=None, expiration_date=None):
+        if self.lotExist(lot_id):
+            values = {}
+            if product_name != None and self.productExist(product_name): values["product_id"] = self.getProductID(product_name)
+            if provider_id != None and self.providerExists(provider_id): values["provider_id"] = provider_id
+            if cost != None: values["cost"] = cost
+            if quantity != None: values["quantity"] = quantity
+            if remaining != None and remaining <= quantity: values["remaining"] = remaining
+            if expiration_date != None: values["expiration_date"] = expiration_date
+            try:
+                self.session.query(Lot).filter_by(lot_id=lot_id).update(values)
+                self.session.commit()
+                print("Se ha actualizado la información del lote " + lot_id + " satisfactoriamente")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar actualizar la información del lote " + lot_id, e)
+                self.session.rollback()
+                return False
+        return False
+
+    """
+    Método para retornar los lotes asociados a un producto
+     - Retorna un queryset con los resultados de la búsqueda
+    """
+    def getLotsByProductID(self, product_id, onlyAvailables = True):
+        if onlyAvailables: return self.session.query(Lot).filter_by(product_id=product_id, onlyAvailables=True).all()
+        return self.session.query(Lot).filter_by(product_id=product_id).all()
+
+    """
+    Método para eliminar lotes (Marcar como no disponible)
+     - Retorna True:
+        * Cuando logra marcar el lote como no disponible
+     - Retorna False:
+        * Cuando el lote no existe
+        * Cuando NO logra marcar el lote como no disponible
+    """
+    def deleteLot(self, lot_id):
+        if lotExist(lot_id):
+            try:
+                self.session.execute(update(Lot).where(Lot.lot_id==lot_id).values(available=False))
+                self.session.commit()
+                print("Se ha marcado el lote " + lot_id + " como no disponible")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar marcar el lote " + lot_id + " como no disponible", e)
+                self.session.rollback()
+                return False
+        return False
+
+    #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE SERVICIOS:
-    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
     # Método para verificar que un servicio existe.
     # Retorna true cuando el servicio existe y false en caso contario
