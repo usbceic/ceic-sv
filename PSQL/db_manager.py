@@ -18,8 +18,6 @@
 ## DEPENDENCIAS:
 ###################################################################################################################################################################################
 
-import datetime
-
 from models import *
 from session import startSession
 from sqlalchemy import func, distinct, and_, update
@@ -334,59 +332,6 @@ class DBManager(object):
             self.session.rollback()
             return False
 
-
-    '''
-    Metodo para verificar la existencia de un proveedor
-    retorna True si existe
-    retorna False si no existe
-    '''
-
-    def providerExists(self,name):
-        count = self.session.query(User).filter_by(username=username).count()
-        if count == 0:
-            print("El proveedor " + name + " no existe")
-            return False
-        else:
-            print("El proveedor " + name + " ya existe")
-            return True
-
-    '''
-    Metodo para agregar un proveedor
-    Retorna True si el proveedor fue agregado con exito
-    Retorna False cuando el proveedor ya existe
-    Genera una excepcion cuando algo sale mal
-    '''
-
-    def addProvider(self,name,pay_information,phone = None, email = None, description = None, category = None):
-        if(self.providerExists(name)):
-            return False
-        kwargs = {
-            'name' : name,
-            'pay_information' : pay_information
-        }
-        if phone is not None:
-            kwargs['phone'] = phone
-
-        if email is not None:
-            kwargs['email'] = email
-
-        if description is not None:
-            kwargs['description'] = description
-
-        if category is not None:
-            kwargs['category'] = category
-
-        newProvider = Provider(**kwargs)
-        self.session.add(newProvider)
-        try:
-            self.session.commit()
-            print("Se ha creado correctamente el proveedor " + name)
-            return True
-        except Exception as e:
-            print("Error al crear el proveedor " + name +":", e)
-            self.session.rollback()
-            return False
-
     """
     Método para actualizar información de un cliente
      - Retorna True:
@@ -428,6 +373,60 @@ class DBManager(object):
     """
     def clientCheckIn(self, ci):
         return self.clientUpdate(ci, last_seen=datetime.datetime.now())
+
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS PARA EL CONTROL DE PROVEEDORES:
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    '''
+    Metodo para verificar la existencia de un proveedor
+    retorna True si existe
+    retorna False si no existe
+    '''
+    def providerExists(self,name):
+        count = self.session.query(User).filter_by(username=username).count()
+        if count == 0:
+            print("El proveedor " + name + " no existe")
+            return False
+        else:
+            print("El proveedor " + name + " ya existe")
+            return True
+
+    '''
+    Metodo para agregar un proveedor
+    Retorna True si el proveedor fue agregado con exito
+    Retorna False cuando el proveedor ya existe
+    Genera una excepcion cuando algo sale mal
+    '''
+    def addProvider(self,name,pay_information,phone = None, email = None, description = None, category = None):
+        if(self.providerExists(name)):
+            return False
+        kwargs = {
+            'name' : name,
+            'pay_information' : pay_information
+        }
+        if phone is not None:
+            kwargs['phone'] = phone
+
+        if email is not None:
+            kwargs['email'] = email
+
+        if description is not None:
+            kwargs['description'] = description
+
+        if category is not None:
+            kwargs['category'] = category
+
+        newProvider = Provider(**kwargs)
+        self.session.add(newProvider)
+        try:
+            self.session.commit()
+            print("Se ha creado correctamente el proveedor " + name)
+            return True
+        except Exception as e:
+            print("Error al crear el proveedor " + name +":", e)
+            self.session.rollback()
+            return False
 
 
 ###################################################################################################################################################################################
