@@ -13,17 +13,17 @@ buildOptions = dict(
 
 executables = [
     Executable(
-        script='sistema.py',
-        targetName='sistema.exe',
+        script='ceic_suite.py',
+        targetName='ceic_suite.exe',
         base="Win32GUI",
         copyDependentFiles=True
     )
 ]
 
 setup(
-    name="sistema",
+    name="CEIC Suite",
     version="1.0",
-    description="Sistema de ventas",
+    description="Sistema de ventas y préstamos de libros",
     author="Carlos Serrada",
     options=dict(build_exe=buildOptions),
     executables=executables

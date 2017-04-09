@@ -1,13 +1,14 @@
 [Desktop Entry]
 Encoding=UTF-8
 Version=1.0
-Name=CEICSV
+Name=CEIC Suite
 Comment=Sales system by CEIC
-Exec=/opt/CEICSV/ceicsv.py
+Exec=/opt/CEICSV/ceic_suite.py
 Icon=/opt/CEICSV/qt/images/logo.png
 Path=/opt/CEICSV/
 Terminal=false
 Type=Application
 Categories=Application;
-Comment[es_VE]=Sistema de Ventas del CEIC
-GenericName[es_VE]=CEIC SV
+Comment[es_VE]=Sistema de ventas y préstamos de libros del CEIC
+GenericName[es_VE]=CEIC Suite
+Name[es_VE]=CEIC Suite
