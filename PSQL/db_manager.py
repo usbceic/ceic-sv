@@ -456,21 +456,69 @@ class DBManager(object):
         * Cuando ya existe el producto
         * Cuando no se puede crear
     """
-    def createProduct(self, name, price, category=""):
-        if not self.productExist(name):
-            newUser = Product(product_name=name, price=price, category=category)
+    def createProduct(self, product_name, price, category=""):
+        if not self.productExist(product_name):
+            newUser = Product(product_name=product_name, price=price, category=category)
             self.session.add(newUser)
             try:
                 self.session.commit()
-                print("Se ha creado correctamente el producto: " + name)
+                print("Se ha creado correctamente el producto: " + product_name)
                 return True
             except Exception as e:
-                print("Error desconocido al crear el producto: " + name +":", e)
+                print("Error desconocido al crear el producto: " + product_name +":", e)
                 m.session.rollback()
                 return False
         else:
-            print("No se puede crear el producto " + name + " porque ya existe")
+            print("No se puede crear el producto " + product_name + " porque ya existe")
             return False
+
+    """
+    Método para buscar un producto por su nombre o por su id
+     - Retorna un queryset con el resultado de la búsqueda
+    """
+    def getProductByNameOrID(self, product_name=None, product_id=None, onlyAvailable=True):
+        if product_name == None and product_id == None: return []
+        if product_name != None and product_id != None:
+            if onlyAvailable: return self.session.query(Product).filter_by(or_(product_name=product_name, product_id=product_id), available=True).all()
+            return self.session.query(Product).filter_by(or_(product_name=product_name, product_id=product_id)).all()
+        elif product_name != None:
+            if onlyAvailable: return self.session.query(Product).filter_by(product_name=product_name, available=True).all()
+            return self.session.query(Product).filter_by(product_name=product_name).all()
+        else:
+            if onlyAvailable: return self.session.query(Product).filter_by(product_id=product_id, available=True).all()
+            return self.session.query(Product).filter_by(product_id=product_id).all()
+
+    """
+    Método paraobtener el id de un producto especificando su nombre
+     - Retorna el id correspondiente al producto de nombre especificado si este existe
+     - Retorna None cuando no existe un producto con el nombre especificado
+    """
+    def getProductID(self, product_name):
+        if productExist(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name).one()[0]
+        else: return None
+
+
+    """
+    Método para eliminar (desactivar) un producto
+     - Retorna True:
+        * Cuando el producto es eliminado (desactivado) satisfactoreamente
+     - Retorna False:
+        * Cuando el producto NO existe
+        * Cuando el producto ya está desactivado
+        * Cuando no se puede eliminar (desactivar) por alguna razón
+    """
+    def deleteProduct(self, product_name):
+        if productExist(product_name):
+            try:
+                self.session.execute(update(Product).where(Prodcut.product_name==product_name).values(active=False))
+                self.session.commit()
+                print("Se ha desactivado el producto: " + product_name)
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar desactivar el producto: " + product_name, e)
+                self.session.rollback()
+                return False
+        return False
 
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # MÉTODOS PARA EL CONTROL DE LOTES:
