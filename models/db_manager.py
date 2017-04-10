@@ -932,7 +932,7 @@ class dbManager(object):
             try:
                 self.session.commit()
                 print("Se ha añadido correctamente la lista de productos a la compra")
-                self.afterInsertProductList(purchase_id, price*amount)
+                self.afterInsertProductList(purchase_id, price*amount, product_id, amount)
                 return True
             except Exception as e:
                 print("Error desconocido al intentar añadir la lista de productos a la compra", e)
@@ -946,10 +946,11 @@ class dbManager(object):
     Pseudo-Trigger para agregar el costo de una lista de productos a la compra asociada
      - No retorna nada
     """
-    def afterInsertProductList(self, purchase_id, total_list):
+    def afterInsertProductList(self, purchase_id, subtotal, product_id, amount):
+        # Actualizar costo de la compra
         total = self.session.query(Purchase.total).filter_by(purchase_id = purchase_id).scalar()
         for i in range(10):
-            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"total" : total+total_list})
+            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"total" : total+subtotal})
             try:
                 self.session.commit()
                 print("Se ha actualizado la compra correctamente")
@@ -958,6 +959,33 @@ class dbManager(object):
             except Exception as e:
                 self.session.rollback()
                 print("No se pudo actualizar la compra")
+
+        # Descontar cantidad de productos vendidos en producto
+        remaining = self.session.query(Product.remaining).filter_by(product_id=provider_id).scalar()
+        for i in range(10):
+            self.session.query(Product).filter_by(product_id=product_id).update({"remaining" : remaining-amount})
+            try:
+                self.session.commit()
+                print("Se ha actualizado el producto correctamente")
+                break
+
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar el producto")
+
+        # Descontar cantidad de productos vendidos en el lote actual del producto
+        remaining = self.session.query(Lot.remaining).filter_by(product_id=provider_id, current=True).scalar()
+        for i in range(10):
+            self.session.query(Lot).filter_by(product_id=product_id, current=True).update({"remaining" : remaining-amount})
+            try:
+                self.session.commit()
+                print("Se ha actualizado el lote correctamente")
+                # Falta afterUpdateLotRemaining -- IMPORTANTE
+                break
+
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar el lote")
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LISTAS DE SERVICIOS:
@@ -1145,6 +1173,18 @@ class dbManager(object):
             except Exception as e:
                 self.session.rollback()
                 print("No se pudo actualizar el saldo del cliente", e)
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE REVERSE PRODUCT LIST:
+    #==============================================================================================================================================================================
+
+    # Completar
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE REVERSE SERVICE LIST:
+    #==============================================================================================================================================================================
+
+    # Completar
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DEL LOG DE OPERACIONES:
