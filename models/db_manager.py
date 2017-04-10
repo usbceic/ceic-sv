@@ -568,8 +568,9 @@ class dbManager(object):
     """
     def createLot(self, product_name, provider_name, received_by, cost, quantity, expiration_date=None):
         if self.existProvider(provider_name) and self.existProduct(product_name) and self.existUser(received_by):
+            product_id = self.getProductID(product_name)
             kwargs = {
-                "product_id"  : self.getProductID(product_name),
+                "product_id"  : product_id,
                 "provider_id" : provider_name,
                 "received_by" : received_by,
                 "cost"        : cost,
@@ -580,6 +581,9 @@ class dbManager(object):
             if expiration_date != None:
                 kwargs["perishable"] = True
                 kwargs["expiration_date"] = expiration_date
+
+            count = self.session.query(Lot).filter_by(product_id=product_id, current=True).count()
+            if count == 0: kwargs["current"] = True
 
             newLot = Lot(**kwargs)
             self.session.add(newLot)
@@ -981,14 +985,15 @@ class dbManager(object):
      - Retorna False:
         * Cuando no se puede crear
     """
-    def createProductList(self, purchase_id, product_id, price, amount):
-        if self.existPurchase(purchase_id) and self.existProduct(product_id):
+    def createProductList(self, purchase_id, product_name, price, amount):
+        if self.existPurchase(purchase_id) and self.existProduct(product_name):
+            product_id = self.getProductID(product_name)
             kwargs = {"purchase_id" : purchase_id, "product_id" : product_id, "price" : price, "amount" : amount}
             self.session.add(Product_list(**kwargs))
             try:
                 self.session.commit()
                 print("Se ha añadido correctamente la lista de productos a la compra")
-                self.afterInsertProductList(purchase_id, price*amount)
+                self.afterInsertProductList(purchase_id, price*amount, product_id, amount)
                 return True
             except Exception as e:
                 print("Error desconocido al intentar añadir la lista de productos a la compra", e)
@@ -1002,10 +1007,11 @@ class dbManager(object):
     Pseudo-Trigger para agregar el costo de una lista de productos a la compra asociada
      - No retorna nada
     """
-    def afterInsertProductList(self, purchase_id, total_list):
+    def afterInsertProductList(self, purchase_id, subtotal, product_id, amount):
+        # Actualizar costo de la compra
         total = self.session.query(Purchase.total).filter_by(purchase_id = purchase_id).scalar()
         for i in range(10):
-            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"total" : total+total_list})
+            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"total" : total+subtotal})
             try:
                 self.session.commit()
                 print("Se ha actualizado la compra correctamente")
@@ -1014,6 +1020,33 @@ class dbManager(object):
             except Exception as e:
                 self.session.rollback()
                 print("No se pudo actualizar la compra")
+
+        # Descontar cantidad de productos vendidos en producto
+        remaining = self.session.query(Product.remaining).filter_by(product_id=product_id).scalar()
+        for i in range(10):
+            self.session.query(Product).filter_by(product_id=product_id).update({"remaining" : remaining-amount})
+            try:
+                self.session.commit()
+                print("Se ha actualizado el producto correctamente")
+                break
+
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar el producto")
+
+        # Descontar cantidad de productos vendidos en el lote actual del producto
+        remaining = self.session.query(Lot.remaining).filter_by(product_id=product_id, current=True).scalar()
+        for i in range(10):
+            self.session.query(Lot).filter_by(product_id=product_id, current=True).update({"remaining" : remaining-amount})
+            try:
+                self.session.commit()
+                print("Se ha actualizado el lote correctamente")
+                # Falta afterUpdateLotRemaining -- IMPORTANTE!
+                break
+
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar el lote")
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LISTAS DE SERVICIOS:
@@ -1144,6 +1177,72 @@ class dbManager(object):
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE TRANSFERENCIAS:
+    #==============================================================================================================================================================================
+
+    """
+    Método para verificar que una lista de servicios existe
+     - Retorna True:
+        * Cuando la lista de servicios existe
+     - Retorna False:
+        * Cuando la lista de servicios NO existe
+    """
+    def existTransfer(self, bank, confirmation_code):
+        count = self.session.query(Transfer).filter_by(bank=bank, confirmation_code=confirmation_code).count()
+        if count == 0:
+            print("La lista de " + bank + "asociada a la compra " + confirmation_code + " NO existe")
+            return False
+        else:
+            print("La lista de " + bank + "asociada a la compra " + confirmation_code + " existe")
+            return True
+
+    """
+    Método para crear una transferencia nueva
+     - Retorna True:
+        * Cuando la transferencia es creada satisfactoreamente
+     - Retorna False:
+        * Cuando no se puede crear
+    """
+    def createTransfer(self, ci, clerk, amount, bank, confirmation_code, description):
+        if not self.existTransfer(bank, confirmation_code):
+            kwargs = {"ci" : ci, "clerk" : clerk, "amount" : amount, "bank" : bank, "confirmation_code" : confirmation_code, "description" : description}
+            self.session.add(Transfer(**kwargs))
+            try:
+                self.session.commit()
+                print("Se ha registrado correctamente la transferencia")
+                self.afterInsertTransfer(ci, amount)
+                return True
+            except Exception as e:
+                print("Error desconocido al intentar registrar la transferencia", e)
+                m.session.rollback()
+                return False
+        else:
+            print("La transferencia ya está registrada")
+            return False
+
+    """
+    Pseudo-Trigger para registrar el monto de una transferencia en el balnce del cliente que transfirió
+     - No retorna nada
+    """
+    def afterInsertTransfer(self, ci, amount):
+        balance = self.session.query(Client.balance).filter_by(ci=ci).scalar()
+        for i in range(10):
+            self.session.query(Client).filter_by(ci=ci).update({"balance" : balance+amount})
+            try:
+                self.session.commit()
+                print("Se ha actualizado correctamente el saldo del cliente")
+                break
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar el saldo del cliente", e)
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE REVERSE PRODUCT LIST:
+    #==============================================================================================================================================================================
+
+    # Completar
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE REVERSE SERVICE LIST:
     #==============================================================================================================================================================================
 
     # Completar
@@ -1281,10 +1380,11 @@ if __name__ == '__main__':
     m.createProvider("kabuto", "xD")
     m.createLot("agua", "kabuto", "tobi", 20000, 42)
 
-    #m.createClient(777, "David", "Grohl", carnet="123456")
-    #purchase = m.createPurchase(777, "tobi")
-    #m.createCheckout(purchase, 1000)
-    #m.createCheckout(purchase, 1200)
+    m.createClient(777, "David", "Grohl", carnet="123456")
+    purchase = m.createPurchase(777, "tobi")
+    m.createProductList(purchase, "agua", 1100, 2)
+    m.createCheckout(purchase, 1000)
+    m.createCheckout(purchase, 1200)
 
     """
     m.createService("ExtraLifes", 1)

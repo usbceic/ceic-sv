@@ -32,7 +32,7 @@ path.append(join(getcwd(), "modules"))
 ## MODÚLOS:
 ####################################################################################################################################
 
-from sys import argv
+from sys import argv, exit
 from sessionManager import loginGUI
 from guiManager import adminGUI
 from PyQt4.QtGui import QApplication
@@ -49,7 +49,7 @@ def displayLogin():
     loginWindow.splash.show()
     QTimer.singleShot(5000, lambda: loginWindow.splash.hide())
     QTimer.singleShot(5500, lambda: loginWindow.show())
-    return loginApp.exec_()
+    return exit(loginApp.exec_())
 
 def displayMainWindow(mode, dbm):
     MainWindowApp = QApplication(argv)
@@ -57,7 +57,7 @@ def displayMainWindow(mode, dbm):
     #elif mode == 1: MainWindow = sellerGUI()
     #else: MainWindow = collaboratorGUI()
     MainWindow.show()
-    return MainWindowApp.exec_()
+    return exit(MainWindowApp.exec_())
 
 if __name__ == '__main__':
     # Inicializar interfaz:

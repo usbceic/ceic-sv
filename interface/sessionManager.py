@@ -127,7 +127,7 @@ class loginGUI(QMainWindow, loginWindow):
                 self.lineEd0.setText("")
                 self.lineEd1.setText("")
                 self.label0.setFocus()
-                self.mainWindow = adminGUI(self.db, self)
+                self.mainWindow = adminGUI(user, self.db, self)
                 self.back = self.mainWindow.userBn0
                 self.back.clicked.connect(self.back_pressed)
                 self.mainWindow.closed.connect(self.show)

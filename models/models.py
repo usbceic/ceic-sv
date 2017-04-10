@@ -22,7 +22,7 @@ import sys
 import datetime
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Boolean, Integer, String, DateTime, Date, Numeric, ForeignKeyConstraint, CheckConstraint, ForeignKey
+from sqlalchemy import Column, Boolean, Integer, String, DateTime, Date, Numeric, ForeignKeyConstraint, CheckConstraint, UniqueConstraint, ForeignKey
 from custom_types import GUID
 
 ###################################################################################################################################################################################
@@ -465,6 +465,9 @@ class Transfer(this.Base):
     __table_args__ = (
         # Verificaciones
         CheckConstraint('amount > 0', name='exp_transfer_valid_amount'),
+
+        # Uniques
+        UniqueConstraint('bank', 'confirmation_code'),
 
         # Claves foraneas
         ForeignKeyConstraint(['ci'], ['client.ci']),

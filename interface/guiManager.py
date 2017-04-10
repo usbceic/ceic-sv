@@ -92,7 +92,7 @@ class adminGUI(QMainWindow, form_class):
     # Constructor de la clase
     #-------------------------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, database, parent=None):
+    def __init__(self, user, database, parent=None):
         #---------------------------------------------------------------------------------------------------------------------------
         # Iniciar y configurar la interfaz y la base de datos
         #---------------------------------------------------------------------------------------------------------------------------
@@ -100,6 +100,9 @@ class adminGUI(QMainWindow, form_class):
         # Interfaz
         super(adminGUI, self).__init__(parent)
         self.setupUi(self)
+
+        # Usuario del programa
+        self.user = user
 
         # Manejador de la base de datos
         self.db = database
@@ -753,22 +756,29 @@ class adminGUI(QMainWindow, form_class):
                 # Obtener información del nuevo lote
                 lotProduct = self.lineE33.text()
                 lotProvider = self.lineE34.text()
-                lotPrice = self.lineE35.text()
+                lotCost = self.lineE35.text()
                 lotExpiration = self.lineE36.text()
                 lotQuantity = self.lineE37.text()
-                lotProductID = self.db.getProductID(lotProduct)
+
+                kwargs = {
+                    "product_name" : lotProduct,
+                    "provider_id"  : lotProvider,
+                    "received_by"  : self.user,
+                    "cost"         : lotCost,
+                    "quantity"     : lotQuantity
+                }
 
                 # Agregar el lote a la BD
-                if lotExpiration != "": self.db.createLot(lotProductID, lotPrice, lotQuantity, lotProvider, None, lotExpiration)
-                else: self.db.createLot(lotProductID, lotPrice, lotQuantity, lotProvider)
+                if lotExpiration != "": kwargs["expiration_date"] = lotExpiration
+                self.db.createLot(**kwargs)
 
-                product = self.db.getProductByNameOrID(lotProduct, onlyAvailables = False)[0]
+                """product = self.db.getProductByNameOrID(lotProduct, onlyAvailables = False)[0]
                 remaining = product[4] + int(lotQuantity)
                 lots = product[5] + 1
                 current = product[6]
 
-                if current != 0: self.db.updateProduct(lotProductID, remaining=remaining, remainingLots=lots, available=True)
-                else: self.db.updateProduct(lotProductID, remaining=remaining, remainingLots=lots, currentLot=0, available=True)
+                if current != 0: self.db.updateProduct(lotProduct, remaining=remaining, remainingLots=lots, available=True)
+                else: self.db.updateProduct(lotProduct, remaining=remaining, remainingLots=lots, currentLot=0, available=True)"""
 
                 self.refresh()               # Refrescar toda la interfaz
                 self.lineE33.setFocus()      # Enfocar
