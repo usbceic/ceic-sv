@@ -925,8 +925,9 @@ class dbManager(object):
      - Retorna False:
         * Cuando no se puede crear
     """
-    def createProductList(self, purchase_id, product_id, price, amount):
-        if self.existPurchase(purchase_id) and self.existProduct(product_id):
+    def createProductList(self, purchase_id, product_name, price, amount):
+        if self.existPurchase(purchase_id) and self.existProduct(product_name):
+            product_id = self.getProductID(product_name)
             kwargs = {"purchase_id" : purchase_id, "product_id" : product_id, "price" : price, "amount" : amount}
             self.session.add(Product_list(**kwargs))
             try:
@@ -961,7 +962,7 @@ class dbManager(object):
                 print("No se pudo actualizar la compra")
 
         # Descontar cantidad de productos vendidos en producto
-        remaining = self.session.query(Product.remaining).filter_by(product_id=provider_id).scalar()
+        remaining = self.session.query(Product.remaining).filter_by(product_id=product_id).scalar()
         for i in range(10):
             self.session.query(Product).filter_by(product_id=product_id).update({"remaining" : remaining-amount})
             try:
@@ -974,7 +975,7 @@ class dbManager(object):
                 print("No se pudo actualizar el producto")
 
         # Descontar cantidad de productos vendidos en el lote actual del producto
-        remaining = self.session.query(Lot.remaining).filter_by(product_id=provider_id, current=True).scalar()
+        remaining = self.session.query(Lot.remaining).filter_by(product_id=product_id, current=True).scalar()
         for i in range(10):
             self.session.query(Lot).filter_by(product_id=product_id, current=True).update({"remaining" : remaining-amount})
             try:
@@ -1319,10 +1320,11 @@ if __name__ == '__main__':
     m.createProvider("kabuto", "xD")
     m.createLot("agua", "kabuto", "tobi", 20000, 42)
 
-    #m.createClient(777, "David", "Grohl", carnet="123456")
-    #purchase = m.createPurchase(777, "tobi")
-    #m.createCheckout(purchase, 1000)
-    #m.createCheckout(purchase, 1200)
+    m.createClient(777, "David", "Grohl", carnet="123456")
+    purchase = m.createPurchase(777, "tobi")
+    m.createProductList(purchase, "agua", 1100, 2)
+    m.createCheckout(purchase, 1000)
+    m.createCheckout(purchase, 1200)
 
     """
     m.createService("ExtraLifes", 1)
