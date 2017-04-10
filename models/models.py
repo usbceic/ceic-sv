@@ -143,6 +143,7 @@ class Lot(this.Base):
     received_by      = Column(String, nullable=False)
     cost             = Column(Numeric, nullable=False)
     quantity         = Column(Integer, nullable=False)
+    remaining        = Column(Integer, nullable=False)
     adquisition_date = Column(Date, nullable=False, default=datetime.datetime.now)
     perishable       = Column(Boolean, nullable=False, default=False)
     expiration_date  = Column(Date)

@@ -517,24 +517,52 @@ class dbManager(object):
                 "provider_id" : provider_name,
                 "received_by" : received_by,
                 "cost"        : cost,
-                "quantity"    : quantity
+                "quantity"    : quantity,
+                "remaining"   : quantity
             }
 
             if expirationDate != None:
                 kwargs["perishable"] = True
                 kwargs["expiration_date"] = expiration_date
 
-            self.session.add(Lot(**kwargs))
+            newLot = Lot(**kwargs)
+            self.session.add(newLot)
 
             try:
                 self.session.commit()
                 print("Se ha creado correctamente el lote")
+                afterInsertLot(newLot.product_id)
                 return True
             except Exception as e:
                 self.session.rollback()
                 print("No se ha podido crear el lote", e)
                 return False
         return False
+
+    """
+    Pseudo-Trigger para actualizar un producto luego de haber insertado un lote del mismo
+     - No retorna nada
+    """
+    def afterInsertLot(self, product_id):
+        remaining, remaining_lots = self.sesión.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).one()
+        quantity = self.session.query(Lot.quantity).filter_by(product_id=product_id, available=True).scalar()
+
+        values = {
+            "remaining"      : remaining+quantity,
+            "remaining_lots" : remaining_lots+1,
+            "available"      : True
+        }
+
+        for i in range(10):
+            self.session.query(Product).filter_by(product_id = product_id).update(values)
+            try:
+                self.session.commit()
+                print("Se ha actualizado el producto")
+                break
+
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar el producto")
 
     """
     Método para actualizar información de un lote
@@ -592,6 +620,32 @@ class dbManager(object):
                 self.session.rollback()
                 return False
         return False
+
+    """
+    Pseudo-Trigger para actualizar un producto luego de haber eliminado un lote del mismo
+     - No retorna nada
+    """
+    def afterDeleteLot(self, lot_id):
+        product_id, reaiming_in_lot = self.session.query(Lot.product_id, Lot.remaining).filter_by(lot_id=lot_id, available=True).one()
+        remaining, remaining_lots = self.sesión.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).one()
+
+        values = {
+            "remaining"      : remaining-remaining_in_lot,
+            "remaining_lots" : remaining_lots-1,
+        }
+
+        if remaining_lots-1 == 0: values["available"] = False
+
+        for i in range(10):
+            self.session.query(Product).filter_by(product_id = product_id).update(values)
+            try:
+                self.session.commit()
+                print("Se ha actualizado el producto")
+                break
+
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar el producto")
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE SERVICIOS:
