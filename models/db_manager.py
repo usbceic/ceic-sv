@@ -292,13 +292,13 @@ class dbManager(object):
     retorna True si existe
     retorna False si no existe
     '''
-    def existProvider(self,name):
-        count = self.session.query(User).filter_by(username=username).count()
+    def existProvider(self, provider_name):
+        count = self.session.query(Provider).filter_by(provider_name=provider_name).count()
         if count == 0:
-            print("El proveedor " + name + " no existe")
+            print("El proveedor " + provider_name + " no existe")
             return False
         else:
-            print("El proveedor " + name + " ya existe")
+            print("El proveedor " + provider_name + " ya existe")
             return True
 
     '''
@@ -307,11 +307,11 @@ class dbManager(object):
     Retorna False cuando el proveedor ya existe
     Genera una excepcion cuando algo sale mal
     '''
-    def addProvider(self,name,pay_information,phone = None, email = None, description = None, category = None):
-        if(self.existProvider(name)):
+    def createProvider(self, provider_name, pay_information, phone = None, email = None, description = None, category = None):
+        if(self.existProvider(provider_name)):
             return False
         kwargs = {
-            'name' : name,
+            'provider_name' : provider_name,
             'pay_information' : pay_information
         }
         if phone is not None:
@@ -330,10 +330,10 @@ class dbManager(object):
         self.session.add(newProvider)
         try:
             self.session.commit()
-            print("Se ha creado correctamente el proveedor " + name)
+            print("Se ha creado correctamente el proveedor " + provider_name)
             return True
         except Exception as e:
-            print("Error al crear el proveedor " + name +":", e)
+            print("Error al crear el proveedor " + provider_name +":", e)
             self.session.rollback()
             return False
 
@@ -402,7 +402,7 @@ class dbManager(object):
      - Retorna None cuando no existe un producto con el nombre especificado
     """
     def getProductID(self, product_name):
-        if existProduct(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name.lower().strip()).one()[0]
+        if self.existProduct(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name.lower().strip()).one()[0]
         else: return None
 
     """
@@ -521,7 +521,7 @@ class dbManager(object):
                 "remaining"   : quantity
             }
 
-            if expirationDate != None:
+            if expiration_date != None:
                 kwargs["perishable"] = True
                 kwargs["expiration_date"] = expiration_date
 
@@ -531,7 +531,7 @@ class dbManager(object):
             try:
                 self.session.commit()
                 print("Se ha creado correctamente el lote")
-                afterInsertLot(newLot.product_id)
+                self.afterInsertLot(newLot.lot_id)
                 return True
             except Exception as e:
                 self.session.rollback()
@@ -543,9 +543,9 @@ class dbManager(object):
     Pseudo-Trigger para actualizar un producto luego de haber insertado un lote del mismo
      - No retorna nada
     """
-    def afterInsertLot(self, product_id):
-        remaining, remaining_lots = self.sesión.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).one()
-        quantity = self.session.query(Lot.quantity).filter_by(product_id=product_id, available=True).scalar()
+    def afterInsertLot(self, lot_id):
+        product_id, quantity = self.session.query(Lot.product_id, Lot.quantity).filter_by(lot_id=lot_id, available=True).one()
+        remaining, remaining_lots = self.session.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).one()
 
         values = {
             "remaining"      : remaining+quantity,
@@ -627,7 +627,7 @@ class dbManager(object):
     """
     def afterDeleteLot(self, lot_id):
         product_id, reaiming_in_lot = self.session.query(Lot.product_id, Lot.remaining).filter_by(lot_id=lot_id, available=True).one()
-        remaining, remaining_lots = self.sesión.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).one()
+        remaining, remaining_lots = self.session.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).one()
 
         values = {
             "remaining"      : remaining-remaining_in_lot,
@@ -1078,7 +1078,7 @@ if __name__ == '__main__':
     print(m.getClient(ci=777))
     """
 
-    """Pruebas de los métodos para usuarios"""
+    """Pruebas de los métodos para productos"""
 
     # Probar createProduct
     print("\nPrueba del método createProduct\n")
@@ -1086,11 +1086,15 @@ if __name__ == '__main__':
 
     print(m.getProducts(product_name=True, product_id=True, active=True))
 
+    """Pruebas de los métodos para lotes"""
     m.createUser("tobi", "loveurin", "obito", "uchiha", "tobi@akatsuki.com", 3)
-    m.createClient(777, "David", "Grohl", carnet="123456")
-    purchase = m.createPurchase(777, "tobi", 2000)
-    m.createCheckout(purchase, 1000)
-    m.createCheckout(purchase, 1200)
+    m.createProvider("kabuto", "xD")
+    m.createLot("agua", "kabuto", "tobi", 20000, 42)
+
+    #m.createClient(777, "David", "Grohl", carnet="123456")
+    #purchase = m.createPurchase(777, "tobi", 2000)
+    #m.createCheckout(purchase, 1000)
+    #m.createCheckout(purchase, 1200)
 
     """
     m.createService("ExtraLifes", 1)
