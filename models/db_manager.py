@@ -1097,14 +1097,54 @@ class dbManager(object):
      - Retorna False:
         * Cuando la lista de servicios NO existe
     """
-    def existServiceList(self, service_id, purchase_id):
-        count = self.session.query(Service_list).filter_by(service_id=service_id, purchase_id=purchase_id).count()
+    def existTransfer(self, bank, confirmation_code):
+        count = self.session.query(Transfer).filter_by(bank=bank, confirmation_code=confirmation_code).count()
         if count == 0:
-            print("La lista de " + service_id + "asociada a la compra " + purchase_id + " NO existe")
+            print("La lista de " + bank + "asociada a la compra " + confirmation_code + " NO existe")
             return False
         else:
-            print("La lista de " + service_id + "asociada a la compra " + purchase_id + " existe")
+            print("La lista de " + bank + "asociada a la compra " + confirmation_code + " existe")
             return True
+
+    """
+    Método para crear una transferencia nueva
+     - Retorna True:
+        * Cuando la transferencia es creada satisfactoreamente
+     - Retorna False:
+        * Cuando no se puede crear
+    """
+    def createTransfer(self, ci, clerk, amount, bank, confirmation_code, description):
+        if not self.existTransfer(bank, confirmation_code):
+            kwargs = {"ci" : ci, "clerk" : clerk, "amount" : amount, "bank" : bank, "confirmation_code" : confirmation_code, "description" : description}
+            self.session.add(Transfer(**kwargs))
+            try:
+                self.session.commit()
+                print("Se ha registrado correctamente la transferencia")
+                self.afterInsertTransfer(ci, amount)
+                return True
+            except Exception as e:
+                print("Error desconocido al intentar registrar la transferencia", e)
+                m.session.rollback()
+                return False
+        else:
+            print("La transferencia ya está registrada")
+            return False
+
+    """
+    Pseudo-Trigger para registrar el monto de una transferencia en el balnce del cliente que transfirió
+     - No retorna nada
+    """
+    def afterInsertTransfer(self, ci, amount):
+        balance = self.session.query(Client.balance).filter_by(ci=ci).scalar()
+        for i in range(10):
+            self.session.query(Client).filter_by(ci=ci).update({"balance" : balance+amount})
+            try:
+                self.session.commit()
+                print("Se ha actualizado correctamente el saldo del cliente")
+                break
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar el saldo del cliente", e)
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DEL LOG DE OPERACIONES:

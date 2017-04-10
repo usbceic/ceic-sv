@@ -466,7 +466,7 @@ class Transfer(this.Base):
         CheckConstraint('amount > 0', name='exp_transfer_valid_amount'),
 
         # Uniques
-        UniqueConstraint('bank', 'confirmation_code')
+        UniqueConstraint('bank', 'confirmation_code'),
 
         # Claves foraneas
         ForeignKeyConstraint(['ci'], ['client.ci']),
