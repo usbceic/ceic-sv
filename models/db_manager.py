@@ -377,7 +377,7 @@ class dbManager(object):
     def getAllActiveProvidersByCreationDate(self):
         return self.session.query(Provider.provider_name).filter(Provider.active == True).order_by(Provider.creation_date)
 
-'''
+    '''
     Metodo para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden lexicografico.
         - Retorna un queryset con los nombres de todos los proveedores en orden lexicografico.
     '''
