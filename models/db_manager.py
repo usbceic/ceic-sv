@@ -512,8 +512,9 @@ class dbManager(object):
     """
     def createLot(self, product_name, provider_name, received_by, cost, quantity, expiration_date=None):
         if self.existProvider(provider_name) and self.existProduct(product_name) and self.existUser(received_by):
+            product_id = self.getProductID(product_name)
             kwargs = {
-                "product_id"  : self.getProductID(product_name),
+                "product_id"  : product_id,
                 "provider_id" : provider_name,
                 "received_by" : received_by,
                 "cost"        : cost,
@@ -524,6 +525,9 @@ class dbManager(object):
             if expiration_date != None:
                 kwargs["perishable"] = True
                 kwargs["expiration_date"] = expiration_date
+
+            count = self.session.query(Lot).filter_by(product_id=product_id, current=True).count()
+            if count == 0: kwargs["current"] = True
 
             newLot = Lot(**kwargs)
             self.session.add(newLot)
