@@ -980,7 +980,7 @@ class dbManager(object):
             try:
                 self.session.commit()
                 print("Se ha actualizado el lote correctamente")
-                # Falta afterUpdateLotRemaining -- IMPORTANTE
+                # Falta afterUpdateLotRemaining -- IMPORTANTE!
                 break
 
             except Exception as e:
