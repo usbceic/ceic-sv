@@ -337,6 +337,14 @@ class dbManager(object):
             self.session.rollback()
             return False
 
+    '''
+    Metodo para obtener TODOS los nombres de los proveedores existentes en la base de datos.
+        - Retorna un queryset con los nombres de todos los proveedores en orden lexicografico.
+    '''
+
+    def getAllProvidersByName(self):
+        return self.session.query(Provider.provider_name).all().order_by(Provider.provider_name)
+
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PRODUCTOS:
     #==============================================================================================================================================================================
