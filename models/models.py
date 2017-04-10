@@ -52,14 +52,14 @@ class User(this.Base):
     last_login      = Column(DateTime, nullable=False, default=datetime.datetime.now)
 
     # Relaciones
-    lot                  	= relationship("Lot")
-    purchase_clerk       	= relationship("Purchase", foreign_keys="Purchase.clerk")
-    reverse_product_list 	= relationship("Reverse_product_list")
-    reverse_service_list 	= relationship("Reverse_service_list")
-    transfer             	= relationship("Transfer")
-    operation_log        	= relationship("Operation_log")
-    lent_to_lender_clerk 	= relationship("Lent_to", foreign_keys="Lent_to.lender_clerk")
-    lent_to_receiver_clerk 	= relationship("Lent_to", foreign_keys="Lent_to.receiver_clerk")
+    lot                    = relationship("Lot")
+    purchase_clerk         = relationship("Purchase", foreign_keys="Purchase.clerk")
+    reverse_product_list   = relationship("Reverse_product_list")
+    reverse_service_list   = relationship("Reverse_service_list")
+    transfer               = relationship("Transfer")
+    operation_log          = relationship("Operation_log")
+    lent_to_lender_clerk   = relationship("Lent_to", foreign_keys="Lent_to.lender_clerk")
+    lent_to_receiver_clerk = relationship("Lent_to", foreign_keys="Lent_to.receiver_clerk")
 
     # Representación de una instancia de la clase
     def __repr__(self):
