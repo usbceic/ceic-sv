@@ -1090,7 +1090,21 @@ class dbManager(object):
     # MÉTODOS PARA EL CONTROL DE TRANSFERENCIAS:
     #==============================================================================================================================================================================
 
-    # Completar
+    """
+    Método para verificar que una lista de servicios existe
+     - Retorna True:
+        * Cuando la lista de servicios existe
+     - Retorna False:
+        * Cuando la lista de servicios NO existe
+    """
+    def existServiceList(self, service_id, purchase_id):
+        count = self.session.query(Service_list).filter_by(service_id=service_id, purchase_id=purchase_id).count()
+        if count == 0:
+            print("La lista de " + service_id + "asociada a la compra " + purchase_id + " NO existe")
+            return False
+        else:
+            print("La lista de " + service_id + "asociada a la compra " + purchase_id + " existe")
+            return True
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DEL LOG DE OPERACIONES:
