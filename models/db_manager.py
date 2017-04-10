@@ -821,72 +821,94 @@ class dbManager(object):
 
     """
     Método para crear una compra nuevo
-     - Retorna True:
+     - Retorna una cadena UUID:
         * Cuando la compra es creada satisfactoreamente
-     - Retorna False:
+     - Retorna None:
         * Cuando no se puede crear
     """
     def createPurchase(self, ci, clerk, total, debt = False):
         if self.existClient(ci) and self.existUser(clerk):
             kwargs = {"ci" : ci, "clerk" : clerk, "total" : total, "debt" : debt}
-            self.session.add(Purchase(**kwargs))
+            newPurchase = Purchase(**kwargs)
+            self.session.add(newPurchase)
             try:
                 self.session.commit()
                 print("Se ha creado correctamente la compra")
-                return True
+                return str(newPurchase.purchase_id)
             except Exception as e:
                 print("Error desconocido al intentar crear la compra", e)
                 m.session.rollback()
-                return False
+                return None
         else:
             print("No se puede crear la compra porque NO existe el cliente o el vendedor")
-            return False
+            return None
 
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PAGOS (CHECKOUT):
     #==============================================================================================================================================================================
 
-    def afterInsertCheckout(self, purchase_id):
-        checkout = self.session.query(func.sum(Checkout.amount)).filter_by(purchase_id=purchase_id).scalar()
-        total = self.session.query(Purchase.total).filter_by(purchase_id=purchase_id).scalar()
-        if  total <= checkout:
-            ci = self.session.query(Purchase.ci).filter_by(purchase_id=purchase_id).scalar()
-            balance = self.session.query(Client.balance).filter_by(ci = ci).scalar()
-            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"payed" : True, "payed_date" : datetime.datetime.now()})
-            self.session.query(Client).filter_by(ci = ci).update({"balance" : balance+(checkout-total)})
-            try:
-                self.session.commit()
-                print("Se ha actualizado la compra correctamente")
-
-            except Exception as e:
-                self.session.rollback()
-                print("No se pudo actualizar la compra")
-
     """
     Método para crear un pago nuevo
-     - Retorna True:
+     - Retorna una cadena UUID:
         * Cuando el pago es creado satisfactoreamente
-     - Retorna False:
+     - Retorna None:
         * Cuando no se puede crear
     """
     def createCheckout(self, purchase_id, amount, with_balance = False):
         if self.existPurchase(purchase_id):
             kwargs = {"purchase_id" : purchase_id, "amount" : amount, "with_balance" : with_balance}
-            self.session.add(Checkout(**kwargs))
+            newCheckout = Checkout(**kwargs)
+            self.session.add(newCheckout)
             try:
                 self.session.commit()
                 print("Se ha creado correctamente el pago")
-
                 self.afterInsertCheckout(purchase_id)
-                return True
+                return str(newCheckout.checkout_id)
             except Exception as e:
                 print("Error desconocido al intentar crear el pago", e)
                 m.session.rollback()
-                return False
+                return None
         else:
             print("No se puede crear el pago porque NO existe la compra")
-            return False
+            return None
+
+    """
+    Pseudo-Trigger para verificar que una compra fué cancelada y sumar el excedente al balance del usuario
+     - No retorna nada
+    """
+    def afterInsertCheckout(self, purchase_id):
+        checkout = self.session.query(func.sum(Checkout.amount)).filter_by(purchase_id=purchase_id).scalar()
+        total = self.session.query(Purchase.total).filter_by(purchase_id=purchase_id).scalar()
+
+        # Si la suma de los pagos es mayor al total de la compra
+        if  total <= checkout:
+            ci = self.session.query(Purchase.ci).filter_by(purchase_id=purchase_id).scalar()
+            balance = self.session.query(Client.balance).filter_by(ci = ci).scalar()
+
+            # Se marca la orden de compra como pagada
+            for i in range(10):
+                self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"payed" : True, "payed_date" : datetime.datetime.now()})
+                try:
+                    self.session.commit()
+                    print("Se ha actualizado la compra correctamente")
+                    break
+
+                except Exception as e:
+                    self.session.rollback()
+                    print("No se pudo actualizar la compra")
+
+            # Se le suma el exceso al balance del usuario
+            for i in range(10):
+                self.session.query(Client).filter_by(ci = ci).update({"balance" : balance+(checkout-total)})
+                try:
+                    self.session.commit()
+                    print("Se ha actualizado la compra correctamente")
+                    break
+
+                except Exception as e:
+                    self.session.rollback()
+                    print("No se pudo actualizar la compra")
 
 ###################################################################################################################################################################################
 ## PRUEBAS:
@@ -1012,9 +1034,9 @@ if __name__ == '__main__':
 
     m.createUser("tobi", "loveurin", "obito", "uchiha", "tobi@akatsuki.com", 3)
     m.createClient(777, "David", "Grohl", carnet="123456")
-    m.createPurchase(777, "tobi", 2000)
-    m.createCheckout("854fd3d6-0be5-4b28-b4ea-449e577b3644", 1000)
-    m.createCheckout("854fd3d6-0be5-4b28-b4ea-449e577b3644", 1200)
+    purchase = m.createPurchase(777, "tobi", 2000)
+    m.createCheckout(purchase, 1000)
+    m.createCheckout(purchase, 1200)
 
     """
     m.createService("ExtraLifes", 1)
