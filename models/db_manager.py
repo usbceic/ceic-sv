@@ -338,12 +338,60 @@ class dbManager(object):
             return False
 
     '''
-    Metodo para obtener TODOS los nombres de los proveedores existentes en la base de datos.
+    Metodo para obtener TODA la informacion de los proveedores existentes en la base de datos
+
+        -Retorna un queryset con TODOS los proveedores
+    '''
+    def getAllProviders(self):
+        return self.session.query(Provider).all()
+
+    '''
+    Metodo para obtener TODOS los nombres de los proveedores existentes en la base de datos en orden lexicografico.
         - Retorna un queryset con los nombres de todos los proveedores en orden lexicografico.
     '''
 
     def getAllProvidersByName(self):
         return self.session.query(Provider.provider_name).all().order_by(Provider.provider_name)
+
+    '''
+    Metodo para obtener TODOS los nombres de los proveedores existentes en la base de datos en orden de creación.
+        - Retorna un queryset con los nombres de todos los proveedores en orden de creacion.
+    '''
+
+    def getAllProvidersByCreationDate(self):
+        return self.session.query(Provider.provider_name).all().order_by(Provider.creation_date)
+
+    '''
+    Metodo para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden lexicografico.
+        - Retorna un queryset con los nombres de todos los proveedores en orden lexicografico.
+    '''
+
+    def getAllActiveProvidersByName(self):
+        return self.session.query(Provider.provider_name).filter(Provider.active == True).order_by(Provider.provider_name)
+
+    '''
+    Metodo para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden de creación.
+        - Retorna un queryset con los nombres de todos los proveedores en orden de creacion.
+    '''
+
+    def getAllActiveProvidersByCreationDate(self):
+        return self.session.query(Provider.provider_name).filter(Provider.active == True).order_by(Provider.creation_date)
+
+'''
+    Metodo para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden lexicografico.
+        - Retorna un queryset con los nombres de todos los proveedores en orden lexicografico.
+    '''
+
+    def getAllActiveProvidersByName(self):
+        return self.session.query(Provider.provider_name).filter(Provider.active == False).order_by(Provider.provider_name)
+
+    '''
+    Metodo para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden de creación.
+        - Retorna un queryset con los nombres de todos los proveedores en orden de creacion.
+    '''
+
+    def getAllActiveProvidersByCreationDate(self):
+        return self.session.query(Provider.provider_name).filter(Provider.active == False).order_by(Provider.creation_date)
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PRODUCTOS:

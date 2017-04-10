@@ -82,6 +82,7 @@ class Provider(this.Base):
     description     = Column(String)
     category        = Column(String)
     active         = Column(Boolean, nullable=False, default=True)
+    creation_date   = Column(DateTime, nullable=False, default=datetime.datetime.now)
 
     # Relaciones
     lot  = relationship("Lot")
