@@ -289,35 +289,6 @@ class Purchase(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de pagos de orden de compra
-#==================================================================================================================================================================================
-class Checkout(this.Base):
-    # Nombre
-    __tablename__ = 'checkout'
-
-    # Atributos
-    checkout_id  = Column(GUID, nullable=False, primary_key=True, default=GUID.random_value)
-    purchase_id  = Column(GUID, nullable=False, primary_key=True)
-    pay_date     = Column(DateTime, nullable=False, default=datetime.datetime.now)
-    amount       = Column(Numeric, nullable=False)
-    with_balance = Column(Boolean, nullable=False, default=False)
-
-    # Constraints
-    __table_args__ = (
-        # Verificaciones
-        CheckConstraint('amount > 0', name='exp_checkout_valid_amount'),
-
-        # Claves foraneas
-        ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
-    )
-
-    # Representación de una instancia de la clase
-    def __repr__(self):
-        kwargs = (str(self.checkout_id), str(self.purchase_id), str(self.pay_date), str(self.amount), str(self.with_balance))
-        template = "<Checkout(checkout_id='%s', purchase_id='%s', pay_date='%s', amount='%s', with_balance=='%s')>"
-        return  template % kwargs
-
-#==================================================================================================================================================================================
 # Tabla de lista de productos de orden de compra
 #==================================================================================================================================================================================
 class Product_list(this.Base):
@@ -375,6 +346,35 @@ class Service_list(this.Base):
     def __repr__(self):
         kwargs = (str(self.service_id), str(self.purchase_id), str(self.price), str(self.amount), str(self.payed))
         template = "<Service_list(service_id='%s', purchase_id='%s', price='%s', amount='%s', payed=='%s')>"
+        return  template % kwargs
+
+#==================================================================================================================================================================================
+# Tabla de pagos de orden de compra
+#==================================================================================================================================================================================
+class Checkout(this.Base):
+    # Nombre
+    __tablename__ = 'checkout'
+
+    # Atributos
+    checkout_id  = Column(GUID, nullable=False, primary_key=True, default=GUID.random_value)
+    purchase_id  = Column(GUID, nullable=False, primary_key=True)
+    pay_date     = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    amount       = Column(Numeric, nullable=False)
+    with_balance = Column(Boolean, nullable=False, default=False)
+
+    # Constraints
+    __table_args__ = (
+        # Verificaciones
+        CheckConstraint('amount > 0', name='exp_checkout_valid_amount'),
+
+        # Claves foraneas
+        ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
+    )
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (str(self.checkout_id), str(self.purchase_id), str(self.pay_date), str(self.amount), str(self.with_balance))
+        template = "<Checkout(checkout_id='%s', purchase_id='%s', pay_date='%s', amount='%s', with_balance=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================

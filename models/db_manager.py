@@ -874,15 +874,15 @@ class dbManager(object):
             return True
 
     """
-    Método para crear una compra nuevo
+    Método para crear una compra nueva
      - Retorna una cadena UUID:
         * Cuando la compra es creada satisfactoreamente
      - Retorna None:
         * Cuando no se puede crear
     """
-    def createPurchase(self, ci, clerk, total, debt = False):
+    def createPurchase(self, ci, clerk, debt = False):
         if self.existClient(ci) and self.existUser(clerk):
-            kwargs = {"ci" : ci, "clerk" : clerk, "total" : total, "debt" : debt}
+            kwargs = {"ci" : ci, "clerk" : clerk, "debt" : debt}
             newPurchase = Purchase(**kwargs)
             self.session.add(newPurchase)
             try:
@@ -897,6 +897,128 @@ class dbManager(object):
             print("No se puede crear la compra porque NO existe el cliente o el vendedor")
             return None
 
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE LISTAS DE PRODUCTOS:
+    #==============================================================================================================================================================================
+
+    """
+    Método para verificar que una lista de productos existe
+     - Retorna True:
+        * Cuando la lista de productos existe
+     - Retorna False:
+        * Cuando la lista de productos NO existe
+    """
+    def existProductList(self, product_id, purchase_id):
+        count = self.session.query(Product_list).filter_by(product_id=product_id, purchase_id=purchase_id).count()
+        if count == 0:
+            print("La lista de " + product_id + "asociada a la compra " + purchase_id + " NO existe")
+            return False
+        else:
+            print("La lista de " + product_id + "asociada a la compra " + purchase_id + " existe")
+            return True
+
+    """
+    Método para crear una lista de productos
+     - Retorna True:
+        * Cuando la lista de productos es creada satisfactoreamente
+     - Retorna False:
+        * Cuando no se puede crear
+    """
+    def createProductList(self, purchase_id, product_id, price, amount):
+        if self.existPurchase(purchase_id) and self.existProduct(product_id):
+            kwargs = {"purchase_id" : purchase_id, "product_id" : product_id, "price" : price, "amount" : amount}
+            self.session.add(Product_list(**kwargs))
+            try:
+                self.session.commit()
+                print("Se ha añadido correctamente la lista de productos a la compra")
+                self.afterInsertProductList(purchase_id, price*amount)
+                return True
+            except Exception as e:
+                print("Error desconocido al intentar añadir la lista de productos a la compra", e)
+                m.session.rollback()
+                return False
+        else:
+            print("No se puede añadir la lista de productos porque NO existe la compra o el producto")
+            return False
+
+    """
+    Pseudo-Trigger para agregar el costo de una lista de productos a la compra asociada
+     - No retorna nada
+    """
+    def afterInsertProductList(self, purchase_id, total_list):
+        total = self.session.query(Purchase.total).filter_by(purchase_id = purchase_id).scalar()
+        for i in range(10):
+            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"total" : total+total_list})
+            try:
+                self.session.commit()
+                print("Se ha actualizado la compra correctamente")
+                break
+
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar la compra")
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE LISTAS DE SERVICIOS:
+    #==============================================================================================================================================================================
+
+    """
+    Método para verificar que una lista de servicios existe
+     - Retorna True:
+        * Cuando la lista de servicios existe
+     - Retorna False:
+        * Cuando la lista de servicios NO existe
+    """
+    def existServiceList(self, service_id, purchase_id):
+        count = self.session.query(Service_list).filter_by(service_id=service_id, purchase_id=purchase_id).count()
+        if count == 0:
+            print("La lista de " + service_id + "asociada a la compra " + purchase_id + " NO existe")
+            return False
+        else:
+            print("La lista de " + service_id + "asociada a la compra " + purchase_id + " existe")
+            return True
+
+    """
+    Método para crear una lista de servicios
+     - Retorna True:
+        * Cuando la lista de servicios es creada satisfactoreamente
+     - Retorna False:
+        * Cuando no se puede crear
+    """
+    def createServiceList(self, purchase_id, service_id, price, amount):
+        if self.existPurchase(purchase_id) and self.existService(service_id):
+            kwargs = {"purchase_id" : purchase_id, "service_id" : service_id, "price" : price, "amount" : amount}
+            self.session.add(Service_list(**kwargs))
+            try:
+                self.session.commit()
+                print("Se ha añadido correctamente la lista de servicios a la compra")
+                self.afterInsertServiceList(purchase_id, price*amount)
+                return True
+            except Exception as e:
+                print("Error desconocido al intentar añadir la lista de servicios a la compra", e)
+                m.session.rollback()
+                return False
+        else:
+            print("No se puede añadir la lista de servicios porque NO existe la compra o el producto")
+            return False
+
+    """
+    Pseudo-Trigger para agregar el costo de una lista de servicios a la compra asociada
+     - No retorna nada
+    """
+    def afterInsertServiceList(self, purchase_id, total_list):
+        total = self.session.query(Purchase.total).filter_by(purchase_id = purchase_id).scalar()
+        for i in range(10):
+            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"total" : total+total_list})
+            try:
+                self.session.commit()
+                print("Se ha actualizado la compra correctamente")
+                break
+
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar la compra")
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PAGOS (CHECKOUT):
@@ -963,6 +1085,18 @@ class dbManager(object):
                 except Exception as e:
                     self.session.rollback()
                     print("No se pudo actualizar la compra")
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE TRANSFERENCIAS:
+    #==============================================================================================================================================================================
+
+    # Completar
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DEL LOG DE OPERACIONES:
+    #==============================================================================================================================================================================
+
+    # Completar
 
 ###################################################################################################################################################################################
 ## PRUEBAS:
@@ -1092,7 +1226,7 @@ if __name__ == '__main__':
     m.createLot("agua", "kabuto", "tobi", 20000, 42)
 
     #m.createClient(777, "David", "Grohl", carnet="123456")
-    #purchase = m.createPurchase(777, "tobi", 2000)
+    #purchase = m.createPurchase(777, "tobi")
     #m.createCheckout(purchase, 1000)
     #m.createCheckout(purchase, 1200)
 
