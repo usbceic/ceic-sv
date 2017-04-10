@@ -123,7 +123,6 @@ class adminGUI(QMainWindow, form_class):
             "price"          : True,
             "remaining"      : True,
             "remaining_lots" : True,
-            "description"    : True,
             "category"       : True,
             "active"         : True
         }
@@ -470,7 +469,7 @@ class adminGUI(QMainWindow, form_class):
         for i in range(len(itemsList)):
             table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][1]))) # Nombre
             table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][2]))) # Precio
-            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][6]))) # Categoria
+            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][5]))) # Categoria
             table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Cantidad
             table.setItem(i, 4, QTableWidgetItem(str(itemsList[i][4]))) # Lotes
 
@@ -810,11 +809,13 @@ class adminGUI(QMainWindow, form_class):
                 productName = self.lineE26.text()
                 if productName in self.productsNames:
                     product = self.productsInfo[self.productsNames.index(productName)]
-                    self.lineE27.setText(str(product[1])) # Precio
-                    self.lineE28.setText(product[2])      # Categoria
+                    print(product)
+                    self.currentProduct = str(product[0]) # Product ID
+                    self.lineE27.setText(str(product[2])) # Precio
+                    self.lineE28.setText(product[5])      # Categoria
                     self.lineE29.setText(str(product[4])) # Lotes
                     self.lineE30.setText(str(product[3])) # Disp. Total
-                    self.currentProduct = str(product[5])
+
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Configuración de botones de ventas

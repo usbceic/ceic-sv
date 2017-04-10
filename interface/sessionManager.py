@@ -88,7 +88,7 @@ class loginGUI(QMainWindow, loginWindow):
         self.splash = QSplashScreen(self.splash_img, Qt.WindowStaysOnTopHint)
 
         self.sessionOn = False
-        self.db = dbManager("sistema_ventas", "hola")
+        self.db = dbManager("sistema_ventas", "hola", parent=self)
         self.mail = emailManager(googleServer, "ceicsvoficial@gmail.com", "pizzabrownie")
 
         self.userDef = False

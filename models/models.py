@@ -107,7 +107,6 @@ class Product(this.Base):
     remaining      = Column(Integer, nullable=False, default=0)
     remaining_lots = Column(Integer, nullable=False, default=0)
     available      = Column(Boolean, nullable=False, default=False)
-    description    = Column(String)
     category       = Column(String)
     active         = Column(Boolean, nullable=False, default=True)
 
@@ -127,7 +126,7 @@ class Product(this.Base):
     # Representación de una instancia de la clase
     def __repr__(self):
         kwargs = (str(self.product_id), self.product_name, str(self.price), str(self.remaining), str(self.remaining_lots), str(self.available), self.description, self.category)
-        template = "<Product(product_id='%s', product_name='%s', price='%s', remaining='%s', remaining_lots=='%s', available=='%s', description=='%s', category=='%s')>"
+        template = "<Product(product_id='%s', product_name='%s', price='%s', remaining='%s', remaining_lots=='%s', available=='%s', category=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================

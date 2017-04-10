@@ -36,7 +36,7 @@ class dbManager(object):
     Método de creación de la clase
      - Inicia la sesión con la base de datos
     """
-    def __init__(self, name, password, debug=False, dropAll=False):
+    def __init__(self, name, password, debug=False, dropAll=False, parent=None):
         super(dbManager, self).__init__()
         self.session = startSession(name, password, debug, dropAll)
 
@@ -472,14 +472,13 @@ class dbManager(object):
     Método para obtener los atributos especificados de todos los productos que cumplan con el filtro especificado
      - Retorna un queryset con lós resultados de la búsqueda
     """
-    def getProducts(self, product_id=None, product_name=None, price=None, remaining=None, remaining_lots=None, description=None, category=None, available=None, active=None):
+    def getProducts(self, product_id=None, product_name=None, price=None, remaining=None, remaining_lots=None, category=None, available=None, active=None):
         columns = []
         if product_id != None: columns.append(Product.product_id)
         if product_name != None: columns.append(Product.product_name)
         if price != None: columns.append(Product.price)
         if remaining != None: columns.append(Product.remaining)
         if remaining_lots != None: columns.append(Product.remaining_lots)
-        if description != None: columns.append(Product.description)
         if category != None: columns.append(Product.category)
 
         filters = {}
@@ -496,12 +495,11 @@ class dbManager(object):
         * Cuando el producto no existe
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
-    def updateProduct(self, product_name, new_product_name=None, price=None, description=None, category=None):
+    def updateProduct(self, product_name, new_product_name=None, price=None, category=None):
         if self.existProduct(product_name):
             values = {}
             if new_product_name != None: values["product_name"] = new_product_name.lower().strip()
             if price != None: values["price"] = price
-            if description != None: values["description"] = description
             if category != None: values["category"] = category
             try:
                 self.session.query(Product).filter_by(product_name=product_name.lower().strip()).update(values)
