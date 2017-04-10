@@ -54,7 +54,6 @@ class User(this.Base):
     # Relaciones
     lot                  	= relationship("Lot")
     purchase_clerk       	= relationship("Purchase", foreign_keys="Purchase.clerk")
-    purchase_payed_to    	= relationship("Purchase", foreign_keys="Purchase.payed_to")
     reverse_product_list 	= relationship("Reverse_product_list")
     reverse_service_list 	= relationship("Reverse_service_list")
     transfer             	= relationship("Transfer")
@@ -260,25 +259,20 @@ class Purchase(this.Base):
     total         = Column(Numeric, nullable=False, default=0)
     interest      = Column(Numeric, nullable=False, default=0)
     purchase_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
-    locked        = Column(Boolean, nullable=False, default=False)
     debt          = Column(Boolean, nullable=False, default=False)
     payed         = Column(Boolean, nullable=False, default=False)
     payed_date    = Column(DateTime, default=None)
-    payed_to      = Column(String, default=None)
 
     # Constraints
     __table_args__ = (
         # Verificaciones
         CheckConstraint('total >= 0', name='exp_purchase_valid_total'),
         CheckConstraint('interest >= 0', name='exp_purchase_valid_interest'),
-        CheckConstraint('(payed AND locked) OR NOT payed', name='exp_purchase_valid_payed'),
         CheckConstraint('(payed AND payed_date IS NOT NULL) OR (NOT payed AND payed_date IS NULL)', name='exp_purchase_valid_payed_date'),
-        CheckConstraint('(payed AND payed_to IS NOT NULL) OR (NOT payed AND payed_to IS NULL)', name='exp_purchase_valid_payed_to'),
 
         # Claves foraneas
         ForeignKeyConstraint(['ci'], ['client.ci']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
-        ForeignKeyConstraint(['payed_to'], ['users.username']),
     )
 
     # Relaciones
@@ -287,10 +281,10 @@ class Purchase(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.purchase_id), str(self.ci), self.clerk, str(self.total), str(self.interest), str(self.purchase_date), str(self.locked),
-            str(self.debt), str(self.payed), str(self.payed_date), str(self.payed_to))
-        template = "<Purchase(purchase_id='%s', ci='%s', clerk='%s', total='%s', interest='%s', purchase_date=='%s', locked=='%s', debt=='%s', "
-        template += "payed=='%s', payed_date=='%s', payed_to=='%s')>"
+        kwargs = (str(self.purchase_id), str(self.ci), self.clerk, str(self.total), str(self.interest), str(self.purchase_date),
+            str(self.debt), str(self.payed), str(self.payed_date))
+        template = "<Purchase(purchase_id='%s', ci='%s', clerk='%s', total='%s', interest='%s', purchase_date=='%s', debt=='%s', "
+        template += "payed=='%s', payed_date=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================
@@ -306,8 +300,6 @@ class Checkout(this.Base):
     pay_date     = Column(DateTime, nullable=False, default=datetime.datetime.now)
     amount       = Column(Numeric, nullable=False)
     with_balance = Column(Boolean, nullable=False, default=False)
-    description  = Column(String, nullable=False)
-    payed        = Column(Boolean, nullable=False, default=False)
 
     # Constraints
     __table_args__ = (
@@ -320,8 +312,8 @@ class Checkout(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.checkout_id), str(self.purchase_id), str(self.pay_date), str(self.amount), str(self.with_balance), self.description, str(self.payed))
-        template = "<Checkout(checkout_id='%s', purchase_id='%s', pay_date='%s', amount='%s', with_balance=='%s', description=='%s', payed=='%s')>"
+        kwargs = (str(self.checkout_id), str(self.purchase_id), str(self.pay_date), str(self.amount), str(self.with_balance))
+        template = "<Checkout(checkout_id='%s', purchase_id='%s', pay_date='%s', amount='%s', with_balance=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================
@@ -336,15 +328,12 @@ class Product_list(this.Base):
     purchase_id = Column(GUID, nullable=False, primary_key=True)
     price       = Column(Numeric, nullable=False, default=0)
     amount      = Column(Integer, nullable=False)
-    locked      = Column(Boolean, nullable=False, default=False)
-    payed       = Column(Boolean, nullable=False, default=False)
 
     # Constraints
     __table_args__ = (
         # Verificaciones
         CheckConstraint('price > 0', name='exp_product_list_valid_price'),
         CheckConstraint('amount > 0', name='exp_product_list_valid_amount'),
-        CheckConstraint('(payed AND locked) OR NOT payed', name='exp_product_list_valid_payed'),
 
         # Claves foraneas
         ForeignKeyConstraint(['product_id'], ['product.product_id']),
@@ -353,8 +342,8 @@ class Product_list(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.product_id), str(self.purchase_id), str(self.price), str(self.amount), str(self.locked), str(self.payed))
-        template = "<Product_list(product_id='%s', purchase_id='%s', price='%s', amount='%s', locked=='%s', payed=='%s')>"
+        kwargs = (str(self.product_id), str(self.purchase_id), str(self.price), str(self.amount), str(self.payed))
+        template = "<Product_list(product_id='%s', purchase_id='%s', price='%s', amount='%s', payed=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================
@@ -369,15 +358,12 @@ class Service_list(this.Base):
     purchase_id = Column(GUID, nullable=False, primary_key=True)
     price       = Column(Numeric, nullable=False, default=0)
     amount      = Column(Integer, nullable=False)
-    locked      = Column(Boolean, nullable=False, default=False)
-    payed       = Column(Boolean, nullable=False, default=False)
 
     # Constraints
     __table_args__ = (
         # Verificaciones
         CheckConstraint('price > 0', name='exp_service_list_valid_price'),
         CheckConstraint('amount > 0', name='exp_service_list_valid_amount'),
-        CheckConstraint('(payed AND locked) OR NOT payed', name='exp_service_list_valid_payed'),
 
         # Claves foraneas
         ForeignKeyConstraint(['service_id'], ['service.service_id']),
@@ -386,8 +372,8 @@ class Service_list(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.service_id), str(self.purchase_id), str(self.price), str(self.amount), str(self.locked), str(self.payed))
-        template = "<Service_list(service_id='%s', purchase_id='%s', price='%s', amount='%s', locked=='%s', payed=='%s')>"
+        kwargs = (str(self.service_id), str(self.purchase_id), str(self.price), str(self.amount), str(self.payed))
+        template = "<Service_list(service_id='%s', purchase_id='%s', price='%s', amount='%s', payed=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================

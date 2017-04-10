@@ -19,35 +19,9 @@
 ###################################################################################################################################################################################
 
 from models import *
-from session import startSession
-from sqlalchemy import func, distinct, and_, update
+from session import *
+from sqlalchemy import func, distinct, update, event
 from passlib.hash import bcrypt
-
-###################################################################################################################################################################################
-## Constantes:
-###################################################################################################################################################################################
-
-userTable               = "users"                 # Tabla de usuarios
-providerTable           = "provider"              # Tabla de proveedores
-productTable            = "product"               # Tabla de productos
-lotTable                = "lot"                   # Tabla de lotes
-serviceTable            = "service"               # Tabla de servicios
-clientTable             = "client"                # Tabla de clientes
-purchaseTable           = "purchase"              # Tabla de compras
-checkoutTable           = "checkout"              # Tabla de pagos de orden de compra
-productListTable        = "product_list"          # Tabla de lista de productos de orden de compra
-serviceListTable        = "service_list"          # Tabla de lista de servicios de orden de compra
-reverseProductListTable = "reverse_product_list"  # Tabla de lista de productos de orden de compra
-reverseServiceListTable = "reverse_service_list"  # Tabla de reversar lista de servicios de orden de compra
-transferTable           = "transfer"              # Tabla de transferencias
-operationLogTable       = "operation_log"         # Tabla de registro de operaciones de caja
-languageTable           = "valid_language"        # Tabla de lenguajes validos
-bookTable               = "book"                  # Tabla de libros
-subjectTable            = "subject"               # Tabla de asignaturas
-authorTable             = "author"                # Tabla de autores
-associatedWithTable     = "associated_with"       # Tabla que asocia libros con asignaturas
-writtenByTable          = "written_by"            # Tabla que asocia libros con autores
-lenToTable              = "lent_to"               # Tabla de préstamos de libros
 
 ###################################################################################################################################################################################
 ## DECLARACIÓN DEL MANEJADOR:
@@ -513,17 +487,17 @@ class dbManager(object):
     """
     Método para verificar que un lote existe.
      - Retorna True:
-        * Cuando el producto existe
+        * Cuando el lote existe
      - Retorna False:
-        * Cuando el producto NO existe
+        * Cuando el lote NO existe
     """
     def existLot(self, lot_id, available=True):
         count = self.session.query(Lot).filter_by(lot_id=lot_id, available=available).count()
         if count == 0:
-            print("El loto " + lot_id + " NO existe")
+            print("El lote " + lot_id + " NO existe")
             return False
         else:
-            print("El loto " + lot_id + " existe")
+            print("El lote " + lot_id + " existe")
             return True
 
     """
@@ -826,8 +800,24 @@ class dbManager(object):
         return self.updateClient(ci, last_seen=datetime.datetime.now())
 
     #==============================================================================================================================================================================
-    # MÉTODOS PARA EL CONTROL DE COMPRAS (PURCHASE):
+    # MÉTODOS PARA EL CONTROL DE ORDENES DE COMPRAS (PURCHASE):
     #==============================================================================================================================================================================
+
+    """
+    Método para verificar que una compra existe.
+     - Retorna True:
+        * Cuando la compra existe
+     - Retorna False:
+        * Cuando la compra NO existe
+    """
+    def existPurchase(self, purchase_id, payed = False):
+        count = self.session.query(Purchase).filter_by(purchase_id=purchase_id, payed=payed).count()
+        if count == 0:
+            print("La compra " + purchase_id + " NO existe")
+            return False
+        else:
+            print("La compra " + purchase_id + " existe")
+            return True
 
     """
     Método para crear una compra nuevo
@@ -836,11 +826,9 @@ class dbManager(object):
      - Retorna False:
         * Cuando no se puede crear
     """
-    def createPurchase(self, ci, clerk, total, payed_to = None):
+    def createPurchase(self, ci, clerk, total, debt = False):
         if self.existClient(ci) and self.existUser(clerk):
-            kwargs = {"ci" : ci, "clerk" : clerk, "total" : total}
-            if payed_to != None and existUser(payed_to): kwargs.update({"locked" : True, "payed" : True, "payed_to" : payed_to, "payed_date" : datetime.datetime.now()})
-            else: kwargs.update({"debt" : True})
+            kwargs = {"ci" : ci, "clerk" : clerk, "total" : total, "debt" : debt}
             self.session.add(Purchase(**kwargs))
             try:
                 self.session.commit()
@@ -852,6 +840,52 @@ class dbManager(object):
                 return False
         else:
             print("No se puede crear la compra porque NO existe el cliente o el vendedor")
+            return False
+
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE PAGOS (CHECKOUT):
+    #==============================================================================================================================================================================
+
+    def afterInsertCheckout(self, purchase_id):
+        checkout = self.session.query(func.sum(Checkout.amount)).filter_by(purchase_id=purchase_id).scalar()
+        total = self.session.query(Purchase.total).filter_by(purchase_id=purchase_id).scalar()
+        if  total <= checkout:
+            ci = self.session.query(Purchase.ci).filter_by(purchase_id=purchase_id).scalar()
+            balance = self.session.query(Client.balance).filter_by(ci = ci).scalar()
+            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"payed" : True, "payed_date" : datetime.datetime.now()})
+            self.session.query(Client).filter_by(ci = ci).update({"balance" : balance+(checkout-total)})
+            try:
+                self.session.commit()
+                print("Se ha actualizado la compra correctamente")
+
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar la compra")
+
+    """
+    Método para crear un pago nuevo
+     - Retorna True:
+        * Cuando el pago es creado satisfactoreamente
+     - Retorna False:
+        * Cuando no se puede crear
+    """
+    def createCheckout(self, purchase_id, amount, with_balance = False):
+        if self.existPurchase(purchase_id):
+            kwargs = {"purchase_id" : purchase_id, "amount" : amount, "with_balance" : with_balance}
+            self.session.add(Checkout(**kwargs))
+            try:
+                self.session.commit()
+                print("Se ha creado correctamente el pago")
+
+                self.afterInsertCheckout(purchase_id)
+                return True
+            except Exception as e:
+                print("Error desconocido al intentar crear el pago", e)
+                m.session.rollback()
+                return False
+        else:
+            print("No se puede crear el pago porque NO existe la compra")
             return False
 
 ###################################################################################################################################################################################
@@ -976,6 +1010,12 @@ if __name__ == '__main__':
 
     print(m.getProducts(product_name=True, product_id=True, active=True))
 
+    m.createUser("tobi", "loveurin", "obito", "uchiha", "tobi@akatsuki.com", 3)
+    m.createClient(777, "David", "Grohl", carnet="123456")
+    m.createPurchase(777, "tobi", 2000)
+    m.createCheckout("854fd3d6-0be5-4b28-b4ea-449e577b3644", 1000)
+    m.createCheckout("854fd3d6-0be5-4b28-b4ea-449e577b3644", 1200)
+
     """
     m.createService("ExtraLifes", 1)
     print(m.getService(service_name="ExtraLifes"))
@@ -988,3 +1028,15 @@ if __name__ == '__main__':
     print(m.getService(price_lower_bound=0, price_upper_bound=1))
     """
 
+    """
+    Ejemplo de los eventos inutiles de sqlalchemy
+    def afterInsertCheckout(mapper, connection, target):
+        print(target)
+        print(connection)
+        print(mapper)
+
+        s = scoped_session(sessionmaker(bind=connection))
+        print(s.query(User).all())
+
+    event.listen(Checkout, 'after_insert', afterInsertCheckout)
+    """
