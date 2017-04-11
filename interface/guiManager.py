@@ -876,11 +876,11 @@ class adminGUI(QMainWindow, form_class):
         if self.click():
             if self.lineE53.text() != "" and self.lineE54.text() != "" and self.lineE55.text() != "":
                 kwargs = {
-                    "ci"        : self.lineE53.text(),
-                    "firstname" : self.lineE54.text(),
-                    "lastname"  : self.lineE55.text(),
-                    "phone"     : self.textE56.text(),
-                    "email"     : self.textE57.text()
+                    "ci"        : self.lineE52.text(),
+                    "firstname" : self.lineE53.text(),
+                    "lastname"  : self.lineE54.text(),
+                    "phone"     : self.lineE55.text(),
+                    "email"     : self.lineE56.text()
                 }
                 self.db.createClient(**kwargs)
 
