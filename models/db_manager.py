@@ -359,6 +359,51 @@ class dbManager(object):
             return False
 
     '''
+    Metodo para actualizar la información de un proveedor.
+        -Retorna True si la actualización de datos fue hecha con exito.
+        -Retorna False si ocurrió un error durante la actualización de datos. 
+    '''
+
+    def updateProviderInfo(self,oldName,newName=None,phone=None,email=None,pay_information=None,description=None,active=None,creation_date=None):
+        kwargs = {}
+        if newName is not None:
+            kwargs['provider_name'] = newName
+
+        if phone is not None:
+            kwargs['phone'] = phone
+
+        if email is not None:
+            kwargs['email'] = email
+
+        if pay_information is not None:
+            kwargs['pay_information'] = pay_information
+
+        if description is not None:
+            kwargs['description'] = description
+
+        if active is not None:
+            kwargs['active'] = active
+
+        if creation_date is not None:
+            kwargs['creation_date'] = creation_date
+
+        try:
+                self.session.query(Provider).filter_by(provider_name=oldName).update(kwargs)
+                self.session.commit()
+                if newName is not None:
+                    name = newName
+                else:
+                    name = oldName
+                print("Se ha actualizado la información del proveedor " + name + " satisfactoriamente")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar actualizar la información del usuario " + oldName, e)
+                self.session.rollback()
+                return False
+        return False
+
+
+    '''
     Metodo para obtener TODA la informacion de los proveedores existentes en la base de datos
 
         -Retorna un queryset con TODOS los proveedores
@@ -399,7 +444,7 @@ class dbManager(object):
         return self.session.query(Provider.provider_name).filter(Provider.active == True).order_by(Provider.creation_date)
 
     '''
-    Metodo para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden lexicografico.
+    Metodo para obtener TODOS los nombres de los proveedores NO ACTIVOS en la base de datos en orden lexicografico.
         - Retorna un queryset con los nombres de todos los proveedores en orden lexicografico.
     '''
 
@@ -407,7 +452,7 @@ class dbManager(object):
         return self.session.query(Provider.provider_name).filter(Provider.active == False).order_by(Provider.provider_name)
 
     '''
-    Metodo para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden de creación.
+    Metodo para obtener TODOS los nombres de los proveedores NO ACTIVOS en la base de datos en orden de creación.
         - Retorna un queryset con los nombres de todos los proveedores en orden de creacion.
     '''
 
