@@ -151,6 +151,13 @@ class adminGUI(QMainWindow, form_class):
         self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
                         self.table8, self.table9, self.table10, self.table11]
 
+        # Apartado de producto seleccionado en ventas
+        self.selectedProductLE0 = [self.lineE24, self.lineE25]
+        self.selectedProductLE1 = [self.lineE23, self.lineE24, self.lineE25]
+
+        # Apartado de cliente en ventas
+        self.salesClientLE = [self.lineE18, self.lineE19, self.lineE20]
+
         # SpinLines
         self.spinBox = [self.spinLine0]
 
@@ -167,7 +174,9 @@ class adminGUI(QMainWindow, form_class):
         self.currentProduct = None  # Instancia de producto en uso
         self.tempImage = ""         # Imagen seleccionada
 
-        self.tmpProductRemaining = 0
+        self.selectedProductRemaining = {}
+        self.selectedProductName = ""
+        self.selectedProducts = {}
 
         # Aplicar configuraciones generales de la interfaz
         self.generalSetup()
@@ -237,7 +246,7 @@ class adminGUI(QMainWindow, form_class):
         if self.click(): self.setStyleSheet(getStyle(name))
 
     # Configurar los placeholder de todos los Line Edit
-    def setupLE(self):
+    def setupPlaceholders(self):
         self.lineE0.setPlaceholderText("Balance")
         self.lineE1.setPlaceholderText("Efectivo")
         self.lineE2.setPlaceholderText("Transferencias")
@@ -421,12 +430,16 @@ class adminGUI(QMainWindow, form_class):
             lineE.setCompleter(LEcompleter)
 
     # Método para configurar un spinLine
-    def setupSpinLine(self, listSL):
+    def setupSpinLines(self, listSL):
         for spinL in listSL: spinL.setValidator(QIntValidator(0, 9999999))
 
-    # Método para configurar un spinLine
-    def clearSpinLine(self, listSL):
+    # Método para setear en 0 una lista spinLine
+    def clearSpinLines(self, listSL):
         for spinL in listSL: spinL.setText("0")
+
+    # Método para setear en 0 un spinLine
+    def clearSpinLine(self, spinL):
+        spinL.setText("0")
 
     # Obtener una lista con los nombres de todos los productos
     def getProductList(self, params, mode = 0):
@@ -445,8 +458,12 @@ class adminGUI(QMainWindow, form_class):
         else:
             return sorted(productsList, key = lambda product: product[1])
 
-    # Borrar contenido de uno o más LineEdit:
-    def clearLE(self, listLE):
+    # Borrar contenido de un LineEdit:
+    def clearLE(self, lineE):
+        lineE.setText("")
+
+    # Borrar contenido de una lista de LineEdit:
+    def clearLEs(self, listLE):
         for lineE in listLE: lineE.setText("")
 
     # Marcar en solo lectura uno o más LineEdit:
@@ -459,13 +476,28 @@ class adminGUI(QMainWindow, form_class):
         self.ReadOnlyLE(listaLE0, boolean)
         self.ReadOnlyLE(listaLE1, not(boolean))
 
+    # Aplicar configuración general de redimiensionamiento a una tabla
+    def setupTable(self, table):
+        table.horizontalHeader().setResizeMode(0, QHeaderView.Stretch)
+
+    # Aplicar configuración general de redimiensionamiento a una lista de tablas
     def setupTables(self):
         for table in self.tables:
-            table.horizontalHeader().setResizeMode(0, QHeaderView.Stretch)
+            self.setupTable(table)
 
-    # Método para refrescar la tabla de canciones en la ventana
-    def updateTable(self, table, itemsList):
+    # Vaciar el contenido de cada tabla especificada en la lista "tables"
+    def clearTables(self, tables):
+        for i in range(len(tables)):
+            for i in reversed(range(table.rowCount())):
+                table.removeRow(i)
+
+    # Vaciar el contenido de una tabla
+    def clearTable(self, table):
         for i in reversed(range(table.rowCount())): table.removeRow(i)
+
+    # Método para refrescar la tabla de productos en el inventario
+    def updateProductTable(self, table, itemsList):
+        self.clearTable(table)
 
         table.setRowCount(len(itemsList))
         for i in range(len(itemsList)):
@@ -476,6 +508,22 @@ class adminGUI(QMainWindow, form_class):
             table.setItem(i, 4, QTableWidgetItem(str(itemsList[i][4]))) # Lotes
 
         self.elem_actual = 0
+        if len(itemsList) > 0: table.selectRow(self.elem_actual)
+
+        table.resizeColumnsToContents()
+
+    # Método para refrescar la tabla de factura en ventas
+    def updateInvoiceTable(self, table, itemsList):
+        self.clearTable(table)
+
+        table.setRowCount(len(itemsList))
+        for i in range(len(itemsList)):
+            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][0]))) # Nombre
+            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][1]))) # Precio
+            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][2]))) # Cantidad
+            table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Subtotal
+
+        self.elem_actual = len(itemsList)-1
         if len(itemsList) > 0: table.selectRow(self.elem_actual)
 
         table.resizeColumnsToContents()
@@ -496,25 +544,25 @@ class adminGUI(QMainWindow, form_class):
         self.setupSearchBar(self.ciSearch, clientList, True)
 
         # Limpiar los spinLine
-        self.clearSpinLine(self.spinBox)
+        self.clearSpinLines(self.spinBox)
 
         # Configuración de las barras de búsqueda por nombre de producto
         self.setupSearchBar(self.productSearch, self.productsNames)
 
         # Setup de las distintas tablas
-        self.updateTable(self.table0, self.productsInfoAvailable)
-        self.updateTable(self.table1, self.productsInfoNotAvailable)
-        self.updateTable(self.table2, self.productsInfo)
+        self.updateProductTable(self.table0, self.productsInfoAvailable)
+        self.updateProductTable(self.table1, self.productsInfoNotAvailable)
+        self.updateProductTable(self.table2, self.productsInfo)
 
         # Configurar tablas
         self.setupTables()
 
         # Limpiar campos
-        self.clearLE(self.ciSearch)
-        self.clearLE(self.productSearch)
-        self.clearLE(self.productsRO0)
-        self.clearLE(self.lotsRO0)
-        self.clearLE(self.providersLE0)
+        self.clearLEs(self.ciSearch)
+        self.clearLEs(self.productSearch)
+        self.clearLEs(self.productsRO0)
+        self.clearLEs(self.lotsRO0)
+        self.clearLEs(self.providersLE0)
 
     def generalSetup(self):
         # Centrar posición de la ventana
@@ -524,11 +572,11 @@ class adminGUI(QMainWindow, form_class):
         self.setSize()
 
         # Configurar los spin box
-        self.setupSpinLine(self.spinBox)
+        self.setupSpinLines(self.spinBox)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
 
-        #self.setupLE()
+        #self.setupPlaceholders()
 
     #==============================================================================================================================================================================
     # Métodos para la configuración de los botones para cambio de página de los stacked:
@@ -667,49 +715,49 @@ class adminGUI(QMainWindow, form_class):
     # Radio button para agregar nuevos productos
     def on_rbutton5_pressed(self):
         if self.click():
-            self.clearLE(self.productsRO0)
+            self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
 
     # Radio button para consultar productos
     def on_rbutton6_pressed(self):
         if self.click():
-            self.clearLE(self.productsRO0)
+            self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1)
 
     # Radio button para editar productos
     def on_rbutton7_pressed(self):
         if self.click():
-            self.clearLE(self.productsRO0)
+            self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
 
     # Radio button para eliminar productos
     def on_rbutton8_pressed(self):
         if self.click():
-            self.clearLE(self.productsRO0)
+            self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1)
 
     # Radio button para agregar nuevos lotes
     def on_rbutton9_pressed(self):
         if self.click():
-            self.clearLE(self.lotsRO0)
+            self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO2, False, self.lotsRO3)
 
     # Radio button para consultar lotes
     def on_rbutton10_pressed(self):
         if self.click():
-            self.clearLE(self.lotsRO0)
+            self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
 
     # Radio button para editar lotes
     def on_rbutton11_pressed(self):
         if self.click():
-            self.clearLE(self.lotsRO0)
+            self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO0, False)
 
     # Radio button para eliminar lotes
     def on_rbutton12_pressed(self):
         if self.click():
-            self.clearLE(self.lotsRO0)
+            self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
 
     # Boton "Aceptar" en el apartado de productos
@@ -837,8 +885,9 @@ class adminGUI(QMainWindow, form_class):
     def on_add0_pressed(self):
         if self.click():
             count = int(self.spinLine0.text())
-            if count < self.tmpProductRemaining:
+            if count < self.selectedProductRemaining[self.selectedProductName]:
                 self.spinLine0.setText(str(count+1))
+                self.lineE25.setText(str(((count+1)*float(self.lineE24.text()))))
 
     # Botón para restar al spinLine
     def on_substract0_pressed(self):
@@ -846,6 +895,7 @@ class adminGUI(QMainWindow, form_class):
             count = int(self.spinLine0.text())
             if count > 0:
                 self.spinLine0.setText(str(count-1))
+                self.lineE25.setText(str(((count-1)*float(self.lineE24.text()))))
 
     # Botón para efectuar venta
     def on_pbutton7_pressed(self):
@@ -864,15 +914,60 @@ class adminGUI(QMainWindow, form_class):
                 self.lineE19.setText(client.lastname)     # Establecer Apellido
                 self.lineE20.setText(str(client.balance)) # Establecer Saldo
 
-    # LineEdit para ingresar la cédula del cliente
+            else:
+                self.clearLEs(self.salesClientLE) # Limpiar lineEdits del apartado
+
+    # LineEdit para ingresar el nombre del producto seleccionado
     def on_lineE23_textChanged(self):
         if self.textChanged():
             name = self.lineE23.text()
             if self.db.existProduct(name):
-                product = self.db.getProductByNameOrID(name)[0] # Obtener cliente
-                self.lineE24.setText(str(product.price))        # Establecer Nombre
-                self.tmpProductRemaining = product.remaining
+                product = self.db.getProductByNameOrID(name)[0]                         # Obtener cliente
+                self.lineE24.setText(str(product.price))                                # Establecer Nombre
+                self.selectedProductName = name
+
+                if name not in self.selectedProducts:
+                    self.selectedProductRemaining[name] = product.remaining
+
                 # cargar imagen
+            else:
+                self.clearLEs(self.selectedProductLE0)
+                self.clearSpinLine(self.spinLine0)
+
+    # Botón para efectuar venta
+    def on_pbutton9_pressed(self):
+        if self.click():
+            name = self.lineE23.text()
+            if self.db.existProduct(name):
+
+                # Cargar información
+                product = self.db.getProductByNameOrID(name)[0]                     # Obtener cliente
+                price = str(product.price)                                          # Obtener precio
+                cantidad = self.spinLine0.text()                                    # Obtener cantidad
+                subtotal = float(price)*int(cantidad)                               # Obtener subtotal
+
+                if name not in self.selectedProducts:
+                    self.selectedProducts[name] = [price, cantidad, subtotal]           # Añadir a la lista de productos seleccionados
+                    self.selectedProductRemaining[name] = product.remaining-int(cantidad) # Resetear la cota superior del contador
+
+                else:
+                    temp = self.selectedProducts[name]
+                    temp[1] = str(int(temp[1])+int(cantidad))
+                    temp[2] = str(float(temp[2])+float(subtotal))
+                    self.selectedProducts[name] = temp
+                    self.selectedProductRemaining[name] = product.remaining-int(temp[1]) # Resetear la cota superior del contador
+
+                selectedList = []
+                for key, value in self.selectedProducts.items():
+                    selectedList.append([key, value[0], value[1], value[2]])
+
+                self.updateInvoiceTable(self.table11, selectedList)                   # Actualizar la factura
+                self.setupTable(self.table11)                                         # Reconfigurar la tabla de factura
+
+
+                self.clearLEs(self.selectedProductLE1)                               # Limpiar los lineEdit de este apartado
+                self.clearSpinLine(self.spinLine0)                                  # Setear en 0 el lineEdit del contador
+                # limpiar Imagen                                                    # Cargar imagen por defecto
 
     #==============================================================================================================================================================================
     # Configuración de botones de proveedores
@@ -891,7 +986,7 @@ class adminGUI(QMainWindow, form_class):
                 }
                 self.db.createProvider(**kwargs)
 
-                self.clearLE(self.providersLE0) # Limpiar formulario
+                self.clearLEs(self.providersLE0) # Limpiar formulario
                                                 # Actualizar tabla
                 self.lineE146.setFocus()        # Enfocar
 
@@ -912,7 +1007,7 @@ class adminGUI(QMainWindow, form_class):
                 }
                 self.db.createClient(**kwargs)
 
-                self.clearLE(self.clientsLE1) # Limpiar formulario
+                self.clearLEs(self.clientsLE1) # Limpiar formulario
                                               # Actualizar tabla
                 self.lineE53.setFocus()       # Enfocar
 
