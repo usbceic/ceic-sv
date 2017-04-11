@@ -42,8 +42,6 @@ class dbManager(object):
         super(dbManager, self).__init__()
         self.session = startSession(name, password, debug, dropAll)
 
-        self.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
-
     """
     Método de destrucción de la clase
      - Cierra la sesión con la base de datos
@@ -57,15 +55,26 @@ class dbManager(object):
 
     """
     Método para hacer backup a la Base de Datos
+    Devuelve True si logro hacer backup. 
+    En caso de encontrar que el ultimo backup esta corrupto, devuelve False
     """
     def backup(self):
-        DBBackup().backup()
+        return DBBackup().backup()
 
     """
     Método para hacer restore a la Base de Datos
+    Retorna True si logro hacer restore, False en caso contrario
     """
     def restore(self):
-        DBBackup().restore()
+        return DBBackup().restore()
+
+    """
+    Método para borrar el último backup
+    Retorna True si la carpeta no existe o  si fue borrada con éxito.
+    False en caso contrario.
+    """
+    def deleteLastBackup(self):
+        return DBBackup().deleteLastBackup()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE USUARIOS:
@@ -1271,8 +1280,13 @@ class dbManager(object):
 
 # Prueba
 if __name__ == '__main__':
-    m = dbManager("sistema_ventas", "hola", dropAll=True)
+    m = dbManager("sistema_ventas", "hola")
+    m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
+
+    """
     m.restore()
+    m.deleteLastBackup()
+    """
 
     """
     Insert Example
@@ -1287,14 +1301,14 @@ if __name__ == '__main__':
     for i in query: print(i)
     """
 
-    
+    """
     l = Valid_language(lang_name="ES")
     m.session.add(l)
     try:
         m.session.commit()
     except Exception as e:
         print("Excepcion de Lenguaje:", e)
-        self.session.rollback()
+        m.session.rollback()
 
     try:
         b = m.session.query(Book).filter_by(title="Prueba", lang=l.lang_name).one()
@@ -1311,7 +1325,7 @@ if __name__ == '__main__':
         m.session.commit()
     except Exception as e:
         print("Excepcion de Materia:", e)
-        self.session.rollback()
+        m.session.rollback()
         s = m.session.query(Subject).filter_by(subject_code="CI123").one()
 
     print("Soy b", b)
@@ -1320,10 +1334,10 @@ if __name__ == '__main__':
     print("-----------------------------------")
     for book in s.books:
         print(book)
-
-    for subjects in b.subjects:
-        print(subjects)
-
+            
+                for subjects in b.subjects:
+                    print(subjects)
+    """
     """Pruebas de los métodos para usuarios"""
 
     """
@@ -1423,4 +1437,4 @@ if __name__ == '__main__':
     event.listen(Checkout, 'after_insert', afterInsertCheckout)
     """
 
-    m.backup()
+    #m.backup()
