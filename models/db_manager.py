@@ -20,6 +20,8 @@
 
 from models import *
 from session import *
+
+from db_backup import *
 from sqlalchemy import func, distinct, update, event
 from passlib.hash import bcrypt
 
@@ -52,6 +54,12 @@ class dbManager(object):
             print("Se ha cerrado correctamente la base de datos")
         except:
             print("La base de datos ya está cerrada")
+
+    """
+    Método para hacer backup a la Base de Datos
+    """
+    def backup(self):
+        DBBackup(self.session).backup()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE USUARIOS:
@@ -1376,7 +1384,7 @@ if __name__ == '__main__':
     m.createProvider("kabuto", "xD")
     m.createLot("agua", "kabuto", "tobi", 20000, 42)
 
-    m.createClient(777, "David", "Grohl", carnet="123456")
+    m.createClient(777, "David", "Grohl")
     purchase = m.createPurchase(777, "tobi")
     m.createProductList(purchase, "agua", 1100, 2)
     m.createCheckout(purchase, 1000)
@@ -1406,3 +1414,5 @@ if __name__ == '__main__':
 
     event.listen(Checkout, 'after_insert', afterInsertCheckout)
     """
+
+    m.backup()
