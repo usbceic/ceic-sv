@@ -1,24 +1,22 @@
 # -*- encoding: utf-8 -*-
 
-####################################################################################################################################
+###################################################################################################################################################################################
 ## DESCRIPCIÓN:
-####################################################################################################################################
+###################################################################################################################################################################################
 
 # Modúlo con la implementación de la clase encargada de la interfaz gráfica.
 
-####################################################################################################################################
+###################################################################################################################################################################################
 ## AUTORES:
-####################################################################################################################################
+###################################################################################################################################################################################
 
 # Carlos Serrada, cserradag96@gmail.com
 # Christian Oliveros, 01christianol01@gmail.com
-# José Acevedo, joseluisacevedo1995@gmail.com
-# David Cabeza, cabezadavide@gmail.com
 # Pablo Betancourt, pablodbc30@gmail.com
 
-####################################################################################################################################
+###################################################################################################################################################################################
 ## MODÚLOS:
-####################################################################################################################################
+###################################################################################################################################################################################
 
 # Importación de la función para obtener el path actual
 from os import getcwd
@@ -36,15 +34,14 @@ from PyQt4.uic import loadUiType
 from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
 
 # Módulo con estructuras de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, \
-QFileDialog, QIcon
+from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon
 
 # Módulo manejador de la base de datos
 from db_manager import dbManager
 
-####################################################################################################################################
+###################################################################################################################################################################################
 ## CONSTANTES:
-####################################################################################################################################
+###################################################################################################################################################################################
 
 # Paths
 UIpath = join(getcwd(), "interface/qt/ui/")
@@ -64,9 +61,9 @@ form_class = loadUiType(UIpath+MainUI)[0]
 # Constante de primer inicio
 A = True
 
-####################################################################################################################################
+###################################################################################################################################################################################
 ## PROCEDIMIENTOS:
-####################################################################################################################################
+###################################################################################################################################################################################
 
 # Devuelve un string con el stylesheet especificado por el parametro name
 def getStyle(name):
@@ -75,48 +72,45 @@ def getStyle(name):
     file.close()
     return style
 
-####################################################################################################################################
+###################################################################################################################################################################################
 # VARIABLES:
-####################################################################################################################################
+###################################################################################################################################################################################
 
 # Ejemplo de lista de cédulas de clientes
 clientList = ["513264", "28436485", "32564336", "105746567", "280765423", "670124583"]
 
-####################################################################################################################################
+###################################################################################################################################################################################
 ## MANEJADOR DE LA INTERFAZ GRÁFICA:
-####################################################################################################################################
+###################################################################################################################################################################################
 
+# Manejador de la interfaz del administrador
 class adminGUI(QMainWindow, form_class):
-    closed = pyqtSignal()
-    #-------------------------------------------------------------------------------------------------------------------------------
+    closed = pyqtSignal() # Señal para saber si se cerró la ventana
+
+    #==============================================================================================================================================================================
     # Constructor de la clase
-    #-------------------------------------------------------------------------------------------------------------------------------
-
+    #==============================================================================================================================================================================
     def __init__(self, user, database, parent=None):
-        #---------------------------------------------------------------------------------------------------------------------------
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # Iniciar y configurar la interfaz y la base de datos
-        #---------------------------------------------------------------------------------------------------------------------------
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        # Interfaz
-        super(adminGUI, self).__init__(parent)
-        self.setupUi(self)
+        super(adminGUI, self).__init__(parent)  # Construcción de la instancia
+        self.setupUi(self)                      # Configuración de la plantilla
+        self.user = user                        # Asignación del usuario que ejecuta la sesión
+        self.db = database                      # Asignación del manejador de la base de datos
 
-        # Usuario del programa
-        self.user = user
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # Constantes para fácilitar el uso de varios métodos de la clase
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        # Manejador de la base de datos
-        self.db = database
-
-        #---------------------------------------------------------------------------------------------------------------------------
-        # Listas necesarias para algunos métodos útiles
-        #---------------------------------------------------------------------------------------------------------------------------
-
-        # Parametros para buscar en la tabla de productos
+        # Parametros para buscar con la función getProducts el nombre de los productos activos
         self.productsParams0 = {
             "product_name" : True,
             "active"       : True
         }
 
+        # Parametros para buscar con la función getProducts la información necesaria para mostrar un producto en el inventario
         self.productsParams1 = {
             "product_id"     : True,
             "product_name"   : True,
@@ -160,20 +154,18 @@ class adminGUI(QMainWindow, form_class):
         # SpinLines
         self.spinBox = [self.spinLine0]
 
-        #---------------------------------------------------------------------------------------------------------------------------
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # Cargar configuraciones iniciales
-        #---------------------------------------------------------------------------------------------------------------------------
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Se connectan los botones entre otras cosas con algunos de los métodos definidos a continuación
         QMetaObject.connectSlotsByName(self)
 
-        # Variables de control
+        # Asignación de valores por defecto a las variables de control
         self.clicked = False        # QPushbutton presionado
         self.writing = False        # Texto de un QLineEdit cambiado
         self.currentProduct = None  # Instancia de producto en uso
-
-        # Variables para almacenar data temporal
-        self.tempImage = ""
+        self.tempImage = ""         # Imagen seleccionada
 
         # Aplicar configuraciones generales de la interfaz
         self.generalSetup()
@@ -185,9 +177,9 @@ class adminGUI(QMainWindow, form_class):
         self.MainStacked.setCurrentIndex(0)
         self.MainTitle.setText("Caja")
 
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Configuraciones básicas de la ventana
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
+    # Métodos para configuraciones básicas de la ventana
+    #==============================================================================================================================================================================
 
     # Centrar la ventana
     def center(self):
@@ -202,9 +194,9 @@ class adminGUI(QMainWindow, form_class):
         self.setFixedSize(self.width(), self.height())
         #self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
 
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Procedimientos de la clase (Métodos)
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
+    # Métodos para realizar procedimientos generales en la interfaz
+    #==============================================================================================================================================================================
 
     # Definición de click sobre un QPushButton
     def click(self):
@@ -242,8 +234,8 @@ class adminGUI(QMainWindow, form_class):
     def setStyle(self, name):
         if self.click(): self.setStyleSheet(getStyle(name))
 
+    # Configurar los placeholder de todos los Line Edit
     def setupLE(self):
-
         self.lineE0.setPlaceholderText("Balance")
         self.lineE1.setPlaceholderText("Efectivo")
         self.lineE2.setPlaceholderText("Transferencias")
@@ -536,89 +528,100 @@ class adminGUI(QMainWindow, form_class):
 
         #self.setupLE()
 
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Configuración de los botones para cambio de página de los stacked:
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
+    # Métodos para la configuración de los botones para cambio de página de los stacked:
+    #==============================================================================================================================================================================
 
-    # Cambio de página en MainStacked
+    # Cambiar a la página principal
     def on_home_pressed(self):
-        self.setPage(self.MainStacked, 0)         # Cambiar a la página principal
+        self.setPage(self.MainStacked, 0)
         self.MainTitle.setText("Caja")
 
+     # Cambiar a la página de ventas
     def on_sales_pressed(self):
-        self.setPage(self.MainStacked, 1)         # Cambiar a la página de ventas
+        self.setPage(self.MainStacked, 1)
         self.MainTitle.setText("Ventas")
 
+    # Cambiar a la página de inventario
     def on_inventory_pressed(self):
-        self.setPage(self.MainStacked, 2)         # Cambiar a la página de inventario
+        self.setPage(self.MainStacked, 2)
         self.MainTitle.setText("Inventario")
 
+    # Cambiar a la página de consultas
     def on_querys_pressed(self):
-        self.setPage(self.MainStacked, 3)         # Cambiar a la página de consultas
+        self.setPage(self.MainStacked, 3)
         self.MainTitle.setText("Consultas")
 
+    # Cambiar a la página de préstamos
     def on_loans_pressed(self):
-        self.setPage(self.MainStacked, 4)         # Cambiar a la página de préstamos
+        self.setPage(self.MainStacked, 4)
         self.MainTitle.setText("Préstamos")
 
+    # Cambiar a la página de libros
     def on_books_pressed(self):
-        self.setPage(self.MainStacked, 5)         # Cambiar a la página de libros
+        self.setPage(self.MainStacked, 5)
         self.MainTitle.setText("Libros")
 
+    # Cambiar a la página de clientes
     def on_providers_pressed(self):
-        self.setPage(self.MainStacked, 6)         # Cambiar a la página de clientes
+        self.setPage(self.MainStacked, 6)
         self.MainTitle.setText("Proveedores")
 
+    # Cambiar a la página de clientes
     def on_clients_pressed(self):
-        self.setPage(self.MainStacked, 7)         # Cambiar a la página de clientes
+        self.setPage(self.MainStacked, 7)
         self.MainTitle.setText("Clientes")
 
+    # Cambiar a la página de usuarios
     def on_users_pressed(self):
-        self.setPage(self.MainStacked, 8)         # Cambiar a la página de usuarios
+        self.setPage(self.MainStacked, 8)
         self.MainTitle.setText("Usuarios")
 
+    # Cambiar a la página de configuraciones
     def on_configure_pressed(self):
-        self.setPage(self.MainStacked, 9)         # Cambiar a la página de configuraciones
+        self.setPage(self.MainStacked, 9)
         self.MainTitle.setText("Configuraciones")
 
+    # Cambiar a la página de ayuda
     def on_help_pressed(self):
-        self.setPage(self.MainStacked, 10)        # Cambiar a la página de ayuda
+        self.setPage(self.MainStacked, 10)
         self.MainTitle.setText("Ayuda")
 
-    # Cambio de página en subStacked
-    def on_arrow1_pressed(self): self.changePage(self.subStacked3)
-    def on_arrow3_pressed(self): self.changePage(self.subStacked4)
-    def on_arrow5_pressed(self): self.changePage(self.subStacked5)
-    def on_arrow7_pressed(self): self.changePage(self.subStacked6)
-    def on_arrow9_pressed(self): self.changePage(self.subStacked7)
-    def on_arrow11_pressed(self): self.changePage(self.subStacked8)
-    def on_arrow13_pressed(self): self.changePage(self.subStacked9)
-    def on_arrow15_pressed(self): self.changePage(self.subStacked10)
-    def on_arrow17_pressed(self): self.changePage(self.subStacked11)
-    def on_arrow19_pressed(self): self.changePage(self.subStacked12)
-    def on_arrow21_pressed(self): self.changePage(self.subStacked13)
-    def on_arrow23_pressed(self): self.changePage(self.subStacked14)
-    def on_arrow25_pressed(self): self.changePage(self.subStacked15)
-    def on_arrow27_pressed(self): self.changePage(self.subStacked16)
+    def on_arrow1_pressed(self): self.changePage(self.subStacked3)   # Cambiar la página del substaked3 hacia la derecha
+    def on_arrow3_pressed(self): self.changePage(self.subStacked4)   # Cambiar la página del substaked4 hacia la derecha
+    def on_arrow5_pressed(self): self.changePage(self.subStacked5)   # Cambiar la página del substaked5 hacia la derecha
+    def on_arrow7_pressed(self): self.changePage(self.subStacked6)   # Cambiar la página del substaked6 hacia la derecha
+    def on_arrow9_pressed(self): self.changePage(self.subStacked7)   # Cambiar la página del substaked7 hacia la derecha
+    def on_arrow11_pressed(self): self.changePage(self.subStacked8)  # Cambiar la página del substaked8 hacia la derecha
+    def on_arrow13_pressed(self): self.changePage(self.subStacked9)  # Cambiar la página del substaked9 hacia la derecha
+    def on_arrow15_pressed(self): self.changePage(self.subStacked10) # Cambiar la página del substaked10 hacia la derecha
+    def on_arrow17_pressed(self): self.changePage(self.subStacked11) # Cambiar la página del substaked11 hacia la derecha
+    def on_arrow19_pressed(self): self.changePage(self.subStacked12) # Cambiar la página del substaked12 hacia la derecha
+    def on_arrow21_pressed(self): self.changePage(self.subStacked13) # Cambiar la página del substaked13 hacia la derecha
+    def on_arrow23_pressed(self): self.changePage(self.subStacked14) # Cambiar la página del substaked14 hacia la derecha
+    def on_arrow25_pressed(self): self.changePage(self.subStacked15) # Cambiar la página del substaked15 hacia la derecha
+    def on_arrow27_pressed(self): self.changePage(self.subStacked16) # Cambiar la página del substaked16 hacia la derecha
+    def on_arrow29_pressed(self): self.changePage(self.subStacked17) # Cambiar la página del substaked17 hacia la derecha
 
-    def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)
-    def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)
-    def on_arrow4_pressed(self): self.changePage(self.subStacked5, 1)
-    def on_arrow6_pressed(self): self.changePage(self.subStacked6, 1)
-    def on_arrow8_pressed(self): self.changePage(self.subStacked7, 1)
-    def on_arrow10_pressed(self): self.changePage(self.subStacked8, 1)
-    def on_arrow12_pressed(self): self.changePage(self.subStacked9, 1)
-    def on_arrow14_pressed(self): self.changePage(self.subStacked10, 1)
-    def on_arrow16_pressed(self): self.changePage(self.subStacked11, 1)
-    def on_arrow18_pressed(self): self.changePage(self.subStacked12, 1)
-    def on_arrow20_pressed(self): self.changePage(self.subStacked13, 1)
-    def on_arrow22_pressed(self): self.changePage(self.subStacked14, 1)
-    def on_arrow24_pressed(self): self.changePage(self.subStacked15, 1)
-    def on_arrow26_pressed(self): self.changePage(self.subStacked16, 1)
+    def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)   # Cambiar la página del substaked3 hacia la izquierda
+    def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)   # Cambiar la página del substaked4 hacia la izquierda
+    def on_arrow4_pressed(self): self.changePage(self.subStacked5, 1)   # Cambiar la página del substaked5 hacia la izquierda
+    def on_arrow6_pressed(self): self.changePage(self.subStacked6, 1)   # Cambiar la página del substaked6 hacia la izquierda
+    def on_arrow8_pressed(self): self.changePage(self.subStacked7, 1)   # Cambiar la página del substaked7 hacia la izquierda
+    def on_arrow10_pressed(self): self.changePage(self.subStacked8, 1)  # Cambiar la página del substaked8 hacia la izquierda
+    def on_arrow12_pressed(self): self.changePage(self.subStacked9, 1)  # Cambiar la página del substaked9 hacia la izquierda
+    def on_arrow14_pressed(self): self.changePage(self.subStacked10, 1) # Cambiar la página del substaked10 hacia la izquierda
+    def on_arrow16_pressed(self): self.changePage(self.subStacked11, 1) # Cambiar la página del substaked11 hacia la izquierda
+    def on_arrow18_pressed(self): self.changePage(self.subStacked12, 1) # Cambiar la página del substaked12 hacia la izquierda
+    def on_arrow20_pressed(self): self.changePage(self.subStacked13, 1) # Cambiar la página del substaked13 hacia la izquierda
+    def on_arrow22_pressed(self): self.changePage(self.subStacked14, 1) # Cambiar la página del substaked14 hacia la izquierda
+    def on_arrow24_pressed(self): self.changePage(self.subStacked15, 1) # Cambiar la página del substaked15 hacia la izquierda
+    def on_arrow26_pressed(self): self.changePage(self.subStacked16, 1) # Cambiar la página del substaked16 hacia la izquierda
+    def on_arrow28_pressed(self): self.changePage(self.subStacked17, 1) # Cambiar la página del substaked17 hacia la izquierda
 
-    #-------------------------------------------------------------------------------------------------------------------------------
-    # Configuración de los botones de las listas de productos Top 10 y Nuevo:
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
+    # Métodos para la configuración de los botones de las listas de productos Top 10 y Nuevo:
+    #==============================================================================================================================================================================
 
     def on_popularItem0_pressed(self): self.selectItem(0)
     def on_popularItem1_pressed(self): self.selectItem(1)
@@ -642,9 +645,9 @@ class adminGUI(QMainWindow, form_class):
     def on_newItem8_pressed(self): self.selectItem(8)
     def on_newItem9_pressed(self): self.selectItem(9)
 
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
     # Configuración de los botones de cambio de color de la interfáz
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
     def on_theme0_pressed(self): self.setStyle(styles[1])
     def on_theme1_pressed(self): self.setStyle(styles[5])
@@ -655,9 +658,9 @@ class adminGUI(QMainWindow, form_class):
     def on_theme6_pressed(self): self.setStyle(styles[2])
     def on_theme7_pressed(self): self.setStyle(styles[0])
 
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
     # Configuración de botones del inventario
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
     # Radio button para agregar nuevos productos
     def on_rbutton5_pressed(self):
@@ -824,10 +827,9 @@ class adminGUI(QMainWindow, form_class):
                     self.lineE29.setText(str(product[4])) # Lotes
                     self.lineE30.setText(str(product[3])) # Disp. Total
 
-
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
     # Configuración de botones de ventas
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
     # Botón para sumar al spinLine
     def on_add0_pressed(self):
@@ -843,9 +845,9 @@ class adminGUI(QMainWindow, form_class):
             if count > 0:
                 self.spinLine0.setText(str(count-1))
 
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
     # Configuración de botones de proveedores
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
     # Botón para crear un proveedor
     def on_pbutton20_pressed(self):
@@ -864,9 +866,9 @@ class adminGUI(QMainWindow, form_class):
                                                 # Actualizar tabla
                 self.lineE146.setFocus()        # Enfocar
 
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
     # Configuración de botones de clientes
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
     # Botón para crear un cliente
     def on_pbutton17_pressed(self):
@@ -885,9 +887,9 @@ class adminGUI(QMainWindow, form_class):
                                               # Actualizar tabla
                 self.lineE53.setFocus()       # Enfocar
 
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
     # Manejador de eventos de teclas presionadas
-    #-------------------------------------------------------------------------------------------------------------------------------
+    #==============================================================================================================================================================================
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return:
@@ -921,6 +923,6 @@ class adminGUI(QMainWindow, form_class):
                 # code goes here
                 print("XD")
 
-####################################################################################################################################
+###################################################################################################################################################################################
 ## FIN :)
-####################################################################################################################################
+###################################################################################################################################################################################

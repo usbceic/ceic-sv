@@ -31,6 +31,16 @@
   </property>
   <property name="styleSheet">
    <string notr="true">/***********************************
+* Global
+***********************************/
+
+/*Efecto al seleccionar texto*/
+* {
+    selection-color: #212121;
+    selection-background-color: #BBDEFB;
+}
+
+/***********************************
 * Banner
 ***********************************/
 
@@ -125,11 +135,16 @@
 ***********************************/
 
 /*Configuración de los textos normales*/
-#text0, #text1, #text2, #text3, #text4, #text5, #text6, #text7, #text8, #text9, #text10, #text11, #text12, #text13, #text14, #text15, #text16, #text17, #text18, #text19, #text20, #text21, #text22, #text23, #text24, #text25, #text26, #text27, #text28, #text29, #text30, #text31, #text32, #text33, #text34, #text35, #text36, #text37, #text38, #text39, #text40, #text41, #text42, #text43, #text44, #text45, #text46, #text47, #text48, #text49, #text50, #text51, #text52, #text53, #text54, #text55, #text56, #text57, #text58, #text59, #text60, #text61, #text62, #text63, #text64, #text65, #text66, #text67, #text68, #text69, #text70, #text71, #text72, #text73, #text74, #text75, #text76, #text77, #text78, #text79, #text80, #text81, #text82, #text83, #text84, #text85, #text86, #text87, #text88, #text89, #text90, #text91, #text92, #text93, #text94, #text95, #text96, #text97, #text98, #text99, #text100, #text101, #text102, #text103, #text104, #text105, #text106, #text107, #text108, #text109, #text110, #text111, #text112, #text113, #text114, #text115, #text116, #text117, #text118, #text119, #text120, #text121, #text122, #text123, #text124, #text125, #text126, #text127, #text128, #text129, #text130, #text131, #text132, #text133, #text134, #text135, #text136, #text137, #text138, #text139, #text140, #text141, #text142, #text143, #text144, #text145, #text146, #text147, #text148, #text149, #text150, #text151, #text152, #text153, #text154, #text155, #text156, #text157, #text158, #text159, #text160, #text161, #text162, #text163, #text164, #text165, #text166, #text167, #text168, #text169, #text170, #text171, #text172, #text173, #text174, #text175, #text176, #text177, #text178, #text179, #text180, #text181, #text182, #text183, #text184, #text185, #text186, #text187, #text188, #text189, #text190, #text191, #text192, #text193, #text194, #text195, #text196, #text197, #text198, #text199, #text200, #text201, #text202, #text203, #text204, #text205, #text206, #text207, #text208, #text209, #text210 {
+#text0, #text1, #text2, #text3, #text4, #text5, #text6, #text7, #text8, #text9, #text10, #text11, #text12, #text13, #text14, #text15, #text16, #text17, #text18, #text19, #text20, #text21, #text22, #text23, #text24, #text25, #text26, #text27, #text28, #text29, #text30, #text31, #text32, #text33, #text34, #text35, #text36, #text37, #text38, #text39, #text40, #text41, #text42, #text43, #text44, #text45, #text46, #text47, #text48, #text49, #text50, #text51, #text52, #text53, #text54, #text55, #text56, #text57, #text58, #text59, #text60, #text61, #text62, #text63, #text64, #text65, #text66, #text67, #text68, #text69, #text70, #text71, #text72, #text73, #text74, #text75, #text76, #text77, #text78, #text79, #text80, #text81, #text82, #text83, #text84, #text85, #text86, #text87, #text88, #text89, #text90, #text91, #text92, #text93, #text94, #text95, #text96, #text97, #text98, #text99, #text100, #text101, #text102, #text103, #text104, #text105, #text106, #text107, #text108, #text109, #text110, #text111, #text112, #text113, #text114, #text115, #text116, #text117, #text118, #text119, #text120, #text121, #text122, #text123, #text124, #text125, #text126, #text127, #text128, #text129, #text130, #text131, #text132, #text133, #text134, #text135, #text136, #text137, #text138, #text139, #text140, #text141, #text142, #text143, #text144, #text145, #text146, #text147, #text148, #text149, #text150, #text151, #text152, #text153, #text154, #text155, #text156, #text157, #text158, #text159, #text160, #text161, #text162, #text163, #text164, #text165, #text166, #text167, #text168, #text169, #text170, #text171, #text172, #text173, #text174, #text175, #text176, #text177, #text178, #text179, #text180, #text181, #text182, #text183, #text184, #text185, #text186, #text187, #text188, #text189, #text190, #text191, #text192, #text193, #text194, #text195, #text196, #text197, #text198, #text199, #text200, #text201, #text202, #text203, #text204, #text205, #text206, #text207, #text208, #text209, #text210, #text211, #text212, #text213, #text214, #text215, #text216, #text217, #text218, #text219 {
     color: #757575;
     background: transparent;
     font-family: Open Sans;
     font-size: 11pt;
+}
+
+/*Textos centrados*/
+#text214, #text215 {
+    qproperty-alignment: 'AlignVCenter | AlignHCenter';
 }
 
 /*Configuración de los textos normales*/
@@ -178,7 +193,7 @@
 ***********************************/
 
 /*Configurar el estilo por defecto de las flechas de movimiento de los  subStacked*/
-#arrow0, #arrow1, #arrow2, #arrow3, #arrow4, #arrow5, #arrow6, #arrow7, #arrow8, #arrow9, #arrow10, #arrow11, #arrow12, #arrow13, #arrow14, #arrow15, #arrow16, #arrow17, #arrow18, #arrow19, #arrow20, #arrow21, #arrow22, #arrow23, #arrow24, #arrow25, #arrow26, #arrow27{
+#arrow0, #arrow1, #arrow2, #arrow3, #arrow4, #arrow5, #arrow6, #arrow7, #arrow8, #arrow9, #arrow10, #arrow11, #arrow12, #arrow13, #arrow14, #arrow15, #arrow16, #arrow17, #arrow18, #arrow19, #arrow20, #arrow21, #arrow22, #arrow23, #arrow24, #arrow25, #arrow26, #arrow27, #arrow28, #arrow29{
      background: transparent;
      border: none;
      min-width: 2em;
@@ -186,7 +201,7 @@
 }
 
 /*Configurar el estilo de las flechas de movimiento de los subStacked cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
-#arrow0:hover, #arrow1:hover, #arrow2:hover, #arrow3:hover, #arrow4:hover, #arrow5:hover, #arrow6:hover, #arrow7:hover, #arrow8:hover, #arrow9:hover, #arrow10:hover, #arrow11:hover, #arrow12:hover, #arrow13:hover, #arrow14:hover, #arrow15:hover, #arrow16:hover, #arrow17:hover, #arrow18:hover, #arrow19:hover, #arrow20:hover, #arrow21:hover, #arrow22:hover, #arrow23:hover, #arrow24:hover, #arrow25:hover, #arrow26:hover, #arrow27:hover, #arrow0:pressed, #arrow1:pressed, #arrow2:pressed, #arrow3:pressed, #arrow4:pressed, #arrow5:pressed, #arrow6:pressed, #arrow7:pressed, #arrow8:pressed, #arrow9:pressed, #arrow10:pressed, #arrow11:pressed, #arrow12:pressed, #arrow13:pressed, #arrow14:pressed, #arrow15:pressed, #arrow16:pressed, #arrow17:pressed, #arrow18:pressed, #arrow19:pressed, #arrow20:pressed, #arrow21:pressed, #arrow22:pressed, #arrow23:pressed, #arrow24:pressed, #arrow25:pressed, #arrow26:pressed, #arrow27:pressed{
+#arrow0:hover, #arrow1:hover, #arrow2:hover, #arrow3:hover, #arrow4:hover, #arrow5:hover, #arrow6:hover, #arrow7:hover, #arrow8:hover, #arrow9:hover, #arrow10:hover, #arrow11:hover, #arrow12:hover, #arrow13:hover, #arrow14:hover, #arrow15:hover, #arrow16:hover, #arrow17:hover, #arrow18:hover, #arrow19:hover, #arrow20:hover, #arrow21:hover, #arrow22:hover, #arrow23:hover, #arrow24:hover, #arrow25:hover, #arrow26:hover, #arrow27:hover, #arrow28:hover, #arrow29:hover, #arrow0:pressed, #arrow1:pressed, #arrow2:pressed, #arrow3:pressed, #arrow4:pressed, #arrow5:pressed, #arrow6:pressed, #arrow7:pressed, #arrow8:pressed, #arrow9:pressed, #arrow10:pressed, #arrow11:pressed, #arrow12:pressed, #arrow13:pressed, #arrow14:pressed, #arrow15:pressed, #arrow16:pressed, #arrow17:pressed, #arrow18:pressed, #arrow19:pressed, #arrow20:pressed, #arrow21:pressed, #arrow22:pressed, #arrow23:pressed, #arrow24:pressed, #arrow25:pressed, #arrow26:pressed, #arrow27:pressed, #arrow28:pressed, #arrow29:pressed{
     background: #BBDEFB;
 }
 
@@ -205,6 +220,7 @@
 #arrow22, #arrow23 {min-height: 10.5em;}
 #arrow24, #arrow25 {min-height: 23em;}
 #arrow26, #arrow27 {min-height: 21em;}
+#arrow28, #arrow29 {min-height: 31em;}
 
 /*Configurar el estilo por defecto de las flechas de movimiento de las tablas*/
 #arrow42, #arrow43, #arrow44, #arrow45, #arrow46, #arrow47, #arrow48, #arrow49, #arrow50, #arrow51, #arrow52, #arrow53, #arrow54, #arrow55, #arrow56, #arrow57, #arrow58, #arrow59, #arrow60, #arrow61, #arrow62, #arrow63, #arrow64, #arrow65, #arrow66, #arrow67, #arrow68, #arrow69, #arrow70, #arrow71, #arrow72, #arrow73, #arrow74, #arrow75, #arrow76, #arrow77, #arrow78, #arrow79, #arrow80, #arrow81, #arrow82, #arrow83, #arrow84, #arrow85, #arrow86, #arrow87, #arrow88, #arrow89, #arrow90, #arrow91{
@@ -669,10 +685,13 @@ QWidget:item:unchecked {
         <item>
          <widget class="QGroupBox" name="MenuBar">
           <property name="styleSheet">
-           <string notr="true">QGroupBox{
+           <string notr="true">QGroupBox {
+    background: #FFFFFF;
+    border: none;
+    border-top: 1px inset #BDBDBD;
     padding: -6px;
     min-width: 5em;
-}</string>
+ }</string>
           </property>
           <property name="title">
            <string/>
@@ -1035,7 +1054,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -3782,7 +3801,7 @@ QWidget:item:unchecked {
               <x>9</x>
               <y>9</y>
               <width>231</width>
-              <height>301</height>
+              <height>321</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -3794,6 +3813,9 @@ QWidget:item:unchecked {
             <layout class="QGridLayout" name="gridLayout_207">
              <item row="4" column="0">
               <layout class="QVBoxLayout" name="verticalLayout_50">
+               <property name="spacing">
+                <number>4</number>
+               </property>
                <item>
                 <widget class="QLabel" name="title3">
                  <property name="font">
@@ -3808,7 +3830,7 @@ QWidget:item:unchecked {
                   <string notr="true"/>
                  </property>
                  <property name="text">
-                  <string>Información de pago</string>
+                  <string>Información de compra</string>
                  </property>
                 </widget>
                </item>
@@ -3854,288 +3876,412 @@ QWidget:item:unchecked {
                   </spacer>
                  </item>
                  <item row="0" column="1">
-                  <layout class="QFormLayout" name="salesLt27_5">
-                   <property name="fieldGrowthPolicy">
-                    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-                   </property>
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="text32">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <pointsize>11</pointsize>
-                       <weight>75</weight>
-                       <italic>false</italic>
-                       <bold>true</bold>
-                      </font>
+                  <layout class="QVBoxLayout" name="verticalLayout_49">
+                   <item>
+                    <layout class="QGridLayout" name="gridLayout_61">
+                     <property name="spacing">
+                      <number>0</number>
                      </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: transparent;</string>
-                     </property>
-                     <property name="text">
-                      <string>Cédula</string>
-                     </property>
-                     <property name="textFormat">
-                      <enum>Qt::AutoText</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QLineEdit" name="lineE17">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="inputMask">
-                      <string/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>false</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="text33">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <pointsize>11</pointsize>
-                       <weight>75</weight>
-                       <italic>false</italic>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: transparent;</string>
-                     </property>
-                     <property name="text">
-                      <string>Nombre</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="1">
-                    <widget class="QLineEdit" name="lineE18">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="0">
-                    <widget class="QLabel" name="text34">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: transparent;</string>
-                     </property>
-                     <property name="text">
-                      <string>Apellido</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="1">
-                    <widget class="QLineEdit" name="lineE19">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="3" column="0">
-                    <widget class="QLabel" name="text35">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <pointsize>11</pointsize>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: transparent;</string>
-                     </property>
-                     <property name="text">
-                      <string>Saldo</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="3" column="1">
-                    <widget class="QLineEdit" name="lineE20">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="0">
-                    <widget class="QLabel" name="text37">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <pointsize>11</pointsize>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string>Total</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="1">
-                    <widget class="QLineEdit" name="lineE21">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="5" column="0">
-                    <widget class="QLabel" name="text38">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string>Método</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="5" column="1">
-                    <widget class="QComboBox" name="cbox4">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                      </font>
-                     </property>
-                     <property name="cursor">
-                      <cursorShape>ArrowCursor</cursorShape>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="sizeAdjustPolicy">
-                      <enum>QComboBox::AdjustToContents</enum>
-                     </property>
-                     <item>
-                      <property name="text">
-                       <string>Efectivo</string>
-                      </property>
+                     <item row="0" column="2">
+                      <widget class="Line" name="line_2">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                      </widget>
                      </item>
-                     <item>
-                      <property name="text">
-                       <string>Saldo</string>
-                      </property>
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="text214">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>11</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">background-color: transparent;</string>
+                       </property>
+                       <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cliente&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
+                      </widget>
                      </item>
-                     <item>
-                      <property name="text">
-                       <string>Transferencia</string>
-                      </property>
+                     <item row="0" column="0">
+                      <widget class="Line" name="line">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                      </widget>
                      </item>
-                    </widget>
+                    </layout>
                    </item>
-                   <item row="6" column="0">
-                    <widget class="QLabel" name="text39">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
+                   <item>
+                    <layout class="QFormLayout" name="salesLt27_5">
+                     <property name="fieldGrowthPolicy">
+                      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
                      </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string>Pagar</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="6" column="1">
-                    <widget class="QLineEdit" name="lineE22">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>false</bool>
-                     </property>
-                    </widget>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="text32">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>11</pointsize>
+                         <weight>75</weight>
+                         <italic>false</italic>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">background-color: transparent;</string>
+                       </property>
+                       <property name="text">
+                        <string>Cédula</string>
+                       </property>
+                       <property name="textFormat">
+                        <enum>Qt::AutoText</enum>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLineEdit" name="lineE17">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="inputMask">
+                        <string/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="readOnly">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="text33">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>11</pointsize>
+                         <weight>75</weight>
+                         <italic>false</italic>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">background-color: transparent;</string>
+                       </property>
+                       <property name="text">
+                        <string>Nombre</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLineEdit" name="lineE18">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="text34">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">background-color: transparent;</string>
+                       </property>
+                       <property name="text">
+                        <string>Apellido</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLineEdit" name="lineE19">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="text35">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>11</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">background-color: transparent;</string>
+                       </property>
+                       <property name="text">
+                        <string>Saldo</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1">
+                      <widget class="QLineEdit" name="lineE20">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </item>
                   </layout>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_353">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>4</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <layout class="QGridLayout" name="gridLayout_21">
+                 <item row="0" column="1">
+                  <spacer name="horizontalSpacer_53">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="0" column="3">
+                  <spacer name="horizontalSpacer_52">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="0" column="2">
+                  <layout class="QVBoxLayout" name="verticalLayout_51">
+                   <item>
+                    <layout class="QGridLayout" name="gridLayout_74">
+                     <item row="0" column="0">
+                      <widget class="Line" name="line_7">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLabel" name="text215">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>11</pointsize>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">background-color: transparent;</string>
+                       </property>
+                       <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pago&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="Line" name="line_6">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QFormLayout" name="formLayout_7">
+                     <property name="fieldGrowthPolicy">
+                      <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                     </property>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="text38">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>Efectivo</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QLineEdit" name="lineE22">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="readOnly">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="text39">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>Saldo</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QLineEdit" name="lineE152">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="readOnly">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="text37">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>11</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>Venta</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLineEdit" name="lineE21">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_356">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>4</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
                <item>
                 <widget class="Line" name="line_68">
@@ -4201,7 +4347,7 @@ QWidget:item:unchecked {
                     <string notr="true"/>
                    </property>
                    <property name="text">
-                    <string>PAGAR</string>
+                    <string>VENDER</string>
                    </property>
                   </widget>
                  </item>
@@ -4350,10 +4496,10 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox3">
             <property name="geometry">
              <rect>
-              <x>10</x>
-              <y>320</y>
-              <width>281</width>
-              <height>221</height>
+              <x>30</x>
+              <y>340</y>
+              <width>251</width>
+              <height>211</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -14537,7 +14683,7 @@ QWidget:item:unchecked {
                 <number>0</number>
                </property>
                <item>
-                <widget class="QPushButton" name="arrow74">
+                <widget class="QPushButton" name="arrow28">
                  <property name="focusPolicy">
                   <enum>Qt::NoFocus</enum>
                  </property>
@@ -15314,7 +15460,7 @@ QWidget:item:unchecked {
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="arrow75">
+                <widget class="QPushButton" name="arrow29">
                  <property name="focusPolicy">
                   <enum>Qt::NoFocus</enum>
                  </property>
