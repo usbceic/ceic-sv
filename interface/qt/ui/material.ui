@@ -76,7 +76,7 @@
     min-width: 5em;
  }
 
-#home, #sales, #inventory, #querys, #books, #loans, #clients, #users, #configure, #help{
+#home, #sales, #inventory, #querys, #books, #loans, #providers, #clients, #users, #configure, #help{
     background: transparent;
     border: 1px solid transparent;
     border-radius: 2px;
@@ -84,7 +84,7 @@
     padding: 2px;
 }
 
-#home:hover, #sales:hover, #inventory:hover, #querys:hover, #books:hover, #loans:hover, #clients:hover, #users:hover, #configure:hover, #help:hover, #home:pressed, #sales:pressed, #inventory:pressed, #querys:pressed, #books:pressed, #loans:pressed, #clients:pressed, #users:pressed, #configure:pressed, #help:pressed{
+#home:hover, #sales:hover, #inventory:hover, #querys:hover, #books:hover, #loans:hover, #providers:hover, #clients:hover, #users:hover, #configure:hover, #help:hover, #home:pressed, #sales:pressed, #inventory:pressed, #querys:pressed, #books:pressed, #loans:pressed, #providers:pressed, #clients:pressed, #users:pressed, #configure:pressed, #help:pressed{
     background: #BBDEFB;
 }
 
@@ -99,7 +99,7 @@
 }
 
 /*Colorea páginas del stacked principal*/
-#page0, #page1, #page2, #page3, #page4, #page5, #page6, #page7, #page8, #page9 {
+#mainPage0, #mainPage1, #mainPage2, #mainPage3, #mainPage4, #mainPage5, #mainPage6, #mainPage7, #mainPage8, #mainPage9, #mainPage10  {
     background: #F5F5F5;
 }
 
@@ -158,7 +158,7 @@
 ***********************************/
 
 /*Configurar el estilo de los groupBox*/
-#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox5, #groupBox6, #groupBox16, #groupBox17, #groupBox23{
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox5, #groupBox6, #groupBox16, #groupBox17, #groupBox23,  #groupBox24{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -166,7 +166,7 @@
 }
 
 /*Configurar el estilo de los groupBox con subStacked*/
-#groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22{
+#groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -488,13 +488,13 @@ QWidget:item:unchecked {
 ***********************************/
 
 /*Configuración general de las tablas*/
-#table0, #table1, #table2, #table3, #table4, #table5, #table6, #table7, #table8, #table9, #table10, #table11, #table12{
+#table0, #table1, #table2, #table3, #table4, #table5, #table6, #table7, #table8, #table9, #table10, #table11, #table12, #table13{
     color: #212121;
     background: #FFFFFF;
 }
 
 /*Estilo de los cabezales horizontales*/
-#table0 QHeaderView::section:horizontal, #table1 QHeaderView::section:horizontal, #table2 QHeaderView::section:horizontal, #table3 QHeaderView::section:horizontal, #table4 QHeaderView::section:horizontal, #table5 QHeaderView::section:horizontal, #table6 QHeaderView::section:horizontal, #table7 QHeaderView::section:horizontal, #table8 QHeaderView::section:horizontal, #table9 QHeaderView::section:horizontal, #table10 QHeaderView::section:horizontal, #table11 QHeaderView::section:horizontal, #table12 QHeaderView::section:horizontal{
+#table0 QHeaderView::section:horizontal, #table1 QHeaderView::section:horizontal, #table2 QHeaderView::section:horizontal, #table3 QHeaderView::section:horizontal, #table4 QHeaderView::section:horizontal, #table5 QHeaderView::section:horizontal, #table6 QHeaderView::section:horizontal, #table7 QHeaderView::section:horizontal, #table8 QHeaderView::section:horizontal, #table9 QHeaderView::section:horizontal, #table10 QHeaderView::section:horizontal, #table11 QHeaderView::section:horizontal, #table12 QHeaderView::section:horizontal, #table13 QHeaderView::section:horizontal{
     color: #757575;
     padding: 6px;
     border: 1px solid transparent;
@@ -503,7 +503,7 @@ QWidget:item:unchecked {
 }
 
 /*Estilo de los cabezales verticales*/
-#table0 QHeaderView::section:vertical, #table1 QHeaderView::section:vertical, #table2 QHeaderView::section:vertical, #table3 QHeaderView::section:vertical, #table4 QHeaderView::section:vertical, #table5 QHeaderView::section:vertical, #table6 QHeaderView::section:vertical, #table7 QHeaderView::section:vertical, #table8 QHeaderView::section:vertical, #table9 QHeaderView::section:vertical, #table10 QHeaderView::section:vertical, #table11 QHeaderView::section:vertical, #table12 QHeaderView::section:vertical{
+#table0 QHeaderView::section:vertical, #table1 QHeaderView::section:vertical, #table2 QHeaderView::section:vertical, #table3 QHeaderView::section:vertical, #table4 QHeaderView::section:vertical, #table5 QHeaderView::section:vertical, #table6 QHeaderView::section:vertical, #table7 QHeaderView::section:vertical, #table8 QHeaderView::section:vertical, #table9 QHeaderView::section:vertical, #table10 QHeaderView::section:vertical, #table11 QHeaderView::section:vertical, #table12 QHeaderView::section:vertical, #table13 QHeaderView::section:vertical{
     padding: 2px;
     border: 1px solid #BDBDBD;
     border-top-color: transparent;
@@ -512,14 +512,14 @@ QWidget:item:unchecked {
 }
 
 /*Estilo del boton de la esquina superior izquierda de la tabla*/
-#table0 QTableCornerButton::section, #table1 QTableCornerButton::section, #table2 QTableCornerButton::section, #table3 QTableCornerButton::section, #table4 QTableCornerButton::section, #table5 QTableCornerButton::section, #table6 QTableCornerButton::section, #table7 QTableCornerButton::section, #table8 QTableCornerButton::section, #table9 QTableCornerButton::section, #table10 QTableCornerButton::section, #table11 QTableCornerButton::section, #table12 QTableCornerButton::section{
+#table0 QTableCornerButton::section, #table1 QTableCornerButton::section, #table2 QTableCornerButton::section, #table3 QTableCornerButton::section, #table4 QTableCornerButton::section, #table5 QTableCornerButton::section, #table6 QTableCornerButton::section, #table7 QTableCornerButton::section, #table8 QTableCornerButton::section, #table9 QTableCornerButton::section, #table10 QTableCornerButton::section, #table11 QTableCornerButton::section, #table12 QTableCornerButton::section, #table13 QTableCornerButton::section{
     background: #FFFFFF;
     border: 1px solid #BDBDBD;
     border-left-color: transparent;
 }
 
 /*Estilo de los items seleccionados*/
-#table0::item:selected, #table1::item:selected, #table2::item:selected, #table3::item:selected, #table4::item:selected, #table5::item:selected, #table6::item:selected, #table7::item:selected, #table8::item:selected, #table9::item:selected, #table10::item:selected, #table11::item:selected, #table12::item:selected{
+#table0::item:selected, #table1::item:selected, #table2::item:selected, #table3::item:selected, #table4::item:selected, #table5::item:selected, #table6::item:selected, #table7::item:selected, #table8::item:selected, #table9::item:selected, #table10::item:selected, #table11::item:selected, #table12::item:selected, #table13::item:selected{
     background: #BBDEFB;
     selection-color: #212121;
 }
@@ -696,7 +696,20 @@ QWidget:item:unchecked {
                </property>
               </widget>
              </item>
-             <item row="8" column="0">
+             <item row="10" column="0">
+              <spacer name="verticalSpacer_9">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>560</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="9" column="0">
               <widget class="QPushButton" name="configure">
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
@@ -724,19 +737,6 @@ QWidget:item:unchecked {
                 </size>
                </property>
               </widget>
-             </item>
-             <item row="9" column="0">
-              <spacer name="verticalSpacer_9">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>560</height>
-                </size>
-               </property>
-              </spacer>
              </item>
              <item row="4" column="0">
               <widget class="QPushButton" name="loans">
@@ -796,7 +796,7 @@ QWidget:item:unchecked {
                </property>
               </widget>
              </item>
-             <item row="6" column="0">
+             <item row="7" column="0">
               <widget class="QPushButton" name="clients">
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
@@ -825,7 +825,7 @@ QWidget:item:unchecked {
                </property>
               </widget>
              </item>
-             <item row="7" column="0">
+             <item row="8" column="0">
               <widget class="QPushButton" name="users">
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
@@ -953,7 +953,7 @@ QWidget:item:unchecked {
                </property>
               </widget>
              </item>
-             <item row="10" column="0">
+             <item row="11" column="0">
               <widget class="QPushButton" name="help">
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
@@ -982,6 +982,35 @@ QWidget:item:unchecked {
                </property>
               </widget>
              </item>
+             <item row="6" column="0">
+              <widget class="QPushButton" name="providers">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="toolTip">
+                <string>Usuarios</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../resources/gui.qrc">
+                 <normaloff>:/menubar/providers</normaloff>:/menubar/providers</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
           </layout>
@@ -993,9 +1022,9 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>6</number>
           </property>
-          <widget class="QWidget" name="page0">
+          <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
             <property name="geometry">
              <rect>
@@ -3733,7 +3762,7 @@ QWidget:item:unchecked {
             </widget>
            </widget>
           </widget>
-          <widget class="QWidget" name="page1">
+          <widget class="QWidget" name="mainPage1">
            <widget class="QGroupBox" name="groupBox2">
             <property name="geometry">
              <rect>
@@ -5867,7 +5896,7 @@ QWidget:item:unchecked {
             </layout>
            </widget>
           </widget>
-          <widget class="QWidget" name="page2">
+          <widget class="QWidget" name="mainPage2">
            <widget class="QGroupBox" name="groupBox8">
             <property name="geometry">
              <rect>
@@ -7626,7 +7655,7 @@ QWidget:item:unchecked {
             </layout>
            </widget>
           </widget>
-          <widget class="QWidget" name="page3">
+          <widget class="QWidget" name="mainPage3">
            <widget class="QGroupBox" name="groupBox10">
             <property name="geometry">
              <rect>
@@ -9514,7 +9543,7 @@ QWidget:item:unchecked {
             </layout>
            </widget>
           </widget>
-          <widget class="QWidget" name="page4">
+          <widget class="QWidget" name="mainPage4">
            <widget class="QGroupBox" name="groupBox17">
             <property name="geometry">
              <rect>
@@ -10265,7 +10294,7 @@ QWidget:item:unchecked {
             </layout>
            </widget>
           </widget>
-          <widget class="QWidget" name="page5">
+          <widget class="QWidget" name="mainPage5">
            <widget class="QGroupBox" name="groupBox18">
             <property name="geometry">
              <rect>
@@ -10315,7 +10344,7 @@ QWidget:item:unchecked {
                   <string notr="true"/>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>1</number>
                  </property>
                  <widget class="QWidget" name="page44">
                   <layout class="QGridLayout" name="gridLayout_144">
@@ -14215,7 +14244,1018 @@ QWidget:item:unchecked {
             </layout>
            </widget>
           </widget>
-          <widget class="QWidget" name="page6">
+          <widget class="QWidget" name="mainPage6">
+           <widget class="QGroupBox" name="groupBox24">
+            <property name="geometry">
+             <rect>
+              <x>340</x>
+              <y>50</y>
+              <width>411</width>
+              <height>431</height>
+             </rect>
+            </property>
+            <property name="title">
+             <string/>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_53">
+             <item row="0" column="0">
+              <layout class="QVBoxLayout" name="verticalLayout_45">
+               <item>
+                <widget class="QLabel" name="title47">
+                 <property name="font">
+                  <font>
+                   <family>Open Sans</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Proveedores&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_352">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>4</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QTableWidget" name="table13">
+                 <property name="styleSheet">
+                  <string notr="true">QTableWidget::item:selected{
+	selection-color: black;
+}</string>
+                 </property>
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <property name="dragDropOverwriteMode">
+                  <bool>false</bool>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectRows</enum>
+                 </property>
+                 <attribute name="verticalHeaderStretchLastSection">
+                  <bool>false</bool>
+                 </attribute>
+                 <row>
+                  <property name="text">
+                   <string>1</string>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>2</string>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>3</string>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>4</string>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>5</string>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>6</string>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>7</string>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>8</string>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>9</string>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>10</string>
+                  </property>
+                 </row>
+                 <column>
+                  <property name="text">
+                   <string>Cédula</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Cliente</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Saldo</string>
+                  </property>
+                 </column>
+                </widget>
+               </item>
+               <item>
+                <layout class="QGridLayout" name="gridLayout_95">
+                 <item row="0" column="0">
+                  <spacer name="horizontalSpacer_134">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="0" column="2">
+                  <spacer name="horizontalSpacer_137">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="0" column="1">
+                  <layout class="QGridLayout" name="gridLayout_98">
+                   <item row="0" column="0">
+                    <widget class="QPushButton" name="arrow70">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../resources/gui.qrc">
+                       <normaloff>:/arrows/top_arrow</normaloff>:/arrows/top_arrow</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="3">
+                    <widget class="QPushButton" name="arrow73">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../resources/gui.qrc">
+                       <normaloff>:/arrows/end_arrow</normaloff>:/arrows/end_arrow</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QPushButton" name="arrow71">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../resources/gui.qrc">
+                       <normaloff>:/arrows/prev_arrow</normaloff>:/arrows/prev_arrow</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="2">
+                    <widget class="QPushButton" name="arrow72">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="../resources/gui.qrc">
+                       <normaloff>:/arrows/next_arrow</normaloff>:/arrows/next_arrow</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QGroupBox" name="groupBox25">
+            <property name="geometry">
+             <rect>
+              <x>30</x>
+              <y>60</y>
+              <width>281</width>
+              <height>271</height>
+             </rect>
+            </property>
+            <property name="title">
+             <string/>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_6">
+             <item row="0" column="0">
+              <layout class="QHBoxLayout" name="horizontalLayout_29">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="arrow74">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../resources/gui.qrc">
+                   <normaloff>:/arrows/prev_arrow</normaloff>:/arrows/prev_arrow</iconset>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QStackedWidget" name="subStacked17">
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="currentIndex">
+                  <number>0</number>
+                 </property>
+                 <widget class="QWidget" name="page48">
+                  <layout class="QGridLayout" name="gridLayout_54">
+                   <item row="0" column="1">
+                    <layout class="QVBoxLayout" name="verticalLayout_46">
+                     <item>
+                      <widget class="QLabel" name="title48">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>12</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Registrar&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_354">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>4</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <layout class="QGridLayout" name="gridLayout_64">
+                       <item row="0" column="1">
+                        <layout class="QFormLayout" name="clientLt6_3">
+                         <property name="fieldGrowthPolicy">
+                          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                         </property>
+                         <item row="0" column="0">
+                          <widget class="QLabel" name="text154_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cédula&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLabel" name="text155_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nombre&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="text156_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apellido&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="0">
+                          <widget class="QLabel" name="text157_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="0">
+                          <widget class="QLabel" name="text158_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <widget class="QLineEdit" name="lineE147">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1">
+                          <widget class="QLineEdit" name="lineE148">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="1">
+                          <widget class="QLineEdit" name="lineE149">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="1">
+                          <widget class="QLineEdit" name="lineE150">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <widget class="QLineEdit" name="lineE146">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item row="0" column="0">
+                        <spacer name="horizontalSpacer_15">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="2">
+                        <spacer name="horizontalSpacer_108">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <widget class="Line" name="line_113">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QGridLayout" name="gridLayout_55">
+                       <item row="0" column="2">
+                        <widget class="QPushButton" name="pbutton20">
+                         <property name="font">
+                          <font>
+                           <pointsize>11</pointsize>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="focusPolicy">
+                          <enum>Qt::NoFocus</enum>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true"/>
+                         </property>
+                         <property name="text">
+                          <string>Agregar</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="0">
+                        <spacer name="horizontalSpacer_4">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="1">
+                        <widget class="QPushButton" name="cancelpb22">
+                         <property name="font">
+                          <font>
+                           <pointsize>11</pointsize>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="focusPolicy">
+                          <enum>Qt::NoFocus</enum>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true"/>
+                         </property>
+                         <property name="text">
+                          <string>Cancelar</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_19">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>26</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <spacer name="verticalSpacer_8">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                 <widget class="QWidget" name="page49">
+                  <layout class="QGridLayout" name="gridLayout_77">
+                   <item row="0" column="0">
+                    <layout class="QVBoxLayout" name="verticalLayout_47">
+                     <item>
+                      <widget class="QLabel" name="title49">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>12</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Editar&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_355">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>4</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <layout class="QGridLayout" name="gridLayout_78">
+                       <item row="0" column="1">
+                        <layout class="QFormLayout" name="clientLt6_20">
+                         <property name="fieldGrowthPolicy">
+                          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                         </property>
+                         <item row="0" column="0">
+                          <widget class="QLabel" name="text159_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cédula&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLabel" name="text160_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nombre&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="text161_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apellido&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="0">
+                          <widget class="QLabel" name="text162_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="0">
+                          <widget class="QLabel" name="text163_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <widget class="QLineEdit" name="lineE58_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1">
+                          <widget class="QLineEdit" name="lineE59_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="1">
+                          <widget class="QLineEdit" name="lineE60_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="1">
+                          <widget class="QLineEdit" name="lineE61_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <widget class="QLineEdit" name="lineE57_2">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item row="0" column="0">
+                        <spacer name="horizontalSpacer_28">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="2">
+                        <spacer name="horizontalSpacer_114">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <widget class="Line" name="line_114">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QGridLayout" name="gridLayout_146">
+                       <item row="0" column="2">
+                        <widget class="QPushButton" name="pbutton22">
+                         <property name="font">
+                          <font>
+                           <pointsize>11</pointsize>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="focusPolicy">
+                          <enum>Qt::NoFocus</enum>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true"/>
+                         </property>
+                         <property name="text">
+                          <string>Aplicar</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="0">
+                        <spacer name="horizontalSpacer_37">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="1">
+                        <widget class="QPushButton" name="cancelpb23">
+                         <property name="font">
+                          <font>
+                           <pointsize>11</pointsize>
+                           <weight>75</weight>
+                           <bold>true</bold>
+                          </font>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="focusPolicy">
+                          <enum>Qt::NoFocus</enum>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true"/>
+                         </property>
+                         <property name="text">
+                          <string>Cancelar</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_21">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>26</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <spacer name="verticalSpacer_17">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="arrow75">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../resources/gui.qrc">
+                   <normaloff>:/arrows/next_arrow</normaloff>:/arrows/next_arrow</iconset>
+                 </property>
+                 <property name="checkable">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+           <zorder>groupBox24</zorder>
+           <zorder>subStacked9_2</zorder>
+           <zorder></zorder>
+           <zorder>subStacked9_2</zorder>
+           <zorder>subStacked9_2</zorder>
+           <zorder>groupBox25</zorder>
+          </widget>
+          <widget class="QWidget" name="mainPage7">
            <widget class="QGroupBox" name="groupBox12">
             <property name="geometry">
              <rect>
@@ -15796,7 +16836,7 @@ QWidget:item:unchecked {
             </layout>
            </widget>
           </widget>
-          <widget class="QWidget" name="page7">
+          <widget class="QWidget" name="mainPage8">
            <widget class="QGroupBox" name="groupBox14">
             <property name="geometry">
              <rect>
@@ -17580,7 +18620,7 @@ QWidget:item:unchecked {
             <zorder></zorder>
            </widget>
           </widget>
-          <widget class="QWidget" name="page8">
+          <widget class="QWidget" name="mainPage9">
            <widget class="QGroupBox" name="groupBox5">
             <property name="geometry">
              <rect>
@@ -19031,7 +20071,7 @@ QWidget:item:unchecked {
             </layout>
            </widget>
           </widget>
-          <widget class="QWidget" name="page9">
+          <widget class="QWidget" name="mainPage10">
            <widget class="QGroupBox" name="groupBox16">
             <property name="geometry">
              <rect>

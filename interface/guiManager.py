@@ -79,7 +79,7 @@ def getStyle(name):
 # VARIABLES:
 ####################################################################################################################################
 
-# Ejemplo de ista de cédulas de clientes
+# Ejemplo de lista de cédulas de clientes
 clientList = ["513264", "28436485", "32564336", "105746567", "280765423", "670124583"]
 
 ####################################################################################################################################
@@ -533,43 +533,47 @@ class adminGUI(QMainWindow, form_class):
 
     # Cambio de página en MainStacked
     def on_home_pressed(self):
-        self.setPage(self.MainStacked, 0)      # Cambiar a la página principal
+        self.setPage(self.MainStacked, 0)         # Cambiar a la página principal
         self.MainTitle.setText("Caja")
 
     def on_sales_pressed(self):
-        self.setPage(self.MainStacked, 1)     # Cambiar a la página de ventas
+        self.setPage(self.MainStacked, 1)         # Cambiar a la página de ventas
         self.MainTitle.setText("Ventas")
 
     def on_inventory_pressed(self):
-        self.setPage(self.MainStacked, 2) # Cambiar a la página de inventario
+        self.setPage(self.MainStacked, 2)         # Cambiar a la página de inventario
         self.MainTitle.setText("Inventario")
 
     def on_querys_pressed(self):
-        self.setPage(self.MainStacked, 3)    # Cambiar a la página de consultas
+        self.setPage(self.MainStacked, 3)         # Cambiar a la página de consultas
         self.MainTitle.setText("Consultas")
 
     def on_loans_pressed(self):
-        self.setPage(self.MainStacked, 4)     # Cambiar a la página de préstamos
+        self.setPage(self.MainStacked, 4)         # Cambiar a la página de préstamos
         self.MainTitle.setText("Préstamos")
 
     def on_books_pressed(self):
-        self.setPage(self.MainStacked, 5)     # Cambiar a la página de libros
+        self.setPage(self.MainStacked, 5)         # Cambiar a la página de libros
         self.MainTitle.setText("Libros")
 
+    def on_providers_pressed(self):
+        self.setPage(self.MainStacked, 6)         # Cambiar a la página de clientes
+        self.MainTitle.setText("Proveedores")
+
     def on_clients_pressed(self):
-        self.setPage(self.MainStacked, 6)   # Cambiar a la página de clientes
+        self.setPage(self.MainStacked, 7)         # Cambiar a la página de clientes
         self.MainTitle.setText("Clientes")
 
     def on_users_pressed(self):
-        self.setPage(self.MainStacked, 7)     # Cambiar a la página de usuarios
+        self.setPage(self.MainStacked, 8)         # Cambiar a la página de usuarios
         self.MainTitle.setText("Usuarios")
 
     def on_configure_pressed(self):
-        self.setPage(self.MainStacked, 8) # Cambiar a la página de configuraciones
+        self.setPage(self.MainStacked, 9)         # Cambiar a la página de configuraciones
         self.MainTitle.setText("Configuraciones")
 
     def on_help_pressed(self):
-        self.setPage(self.MainStacked, 9)      # Cambiar a la página de ayuda
+        self.setPage(self.MainStacked, 10)        # Cambiar a la página de ayuda
         self.MainTitle.setText("Ayuda")
 
     # Cambio de página en subStacked

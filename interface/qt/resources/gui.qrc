@@ -42,6 +42,7 @@
     <file alias="logo-white">../images/logo-white.png</file>
   </qresource>
   <qresource prefix="menubar">
+    <file alias="providers">../images/provider.png</file>
     <file alias="help">../images/help.png</file>
     <file alias="books">../images/books.png</file>
     <file alias="loans">../images/loans.png</file>

@@ -239,9 +239,10 @@ class sistema_window(QMainWindow, form_class, QWidget):
     def on_sales_pressed(self): self.setPage(self.MainStacked, 1)
     def on_inventory_pressed(self): self.setPage(self.MainStacked, 2)
     def on_querys_pressed(self): self.setPage(self.MainStacked, 3)
-    def on_clients_pressed(self): self.setPage(self.MainStacked, 4)
-    def on_users_pressed(self): self.setPage(self.MainStacked, 5)
-    def on_configure_pressed(self): self.setPage(self.MainStacked, 6)
+    def on_providers_pressed(self): self.setPage(self.MainStacked, 4)
+    def on_clients_pressed(self): self.setPage(self.MainStacked, 5)
+    def on_users_pressed(self): self.setPage(self.MainStacked, 6)
+    def on_configure_pressed(self): self.setPage(self.MainStacked, 7)
 
     def on_arrow0_pressed(self): self.setPage(self.subStacked3, 1)
     def on_arrow1_pressed(self): self.setPage(self.subStacked3, 1)
