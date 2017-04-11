@@ -59,7 +59,13 @@ class dbManager(object):
     Método para hacer backup a la Base de Datos
     """
     def backup(self):
-        DBBackup(self.session).backup()
+        DBBackup().backup()
+
+    """
+    Método para hacer restore a la Base de Datos
+    """
+    def restore(self):
+        DBBackup().restore()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE USUARIOS:
@@ -110,7 +116,7 @@ class dbManager(object):
                 return True
             except Exception as e:
                 print("Error desconocido al crear el usuario " + username +":", e)
-                m.session.rollback()
+                self.session.rollback()
                 return False
         else:
             print("No se puede crear el usuario " + username + " porque ya existe")
@@ -436,7 +442,7 @@ class dbManager(object):
                 return True
             except Exception as e:
                 print("Error desconocido al crear el producto: " + product_name +":", e)
-                m.session.rollback()
+                self.session.rollback()
                 return False
         else:
             print("No se puede crear el producto " + product_name + " porque ya existe")
@@ -955,7 +961,7 @@ class dbManager(object):
                 return str(newPurchase.purchase_id)
             except Exception as e:
                 print("Error desconocido al intentar crear la compra", e)
-                m.session.rollback()
+                self.session.rollback()
                 return None
         else:
             print("No se puede crear la compra porque NO existe el cliente o el vendedor")
@@ -1001,7 +1007,7 @@ class dbManager(object):
                 return True
             except Exception as e:
                 print("Error desconocido al intentar añadir la lista de productos a la compra", e)
-                m.session.rollback()
+                self.session.rollback()
                 return False
         else:
             print("No se puede añadir la lista de productos porque NO existe la compra o el producto")
@@ -1090,7 +1096,7 @@ class dbManager(object):
                 return True
             except Exception as e:
                 print("Error desconocido al intentar añadir la lista de servicios a la compra", e)
-                m.session.rollback()
+                self.session.rollback()
                 return False
         else:
             print("No se puede añadir la lista de servicios porque NO existe la compra o el producto")
@@ -1136,7 +1142,7 @@ class dbManager(object):
                 return str(newCheckout.checkout_id)
             except Exception as e:
                 print("Error desconocido al intentar crear el pago", e)
-                m.session.rollback()
+                self.session.rollback()
                 return None
         else:
             print("No se puede crear el pago porque NO existe la compra")
@@ -1217,7 +1223,7 @@ class dbManager(object):
                 return True
             except Exception as e:
                 print("Error desconocido al intentar registrar la transferencia", e)
-                m.session.rollback()
+                self.session.rollback()
                 return False
         else:
             print("La transferencia ya está registrada")
@@ -1263,7 +1269,8 @@ class dbManager(object):
 
 # Prueba
 if __name__ == '__main__':
-    m = dbManager("sistema_ventas", "hola")
+    m = dbManager("sistema_ventas", "hola", dropAll=True)
+    m.restore()
 
     """
     Insert Example
@@ -1278,7 +1285,7 @@ if __name__ == '__main__':
     for i in query: print(i)
     """
 
-    """
+    
     l = Valid_language(lang_name="ES")
     m.session.add(l)
     try:
@@ -1314,7 +1321,6 @@ if __name__ == '__main__':
 
     for subjects in b.subjects:
         print(subjects)
-    """
 
     """Pruebas de los métodos para usuarios"""
 
