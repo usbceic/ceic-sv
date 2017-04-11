@@ -307,13 +307,14 @@ class dbManager(object):
     Retorna False cuando el proveedor ya existe
     Genera una excepcion cuando algo sale mal
     '''
-    def createProvider(self, provider_name, pay_information, phone = None, email = None, description = None, category = None):
+    def createProvider(self, provider_name, pay_information = None, phone = None, email = None, description = None, category = None):
         if(self.existProvider(provider_name)):
             return False
-        kwargs = {
-            'provider_name' : provider_name,
-            'pay_information' : pay_information
-        }
+        kwargs = {'provider_name' : provider_name}
+
+        if pay_information is not None:
+            kwargs['pay_information'] = pay_information
+
         if phone is not None:
             kwargs['phone'] = phone
 

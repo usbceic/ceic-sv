@@ -440,7 +440,6 @@ class adminGUI(QMainWindow, form_class):
             return sorted(productsNames)
 
         else:
-            print(productsList)
             return sorted(productsList, key = lambda product: product[1])
 
     # Borrar contenido de uno o más LineEdit:
@@ -721,7 +720,6 @@ class adminGUI(QMainWindow, form_class):
             elif self.rbutton6.isChecked():
                 productName = self.lineE26.text()
                 product = self.db.getProductByNameOrID(productName)
-                print(self.currentProduct)
 
                 # Refrescar toda la interfaz
                 self.refresh()
@@ -813,7 +811,6 @@ class adminGUI(QMainWindow, form_class):
                 productName = self.lineE26.text()
                 if productName in self.productsNames:
                     product = self.productsInfo[self.productsNames.index(productName)]
-                    print(product)
                     self.currentProduct = str(product[0]) # Product ID
                     self.lineE27.setText(str(product[2])) # Precio
                     self.lineE28.setText(product[5])      # Categoria

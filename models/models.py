@@ -78,7 +78,7 @@ class Provider(this.Base):
     provider_name   = Column(String, nullable=False, primary_key=True)
     phone           = Column(String)
     email           = Column(String)
-    pay_information = Column(String, nullable=False)
+    pay_information = Column(String)
     description     = Column(String)
     category        = Column(String)
     active         = Column(Boolean, nullable=False, default=True)
