@@ -124,7 +124,7 @@ class Product(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.product_id), self.product_name, str(self.price), str(self.remaining), str(self.remaining_lots), str(self.available), self.description, self.category)
+        kwargs = (str(self.product_id), self.product_name, str(self.price), str(self.remaining), str(self.remaining_lots), str(self.available), self.category)
         template = "<Product(product_id='%s', product_name='%s', price='%s', remaining='%s', remaining_lots=='%s', available=='%s', category=='%s')>"
         return  template % kwargs
 

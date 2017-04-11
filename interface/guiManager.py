@@ -167,6 +167,8 @@ class adminGUI(QMainWindow, form_class):
         self.currentProduct = None  # Instancia de producto en uso
         self.tempImage = ""         # Imagen seleccionada
 
+        self.tmpProductRemaining = 0
+
         # Aplicar configuraciones generales de la interfaz
         self.generalSetup()
 
@@ -835,7 +837,7 @@ class adminGUI(QMainWindow, form_class):
     def on_add0_pressed(self):
         if self.click():
             count = int(self.spinLine0.text())
-            if count < 9999999:
+            if count < self.tmpProductRemaining:
                 self.spinLine0.setText(str(count+1))
 
     # Botón para restar al spinLine
@@ -861,6 +863,16 @@ class adminGUI(QMainWindow, form_class):
                 self.lineE18.setText(client.firstname)    # Establecer Nombre
                 self.lineE19.setText(client.lastname)     # Establecer Apellido
                 self.lineE20.setText(str(client.balance)) # Establecer Saldo
+
+    # LineEdit para ingresar la cédula del cliente
+    def on_lineE23_textChanged(self):
+        if self.textChanged():
+            name = self.lineE23.text()
+            if self.db.existProduct(name):
+                product = self.db.getProductByNameOrID(name)[0] # Obtener cliente
+                self.lineE24.setText(str(product.price))        # Establecer Nombre
+                self.tmpProductRemaining = product.remaining
+                # cargar imagen
 
     #==============================================================================================================================================================================
     # Configuración de botones de proveedores
