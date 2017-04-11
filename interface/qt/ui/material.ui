@@ -290,6 +290,12 @@
     background: #1976D2;
 }
 
+/*Configurar el estilo de las botones de aplicar, aceptar, cancelar... cuando estan desactivados*/
+#pbutton0[enabled=&quot;false&quot;], #pbutton1[enabled=&quot;false&quot;], #pbutton2[enabled=&quot;false&quot;], #pbutton3[enabled=&quot;false&quot;], #pbutton4[enabled=&quot;false&quot;], #pbutton5[enabled=&quot;false&quot;], #pbutton6[enabled=&quot;false&quot;], #pbutton7[enabled=&quot;false&quot;], #pbutton8[enabled=&quot;false&quot;], #pbutton9[enabled=&quot;false&quot;], #pbutton10[enabled=&quot;false&quot;], #pbutton11[enabled=&quot;false&quot;], #pbutton12[enabled=&quot;false&quot;], #pbutton13[enabled=&quot;false&quot;], #pbutton14[enabled=&quot;false&quot;], #pbutton15[enabled=&quot;false&quot;], #pbutton16[enabled=&quot;false&quot;], #pbutton17[enabled=&quot;false&quot;], #pbutton18[enabled=&quot;false&quot;], #pbutton19[enabled=&quot;false&quot;], #pbutton20[enabled=&quot;false&quot;], #pbutton21[enabled=&quot;false&quot;], #pbutton22[enabled=&quot;false&quot;], #pbutton23[enabled=&quot;false&quot;],#pbutton24[enabled=&quot;false&quot;], #pbutton25[enabled=&quot;false&quot;], #pbutton26[enabled=&quot;false&quot;], #pbutton27[enabled=&quot;false&quot;], #pbutton28[enabled=&quot;false&quot;], #pbutton29[enabled=&quot;false&quot;], #pbutton30[enabled=&quot;false&quot;], #pbutton31[enabled=&quot;false&quot;], #pbutton32[enabled=&quot;false&quot;], #pbutton33[enabled=&quot;false&quot;], #pbutton34[enabled=&quot;false&quot;], #pbutton35[enabled=&quot;false&quot;], #pbutton36[enabled=&quot;false&quot;], #pbutton37[enabled=&quot;false&quot;], #pbutton38[enabled=&quot;false&quot;], #pbutton39[enabled=&quot;false&quot;], #pbutton40[enabled=&quot;false&quot;], #pbutton41[enabled=&quot;false&quot;], #pbutton42[enabled=&quot;false&quot;], #pbutton43[enabled=&quot;false&quot;], #pbutton44[enabled=&quot;false&quot;], #pbutton45[enabled=&quot;false&quot;], #pbutton46[enabled=&quot;false&quot;], #pbutton47[enabled=&quot;false&quot;], #pbutton48[enabled=&quot;false&quot;], #pbutton49[enabled=&quot;false&quot;], #pbutton50[enabled=&quot;false&quot;]{
+    background: #1976D2;
+	color:#F5F5F5;
+}
+
 /*Configurar el estilo por defecto de las botones de aplicar, aceptar, cancelar...*/
 #cancelpb0, #cancelpb1, #cancelpb2, #cancelpb3, #cancelpb4, #cancelpb5, #cancelpb6, #cancelpb7, #cancelpb8, #cancelpb9, #cancelpb10, #cancelpb11, #cancelpb12, #cancelpb13, #cancelpb14, #cancelpb15, #cancelpb16, #cancelpb17, #cancelpb18, #cancelpb19, #cancelpb20, #cancelpb21, #cancelpb22, #cancelpb23, #cancelpb24, #cancelpb25, #cancelpb26, #cancelpb27, #cancelpb28, #cancelpb29, #cancelpb30, #cancelpb31, #cancelpb32, #cancelpb33, #cancelpb34, #cancelpb35, #cancelpb36, #cancelpb37, #cancelpb38, #cancelpb39, #cancelpb40, #cancelpb41, #cancelpb42, #cancelpb43, #cancelpb44, #cancelpb45, #cancelpb46, #cancelpb47, #cancelpb48, #cancelpb49, #cancelpb50{
     background: transparent;
@@ -4330,6 +4336,9 @@ QWidget:item:unchecked {
                  </item>
                  <item row="0" column="2">
                   <widget class="QPushButton" name="pbutton7">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
                    <property name="font">
                     <font>
                      <pointsize>11</pointsize>
@@ -4484,7 +4493,7 @@ QWidget:item:unchecked {
                  </column>
                  <column>
                   <property name="text">
-                   <string>Monto</string>
+                   <string>Subtotal</string>
                   </property>
                  </column>
                 </widget>
@@ -15483,12 +15492,6 @@ QWidget:item:unchecked {
              </item>
             </layout>
            </widget>
-           <zorder>groupBox24</zorder>
-           <zorder>subStacked9_2</zorder>
-           <zorder></zorder>
-           <zorder>subStacked9_2</zorder>
-           <zorder>subStacked9_2</zorder>
-           <zorder>groupBox25</zorder>
           </widget>
           <widget class="QWidget" name="mainPage7">
            <widget class="QGroupBox" name="groupBox12">

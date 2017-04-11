@@ -552,6 +552,9 @@ class adminGUI(QMainWindow, form_class):
         self.clearLEs(self.lotsRO0)
         self.clearLEs(self.providersLE0)
 
+        # Configurar restricciones de los LineEdit en la vista de ventas
+        self.setupSalesLE()
+
     def generalSetup(self):
         # Centrar posición de la ventana
         self.center()
@@ -563,7 +566,6 @@ class adminGUI(QMainWindow, form_class):
         self.setupSpinLines(self.spinBox)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
-
         #self.setupPlaceholders()
 
     #==============================================================================================================================================================================
@@ -869,6 +871,11 @@ class adminGUI(QMainWindow, form_class):
     # CONFIGURACIÓN DE LA VISTA DE VENTAS
     #==============================================================================================================================================================================
 
+    # Función para aplicar la configuración por defecto de los lineEdit de la vista de ventas
+    def setupSalesLE(self):
+        self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
+        self.lineE22.setValidator(QIntValidator(0, 0))  # Establecer limite de efectivo para pagar
+
     # Método para refrescar la tabla de factura en ventas
     def updateInvoiceTable(self, table, itemsList):
         self.clearTable(table)             # Vaciar la tabla
@@ -913,15 +920,109 @@ class adminGUI(QMainWindow, form_class):
     # LineEdit para ingresar la cédula del cliente
     def on_lineE17_textChanged(self):
         if self.textChanged():
-            ci = int(self.lineE17.text())
-            if self.db.existClient(ci):
-                client = self.db.getClient(ci)[0]         # Obtener cliente
-                self.lineE18.setText(client.firstname)    # Establecer Nombre
-                self.lineE19.setText(client.lastname)     # Establecer Apellido
-                self.lineE20.setText(str(client.balance)) # Establecer Saldo
+            if self.lineE17.text() != "":
+                ci = int(self.lineE17.text())
+                if self.db.existClient(ci):
+                    client = self.db.getClient(ci)[0]                            # Obtener cliente
+                    self.lineE18.setText(client.firstname)                       # Establecer Nombre
+                    self.lineE19.setText(client.lastname)                        # Establecer Apellido
+                    self.lineE20.setText(str(client.balance))                    # Establecer Saldo
+                    self.lineE152.setValidator(QIntValidator(0, client.balance)) # Establecer limite de saldo para pagar
+
+                else:
+                    self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
+                    self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
+
+    # LineEdit para ingresar el monto a pagar en efectivo
+    def on_lineE21_textChanged(self):
+        if self.textChanged():
+            print("Irga si se activa")
+            if self.lineE21.text() != "":
+                total = float(self.lineE21.text())
+                cota1 = total
+                cota2 = total
+
+                if self.lineE22.text() != "":
+                    efectivo = float(self.lineE22.text())
+                    cota1 = total - efectivo
+
+                    if self.lineE17.text() != "":
+                        ci = int(self.lineE17.text())
+                        if self.db.existClient(ci):
+                            balance = self.db.getClient(ci)[0].balance
+
+                            if balance < cota1:
+                                cota1 = balance
+
+                        else: cota1 = 0
+                    else: cota1 = 0
+
+                self.lineE152.setValidator(QIntValidator(0, cota1))
+                if self.lineE152.text() != "":
+                    saldo = float(self.lineE152.text())
+
+                    if saldo > cota1:
+                        self.lineE152.setText(str(cota1))
+
+                if self.lineE152.text() != "":
+                    saldo = float(self.lineE152.text())
+                    cota2 = total - saldo
+
+                self.lineE22.setValidator(QIntValidator(0, cota2))
+                if self.lineE22.text() != "":
+                    efectivo = float(self.lineE22.text())
+
+                    if efectivo > cota2:
+                        self.lineE22.setText(str(cota2))
 
             else:
-                self.clearLEs(self.salesClientLE) # Limpiar lineEdits del apartado
+                self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
+                self.lineE22.setValidator(QIntValidator(0, 0))  # Establecer limite de efectivo para pagar
+
+    # LineEdit para ingresar el monto a pagar en efectivo
+    def on_lineE22_textChanged(self):
+        if self.textChanged():
+            if self.lineE21.text() != "":
+                total = float(self.lineE21.text())
+                cota = total
+                if self.lineE22.text() != "":
+                    efectivo = float(self.lineE22.text())
+                    cota = total - efectivo
+
+                    if self.lineE17.text() != "":
+                        ci = int(self.lineE17.text())
+                        if self.db.existClient(ci):
+                            balance = self.db.getClient(ci)[0].balance
+
+                            if balance < cota:
+                                cota = balance
+
+                        else: cota = 0
+                    else: cota = 0
+
+                self.lineE152.setValidator(QIntValidator(0, cota))
+                if self.lineE152.text() != "":
+                    saldo = float(self.lineE152.text())
+
+                    if saldo > cota:
+                        self.lineE152.setText(str(cota))
+
+    # LineEdit para ingresar el monto a pagar con saldo
+    def on_lineE152_textChanged(self):
+        if self.textChanged():
+            if self.lineE21.text() != "":
+                total = float(self.lineE21.text())
+                cota = total
+                if self.lineE152.text() != "":
+                    saldo = float(self.lineE152.text())
+                    cota = total - saldo
+
+                self.lineE22.setValidator(QIntValidator(0, cota))
+                if self.lineE22.text() != "":
+                    efectivo = float(self.lineE22.text())
+
+                    if efectivo > cota:
+                        self.lineE22.setText(str(cota))
 
     # LineEdit para ingresar el nombre del producto seleccionado
     def on_lineE23_textChanged(self):
