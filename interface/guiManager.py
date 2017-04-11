@@ -144,6 +144,9 @@ class adminGUI(QMainWindow, form_class):
         self.lotsRO2 = [self.lineE34, self.lineE35, self.lineE36, self.lineE37]
         self.lotsRO3 = [self.lineE38]
 
+        # Apartado de proveedores
+        self.providerLE = [self.lineE146, self.lineE147, self.lineE148, self.lineE149, self.lineE150, self.lineE151]
+
         # Tablas
         self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
                         self.table8, self.table9, self.table10, self.table11]
@@ -511,6 +514,7 @@ class adminGUI(QMainWindow, form_class):
         self.clearLE(self.productSearch)
         self.clearLE(self.productsRO0)
         self.clearLE(self.lotsRO0)
+        self.clearLE(self.providerLE)
 
     def generalSetup(self):
         # Centrar posición de la ventana
@@ -835,6 +839,26 @@ class adminGUI(QMainWindow, form_class):
             count = int(self.spinLine0.text())
             if count > 0:
                 self.spinLine0.setText(str(count-1))
+
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Configuración de botones de proveedores
+    #-------------------------------------------------------------------------------------------------------------------------------
+
+    # Botón para crear un proveedor
+    def on_pbutton20_pressed(self):
+        if self.click():
+            if self.lineE146.text() != "":
+                kwargs = {
+                    "provider_name"   : self.lineE146.text(),
+                    "phone"           : self.lineE147.text(),
+                    "email"           : self.lineE148.text(),
+                    "description"     : self.textE1.toPlainText(),
+                    "pay_information" : self.textE2.toPlainText()
+                }
+                self.db.createProvider(**kwargs)
+
+                self.refresh()                # Refrescar toda la interfaz
+                self.lineE146.setFocus()      # Enfocar
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Manejador de eventos de teclas presionadas
