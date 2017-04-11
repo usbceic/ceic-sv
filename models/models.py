@@ -80,8 +80,7 @@ class Provider(this.Base):
     email           = Column(String)
     pay_information = Column(String)
     description     = Column(String)
-    category        = Column(String)
-    active         = Column(Boolean, nullable=False, default=True)
+    active          = Column(Boolean, nullable=False, default=True)
     creation_date   = Column(DateTime, nullable=False, default=datetime.datetime.now)
 
     # Relaciones
@@ -90,7 +89,7 @@ class Provider(this.Base):
     # Representación de una instancia de la clase
     def __repr__(self):
         kwargs = (self.provider_name, self.phone, self.email, self.pay_information, self.description, self.category)
-        template = "<Provider(provider_name='%s', phone='%s', email='%s', pay_information='%s', description=='%s', category=='%s')>"
+        template = "<Provider(provider_name='%s', phone='%s', email='%s', pay_information='%s', description=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================

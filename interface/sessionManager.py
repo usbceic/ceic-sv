@@ -136,7 +136,6 @@ class loginGUI(QMainWindow, loginWindow):
 
             else: dialog0GUI().exec_()
 
-
     def setupPage0(self):
         self.lineEd0.setPlaceholderText("Usuario")
         self.lineEd1.setPlaceholderText("Contraseña")
