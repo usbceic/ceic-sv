@@ -156,7 +156,11 @@ class adminGUI(QMainWindow, form_class):
         self.selectedProductLE1 = [self.lineE23, self.lineE24, self.lineE25]
 
         # Apartado de cliente en ventas
-        self.salesClientLE = [self.lineE18, self.lineE19, self.lineE20]
+        self.salesClientLE0 = [self.lineE18, self.lineE19, self.lineE20]
+        self.salesClientLE1 = [self.lineE17, self.lineE18, self.lineE19, self.lineE20]
+
+        # Apartado de pago en la vista de ventas
+        self.salesCheckoutLE = [self.lineE21, self.lineE22, self.lineE152]
 
         # SpinLines
         self.spinBox = [self.spinLine0]
@@ -512,22 +516,6 @@ class adminGUI(QMainWindow, form_class):
 
         table.resizeColumnsToContents()
 
-    # Método para refrescar la tabla de factura en ventas
-    def updateInvoiceTable(self, table, itemsList):
-        self.clearTable(table)
-
-        table.setRowCount(len(itemsList))
-        for i in range(len(itemsList)):
-            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][0]))) # Nombre
-            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][1]))) # Precio
-            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][2]))) # Cantidad
-            table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Subtotal
-
-        self.elem_actual = len(itemsList)-1
-        if len(itemsList) > 0: table.selectRow(self.elem_actual)
-
-        table.resizeColumnsToContents()
-
     # Método para refrescar la interfaz
     def refresh(self):
         # Listas de nombres de los productos
@@ -878,8 +866,25 @@ class adminGUI(QMainWindow, form_class):
                     self.lineE30.setText(str(product[3])) # Disp. Total
 
     #==============================================================================================================================================================================
-    # Configuración de los botones necesarios para realizar las ventas
+    # CONFIGURACIÓN DE LA VISTA DE VENTAS
     #==============================================================================================================================================================================
+
+    # Método para refrescar la tabla de factura en ventas
+    def updateInvoiceTable(self, table, itemsList):
+        self.clearTable(table)             # Vaciar la tabla
+        total = 0                          # Variable para contar el total a pagar
+        table.setRowCount(len(itemsList))  # Contador de filas
+        for i in range(len(itemsList)):    # LLenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][0]))) # Nombre
+            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][1]))) # Precio
+            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][2]))) # Cantidad
+            table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Subtotal
+            total += float(itemsList[i][3])                             # Sumar subtotal al total
+
+        self.lineE21.setText(str(total))                          # Actualizar el lineEdit del total
+        self.elem_actual = 0                                      # Definir la fila que se seleccionará
+        if len(itemsList) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
+        table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
 
     # Botón para sumar al spinLine
     def on_add0_pressed(self):
@@ -946,28 +951,28 @@ class adminGUI(QMainWindow, form_class):
                 cantidad = self.spinLine0.text()                                    # Obtener cantidad
                 subtotal = float(price)*int(cantidad)                               # Obtener subtotal
 
+                # Actualizar datos en el manejador
                 if name not in self.selectedProducts:
-                    self.selectedProducts[name] = [price, cantidad, subtotal]           # Añadir a la lista de productos seleccionados
-                    self.selectedProductRemaining[name] = product.remaining-int(cantidad) # Resetear la cota superior del contador
+                    self.selectedProducts[name] = [price, cantidad, subtotal]             # Añadir a la lista de productos seleccionados
+                    self.selectedProductRemaining[name] = product.remaining-int(cantidad) # Acutalizar la cota superior del contador
 
                 else:
                     temp = self.selectedProducts[name]
                     temp[1] = str(int(temp[1])+int(cantidad))
                     temp[2] = str(float(temp[2])+float(subtotal))
-                    self.selectedProducts[name] = temp
-                    self.selectedProductRemaining[name] = product.remaining-int(temp[1]) # Resetear la cota superior del contador
+                    self.selectedProducts[name] = temp                                   # Actualizar la instancia del producto en la lista de productos seleccionados
+                    self.selectedProductRemaining[name] = product.remaining-int(temp[1]) # Acutalizar la cota superior del contador
 
                 selectedList = []
                 for key, value in self.selectedProducts.items():
                     selectedList.append([key, value[0], value[1], value[2]])
 
-                self.updateInvoiceTable(self.table11, selectedList)                   # Actualizar la factura
-                self.setupTable(self.table11)                                         # Reconfigurar la tabla de factura
-
-
-                self.clearLEs(self.selectedProductLE1)                               # Limpiar los lineEdit de este apartado
-                self.clearSpinLine(self.spinLine0)                                  # Setear en 0 el lineEdit del contador
-                # limpiar Imagen                                                    # Cargar imagen por defecto
+                # Refrescar interfaz
+                self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
+                self.setupTable(self.table11)                       # Reconfigurar la tabla de factura
+                self.clearLEs(self.selectedProductLE1)              # Limpiar los lineEdit de este apartado
+                self.clearSpinLine(self.spinLine0)                  # Setear en 0 el lineEdit del contador
+                # limpiar Imagen                                    # Cargar imagen por defecto
 
     #==============================================================================================================================================================================
     # Configuración de botones de proveedores
