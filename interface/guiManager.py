@@ -913,9 +913,27 @@ class adminGUI(QMainWindow, form_class):
     # Botón para efectuar venta
     def on_pbutton7_pressed(self):
         if self.click():
-            if self.lineE21.text() != "":
+            if (self.lineE17.text() and self.lineE21.text()) != "":
                 ci = int(self.lineE17.text())
-                total = int(self.lineE21.text())
+                total = float(self.lineE21.text())
+                efectivo = 0
+                saldo = 0
+
+                if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+
+                if efectivo + saldo >= total:
+
+                    purchase_id = self.db.createPurchase(ci, self.user)
+
+                    for key, val in self.selectedProducts.items():
+                        self.db.createProductList(purchase_id, key, float(val[0]), int(val[1]))
+
+                    if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)
+                    if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)
+
+                    self.clearLEs(self.salesClientLE1)
+                    self.clearLEs(self.salesCheckoutLE)
 
     # LineEdit para ingresar la cédula del cliente
     def on_lineE17_textChanged(self):

@@ -110,7 +110,7 @@ class dbManager(object):
                 return True
             except Exception as e:
                 print("Error desconocido al crear el usuario " + username +":", e)
-                m.session.rollback()
+                self.session.rollback()
                 return False
         else:
             print("No se puede crear el usuario " + username + " porque ya existe")
@@ -438,7 +438,7 @@ class dbManager(object):
                 return True
             except Exception as e:
                 print("Error desconocido al crear el producto: " + product_name +":", e)
-                m.session.rollback()
+                self.session.rollback()
                 return False
         else:
             print("No se puede crear el producto " + product_name + " porque ya existe")
@@ -957,7 +957,7 @@ class dbManager(object):
                 return str(newPurchase.purchase_id)
             except Exception as e:
                 print("Error desconocido al intentar crear la compra", e)
-                m.session.rollback()
+                self.session.rollback()
                 return None
         else:
             print("No se puede crear la compra porque NO existe el cliente o el vendedor")
@@ -1003,7 +1003,7 @@ class dbManager(object):
                 return True
             except Exception as e:
                 print("Error desconocido al intentar añadir la lista de productos a la compra", e)
-                m.session.rollback()
+                self.session.rollback()
                 return False
         else:
             print("No se puede añadir la lista de productos porque NO existe la compra o el producto")
@@ -1017,7 +1017,7 @@ class dbManager(object):
         # Actualizar costo de la compra
         total = self.session.query(Purchase.total).filter_by(purchase_id = purchase_id).scalar()
         for i in range(10):
-            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"total" : total+subtotal})
+            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"total" : float(total)+float(subtotal)})
             try:
                 self.session.commit()
                 print("Se ha actualizado la compra correctamente")
@@ -1092,7 +1092,7 @@ class dbManager(object):
                 return True
             except Exception as e:
                 print("Error desconocido al intentar añadir la lista de servicios a la compra", e)
-                m.session.rollback()
+                self.session.rollback()
                 return False
         else:
             print("No se puede añadir la lista de servicios porque NO existe la compra o el producto")
@@ -1138,7 +1138,7 @@ class dbManager(object):
                 return str(newCheckout.checkout_id)
             except Exception as e:
                 print("Error desconocido al intentar crear el pago", e)
-                m.session.rollback()
+                self.session.rollback()
                 return None
         else:
             print("No se puede crear el pago porque NO existe la compra")
@@ -1219,7 +1219,7 @@ class dbManager(object):
                 return True
             except Exception as e:
                 print("Error desconocido al intentar registrar la transferencia", e)
-                m.session.rollback()
+                self.session.rollback()
                 return False
         else:
             print("La transferencia ya está registrada")
@@ -1287,7 +1287,7 @@ if __name__ == '__main__':
         m.session.commit()
     except Exception as e:
         print("Excepcion de Lenguaje:", e)
-        m.session.rollback()
+        self.session.rollback()
 
     try:
         b = m.session.query(Book).filter_by(title="Prueba", lang=l.lang_name).one()
@@ -1304,7 +1304,7 @@ if __name__ == '__main__':
         m.session.commit()
     except Exception as e:
         print("Excepcion de Materia:", e)
-        m.session.rollback()
+        self.session.rollback()
         s = m.session.query(Subject).filter_by(subject_code="CI123").one()
 
     print("Soy b", b)

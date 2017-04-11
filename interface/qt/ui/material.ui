@@ -4337,7 +4337,7 @@ QWidget:item:unchecked {
                  <item row="0" column="2">
                   <widget class="QPushButton" name="pbutton7">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="font">
                     <font>
