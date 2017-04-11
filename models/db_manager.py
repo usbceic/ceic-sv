@@ -416,8 +416,10 @@ class dbManager(object):
      - Retorna False:
         * Cuando el producto NO existe
     """
-    def existProduct(self, product_name, active=True):
-        count = self.session.query(Product).filter_by(product_name=product_name.lower().strip(), active=active).count()
+    def existProduct(self, product_name, available = None, active=True):
+        if available != None: count = self.session.query(Product).filter_by(product_name=product_name.lower().strip(), available=available, active=active).count()
+        else: count = self.session.query(Product).filter_by(product_name=product_name.lower().strip(), active=active).count()
+
         if count == 0:
             print("El producto " + product_name + " NO existe")
             return False
@@ -1021,7 +1023,7 @@ class dbManager(object):
         # Actualizar costo de la compra
         total = self.session.query(Purchase.total).filter_by(purchase_id = purchase_id).scalar()
         for i in range(10):
-            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"total" : total+subtotal})
+            self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"total" : float(total)+float(subtotal)})
             try:
                 self.session.commit()
                 print("Se ha actualizado la compra correctamente")
@@ -1292,7 +1294,7 @@ if __name__ == '__main__':
         m.session.commit()
     except Exception as e:
         print("Excepcion de Lenguaje:", e)
-        m.session.rollback()
+        self.session.rollback()
 
     try:
         b = m.session.query(Book).filter_by(title="Prueba", lang=l.lang_name).one()
@@ -1309,7 +1311,7 @@ if __name__ == '__main__':
         m.session.commit()
     except Exception as e:
         print("Excepcion de Materia:", e)
-        m.session.rollback()
+        self.session.rollback()
         s = m.session.query(Subject).filter_by(subject_code="CI123").one()
 
     print("Soy b", b)

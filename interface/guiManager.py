@@ -156,7 +156,11 @@ class adminGUI(QMainWindow, form_class):
         self.selectedProductLE1 = [self.lineE23, self.lineE24, self.lineE25]
 
         # Apartado de cliente en ventas
-        self.salesClientLE = [self.lineE18, self.lineE19, self.lineE20]
+        self.salesClientLE0 = [self.lineE18, self.lineE19, self.lineE20]
+        self.salesClientLE1 = [self.lineE17, self.lineE18, self.lineE19, self.lineE20]
+
+        # Apartado de pago en la vista de ventas
+        self.salesCheckoutLE = [self.lineE21, self.lineE22, self.lineE152]
 
         # SpinLines
         self.spinBox = [self.spinLine0]
@@ -512,22 +516,6 @@ class adminGUI(QMainWindow, form_class):
 
         table.resizeColumnsToContents()
 
-    # Método para refrescar la tabla de factura en ventas
-    def updateInvoiceTable(self, table, itemsList):
-        self.clearTable(table)
-
-        table.setRowCount(len(itemsList))
-        for i in range(len(itemsList)):
-            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][0]))) # Nombre
-            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][1]))) # Precio
-            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][2]))) # Cantidad
-            table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Subtotal
-
-        self.elem_actual = len(itemsList)-1
-        if len(itemsList) > 0: table.selectRow(self.elem_actual)
-
-        table.resizeColumnsToContents()
-
     # Método para refrescar la interfaz
     def refresh(self):
         # Listas de nombres de los productos
@@ -564,6 +552,9 @@ class adminGUI(QMainWindow, form_class):
         self.clearLEs(self.lotsRO0)
         self.clearLEs(self.providersLE0)
 
+        # Configurar restricciones de los LineEdit en la vista de ventas
+        self.setupSalesLE()
+
     def generalSetup(self):
         # Centrar posición de la ventana
         self.center()
@@ -575,7 +566,6 @@ class adminGUI(QMainWindow, form_class):
         self.setupSpinLines(self.spinBox)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
-
         #self.setupPlaceholders()
 
     #==============================================================================================================================================================================
@@ -878,16 +868,39 @@ class adminGUI(QMainWindow, form_class):
                     self.lineE30.setText(str(product[3])) # Disp. Total
 
     #==============================================================================================================================================================================
-    # Configuración de los botones necesarios para realizar las ventas
+    # CONFIGURACIÓN DE LA VISTA DE VENTAS
     #==============================================================================================================================================================================
+
+    # Función para aplicar la configuración por defecto de los lineEdit de la vista de ventas
+    def setupSalesLE(self):
+        self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
+        self.lineE22.setValidator(QIntValidator(0, 0))  # Establecer limite de efectivo para pagar
+
+    # Método para refrescar la tabla de factura en ventas
+    def updateInvoiceTable(self, table, itemsList):
+        self.clearTable(table)             # Vaciar la tabla
+        total = 0                          # Variable para contar el total a pagar
+        table.setRowCount(len(itemsList))  # Contador de filas
+        for i in range(len(itemsList)):    # LLenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][0]))) # Nombre
+            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][1]))) # Precio
+            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][2]))) # Cantidad
+            table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Subtotal
+            total += float(itemsList[i][3])                             # Sumar subtotal al total
+
+        self.lineE21.setText(str(total))                          # Actualizar el lineEdit del total
+        self.elem_actual = 0                                      # Definir la fila que se seleccionará
+        if len(itemsList) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
+        table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
 
     # Botón para sumar al spinLine
     def on_add0_pressed(self):
         if self.click():
             count = int(self.spinLine0.text())
-            if count < self.selectedProductRemaining[self.selectedProductName]:
-                self.spinLine0.setText(str(count+1))
-                self.lineE25.setText(str(((count+1)*float(self.lineE24.text()))))
+            if self.selectedProductName in self.selectedProductRemaining:
+                if count < self.selectedProductRemaining[self.selectedProductName]:
+                    self.spinLine0.setText(str(count+1))
+                    self.lineE25.setText(str(((count+1)*float(self.lineE24.text()))))
 
     # Botón para restar al spinLine
     def on_substract0_pressed(self):
@@ -900,28 +913,140 @@ class adminGUI(QMainWindow, form_class):
     # Botón para efectuar venta
     def on_pbutton7_pressed(self):
         if self.click():
-            if self.lineE21.text() != "":
+            if (self.lineE17.text() and self.lineE21.text()) != "":
                 ci = int(self.lineE17.text())
-                total = int(self.lineE21.text())
+                total = float(self.lineE21.text())
+                efectivo = 0
+                saldo = 0
+
+                if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+
+                if efectivo + saldo >= total:
+
+                    purchase_id = self.db.createPurchase(ci, self.user)
+
+                    for key, val in self.selectedProducts.items():
+                        self.db.createProductList(purchase_id, key, float(val[0]), int(val[1]))
+
+                    if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)
+                    if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)
+
+                    self.clearLEs(self.salesClientLE1)
+                    self.clearLEs(self.salesCheckoutLE)
 
     # LineEdit para ingresar la cédula del cliente
     def on_lineE17_textChanged(self):
         if self.textChanged():
-            ci = int(self.lineE17.text())
-            if self.db.existClient(ci):
-                client = self.db.getClient(ci)[0]         # Obtener cliente
-                self.lineE18.setText(client.firstname)    # Establecer Nombre
-                self.lineE19.setText(client.lastname)     # Establecer Apellido
-                self.lineE20.setText(str(client.balance)) # Establecer Saldo
+            if self.lineE17.text() != "":
+                ci = int(self.lineE17.text())
+                if self.db.existClient(ci):
+                    client = self.db.getClient(ci)[0]                            # Obtener cliente
+                    self.lineE18.setText(client.firstname)                       # Establecer Nombre
+                    self.lineE19.setText(client.lastname)                        # Establecer Apellido
+                    self.lineE20.setText(str(client.balance))                    # Establecer Saldo
+                    self.lineE152.setValidator(QIntValidator(0, client.balance)) # Establecer limite de saldo para pagar
+
+                else:
+                    self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
+                    self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
+
+    # LineEdit para ingresar el monto a pagar en efectivo
+    def on_lineE21_textChanged(self):
+        if self.textChanged():
+            print("Irga si se activa")
+            if self.lineE21.text() != "":
+                total = float(self.lineE21.text())
+                cota1 = total
+                cota2 = total
+
+                if self.lineE22.text() != "":
+                    efectivo = float(self.lineE22.text())
+                    cota1 = total - efectivo
+
+                    if self.lineE17.text() != "":
+                        ci = int(self.lineE17.text())
+                        if self.db.existClient(ci):
+                            balance = self.db.getClient(ci)[0].balance
+
+                            if balance < cota1:
+                                cota1 = balance
+
+                        else: cota1 = 0
+                    else: cota1 = 0
+
+                self.lineE152.setValidator(QIntValidator(0, cota1))
+                if self.lineE152.text() != "":
+                    saldo = float(self.lineE152.text())
+
+                    if saldo > cota1:
+                        self.lineE152.setText(str(cota1))
+
+                if self.lineE152.text() != "":
+                    saldo = float(self.lineE152.text())
+                    cota2 = total - saldo
+
+                self.lineE22.setValidator(QIntValidator(0, cota2))
+                if self.lineE22.text() != "":
+                    efectivo = float(self.lineE22.text())
+
+                    if efectivo > cota2:
+                        self.lineE22.setText(str(cota2))
 
             else:
-                self.clearLEs(self.salesClientLE) # Limpiar lineEdits del apartado
+                self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
+                self.lineE22.setValidator(QIntValidator(0, 0))  # Establecer limite de efectivo para pagar
+
+    # LineEdit para ingresar el monto a pagar en efectivo
+    def on_lineE22_textChanged(self):
+        if self.textChanged():
+            if self.lineE21.text() != "":
+                total = float(self.lineE21.text())
+                cota = total
+                if self.lineE22.text() != "":
+                    efectivo = float(self.lineE22.text())
+                    cota = total - efectivo
+
+                    if self.lineE17.text() != "":
+                        ci = int(self.lineE17.text())
+                        if self.db.existClient(ci):
+                            balance = self.db.getClient(ci)[0].balance
+
+                            if balance < cota:
+                                cota = balance
+
+                        else: cota = 0
+                    else: cota = 0
+
+                self.lineE152.setValidator(QIntValidator(0, cota))
+                if self.lineE152.text() != "":
+                    saldo = float(self.lineE152.text())
+
+                    if saldo > cota:
+                        self.lineE152.setText(str(cota))
+
+    # LineEdit para ingresar el monto a pagar con saldo
+    def on_lineE152_textChanged(self):
+        if self.textChanged():
+            if self.lineE21.text() != "":
+                total = float(self.lineE21.text())
+                cota = total
+                if self.lineE152.text() != "":
+                    saldo = float(self.lineE152.text())
+                    cota = total - saldo
+
+                self.lineE22.setValidator(QIntValidator(0, cota))
+                if self.lineE22.text() != "":
+                    efectivo = float(self.lineE22.text())
+
+                    if efectivo > cota:
+                        self.lineE22.setText(str(cota))
 
     # LineEdit para ingresar el nombre del producto seleccionado
     def on_lineE23_textChanged(self):
         if self.textChanged():
             name = self.lineE23.text()
-            if self.db.existProduct(name):
+            if self.db.existProduct(name, available=True):
                 product = self.db.getProductByNameOrID(name)[0]                         # Obtener cliente
                 self.lineE24.setText(str(product.price))                                # Establecer Nombre
                 self.selectedProductName = name
@@ -946,28 +1071,30 @@ class adminGUI(QMainWindow, form_class):
                 cantidad = self.spinLine0.text()                                    # Obtener cantidad
                 subtotal = float(price)*int(cantidad)                               # Obtener subtotal
 
+                # Actualizar datos en el manejador
                 if name not in self.selectedProducts:
-                    self.selectedProducts[name] = [price, cantidad, subtotal]           # Añadir a la lista de productos seleccionados
-                    self.selectedProductRemaining[name] = product.remaining-int(cantidad) # Resetear la cota superior del contador
+                    self.selectedProducts[name] = [price, cantidad, subtotal]             # Añadir a la lista de productos seleccionados
+                    self.selectedProductRemaining[name] = product.remaining-int(cantidad) # Acutalizar la cota superior del contador
 
                 else:
                     temp = self.selectedProducts[name]
                     temp[1] = str(int(temp[1])+int(cantidad))
                     temp[2] = str(float(temp[2])+float(subtotal))
-                    self.selectedProducts[name] = temp
-                    self.selectedProductRemaining[name] = product.remaining-int(temp[1]) # Resetear la cota superior del contador
+                    self.selectedProducts[name] = temp                                   # Actualizar la instancia del producto en la lista de productos seleccionados
+                    self.selectedProductRemaining[name] = product.remaining-int(temp[1]) # Acutalizar la cota superior del contador
 
                 selectedList = []
                 for key, value in self.selectedProducts.items():
                     selectedList.append([key, value[0], value[1], value[2]])
 
-                self.updateInvoiceTable(self.table11, selectedList)                   # Actualizar la factura
-                self.setupTable(self.table11)                                         # Reconfigurar la tabla de factura
+                self.selectedProductName = ""
 
-
-                self.clearLEs(self.selectedProductLE1)                               # Limpiar los lineEdit de este apartado
-                self.clearSpinLine(self.spinLine0)                                  # Setear en 0 el lineEdit del contador
-                # limpiar Imagen                                                    # Cargar imagen por defecto
+                # Refrescar interfaz
+                self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
+                self.setupTable(self.table11)                       # Reconfigurar la tabla de factura
+                self.clearLEs(self.selectedProductLE1)              # Limpiar los lineEdit de este apartado
+                self.clearSpinLine(self.spinLine0)                  # Setear en 0 el lineEdit del contador
+                # limpiar Imagen                                    # Cargar imagen por defecto
 
     #==============================================================================================================================================================================
     # Configuración de botones de proveedores
