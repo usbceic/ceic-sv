@@ -24,7 +24,7 @@
 from os import getcwd
 
 # Importación de función para unir paths con el formato del sistema
-from os.path import join  as join
+from os.path import join
 
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
