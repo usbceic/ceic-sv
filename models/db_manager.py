@@ -834,7 +834,7 @@ class dbManager(object):
 
     # Método para crear un cliente nuevo
     # Retorna true cuando el cliente es creado satisfactoreamente y false cuando no se puede crear o cuando ya existia el cliente
-    def createClient(self, ci, firstname, lastname, carnet=None, phone=None, debt_permission=None, book_permission=None):
+    def createClient(self, ci, firstname, lastname, phone=None, email=None, debt_permission=None, book_permission=None):
         if self.existClient(ci):
             return False
 
@@ -844,11 +844,11 @@ class dbManager(object):
             'lastname' : lastname
         }
 
-        if carnet is not None:
-            kwargs['carnet'] = carnet
-
         if phone is not None:
             kwargs['phone'] = phone
+
+        if email is not None:
+            kwargs['email'] = email
 
         if debt_permission is not None:
             kwargs['debt_permission'] = debt_permission
@@ -875,14 +875,14 @@ class dbManager(object):
         * Cuando el cliente no existe
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
-    def updateClient(self, ciOriginal, ci=None, firstname=None, lastname=None, carnet=None, phone=None, debt_permission=None, book_permission=None, blocked=None, last_seen=None):
+    def updateClient(self, ciOriginal, ci=None, firstname=None, lastname=None, phone=None, email=None, debt_permission=None, book_permission=None, blocked=None, last_seen=None):
         if self.existClient(ciOriginal):
             values = {}
             if ci != None: values["ci"] = ci
             if firstname != None: values["firstname"] = firstname
             if lastname != None: values["lastname"] = lastname
-            if carnet != None: values["carnet"] = carnet
             if phone != None: values["phone"] = phone
+            if email != None: values["email"] = email
             if debt_permission != None: values["debt_permission"] = debt_permission
             if book_permission != None: values["book_permission"] = book_permission
             if blocked != None: values["blocked"] = blocked
@@ -1348,14 +1348,14 @@ if __name__ == '__main__':
     """
     print("\nPrueba de Cliente y Busqueda\n")
     m.createClient(42, "Kurt", "Cobain")
-    m.createClient(666, "Kurtis", "Cobain", carnet="12345")
+    m.createClient(666, "Kurtis", "Cobain")
     print(m.getClient(ci=42))
     print(m.getClient(ci=43))
     print(m.getClient(firstname="kurt"))
     """
     """
     print("\nPrueba de Cliente y Update\n")
-    m.createClient(777, "David", "Grohl", carnet="123456")
+    m.createClient(777, "David", "Grohl")
     print(m.getClient(ci=777))
     m.updateClient(777, debt_permission=False)
     print(m.getClient(ci=777))

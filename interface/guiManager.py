@@ -145,7 +145,13 @@ class adminGUI(QMainWindow, form_class):
         self.lotsRO3 = [self.lineE38]
 
         # Apartado de proveedores
-        self.providerLE = [self.lineE146, self.lineE147, self.lineE148, self.lineE149, self.lineE150, self.lineE151]
+        self.providersLE0 = [self.lineE146, self.lineE147, self.lineE148]
+        self.providersLE1 = [self.lineE149, self.lineE150, self.lineE151]
+
+        # Apartado de clientes
+        self.clientsLE0 = [self.lineE47, self.lineE48, self.lineE49, self.lineE50, self.lineE51]
+        self.clientsLE1 = [self.lineE52, self.lineE53, self.lineE54, self.lineE55, self.lineE56]
+        self.clientsLE2 = [self.lineE57, self.lineE58, self.lineE59, self.lineE60, self.lineE61]
 
         # Tablas
         self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
@@ -514,7 +520,7 @@ class adminGUI(QMainWindow, form_class):
         self.clearLE(self.productSearch)
         self.clearLE(self.productsRO0)
         self.clearLE(self.lotsRO0)
-        self.clearLE(self.providerLE)
+        self.clearLE(self.providersLE0)
 
     def generalSetup(self):
         # Centrar posición de la ventana
@@ -857,8 +863,30 @@ class adminGUI(QMainWindow, form_class):
                 }
                 self.db.createProvider(**kwargs)
 
-                self.refresh()                # Refrescar toda la interfaz
-                self.lineE146.setFocus()      # Enfocar
+                self.clearLE(self.providersLE0) # Limpiar formulario
+                                                # Actualizar tabla
+                self.lineE146.setFocus()        # Enfocar
+
+    #-------------------------------------------------------------------------------------------------------------------------------
+    # Configuración de botones de clientes
+    #-------------------------------------------------------------------------------------------------------------------------------
+
+    # Botón para crear un cliente
+    def on_pbutton17_pressed(self):
+        if self.click():
+            if self.lineE53.text() != "" and self.lineE54.text() != "" and self.lineE55.text() != "":
+                kwargs = {
+                    "ci"        : self.lineE53.text(),
+                    "firstname" : self.lineE54.text(),
+                    "lastname"  : self.lineE55.text(),
+                    "phone"     : self.textE56.text(),
+                    "email"     : self.textE57.text()
+                }
+                self.db.createClient(**kwargs)
+
+                self.clearLE(self.clientsLE1) # Limpiar formulario
+                                              # Actualizar tabla
+                self.lineE53.setFocus()       # Enfocar
 
     #-------------------------------------------------------------------------------------------------------------------------------
     # Manejador de eventos de teclas presionadas

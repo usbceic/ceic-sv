@@ -216,16 +216,16 @@ class Client(this.Base):
 
     # Atributos
     ci              = Column(Integer, primary_key=True)
-    carnet          = Column(String, default=None, unique=True)
     firstname       = Column(String, nullable=False)
     lastname        = Column(String, nullable=False)
-    phone           = Column(String, default=None)
+    phone           = Column(String)
+    email           = Column(String)
     debt_permission = Column(Boolean, nullable=False, default=False)
     book_permission = Column(Boolean, nullable=False, default=True)
     blocked         = Column(Boolean, nullable=False, default=False)
     balance         = Column(Numeric, nullable=False, default=0)
     last_seen       = Column(DateTime, default=datetime.datetime.now)
-    active         = Column(Boolean, nullable=False, default=True)
+    active          = Column(Boolean, nullable=False, default=True)
 
     # Constraints
     __table_args__ = (
@@ -239,9 +239,9 @@ class Client(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.ci), self.carnet, self.firstname, self.lastname, self.phone, str(self.debt_permission), str(self.book_permission), str(self.blocked),
+        kwargs = (str(self.ci), self.firstname, self.lastname, self.phone, self.email, str(self.debt_permission), str(self.book_permission), str(self.blocked),
             str(self.balance), str(self.last_seen))
-        template = "<Client(ci=='%s', carnet=='%s', firstname=='%s', lastname=='%s', phone=='%s', debt_permission=='%s', book_permission=='%s', "
+        template = "<Client(ci=='%s', firstname=='%s', lastname=='%s', phone=='%s', email=='%s', debt_permission=='%s', book_permission=='%s', "
         template += "blocked=='%s', balance=='%s', last_seen=='%s')>"
         return  template % kwargs
 
