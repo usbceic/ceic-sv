@@ -828,7 +828,7 @@ class adminGUI(QMainWindow, form_class):
                     self.lineE30.setText(str(product[3])) # Disp. Total
 
     #==============================================================================================================================================================================
-    # Configuración de botones de ventas
+    # Configuración de los botones necesarios para realizar las ventas
     #==============================================================================================================================================================================
 
     # Botón para sumar al spinLine
@@ -844,6 +844,23 @@ class adminGUI(QMainWindow, form_class):
             count = int(self.spinLine0.text())
             if count > 0:
                 self.spinLine0.setText(str(count-1))
+
+    # Botón para efectuar venta
+    def on_pbutton7_pressed(self):
+        if self.click():
+            if self.lineE21.text() != "":
+                ci = int(self.lineE17.text())
+                total = int(self.lineE21.text())
+
+    # LineEdit para ingresar la cédula del cliente
+    def on_lineE17_textChanged(self):
+        if self.textChanged():
+            ci = int(self.lineE17.text())
+            if self.db.existClient(ci):
+                client = self.db.getClient(ci)[0]         # Obtener cliente
+                self.lineE18.setText(client.firstname)    # Establecer Nombre
+                self.lineE19.setText(client.lastname)     # Establecer Apellido
+                self.lineE20.setText(str(client.balance)) # Establecer Saldo
 
     #==============================================================================================================================================================================
     # Configuración de botones de proveedores
@@ -922,6 +939,14 @@ class adminGUI(QMainWindow, form_class):
             elif currentPage == 6:
                 # code goes here
                 print("XD")
+
+    #==============================================================================================================================================================================
+    # Manejador del evento de cierre de la ventana
+    #==============================================================================================================================================================================
+
+    def closeEvent(self,event):
+        self.closed.emit()  # Emitir señal para que la ventana de inicio aparezca
+        event.accept()      # Aceptar el evento y cerrar la ventana
 
 ###################################################################################################################################################################################
 ## FIN :)

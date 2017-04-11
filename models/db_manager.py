@@ -22,7 +22,7 @@ from models import *
 from session import *
 
 from db_backup import *
-from sqlalchemy import func, distinct, update, event
+from sqlalchemy import func, distinct, update, event, and_, or_
 from passlib.hash import bcrypt
 
 ###################################################################################################################################################################################
