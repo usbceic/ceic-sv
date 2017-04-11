@@ -890,9 +890,10 @@ class adminGUI(QMainWindow, form_class):
     def on_add0_pressed(self):
         if self.click():
             count = int(self.spinLine0.text())
-            if count < self.selectedProductRemaining[self.selectedProductName]:
-                self.spinLine0.setText(str(count+1))
-                self.lineE25.setText(str(((count+1)*float(self.lineE24.text()))))
+            if self.selectedProductName in self.selectedProductRemaining:
+                if count < self.selectedProductRemaining[self.selectedProductName]:
+                    self.spinLine0.setText(str(count+1))
+                    self.lineE25.setText(str(((count+1)*float(self.lineE24.text()))))
 
     # Botón para restar al spinLine
     def on_substract0_pressed(self):
@@ -926,7 +927,7 @@ class adminGUI(QMainWindow, form_class):
     def on_lineE23_textChanged(self):
         if self.textChanged():
             name = self.lineE23.text()
-            if self.db.existProduct(name):
+            if self.db.existProduct(name, available=True):
                 product = self.db.getProductByNameOrID(name)[0]                         # Obtener cliente
                 self.lineE24.setText(str(product.price))                                # Establecer Nombre
                 self.selectedProductName = name
@@ -966,6 +967,8 @@ class adminGUI(QMainWindow, form_class):
                 selectedList = []
                 for key, value in self.selectedProducts.items():
                     selectedList.append([key, value[0], value[1], value[2]])
+
+                self.selectedProductName = ""
 
                 # Refrescar interfaz
                 self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura

@@ -410,8 +410,10 @@ class dbManager(object):
      - Retorna False:
         * Cuando el producto NO existe
     """
-    def existProduct(self, product_name, active=True):
-        count = self.session.query(Product).filter_by(product_name=product_name.lower().strip(), active=active).count()
+    def existProduct(self, product_name, available = None, active=True):
+        if available != None: count = self.session.query(Product).filter_by(product_name=product_name.lower().strip(), available=available, active=active).count()
+        else: count = self.session.query(Product).filter_by(product_name=product_name.lower().strip(), active=active).count()
+
         if count == 0:
             print("El producto " + product_name + " NO existe")
             return False
