@@ -764,35 +764,32 @@ class adminGUI(QMainWindow, form_class):
 
             # Modalidad para agregar nuevos lotes
             if self.rbutton9.isChecked():
+
                 # Obtener información del nuevo lote
-                lotProduct = self.lineE33.text()
-                lotProvider = self.lineE34.text()
-                lotCost = self.lineE35.text()
-                lotExpiration = self.lineE36.text()
-                lotQuantity = self.lineE37.text()
+                product_name = self.lineE33.text()
+                provider_name = self.lineE34.text()
+                cost = self.lineE35.text()
+                expiration_date = self.lineE36.text()
+                quantity = self.lineE37.text()
 
-                kwargs = {
-                    "product_name" : lotProduct,
-                    "provider_id"  : lotProvider,
-                    "received_by"  : self.user,
-                    "cost"         : lotCost,
-                    "quantity"     : lotQuantity
-                }
+                # Verificar completitud de los campos obligatorios
+                if (product_name and provider_name and cost and quantity) != "":
 
-                # Agregar el lote a la BD
-                if lotExpiration != "": kwargs["expiration_date"] = lotExpiration
-                self.db.createLot(**kwargs)
+                    kwargs = {
+                        "product_name" : product_name,
+                        "provider_name"  : provider_name,
+                        "received_by"  : self.user,
+                        "cost"         : int(cost),
+                        "quantity"     : quantity
+                    }
 
-                """product = self.db.getProductByNameOrID(lotProduct, onlyAvailables = False)[0]
-                remaining = product[4] + int(lotQuantity)
-                lots = product[5] + 1
-                current = product[6]
+                    if expiration_date != "": kwargs["expiration_date"] = expiration_date
 
-                if current != 0: self.db.updateProduct(lotProduct, remaining=remaining, remainingLots=lots, available=True)
-                else: self.db.updateProduct(lotProduct, remaining=remaining, remainingLots=lots, currentLot=0, available=True)"""
+                    # Agregar el lote a la BD
+                    self.db.createLot(**kwargs)
 
-                self.refresh()               # Refrescar toda la interfaz
-                self.lineE33.setFocus()      # Enfocar
+                    self.refresh()               # Refrescar toda la interfaz
+                    self.lineE33.setFocus()      # Enfocar
 
             elif self.rbutton10.isChecked(): # Modalidad para consultar lotes
                 self.refresh()               # Refrescar toda la interfaz

@@ -54,7 +54,7 @@
     min-width: 5em;
  }
 
-#home, #sales, #inventory, #querys, #books, #loans, #clients, #users, #configure, #help{
+#home, #sales, #inventory, #querys, #books, #loans, #providers, #clients, #users, #configure, #help{
     background: transparent;
     border: 1px solid transparent;
     border-radius: 2px;
@@ -62,7 +62,7 @@
     padding: 2px;
 }
 
-#home:hover, #sales:hover, #inventory:hover, #querys:hover, #books:hover, #loans:hover, #clients:hover, #users:hover, #configure:hover, #help:hover, #home:pressed, #sales:pressed, #inventory:pressed, #querys:pressed, #books:pressed, #loans:pressed, #clients:pressed, #users:pressed, #configure:pressed, #help:pressed{
+#home:hover, #sales:hover, #inventory:hover, #querys:hover, #books:hover, #loans:hover, #providers:hover, #clients:hover, #users:hover, #configure:hover, #help:hover, #home:pressed, #sales:pressed, #inventory:pressed, #querys:pressed, #books:pressed, #loans:pressed, #providers:pressed, #clients:pressed, #users:pressed, #configure:pressed, #help:pressed{
     background: #BBDEFB;
 }
 
@@ -77,7 +77,7 @@
 }
 
 /*Colorea páginas del stacked principal*/
-#page0, #page1, #page2, #page3, #page4, #page5, #page6, #page7, #page8, #page9 {
+#mainPage0, #mainPage1, #mainPage2, #mainPage3, #mainPage4, #mainPage5, #mainPage6, #mainPage7, #mainPage8, #mainPage9, #mainPage10  {
     background: #F5F5F5;
 }
 
@@ -136,7 +136,7 @@
 ***********************************/
 
 /*Configurar el estilo de los groupBox*/
-#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox5, #groupBox6, #groupBox16, #groupBox17, #groupBox23{
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox5, #groupBox6, #groupBox16, #groupBox17, #groupBox23,  #groupBox24{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -144,7 +144,7 @@
 }
 
 /*Configurar el estilo de los groupBox con subStacked*/
-#groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22{
+#groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -278,7 +278,7 @@
 
 /* Configuración por defecto de los botones para cambiar el tema de la interfaz*/
 #theme0, #theme1, #theme2, #theme3, #theme4, #theme5, #theme6, #theme7, #theme8, #theme9, #theme10, #theme11, #theme12, #theme13, #theme14, #theme15{
-     border: 1px solid #BDBDBD;
+     border: 1px solid BDBDBD;
      border-radius: 2px;
      min-width: 32px;
      min-height: 32px;
@@ -313,7 +313,7 @@
 ***********************************/
 
 /*Configuración del estilo de todos los line edit*/
-#lineE0, #lineE1, #lineE2, #lineE3, #lineE4, #lineE5, #lineE6, #lineE7, #lineE8, #lineE9, #lineE10, #lineE11, #lineE12, #lineE13, #lineE14, #lineE15, #lineE16, #lineE17, #lineE18, #lineE19, #lineE20, #lineE21, #lineE22, #lineE23, #lineE24, #lineE25, #lineE26, #lineE27, #lineE28, #lineE29, #lineE30, #lineE31, #lineE32, #lineE33, #lineE34, #lineE35, #lineE36, #lineE37, #lineE38, #lineE39, #lineE40, #lineE41, #lineE42, #lineE43, #lineE44, #lineE45, #lineE46, #lineE47, #lineE48, #lineE49, #lineE50, #lineE51, #lineE52, #lineE53, #lineE54, #lineE55, #lineE56, #lineE57, #lineE58, #lineE59, #lineE60, #lineE61, #lineE62, #lineE63, #lineE64, #lineE65, #lineE66, #lineE67, #lineE68, #lineE69, #lineE70, #lineE71, #lineE72, #lineE73, #lineE74, #lineE75, #lineE76, #lineE77, #lineE78, #lineE79, #lineE80, #lineE81, #lineE82, #lineE83, #lineE84, #lineE85, #lineE86, #lineE87, #lineE88, #lineE89, #lineE90, #lineE91, #lineE92, #lineE93, #lineE94, #lineE95, #lineE96, #lineE97, #lineE98, #lineE99, #lineE100, #lineE101, #lineE102, #lineE103, #lineE104, #lineE105, #lineE106, #lineE107, #lineE108, #lineE109, #lineE110, #lineE111, #lineE112, #lineE113, #lineE114, #lineE115, #lineE116, #lineE117, #lineE118, #lineE119, #lineE120, #lineE121, #lineE122, #lineE123, #lineE124, #lineE125, #lineE126, #lineE127, #lineE128, #lineE129, #lineE130, #lineE131, #lineE132, #lineE133, #lineE134, #lineE135, #lineE136, #lineE137, #lineE138, #lineE139, #lineE140, #lineE141, #lineE142, #lineE143, #lineE144, #lineE145, #lineE146, #lineE147, #lineE148, #lineE149{
+#lineE0, #lineE1, #lineE2, #lineE3, #lineE4, #lineE5, #lineE6, #lineE7, #lineE8, #lineE9, #lineE10, #lineE11, #lineE12, #lineE13, #lineE14, #lineE15, #lineE16, #lineE17, #lineE18, #lineE19, #lineE20, #lineE21, #lineE22, #lineE23, #lineE24, #lineE25, #lineE26, #lineE27, #lineE28, #lineE29, #lineE30, #lineE31, #lineE32, #lineE33, #lineE34, #lineE35, #lineE36, #lineE37, #lineE38, #lineE39, #lineE40, #lineE41, #lineE42, #lineE43, #lineE44, #lineE45, #lineE46, #lineE47, #lineE48, #lineE49, #lineE50, #lineE51, #lineE52, #lineE53, #lineE54, #lineE55, #lineE56, #lineE57, #lineE58, #lineE59, #lineE60, #lineE61, #lineE62, #lineE63, #lineE64, #lineE65, #lineE66, #lineE67, #lineE68, #lineE69, #lineE70, #lineE71, #lineE72, #lineE73, #lineE74, #lineE75, #lineE76, #lineE77, #lineE78, #lineE79, #lineE80, #lineE81, #lineE82, #lineE83, #lineE84, #lineE85, #lineE86, #lineE87, #lineE88, #lineE89, #lineE90, #lineE91, #lineE92, #lineE93, #lineE94, #lineE95, #lineE96, #lineE97, #lineE98, #lineE99, #lineE100, #lineE101, #lineE102, #lineE103, #lineE104, #lineE105, #lineE106, #lineE107, #lineE108, #lineE109, #lineE110, #lineE111, #lineE112, #lineE113, #lineE114, #lineE115, #lineE116, #lineE117, #lineE118, #lineE119, #lineE120, #lineE121, #lineE122, #lineE123, #lineE124, #lineE125, #lineE126, #lineE127, #lineE128, #lineE129, #lineE130, #lineE131, #lineE132, #lineE133, #lineE134, #lineE135, #lineE136, #lineE137, #lineE138, #lineE139, #lineE140, #lineE141, #lineE142, #lineE143, #lineE144, #lineE145, #lineE146, #lineE147, #lineE148, #lineE149, #lineE150, #lineE151, #lineE152, #lineE153, #lineE154, #lineE155, #lineE156, #lineE157, #lineE158, #lineE159{
     border: 1px solid #BDBDBD;
     border-radius: 2px;
     min-width: 5.5em;
@@ -322,13 +322,13 @@
 }
 
 /*Configuración del estilo de todos los line edit en modo de solo lectura*/
-#lineE0[readOnly="true"], #lineE1[readOnly="true"], #lineE2[readOnly="true"], #lineE3[readOnly="true"], #lineE4[readOnly="true"], #lineE5[readOnly="true"], #lineE6[readOnly="true"], #lineE7[readOnly="true"], #lineE8[readOnly="true"], #lineE9[readOnly="true"], #lineE10[readOnly="true"], #lineE11[readOnly="true"], #lineE12[readOnly="true"], #lineE13[readOnly="true"], #lineE14[readOnly="true"], #lineE15[readOnly="true"], #lineE16[readOnly="true"], #lineE17[readOnly="true"], #lineE18[readOnly="true"], #lineE19[readOnly="true"], #lineE20[readOnly="true"], #lineE21[readOnly="true"], #lineE22[readOnly="true"], #lineE23[readOnly="true"], #lineE24[readOnly="true"], #lineE25[readOnly="true"], #lineE26[readOnly="true"], #lineE27[readOnly="true"], #lineE28[readOnly="true"], #lineE29[readOnly="true"], #lineE30[readOnly="true"], #lineE31[readOnly="true"], #lineE32[readOnly="true"], #lineE33[readOnly="true"], #lineE34[readOnly="true"], #lineE35[readOnly="true"], #lineE36[readOnly="true"], #lineE37[readOnly="true"], #lineE38[readOnly="true"], #lineE39[readOnly="true"], #lineE40[readOnly="true"], #lineE41[readOnly="true"], #lineE42[readOnly="true"], #lineE43[readOnly="true"], #lineE44[readOnly="true"], #lineE45[readOnly="true"], #lineE46[readOnly="true"], #lineE47[readOnly="true"], #lineE48[readOnly="true"], #lineE49[readOnly="true"], #lineE50[readOnly="true"], #lineE51[readOnly="true"], #lineE52[readOnly="true"], #lineE53[readOnly="true"], #lineE54[readOnly="true"], #lineE55[readOnly="true"], #lineE56[readOnly="true"], #lineE57[readOnly="true"], #lineE58[readOnly="true"], #lineE59[readOnly="true"], #lineE60[readOnly="true"], #lineE61[readOnly="true"], #lineE62[readOnly="true"], #lineE63[readOnly="true"], #lineE64[readOnly="true"], #lineE65[readOnly="true"], #lineE66[readOnly="true"], #lineE67[readOnly="true"], #lineE68[readOnly="true"], #lineE69[readOnly="true"], #lineE70[readOnly="true"], #lineE71[readOnly="true"], #lineE72[readOnly="true"], #lineE73[readOnly="true"], #lineE74[readOnly="true"], #lineE75[readOnly="true"], #lineE76[readOnly="true"], #lineE77[readOnly="true"], #lineE78[readOnly="true"], #lineE79[readOnly="true"], #lineE80[readOnly="true"], #lineE81[readOnly="true"], #lineE82[readOnly="true"], #lineE83[readOnly="true"], #lineE84[readOnly="true"], #lineE85[readOnly="true"], #lineE86[readOnly="true"], #lineE87[readOnly="true"], #lineE88[readOnly="true"], #lineE89[readOnly="true"], #lineE90[readOnly="true"], #lineE91[readOnly="true"], #lineE92[readOnly="true"], #lineE93[readOnly="true"], #lineE94[readOnly="true"], #lineE95[readOnly="true"], #lineE96[readOnly="true"], #lineE97[readOnly="true"], #lineE98[readOnly="true"], #lineE99[readOnly="true"], #lineE100[readOnly="true"], #lineE101[readOnly="true"], #lineE102[readOnly="true"], #lineE103[readOnly="true"], #lineE104[readOnly="true"], #lineE105[readOnly="true"], #lineE106[readOnly="true"], #lineE107[readOnly="true"], #lineE108[readOnly="true"], #lineE109[readOnly="true"], #lineE110[readOnly="true"], #lineE111[readOnly="true"], #lineE112[readOnly="true"], #lineE113[readOnly="true"], #lineE114[readOnly="true"], #lineE115[readOnly="true"], #lineE116[readOnly="true"], #lineE117[readOnly="true"], #lineE118[readOnly="true"], #lineE119[readOnly="true"], #lineE120[readOnly="true"], #lineE121[readOnly="true"], #lineE122[readOnly="true"], #lineE123[readOnly="true"], #lineE124[readOnly="true"], #lineE125[readOnly="true"], #lineE126[readOnly="true"], #lineE127[readOnly="true"], #lineE128[readOnly="true"], #lineE129[readOnly="true"], #lineE130[readOnly="true"], #lineE131[readOnly="true"], #lineE132[readOnly="true"], #lineE133[readOnly="true"], #lineE134[readOnly="true"], #lineE135[readOnly="true"], #lineE136[readOnly="true"], #lineE137[readOnly="true"], #lineE138[readOnly="true"], #lineE139[readOnly="true"], #lineE140[readOnly="true"], #lineE141[readOnly="true"], #lineE142[readOnly="true"], #lineE143[readOnly="true"], #lineE144[readOnly="true"], #lineE145[readOnly="true"], #lineE146[readOnly="true"], #lineE147[readOnly="true"], #lineE148[readOnly="true"], #lineE149[readOnly="true"]{
+#lineE0[readOnly="true"], #lineE1[readOnly="true"], #lineE2[readOnly="true"], #lineE3[readOnly="true"], #lineE4[readOnly="true"], #lineE5[readOnly="true"], #lineE6[readOnly="true"], #lineE7[readOnly="true"], #lineE8[readOnly="true"], #lineE9[readOnly="true"], #lineE10[readOnly="true"], #lineE11[readOnly="true"], #lineE12[readOnly="true"], #lineE13[readOnly="true"], #lineE14[readOnly="true"], #lineE15[readOnly="true"], #lineE16[readOnly="true"], #lineE17[readOnly="true"], #lineE18[readOnly="true"], #lineE19[readOnly="true"], #lineE20[readOnly="true"], #lineE21[readOnly="true"], #lineE22[readOnly="true"], #lineE23[readOnly="true"], #lineE24[readOnly="true"], #lineE25[readOnly="true"], #lineE26[readOnly="true"], #lineE27[readOnly="true"], #lineE28[readOnly="true"], #lineE29[readOnly="true"], #lineE30[readOnly="true"], #lineE31[readOnly="true"], #lineE32[readOnly="true"], #lineE33[readOnly="true"], #lineE34[readOnly="true"], #lineE35[readOnly="true"], #lineE36[readOnly="true"], #lineE37[readOnly="true"], #lineE38[readOnly="true"], #lineE39[readOnly="true"], #lineE40[readOnly="true"], #lineE41[readOnly="true"], #lineE42[readOnly="true"], #lineE43[readOnly="true"], #lineE44[readOnly="true"], #lineE45[readOnly="true"], #lineE46[readOnly="true"], #lineE47[readOnly="true"], #lineE48[readOnly="true"], #lineE49[readOnly="true"], #lineE50[readOnly="true"], #lineE51[readOnly="true"], #lineE52[readOnly="true"], #lineE53[readOnly="true"], #lineE54[readOnly="true"], #lineE55[readOnly="true"], #lineE56[readOnly="true"], #lineE57[readOnly="true"], #lineE58[readOnly="true"], #lineE59[readOnly="true"], #lineE60[readOnly="true"], #lineE61[readOnly="true"], #lineE62[readOnly="true"], #lineE63[readOnly="true"], #lineE64[readOnly="true"], #lineE65[readOnly="true"], #lineE66[readOnly="true"], #lineE67[readOnly="true"], #lineE68[readOnly="true"], #lineE69[readOnly="true"], #lineE70[readOnly="true"], #lineE71[readOnly="true"], #lineE72[readOnly="true"], #lineE73[readOnly="true"], #lineE74[readOnly="true"], #lineE75[readOnly="true"], #lineE76[readOnly="true"], #lineE77[readOnly="true"], #lineE78[readOnly="true"], #lineE79[readOnly="true"], #lineE80[readOnly="true"], #lineE81[readOnly="true"], #lineE82[readOnly="true"], #lineE83[readOnly="true"], #lineE84[readOnly="true"], #lineE85[readOnly="true"], #lineE86[readOnly="true"], #lineE87[readOnly="true"], #lineE88[readOnly="true"], #lineE89[readOnly="true"], #lineE90[readOnly="true"], #lineE91[readOnly="true"], #lineE92[readOnly="true"], #lineE93[readOnly="true"], #lineE94[readOnly="true"], #lineE95[readOnly="true"], #lineE96[readOnly="true"], #lineE97[readOnly="true"], #lineE98[readOnly="true"], #lineE99[readOnly="true"], #lineE100[readOnly="true"], #lineE101[readOnly="true"], #lineE102[readOnly="true"], #lineE103[readOnly="true"], #lineE104[readOnly="true"], #lineE105[readOnly="true"], #lineE106[readOnly="true"], #lineE107[readOnly="true"], #lineE108[readOnly="true"], #lineE109[readOnly="true"], #lineE110[readOnly="true"], #lineE111[readOnly="true"], #lineE112[readOnly="true"], #lineE113[readOnly="true"], #lineE114[readOnly="true"], #lineE115[readOnly="true"], #lineE116[readOnly="true"], #lineE117[readOnly="true"], #lineE118[readOnly="true"], #lineE119[readOnly="true"], #lineE120[readOnly="true"], #lineE121[readOnly="true"], #lineE122[readOnly="true"], #lineE123[readOnly="true"], #lineE124[readOnly="true"], #lineE125[readOnly="true"], #lineE126[readOnly="true"], #lineE127[readOnly="true"], #lineE128[readOnly="true"], #lineE129[readOnly="true"], #lineE130[readOnly="true"], #lineE131[readOnly="true"], #lineE132[readOnly="true"], #lineE133[readOnly="true"], #lineE134[readOnly="true"], #lineE135[readOnly="true"], #lineE136[readOnly="true"], #lineE137[readOnly="true"], #lineE138[readOnly="true"], #lineE139[readOnly="true"], #lineE140[readOnly="true"], #lineE141[readOnly="true"], #lineE142[readOnly="true"], #lineE143[readOnly="true"], #lineE144[readOnly="true"], #lineE145[readOnly="true"], #lineE146[readOnly="true"], #lineE147[readOnly="true"], #lineE148[readOnly="true"], #lineE149[readOnly="true"], #lineE150[readOnly="true"], #lineE151[readOnly="true"], #lineE152[readOnly="true"], #lineE153[readOnly="true"], #lineE154[readOnly="true"], #lineE155[readOnly="true"], #lineE156[readOnly="true"], #lineE157[readOnly="true"], #lineE158[readOnly="true"], #lineE159[readOnly="true"]{
     border: 1px solid silver;
     background: #F5F5F5;
 }
 
 /*Configuración del estilo de todos los line edit en modo de solo lectura*/
-#lineE0[readOnly="false"], #lineE1[readOnly="false"], #lineE2[readOnly="false"], #lineE3[readOnly="false"], #lineE4[readOnly="false"], #lineE5[readOnly="false"], #lineE6[readOnly="false"], #lineE7[readOnly="false"], #lineE8[readOnly="false"], #lineE9[readOnly="false"], #lineE10[readOnly="false"], #lineE11[readOnly="false"], #lineE12[readOnly="false"], #lineE13[readOnly="false"], #lineE14[readOnly="false"], #lineE15[readOnly="false"], #lineE16[readOnly="false"], #lineE17[readOnly="false"], #lineE18[readOnly="false"], #lineE19[readOnly="false"], #lineE20[readOnly="false"], #lineE21[readOnly="false"], #lineE22[readOnly="false"], #lineE23[readOnly="false"], #lineE24[readOnly="false"], #lineE25[readOnly="false"], #lineE26[readOnly="false"], #lineE27[readOnly="false"], #lineE28[readOnly="false"], #lineE29[readOnly="false"], #lineE30[readOnly="false"], #lineE31[readOnly="false"], #lineE32[readOnly="false"], #lineE33[readOnly="false"], #lineE34[readOnly="false"], #lineE35[readOnly="false"], #lineE36[readOnly="false"], #lineE37[readOnly="false"], #lineE38[readOnly="false"], #lineE39[readOnly="false"], #lineE40[readOnly="false"], #lineE41[readOnly="false"], #lineE42[readOnly="false"], #lineE43[readOnly="false"], #lineE44[readOnly="false"], #lineE45[readOnly="false"], #lineE46[readOnly="false"], #lineE47[readOnly="false"], #lineE48[readOnly="false"], #lineE49[readOnly="false"], #lineE50[readOnly="false"], #lineE51[readOnly="false"], #lineE52[readOnly="false"], #lineE53[readOnly="false"], #lineE54[readOnly="false"], #lineE55[readOnly="false"], #lineE56[readOnly="false"], #lineE57[readOnly="false"], #lineE58[readOnly="false"], #lineE59[readOnly="false"], #lineE60[readOnly="false"], #lineE61[readOnly="false"], #lineE62[readOnly="false"], #lineE63[readOnly="false"], #lineE64[readOnly="false"], #lineE65[readOnly="false"], #lineE66[readOnly="false"], #lineE67[readOnly="false"], #lineE68[readOnly="false"], #lineE69[readOnly="false"], #lineE70[readOnly="false"], #lineE71[readOnly="false"], #lineE72[readOnly="false"], #lineE73[readOnly="false"], #lineE74[readOnly="false"], #lineE75[readOnly="false"], #lineE76[readOnly="false"], #lineE77[readOnly="false"], #lineE78[readOnly="false"], #lineE79[readOnly="false"], #lineE80[readOnly="false"], #lineE81[readOnly="false"], #lineE82[readOnly="false"], #lineE83[readOnly="false"], #lineE84[readOnly="false"], #lineE85[readOnly="false"], #lineE86[readOnly="false"], #lineE87[readOnly="false"], #lineE88[readOnly="false"], #lineE89[readOnly="false"], #lineE90[readOnly="false"], #lineE91[readOnly="false"], #lineE92[readOnly="false"], #lineE93[readOnly="false"], #lineE94[readOnly="false"], #lineE95[readOnly="false"], #lineE96[readOnly="false"], #lineE97[readOnly="false"], #lineE98[readOnly="false"], #lineE99[readOnly="false"], #lineE100[readOnly="false"], #lineE101[readOnly="false"], #lineE102[readOnly="false"], #lineE103[readOnly="false"], #lineE104[readOnly="false"], #lineE105[readOnly="false"], #lineE106[readOnly="false"], #lineE107[readOnly="false"], #lineE108[readOnly="false"], #lineE109[readOnly="false"], #lineE110[readOnly="false"], #lineE111[readOnly="false"], #lineE112[readOnly="false"], #lineE113[readOnly="false"], #lineE114[readOnly="false"], #lineE115[readOnly="false"], #lineE116[readOnly="false"], #lineE117[readOnly="false"], #lineE118[readOnly="false"], #lineE119[readOnly="false"], #lineE120[readOnly="false"], #lineE121[readOnly="false"], #lineE122[readOnly="false"], #lineE123[readOnly="false"], #lineE124[readOnly="false"], #lineE125[readOnly="false"], #lineE126[readOnly="false"], #lineE127[readOnly="false"], #lineE128[readOnly="false"], #lineE129[readOnly="false"], #lineE130[readOnly="false"], #lineE131[readOnly="false"], #lineE132[readOnly="false"], #lineE133[readOnly="false"], #lineE134[readOnly="false"], #lineE135[readOnly="false"], #lineE136[readOnly="false"], #lineE137[readOnly="false"], #lineE138[readOnly="false"], #lineE139[readOnly="false"], #lineE140[readOnly="false"], #lineE141[readOnly="false"], #lineE142[readOnly="false"], #lineE143[readOnly="false"], #lineE144[readOnly="false"], #lineE145[readOnly="false"], #lineE146[readOnly="false"], #lineE147[readOnly="false"], #lineE148[readOnly="false"], #lineE149[readOnly="false"]{
+#lineE0[readOnly="false"], #lineE1[readOnly="false"], #lineE2[readOnly="false"], #lineE3[readOnly="false"], #lineE4[readOnly="false"], #lineE5[readOnly="false"], #lineE6[readOnly="false"], #lineE7[readOnly="false"], #lineE8[readOnly="false"], #lineE9[readOnly="false"], #lineE10[readOnly="false"], #lineE11[readOnly="false"], #lineE12[readOnly="false"], #lineE13[readOnly="false"], #lineE14[readOnly="false"], #lineE15[readOnly="false"], #lineE16[readOnly="false"], #lineE17[readOnly="false"], #lineE18[readOnly="false"], #lineE19[readOnly="false"], #lineE20[readOnly="false"], #lineE21[readOnly="false"], #lineE22[readOnly="false"], #lineE23[readOnly="false"], #lineE24[readOnly="false"], #lineE25[readOnly="false"], #lineE26[readOnly="false"], #lineE27[readOnly="false"], #lineE28[readOnly="false"], #lineE29[readOnly="false"], #lineE30[readOnly="false"], #lineE31[readOnly="false"], #lineE32[readOnly="false"], #lineE33[readOnly="false"], #lineE34[readOnly="false"], #lineE35[readOnly="false"], #lineE36[readOnly="false"], #lineE37[readOnly="false"], #lineE38[readOnly="false"], #lineE39[readOnly="false"], #lineE40[readOnly="false"], #lineE41[readOnly="false"], #lineE42[readOnly="false"], #lineE43[readOnly="false"], #lineE44[readOnly="false"], #lineE45[readOnly="false"], #lineE46[readOnly="false"], #lineE47[readOnly="false"], #lineE48[readOnly="false"], #lineE49[readOnly="false"], #lineE50[readOnly="false"], #lineE51[readOnly="false"], #lineE52[readOnly="false"], #lineE53[readOnly="false"], #lineE54[readOnly="false"], #lineE55[readOnly="false"], #lineE56[readOnly="false"], #lineE57[readOnly="false"], #lineE58[readOnly="false"], #lineE59[readOnly="false"], #lineE60[readOnly="false"], #lineE61[readOnly="false"], #lineE62[readOnly="false"], #lineE63[readOnly="false"], #lineE64[readOnly="false"], #lineE65[readOnly="false"], #lineE66[readOnly="false"], #lineE67[readOnly="false"], #lineE68[readOnly="false"], #lineE69[readOnly="false"], #lineE70[readOnly="false"], #lineE71[readOnly="false"], #lineE72[readOnly="false"], #lineE73[readOnly="false"], #lineE74[readOnly="false"], #lineE75[readOnly="false"], #lineE76[readOnly="false"], #lineE77[readOnly="false"], #lineE78[readOnly="false"], #lineE79[readOnly="false"], #lineE80[readOnly="false"], #lineE81[readOnly="false"], #lineE82[readOnly="false"], #lineE83[readOnly="false"], #lineE84[readOnly="false"], #lineE85[readOnly="false"], #lineE86[readOnly="false"], #lineE87[readOnly="false"], #lineE88[readOnly="false"], #lineE89[readOnly="false"], #lineE90[readOnly="false"], #lineE91[readOnly="false"], #lineE92[readOnly="false"], #lineE93[readOnly="false"], #lineE94[readOnly="false"], #lineE95[readOnly="false"], #lineE96[readOnly="false"], #lineE97[readOnly="false"], #lineE98[readOnly="false"], #lineE99[readOnly="false"], #lineE100[readOnly="false"], #lineE101[readOnly="false"], #lineE102[readOnly="false"], #lineE103[readOnly="false"], #lineE104[readOnly="false"], #lineE105[readOnly="false"], #lineE106[readOnly="false"], #lineE107[readOnly="false"], #lineE108[readOnly="false"], #lineE109[readOnly="false"], #lineE110[readOnly="false"], #lineE111[readOnly="false"], #lineE112[readOnly="false"], #lineE113[readOnly="false"], #lineE114[readOnly="false"], #lineE115[readOnly="false"], #lineE116[readOnly="false"], #lineE117[readOnly="false"], #lineE118[readOnly="false"], #lineE119[readOnly="false"], #lineE120[readOnly="false"], #lineE121[readOnly="false"], #lineE122[readOnly="false"], #lineE123[readOnly="false"], #lineE124[readOnly="false"], #lineE125[readOnly="false"], #lineE126[readOnly="false"], #lineE127[readOnly="false"], #lineE128[readOnly="false"], #lineE129[readOnly="false"], #lineE130[readOnly="false"], #lineE131[readOnly="false"], #lineE132[readOnly="false"], #lineE133[readOnly="false"], #lineE134[readOnly="false"], #lineE135[readOnly="false"], #lineE136[readOnly="false"], #lineE137[readOnly="false"], #lineE138[readOnly="false"], #lineE139[readOnly="false"], #lineE140[readOnly="false"], #lineE141[readOnly="false"], #lineE142[readOnly="false"], #lineE143[readOnly="false"], #lineE144[readOnly="false"], #lineE145[readOnly="false"], #lineE146[readOnly="false"], #lineE147[readOnly="false"], #lineE148[readOnly="false"], #lineE149[readOnly="false"], #lineE150[readOnly="false"], #lineE151[readOnly="false"], #lineE152[readOnly="false"], #lineE153[readOnly="false"], #lineE154[readOnly="false"], #lineE155[readOnly="false"], #lineE156[readOnly="false"], #lineE157[readOnly="false"], #lineE158[readOnly="false"], #lineE159[readOnly="false"]{
     border: 1px solid #BDBDBD;
     background: transparent;
 }
@@ -466,43 +466,38 @@ QWidget:item:unchecked {
 ***********************************/
 
 /*Configuración general de las tablas*/
-#table0, #table1, #table2, #table3, #table4, #table5, #table6, #table7, #table8, #table9, #table10, #table11, #table12{
+#table0, #table1, #table2, #table3, #table4, #table5, #table6, #table7, #table8, #table9, #table10, #table11, #table12, #table13{
     color: #212121;
     background: #FFFFFF;
 }
 
 /*Estilo de los cabezales horizontales*/
-#table0 QHeaderView::section:horizontal, #table1 QHeaderView::section:horizontal, #table2 QHeaderView::section:horizontal, #table3 QHeaderView::section:horizontal, #table4 QHeaderView::section:horizontal, #table5 QHeaderView::section:horizontal, #table6 QHeaderView::section:horizontal, #table7 QHeaderView::section:horizontal, #table8 QHeaderView::section:horizontal, #table9 QHeaderView::section:horizontal, #table10 QHeaderView::section:horizontal, #table11 QHeaderView::section:horizontal, #table12 QHeaderView::section:horizontal{
+#table0 QHeaderView::section:horizontal, #table1 QHeaderView::section:horizontal, #table2 QHeaderView::section:horizontal, #table3 QHeaderView::section:horizontal, #table4 QHeaderView::section:horizontal, #table5 QHeaderView::section:horizontal, #table6 QHeaderView::section:horizontal, #table7 QHeaderView::section:horizontal, #table8 QHeaderView::section:horizontal, #table9 QHeaderView::section:horizontal, #table10 QHeaderView::section:horizontal, #table11 QHeaderView::section:horizontal, #table12 QHeaderView::section:horizontal, #table13 QHeaderView::section:horizontal{
     color: #757575;
     padding: 6px;
-    font-size: 11pt;
     border: 1px solid transparent;
     border-bottom-color: #BDBDBD;
     background: #FFFFFF;
 }
 
 /*Estilo de los cabezales verticales*/
-#table0 QHeaderView::section:vertical, #table1 QHeaderView::section:vertical, #table2 QHeaderView::section:vertical, #table3 QHeaderView::section:vertical, #table4 QHeaderView::section:vertical, #table5 QHeaderView::section:vertical, #table6 QHeaderView::section:vertical, #table7 QHeaderView::section:vertical, #table8 QHeaderView::section:vertical, #table9 QHeaderView::section:vertical, #table10 QHeaderView::section:vertical, #table11 QHeaderView::section:vertical, #table12 QHeaderView::section:vertical{
+#table0 QHeaderView::section:vertical, #table1 QHeaderView::section:vertical, #table2 QHeaderView::section:vertical, #table3 QHeaderView::section:vertical, #table4 QHeaderView::section:vertical, #table5 QHeaderView::section:vertical, #table6 QHeaderView::section:vertical, #table7 QHeaderView::section:vertical, #table8 QHeaderView::section:vertical, #table9 QHeaderView::section:vertical, #table10 QHeaderView::section:vertical, #table11 QHeaderView::section:vertical, #table12 QHeaderView::section:vertical, #table13 QHeaderView::section:vertical{
     padding: 2px;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #BDBDBD;
+    border: 1px solid #BDBDBD;
     border-top-color: transparent;
     border-left-color: transparent;
     background: #FFFFFF;
 }
 
 /*Estilo del boton de la esquina superior izquierda de la tabla*/
-#table0 QTableCornerButton::section, #table1 QTableCornerButton::section, #table2 QTableCornerButton::section, #table3 QTableCornerButton::section, #table4 QTableCornerButton::section, #table5 QTableCornerButton::section, #table6 QTableCornerButton::section, #table7 QTableCornerButton::section, #table8 QTableCornerButton::section, #table9 QTableCornerButton::section, #table10 QTableCornerButton::section, #table11 QTableCornerButton::section, #table12 QTableCornerButton::section{
+#table0 QTableCornerButton::section, #table1 QTableCornerButton::section, #table2 QTableCornerButton::section, #table3 QTableCornerButton::section, #table4 QTableCornerButton::section, #table5 QTableCornerButton::section, #table6 QTableCornerButton::section, #table7 QTableCornerButton::section, #table8 QTableCornerButton::section, #table9 QTableCornerButton::section, #table10 QTableCornerButton::section, #table11 QTableCornerButton::section, #table12 QTableCornerButton::section, #table13 QTableCornerButton::section{
     background: #FFFFFF;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #BDBDBD;
+    border: 1px solid #BDBDBD;
     border-left-color: transparent;
 }
 
 /*Estilo de los items seleccionados*/
-#table0::item:selected, #table1::item:selected, #table2::item:selected, #table3::item:selected, #table4::item:selected, #table5::item:selected, #table6::item:selected, #table7::item:selected, #table8::item:selected, #table9::item:selected, #table10::item:selected, #table11::item:selected, #table12::item:selected{
+#table0::item:selected, #table1::item:selected, #table2::item:selected, #table3::item:selected, #table4::item:selected, #table5::item:selected, #table6::item:selected, #table7::item:selected, #table8::item:selected, #table9::item:selected, #table10::item:selected, #table11::item:selected, #table12::item:selected, #table13::item:selected{
     background: #BBDEFB;
     selection-color: #212121;
 }
@@ -586,4 +581,16 @@ QWidget:item:unchecked {
     border: 1px solid #BDBDBD;
     border-radius: 2px;
     padding: -9px;
+}
+
+/***********************************
+* Text Edit
+***********************************/
+
+#textE1, #textE2, #textE3, #textE4 {
+    border: 1px solid #BDBDBD;
+    border-radius: 2px;
+    min-width: 4em;
+    min-height: 4em;
+    padding: 2px;
 }
