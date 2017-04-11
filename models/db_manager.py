@@ -59,7 +59,13 @@ class dbManager(object):
     Método para hacer backup a la Base de Datos
     """
     def backup(self):
-        DBBackup(self.session).backup()
+        DBBackup().backup()
+
+    """
+    Método para hacer restore a la Base de Datos
+    """
+    def restore(self):
+        DBBackup().restore()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE USUARIOS:
@@ -1310,7 +1316,8 @@ class dbManager(object):
 
 # Prueba
 if __name__ == '__main__':
-    m = dbManager("sistema_ventas", "hola")
+    m = dbManager("sistema_ventas", "hola", dropAll=True)
+    m.restore()
 
     """
     Insert Example
@@ -1325,7 +1332,7 @@ if __name__ == '__main__':
     for i in query: print(i)
     """
 
-    """
+    
     l = Valid_language(lang_name="ES")
     m.session.add(l)
     try:
@@ -1361,7 +1368,6 @@ if __name__ == '__main__':
 
     for subjects in b.subjects:
         print(subjects)
-    """
 
     """Pruebas de los métodos para usuarios"""
 
