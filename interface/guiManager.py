@@ -121,11 +121,31 @@ class adminGUI(QMainWindow, form_class):
             "active"         : True
         }
 
+        self.clicked = False                # QPushbutton presionado
+        self.writing = False                # Texto de un QLineEdit cambiado
+        self.currentProduct = None          # Instancia de producto en uso
+        self.tempImage = ""                 # Imagen seleccionada
+        self.selectedProductRemaining = {}  # Diccionario de cotas superiores para el spinBox de ventas
+        self.selectedProductName = ""       # Nombre del producto seleccionado actualmente en la vista de ventas
+        self.selectedProducts = {}          # Diccionario de productos en la factura en la vista de ventas
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # LISTAS DE PROPOSITO GENERAL
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
         # Barras de búsqueda por cédula:
         self.ciSearch = [self.lineE17, self.lineE47, self.lineE52, self.lineE57]
 
         # Barras de búsqueda por nombre de producto:
         self.productSearch = [self.lineE23, self.lineE26, self.lineE33]
+
+        # Tablas
+        self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
+                        self.table8, self.table9, self.table10, self.table11]
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # LISTAS PARA LA VISTA DE INVENTARIO
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Apartado de productos en inventario
         self.productsRO0 = [self.lineE26, self.lineE27, self.lineE28, self.lineE29, self.lineE30]
@@ -138,18 +158,29 @@ class adminGUI(QMainWindow, form_class):
         self.lotsRO2 = [self.lineE34, self.lineE35, self.lineE36, self.lineE37]
         self.lotsRO3 = [self.lineE38]
 
+        # Tablas de productos
+        self.productTables = [self.table1, self.table2, self.table3]
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # LISTAS PARA LA VISTA DE PROVEEDORES
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
         # Apartado de proveedores
         self.providersLE0 = [self.lineE146, self.lineE147, self.lineE148]
         self.providersLE1 = [self.lineE149, self.lineE150, self.lineE151]
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # LISTAS PARA LA VISTA DE CLIENTES
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Apartado de clientes
         self.clientsLE0 = [self.lineE47, self.lineE48, self.lineE49, self.lineE50, self.lineE51]
         self.clientsLE1 = [self.lineE52, self.lineE53, self.lineE54, self.lineE55, self.lineE56]
         self.clientsLE2 = [self.lineE57, self.lineE58, self.lineE59, self.lineE60, self.lineE61]
 
-        # Tablas
-        self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
-                        self.table8, self.table9, self.table10, self.table11]
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # LISTAS PARA LA VISTA DE VENTAS
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Apartado de producto seleccionado en ventas
         self.selectedProductLE0 = [self.lineE24, self.lineE25]
@@ -162,7 +193,7 @@ class adminGUI(QMainWindow, form_class):
         # Apartado de pago en la vista de ventas
         self.salesCheckoutLE = [self.lineE21, self.lineE22, self.lineE152]
 
-        # SpinLines
+        # SpinLines en la vista de ventas
         self.spinBox = [self.spinLine0]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -171,16 +202,6 @@ class adminGUI(QMainWindow, form_class):
 
         # Se connectan los botones entre otras cosas con algunos de los métodos definidos a continuación
         QMetaObject.connectSlotsByName(self)
-
-        # Asignación de valores por defecto a las variables de control
-        self.clicked = False        # QPushbutton presionado
-        self.writing = False        # Texto de un QLineEdit cambiado
-        self.currentProduct = None  # Instancia de producto en uso
-        self.tempImage = ""         # Imagen seleccionada
-
-        self.selectedProductRemaining = {}
-        self.selectedProductName = ""
-        self.selectedProducts = {}
 
         # Aplicar configuraciones generales de la interfaz
         self.generalSetup()
@@ -193,7 +214,7 @@ class adminGUI(QMainWindow, form_class):
         self.MainTitle.setText("Caja")
 
     #==============================================================================================================================================================================
-    # Métodos para configuraciones básicas de la ventana
+    # CONFIGURACIONES DE LA VENTANA
     #==============================================================================================================================================================================
 
     # Centrar la ventana
@@ -210,7 +231,7 @@ class adminGUI(QMainWindow, form_class):
         #self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
 
     #==============================================================================================================================================================================
-    # Métodos para realizar procedimientos generales en la interfaz
+    # MÉTODOS GENERALES MULTIPROPÓSITOS
     #==============================================================================================================================================================================
 
     # Definición de click sobre un QPushButton
@@ -240,187 +261,6 @@ class adminGUI(QMainWindow, form_class):
         if self.click():
             if move == -1: stacked.setCurrentIndex((stacked.currentIndex()+stacked.count()-1)%stacked.count())
             if move == 1: stacked.setCurrentIndex((stacked.currentIndex()+1)%stacked.count())
-
-    # Seleccionar un item de las listas Top 10 y Nuevo
-    def selectItem(self, n):
-        if self.click(): self.lineE23.setText(str(n))
-
-    # Cambiar el tema de la interfáz
-    def setStyle(self, name):
-        if self.click(): self.setStyleSheet(getStyle(name))
-
-    # Configurar los placeholder de todos los Line Edit
-    def setupPlaceholders(self):
-        self.lineE0.setPlaceholderText("Balance")
-        self.lineE1.setPlaceholderText("Efectivo")
-        self.lineE2.setPlaceholderText("Transferencias")
-        self.lineE3.setPlaceholderText("Deudas")
-
-        self.lineE4.setPlaceholderText("Monto")
-        self.lineE31.setPlaceholderText("Monto")
-        self.lineE32.setPlaceholderText("Monto")
-
-        self.lineE5.setPlaceholderText("Estado")
-        self.lineE6.setPlaceholderText("Inicio")
-        self.lineE7.setPlaceholderText("Ventas")
-        self.lineE8.setPlaceholderText("Ingresos")
-        self.lineE9.setPlaceholderText("Egresos")
-        self.lineE10.setPlaceholderText("Ganancias")
-
-        self.lineE11.setPlaceholderText("Nombre")
-        self.lineE12.setPlaceholderText("Inicio")
-        self.lineE13.setPlaceholderText("Ventas")
-        self.lineE14.setPlaceholderText("Ingresos")
-        self.lineE15.setPlaceholderText("Egresos")
-        self.lineE16.setPlaceholderText("Ganancias")
-
-        # Ventas
-        self.lineE17.setPlaceholderText("Cédula")
-        self.lineE18.setPlaceholderText("Nombre")
-        self.lineE19.setPlaceholderText("Apellido")
-        self.lineE20.setPlaceholderText("Saldo")
-        self.lineE21.setPlaceholderText("Total")
-        self.lineE22.setPlaceholderText("Pagar")
-
-        self.lineE23.setPlaceholderText("Producto")
-        self.lineE24.setPlaceholderText("Precio")
-        self.lineE25.setPlaceholderText("Subtotal")
-
-        self.lineE26.setPlaceholderText("Nombre")
-        self.lineE27.setPlaceholderText("Precio")
-        self.lineE28.setPlaceholderText("Categoria")
-        self.lineE29.setPlaceholderText("Lotes")
-        self.lineE30.setPlaceholderText("Disponibilidad")
-
-        self.lineE33.setPlaceholderText("Producto")
-        self.lineE34.setPlaceholderText("Proveedor")
-        self.lineE35.setPlaceholderText("Costo")
-        self.lineE36.setPlaceholderText("Caducidad")
-        self.lineE37.setPlaceholderText("Cantidad")
-        self.lineE38.setPlaceholderText("Disponibles")
-
-        self.lineE39.setPlaceholderText("Nombre")
-        self.lineE40.setPlaceholderText("Fecha de inicio")
-        self.lineE41.setPlaceholderText("Fecha de cierre")
-        self.lineE42.setPlaceholderText("Días laborados")
-        self.lineE43.setPlaceholderText("Ventas totales")
-        self.lineE44.setPlaceholderText("Ingresos")
-        self.lineE45.setPlaceholderText("Egresos")
-        self.lineE46.setPlaceholderText("Ganancias")
-
-        self.lineE47.setPlaceholderText("Cédula")
-        self.lineE48.setPlaceholderText("Nombre")
-        self.lineE49.setPlaceholderText("Apellido")
-        self.lineE50.setPlaceholderText("Saldo")
-        self.lineE51.setPlaceholderText("Déposito")
-
-        self.lineE52.setPlaceholderText("Cédula")
-        self.lineE53.setPlaceholderText("Nombre")
-        self.lineE54.setPlaceholderText("Apellido")
-        self.lineE55.setPlaceholderText("Teléfono")
-        self.lineE56.setPlaceholderText("Correo")
-
-        self.lineE57.setPlaceholderText("Cédula")
-        self.lineE58.setPlaceholderText("Nombre")
-        self.lineE59.setPlaceholderText("Apellido")
-        self.lineE60.setPlaceholderText("Teléfono")
-        self.lineE61.setPlaceholderText("Correo")
-
-        self.lineE62.setPlaceholderText("Usuario")
-        self.lineE63.setPlaceholderText("Nombre")
-        self.lineE64.setPlaceholderText("Apellido")
-        self.lineE65.setPlaceholderText("Teléfono")
-        self.lineE66.setPlaceholderText("Correo")
-        self.lineE67.setPlaceholderText("Contraseña")
-        self.lineE68.setPlaceholderText("Rango")
-
-        self.lineE69.setPlaceholderText("Usuario")
-        self.lineE70.setPlaceholderText("Nombre")
-        self.lineE71.setPlaceholderText("Apellido")
-        self.lineE72.setPlaceholderText("Teléfono")
-        self.lineE73.setPlaceholderText("Correo")
-        self.lineE74.setPlaceholderText("Contraseña")
-
-        self.lineE75.setPlaceholderText("Usuario")
-        self.lineE76.setPlaceholderText("Nombre")
-        self.lineE77.setPlaceholderText("Apellido")
-        self.lineE78.setPlaceholderText("Teléfono")
-        self.lineE79.setPlaceholderText("Correo")
-        self.lineE80.setPlaceholderText("Contraseña")
-
-        self.lineE81.setPlaceholderText("Usuario")
-        self.lineE82.setPlaceholderText("Nombre")
-        self.lineE83.setPlaceholderText("Apellido")
-        self.lineE84.setPlaceholderText("Teléfono")
-        self.lineE85.setPlaceholderText("Correo")
-        self.lineE86.setPlaceholderText("Contraseña")
-        self.lineE87.setPlaceholderText("Rango")
-
-        self.lineE88.setPlaceholderText("R.I.F.")
-        self.lineE89.setPlaceholderText("Tasa (%)")
-        self.lineE90.setPlaceholderText("Tasa (%)")
-
-        self.lineE91.setPlaceholderText("Cédula")
-        self.lineE92.setPlaceholderText("Nombre")
-        self.lineE93.setPlaceholderText("Apellido")
-        self.lineE94.setPlaceholderText("Código")
-        self.lineE95.setPlaceholderText("Titulo")
-        self.lineE96.setPlaceholderText("Autor")
-        self.lineE97.setPlaceholderText("Entrega")
-
-        self.lineE98.setPlaceholderText("Titulo")
-        self.lineE99.setPlaceholderText("Año")
-        self.lineE100.setPlaceholderText("Edición")
-        self.lineE101.setPlaceholderText("Editorial")
-        self.lineE102.setPlaceholderText("Lenguaje")
-        self.lineE103.setPlaceholderText("ISBN")
-        self.lineE104.setPlaceholderText("Copias")
-        self.lineE105.setPlaceholderText("BookID")
-
-        self.lineE106.setPlaceholderText("BookID")
-        self.lineE107.setPlaceholderText("Titulo")
-        self.lineE108.setPlaceholderText("Año")
-        self.lineE109.setPlaceholderText("Edición")
-        self.lineE110.setPlaceholderText("Editorial")
-        self.lineE111.setPlaceholderText("Lenguaje")
-        self.lineE112.setPlaceholderText("ISBN")
-        self.lineE113.setPlaceholderText("Disponibles")
-
-        self.lineE114.setPlaceholderText("Código")
-        self.lineE115.setPlaceholderText("Nombre")
-        self.lineE116.setPlaceholderText("Código")
-        self.lineE117.setPlaceholderText("Nombre")
-
-        self.lineE118.setPlaceholderText("Nombre")
-        self.lineE119.setPlaceholderText("Año")
-        self.lineE120.setPlaceholderText("País")
-        self.lineE121.setPlaceholderText("Nombre")
-        self.lineE122.setPlaceholderText("Año")
-        self.lineE123.setPlaceholderText("País")
-
-        self.lineE124.setPlaceholderText("BookID")
-        self.lineE125.setPlaceholderText("Título")
-        self.lineE126.setPlaceholderText("Año")
-        self.lineE127.setPlaceholderText("Edición")
-        self.lineE128.setPlaceholderText("Año")
-        self.lineE129.setPlaceholderText("País")
-        self.lineE130.setPlaceholderText("BookID")
-        self.lineE131.setPlaceholderText("Título")
-        self.lineE132.setPlaceholderText("Año")
-        self.lineE133.setPlaceholderText("Edición")
-        self.lineE134.setPlaceholderText("Año")
-        self.lineE135.setPlaceholderText("País")
-
-        self.lineE136.setPlaceholderText("BookID")
-        self.lineE137.setPlaceholderText("Título")
-        self.lineE138.setPlaceholderText("Año")
-        self.lineE139.setPlaceholderText("Edición")
-        self.lineE140.setPlaceholderText("Nombre")
-        self.lineE141.setPlaceholderText("BookID")
-        self.lineE142.setPlaceholderText("Título")
-        self.lineE143.setPlaceholderText("Año")
-        self.lineE144.setPlaceholderText("Edición")
-        self.lineE145.setPlaceholderText("Nombre")
 
     # Método para buscar en un LineEdit
     def setupSearchBar(self, listLE, itemsList, numValidator = False):
@@ -485,7 +325,7 @@ class adminGUI(QMainWindow, form_class):
         table.horizontalHeader().setResizeMode(0, QHeaderView.Stretch)
 
     # Aplicar configuración general de redimiensionamiento a una lista de tablas
-    def setupTables(self):
+    def setupTables(self, tables):
         for table in self.tables:
             self.setupTable(table)
 
@@ -499,61 +339,10 @@ class adminGUI(QMainWindow, form_class):
     def clearTable(self, table):
         for i in reversed(range(table.rowCount())): table.removeRow(i)
 
-    # Método para refrescar la tabla de productos en el inventario
-    def updateProductTable(self, table, itemsList):
-        self.clearTable(table)
-
-        table.setRowCount(len(itemsList))
-        for i in range(len(itemsList)):
-            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][1]))) # Nombre
-            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][2]))) # Precio
-            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][5]))) # Categoria
-            table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Cantidad
-            table.setItem(i, 4, QTableWidgetItem(str(itemsList[i][4]))) # Lotes
-
-        self.elem_actual = 0
-        if len(itemsList) > 0: table.selectRow(self.elem_actual)
-
-        table.resizeColumnsToContents()
-
     # Método para refrescar la interfaz
     def refresh(self):
-        # Listas de nombres de los productos
-        self.productsNames = self.getProductList(self.productsParams0)                # Completa
-        self.productsNamesAvailable = self.getProductList(self.productsParams0, 1)    # Disponibles
-        self.productsNamesNotAvailable = self.getProductList(self.productsParams0, 2) # No disponibles
-
-        # Listas con información para las tablas de productos
-        self.productsInfo = self.getProductList(self.productsParams1)                # Completa
-        self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)    # Disponibles
-        self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2) # No disponibles
-
-        # Configuración de la barra de búsqueda de cliente por CI
-        self.setupSearchBar(self.ciSearch, clientList, True)
-
-        # Limpiar los spinLine
-        self.clearSpinLines(self.spinBox)
-
-        # Configuración de las barras de búsqueda por nombre de producto
-        self.setupSearchBar(self.productSearch, self.productsNames)
-
-        # Setup de las distintas tablas
-        self.updateProductTable(self.table0, self.productsInfoAvailable)
-        self.updateProductTable(self.table1, self.productsInfoNotAvailable)
-        self.updateProductTable(self.table2, self.productsInfo)
-
-        # Configurar tablas
-        self.setupTables()
-
-        # Limpiar campos
-        self.clearLEs(self.ciSearch)
-        self.clearLEs(self.productSearch)
-        self.clearLEs(self.productsRO0)
-        self.clearLEs(self.lotsRO0)
-        self.clearLEs(self.providersLE0)
-
-        # Configurar restricciones de los LineEdit en la vista de ventas
-        self.setupSalesLE()
+        self.refreshInventory()
+        self.refreshSales()
 
     def generalSetup(self):
         # Centrar posición de la ventana
@@ -566,10 +355,9 @@ class adminGUI(QMainWindow, form_class):
         self.setupSpinLines(self.spinBox)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
-        #self.setupPlaceholders()
 
     #==============================================================================================================================================================================
-    # Métodos para la configuración de los botones para cambio de página de los stacked:
+    # CAMBIO DE PÁGINA DE LOS STACKED
     #==============================================================================================================================================================================
 
     # Cambiar a la página principal
@@ -627,21 +415,21 @@ class adminGUI(QMainWindow, form_class):
         self.setPage(self.MainStacked, 10)
         self.MainTitle.setText("Ayuda")
 
-    def on_arrow1_pressed(self): self.changePage(self.subStacked3)   # Cambiar la página del substaked3 hacia la derecha
-    def on_arrow3_pressed(self): self.changePage(self.subStacked4)   # Cambiar la página del substaked4 hacia la derecha
-    def on_arrow5_pressed(self): self.changePage(self.subStacked5)   # Cambiar la página del substaked5 hacia la derecha
-    def on_arrow7_pressed(self): self.changePage(self.subStacked6)   # Cambiar la página del substaked6 hacia la derecha
-    def on_arrow9_pressed(self): self.changePage(self.subStacked7)   # Cambiar la página del substaked7 hacia la derecha
-    def on_arrow11_pressed(self): self.changePage(self.subStacked8)  # Cambiar la página del substaked8 hacia la derecha
-    def on_arrow13_pressed(self): self.changePage(self.subStacked9)  # Cambiar la página del substaked9 hacia la derecha
-    def on_arrow15_pressed(self): self.changePage(self.subStacked10) # Cambiar la página del substaked10 hacia la derecha
-    def on_arrow17_pressed(self): self.changePage(self.subStacked11) # Cambiar la página del substaked11 hacia la derecha
-    def on_arrow19_pressed(self): self.changePage(self.subStacked12) # Cambiar la página del substaked12 hacia la derecha
-    def on_arrow21_pressed(self): self.changePage(self.subStacked13) # Cambiar la página del substaked13 hacia la derecha
-    def on_arrow23_pressed(self): self.changePage(self.subStacked14) # Cambiar la página del substaked14 hacia la derecha
-    def on_arrow25_pressed(self): self.changePage(self.subStacked15) # Cambiar la página del substaked15 hacia la derecha
-    def on_arrow27_pressed(self): self.changePage(self.subStacked16) # Cambiar la página del substaked16 hacia la derecha
-    def on_arrow29_pressed(self): self.changePage(self.subStacked17) # Cambiar la página del substaked17 hacia la derecha
+    def on_arrow1_pressed(self): self.changePage(self.subStacked3)      # Cambiar la página del substaked3 hacia la derecha
+    def on_arrow3_pressed(self): self.changePage(self.subStacked4)      # Cambiar la página del substaked4 hacia la derecha
+    def on_arrow5_pressed(self): self.changePage(self.subStacked5)      # Cambiar la página del substaked5 hacia la derecha
+    def on_arrow7_pressed(self): self.changePage(self.subStacked6)      # Cambiar la página del substaked6 hacia la derecha
+    def on_arrow9_pressed(self): self.changePage(self.subStacked7)      # Cambiar la página del substaked7 hacia la derecha
+    def on_arrow11_pressed(self): self.changePage(self.subStacked8)     # Cambiar la página del substaked8 hacia la derecha
+    def on_arrow13_pressed(self): self.changePage(self.subStacked9)     # Cambiar la página del substaked9 hacia la derecha
+    def on_arrow15_pressed(self): self.changePage(self.subStacked10)    # Cambiar la página del substaked10 hacia la derecha
+    def on_arrow17_pressed(self): self.changePage(self.subStacked11)    # Cambiar la página del substaked11 hacia la derecha
+    def on_arrow19_pressed(self): self.changePage(self.subStacked12)    # Cambiar la página del substaked12 hacia la derecha
+    def on_arrow21_pressed(self): self.changePage(self.subStacked13)    # Cambiar la página del substaked13 hacia la derecha
+    def on_arrow23_pressed(self): self.changePage(self.subStacked14)    # Cambiar la página del substaked14 hacia la derecha
+    def on_arrow25_pressed(self): self.changePage(self.subStacked15)    # Cambiar la página del substaked15 hacia la derecha
+    def on_arrow27_pressed(self): self.changePage(self.subStacked16)    # Cambiar la página del substaked16 hacia la derecha
+    def on_arrow29_pressed(self): self.changePage(self.subStacked17)    # Cambiar la página del substaked17 hacia la derecha
 
     def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)   # Cambiar la página del substaked3 hacia la izquierda
     def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)   # Cambiar la página del substaked4 hacia la izquierda
@@ -660,47 +448,59 @@ class adminGUI(QMainWindow, form_class):
     def on_arrow28_pressed(self): self.changePage(self.subStacked17, 1) # Cambiar la página del substaked17 hacia la izquierda
 
     #==============================================================================================================================================================================
-    # Métodos para la configuración de los botones de las listas de productos Top 10 y Nuevo:
+    # VISTA DE INVENTARIO
     #==============================================================================================================================================================================
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    def on_popularItem0_pressed(self): self.selectItem(0)
-    def on_popularItem1_pressed(self): self.selectItem(1)
-    def on_popularItem2_pressed(self): self.selectItem(2)
-    def on_popularItem3_pressed(self): self.selectItem(3)
-    def on_popularItem4_pressed(self): self.selectItem(4)
-    def on_popularItem5_pressed(self): self.selectItem(5)
-    def on_popularItem6_pressed(self): self.selectItem(6)
-    def on_popularItem7_pressed(self): self.selectItem(7)
-    def on_popularItem8_pressed(self): self.selectItem(8)
-    def on_popularItem9_pressed(self): self.selectItem(9)
+    # Método para refrescar la vista del Inventario y elementos relacionados
+    def refreshInventory(self):
+        # Listas de nombres de los productos
+        self.productsNames = self.getProductList(self.productsParams0)                # Completa
+        self.productsNamesAvailable = self.getProductList(self.productsParams0, 1)    # Disponibles
+        self.productsNamesNotAvailable = self.getProductList(self.productsParams0, 2) # No disponibles
 
-    def on_newItem0_pressed(self): self.selectItem(0)
-    def on_newItem1_pressed(self): self.selectItem(1)
-    def on_newItem2_pressed(self): self.selectItem(2)
-    def on_newItem3_pressed(self): self.selectItem(3)
-    def on_newItem4_pressed(self): self.selectItem(4)
-    def on_newItem5_pressed(self): self.selectItem(5)
-    def on_newItem6_pressed(self): self.selectItem(6)
-    def on_newItem7_pressed(self): self.selectItem(7)
-    def on_newItem8_pressed(self): self.selectItem(8)
-    def on_newItem9_pressed(self): self.selectItem(9)
+        # Listas con información para las tablas de productos
+        self.productsInfo = self.getProductList(self.productsParams1)                # Completa
+        self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)    # Disponibles
+        self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2) # No disponibles
 
-    #==============================================================================================================================================================================
-    # Configuración de los botones de cambio de color de la interfáz
-    #==============================================================================================================================================================================
+        # Configuración de las barras de búsqueda por nombre de producto
+        self.setupSearchBar(self.productSearch, self.productsNames)
 
-    def on_theme0_pressed(self): self.setStyle(styles[1])
-    def on_theme1_pressed(self): self.setStyle(styles[5])
-    def on_theme2_pressed(self): self.setStyle(styles[3])
-    def on_theme3_pressed(self): self.setStyle(styles[4])
-    def on_theme4_pressed(self): self.setStyle(styles[6])
-    def on_theme5_pressed(self): self.setStyle(styles[7])
-    def on_theme6_pressed(self): self.setStyle(styles[2])
-    def on_theme7_pressed(self): self.setStyle(styles[0])
+        # Setup de las distintas tablas
+        self.updateProductTable(self.table0, self.productsInfoAvailable)
+        self.updateProductTable(self.table1, self.productsInfoNotAvailable)
+        self.updateProductTable(self.table2, self.productsInfo)
 
-    #==============================================================================================================================================================================
-    # Configuración de botones del inventario
-    #==============================================================================================================================================================================
+        # Configurar tablas
+        self.setupTables(self.productTables)
+
+        # Limpiar campos
+        self.clearLEs(self.productsRO0)
+        self.clearLEs(self.lotsRO0)
+
+    # Método para refrescar la tabla de productos en el inventario
+    def updateProductTable(self, table, itemsList):
+        self.clearTable(table)
+
+        table.setRowCount(len(itemsList))
+        for i in range(len(itemsList)):
+            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][1]))) # Nombre
+            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][2]))) # Precio
+            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][5]))) # Categoria
+            table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Cantidad
+            table.setItem(i, 4, QTableWidgetItem(str(itemsList[i][4]))) # Lotes
+
+        self.elem_actual = 0
+        if len(itemsList) > 0: table.selectRow(self.elem_actual)
+
+        table.resizeColumnsToContents()
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     # Radio button para agregar nuevos productos
     def on_rbutton5_pressed(self):
@@ -764,7 +564,7 @@ class adminGUI(QMainWindow, form_class):
                 self.db.createProduct(productName, productPrice, productCategoy)
 
                 # Refrescar toda la interfaz
-                self.refresh()
+                self.refreshInventory()
 
                 # Enfocar
                 self.lineE26.setFocus()
@@ -775,7 +575,7 @@ class adminGUI(QMainWindow, form_class):
                 product = self.db.getProductByNameOrID(productName)
 
                 # Refrescar toda la interfaz
-                self.refresh()
+                self.refreshInventory()
 
                 # Enfocar
                 self.lineE26.setFocus()
@@ -787,7 +587,7 @@ class adminGUI(QMainWindow, form_class):
                 productCategoy = self.lineE28.text()
 
                 # Refrescar toda la interfaz
-                self.refresh()
+                self.refreshInventory()
 
                 # Enfocar
                 self.lineE26.setFocus()
@@ -796,7 +596,7 @@ class adminGUI(QMainWindow, form_class):
             elif self.rbutton8.isChecked():
 
                 # Refrescar toda la interfaz
-                self.refresh()
+                self.refreshInventory()
 
                 # Enfocar
                 self.lineE26.setFocus()
@@ -831,19 +631,19 @@ class adminGUI(QMainWindow, form_class):
                     # Agregar el lote a la BD
                     self.db.createLot(**kwargs)
 
-                    self.refresh()               # Refrescar toda la interfaz
+                    self.refreshInventory()               # Refrescar toda la interfaz
                     self.lineE33.setFocus()      # Enfocar
 
             elif self.rbutton10.isChecked(): # Modalidad para consultar lotes
-                self.refresh()               # Refrescar toda la interfaz
+                self.refreshInventory()               # Refrescar toda la interfaz
                 self.lineE33.setFocus()      # Enfocar
 
             elif self.rbutton11.isChecked(): # Modalidad para editar lotes
-                self.refresh()               # Refrescar toda la interfaz
+                self.refreshInventory()               # Refrescar toda la interfaz
                 self.lineE33.setFocus()      # Enfocar
 
             elif self.rbutton12.isChecked(): # Modalidad para eliminar lotes
-                self.refresh()               # Refrescar toda la interfaz
+                self.refreshInventory()               # Refrescar toda la interfaz
                 self.lineE33.setFocus()      # Enfocar
 
     # Boton para ver/agregar imágen de un producto
@@ -853,6 +653,10 @@ class adminGUI(QMainWindow, form_class):
             if filePath != "":
                 self.selectedItem1.setIcon(QIcon(filePath))
                 self.tempImage = filePath
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # CAMPOS DE TEXTO
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     # LineEdit para ingresar nombres de los productos
     def on_lineE26_textChanged(self):
@@ -868,8 +672,37 @@ class adminGUI(QMainWindow, form_class):
                     self.lineE30.setText(str(product[3])) # Disp. Total
 
     #==============================================================================================================================================================================
-    # CONFIGURACIÓN DE LA VISTA DE VENTAS
+    # VISTA DE VENTAS
     #==============================================================================================================================================================================
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Método para refrescar la vista del Ventas y elementos relacionados
+    def refreshSales(self):
+        # Configuración de la barra de búsqueda de cliente por CI
+        self.setupSearchBar(self.ciSearch, clientList, True)
+
+        # Configurar restricciones de los LineEdit en la vista de ventas
+        self.setupSalesLE()
+
+        # Setear variables de control
+        self.selectedProductRemaining = {}
+        self.selectedProductName = ""
+        self.selectedProducts = {}
+
+        # Limpiar los campos
+        self.clearSpinLines(self.spinBox)
+        self.clearLEs(self.salesClientLE1)
+        self.clearLEs(self.salesCheckoutLE)
+        self.clearTable(self.table11)
+
+        # Refrescar el inventario
+        self.refreshInventory()
+
+        # Enfocar
+        self.lineE17.setFocus()
 
     # Función para aplicar la configuración por defecto de los lineEdit de la vista de ventas
     def setupSalesLE(self):
@@ -892,6 +725,36 @@ class adminGUI(QMainWindow, form_class):
         self.elem_actual = 0                                      # Definir la fila que se seleccionará
         if len(itemsList) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
         table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
+
+    # Seleccionar un item de las listas Top 10 y Nuevo
+    def selectItem(self, n):
+        if self.click(): self.lineE23.setText(str(n))
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    def on_popularItem0_pressed(self): self.selectItem(0)
+    def on_popularItem1_pressed(self): self.selectItem(1)
+    def on_popularItem2_pressed(self): self.selectItem(2)
+    def on_popularItem3_pressed(self): self.selectItem(3)
+    def on_popularItem4_pressed(self): self.selectItem(4)
+    def on_popularItem5_pressed(self): self.selectItem(5)
+    def on_popularItem6_pressed(self): self.selectItem(6)
+    def on_popularItem7_pressed(self): self.selectItem(7)
+    def on_popularItem8_pressed(self): self.selectItem(8)
+    def on_popularItem9_pressed(self): self.selectItem(9)
+
+    def on_newItem0_pressed(self): self.selectItem(0)
+    def on_newItem1_pressed(self): self.selectItem(1)
+    def on_newItem2_pressed(self): self.selectItem(2)
+    def on_newItem3_pressed(self): self.selectItem(3)
+    def on_newItem4_pressed(self): self.selectItem(4)
+    def on_newItem5_pressed(self): self.selectItem(5)
+    def on_newItem6_pressed(self): self.selectItem(6)
+    def on_newItem7_pressed(self): self.selectItem(7)
+    def on_newItem8_pressed(self): self.selectItem(8)
+    def on_newItem9_pressed(self): self.selectItem(9)
 
     # Botón para sumar al spinLine
     def on_add0_pressed(self):
@@ -933,17 +796,49 @@ class adminGUI(QMainWindow, form_class):
                         if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)
                         if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)
 
-                        self.selectedProductRemaining = {}
-                        self.selectedProductName = ""
-                        self.selectedProducts = {}
+                        # Setear variables y refrescar la interfaz
+                        self.refreshSales()
 
-                        self.refresh()
+    # Botón para agregar lista de producto
+    def on_pbutton9_pressed(self):
+        if self.click():
+            name = self.lineE23.text()
+            if self.db.existProduct(name):
 
-                        self.clearLEs(self.salesClientLE1)
-                        self.clearLEs(self.salesCheckoutLE)
-                        self.clearTable(self.table11)
-                        self.setupSalesLE()
-                        self.lineE17.setFocus()
+                # Cargar información
+                product = self.db.getProductByNameOrID(name)[0]                     # Obtener cliente
+                price = str(product.price)                                          # Obtener precio
+                cantidad = self.spinLine0.text()                                    # Obtener cantidad
+                subtotal = float(price)*int(cantidad)                               # Obtener subtotal
+
+                # Actualizar datos en el manejador
+                if name not in self.selectedProducts:
+                    self.selectedProducts[name] = [price, cantidad, subtotal]             # Añadir a la lista de productos seleccionados
+                    self.selectedProductRemaining[name] = product.remaining-int(cantidad) # Acutalizar la cota superior del contador
+
+                else:
+                    temp = self.selectedProducts[name]
+                    temp[1] = str(int(temp[1])+int(cantidad))
+                    temp[2] = str(float(temp[2])+float(subtotal))
+                    self.selectedProducts[name] = temp                                   # Actualizar la instancia del producto en la lista de productos seleccionados
+                    self.selectedProductRemaining[name] = product.remaining-int(temp[1]) # Acutalizar la cota superior del contador
+
+                selectedList = []
+                for key, value in self.selectedProducts.items():
+                    selectedList.append([key, value[0], value[1], value[2]])
+
+                self.selectedProductName = ""
+
+                # Refrescar interfaz
+                self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
+                self.setupTable(self.table11)                       # Reconfigurar la tabla de factura
+                self.clearLEs(self.selectedProductLE1)              # Limpiar los lineEdit de este apartado
+                self.clearSpinLine(self.spinLine0)                  # Setear en 0 el lineEdit del contador
+                # limpiar Imagen                                    # Cargar imagen por defecto
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # CAMPOS DE TEXTO
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     # LineEdit para ingresar la cédula del cliente
     def on_lineE17_textChanged(self):
@@ -1069,46 +964,13 @@ class adminGUI(QMainWindow, form_class):
                 self.clearLEs(self.selectedProductLE0)
                 self.clearSpinLine(self.spinLine0)
 
-    # Botón para efectuar venta
-    def on_pbutton9_pressed(self):
-        if self.click():
-            name = self.lineE23.text()
-            if self.db.existProduct(name):
-
-                # Cargar información
-                product = self.db.getProductByNameOrID(name)[0]                     # Obtener cliente
-                price = str(product.price)                                          # Obtener precio
-                cantidad = self.spinLine0.text()                                    # Obtener cantidad
-                subtotal = float(price)*int(cantidad)                               # Obtener subtotal
-
-                # Actualizar datos en el manejador
-                if name not in self.selectedProducts:
-                    self.selectedProducts[name] = [price, cantidad, subtotal]             # Añadir a la lista de productos seleccionados
-                    self.selectedProductRemaining[name] = product.remaining-int(cantidad) # Acutalizar la cota superior del contador
-
-                else:
-                    temp = self.selectedProducts[name]
-                    temp[1] = str(int(temp[1])+int(cantidad))
-                    temp[2] = str(float(temp[2])+float(subtotal))
-                    self.selectedProducts[name] = temp                                   # Actualizar la instancia del producto en la lista de productos seleccionados
-                    self.selectedProductRemaining[name] = product.remaining-int(temp[1]) # Acutalizar la cota superior del contador
-
-                selectedList = []
-                for key, value in self.selectedProducts.items():
-                    selectedList.append([key, value[0], value[1], value[2]])
-
-                self.selectedProductName = ""
-
-                # Refrescar interfaz
-                self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
-                self.setupTable(self.table11)                       # Reconfigurar la tabla de factura
-                self.clearLEs(self.selectedProductLE1)              # Limpiar los lineEdit de este apartado
-                self.clearSpinLine(self.spinLine0)                  # Setear en 0 el lineEdit del contador
-                # limpiar Imagen                                    # Cargar imagen por defecto
-
     #==============================================================================================================================================================================
-    # Configuración de botones de proveedores
+    # VISTA DE PROVEEDORES
     #==============================================================================================================================================================================
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     # Botón para crear un proveedor
     def on_pbutton20_pressed(self):
@@ -1129,8 +991,12 @@ class adminGUI(QMainWindow, form_class):
                 self.lineE146.setFocus()         # Enfocar
 
     #==============================================================================================================================================================================
-    # Configuración de botones de clientes
+    # VISTA DE CLIENTES
     #==============================================================================================================================================================================
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     # Botón para crear un cliente
     def on_pbutton17_pressed(self):
@@ -1151,7 +1017,32 @@ class adminGUI(QMainWindow, form_class):
                 self.lineE53.setFocus()        # Enfocar
 
     #==============================================================================================================================================================================
-    # Manejador de eventos de teclas presionadas
+    # VISTA DE CONFIGURACIONES
+    #==============================================================================================================================================================================
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Cambiar el tema de la interfáz
+    def setStyle(self, name):
+        if self.click(): self.setStyleSheet(getStyle(name))
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    def on_theme0_pressed(self): self.setStyle(styles[1])
+    def on_theme1_pressed(self): self.setStyle(styles[5])
+    def on_theme2_pressed(self): self.setStyle(styles[3])
+    def on_theme3_pressed(self): self.setStyle(styles[4])
+    def on_theme4_pressed(self): self.setStyle(styles[6])
+    def on_theme5_pressed(self): self.setStyle(styles[7])
+    def on_theme6_pressed(self): self.setStyle(styles[2])
+    def on_theme7_pressed(self): self.setStyle(styles[0])
+
+    #==============================================================================================================================================================================
+    # MANEJADOR DE EVENTOS DE TECLADO
     #==============================================================================================================================================================================
 
     def keyPressEvent(self, event):
@@ -1187,7 +1078,7 @@ class adminGUI(QMainWindow, form_class):
                 print("XD")
 
     #==============================================================================================================================================================================
-    # Manejador del evento de cierre de la ventana
+    # EVENTO DE CIERRE
     #==============================================================================================================================================================================
 
     def closeEvent(self,event):
