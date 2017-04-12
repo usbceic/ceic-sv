@@ -262,14 +262,6 @@ class adminGUI(QMainWindow, form_class):
             if move == -1: stacked.setCurrentIndex((stacked.currentIndex()+stacked.count()-1)%stacked.count())
             if move == 1: stacked.setCurrentIndex((stacked.currentIndex()+1)%stacked.count())
 
-    # Seleccionar un item de las listas Top 10 y Nuevo
-    def selectItem(self, n):
-        if self.click(): self.lineE23.setText(str(n))
-
-    # Cambiar el tema de la interfáz
-    def setStyle(self, name):
-        if self.click(): self.setStyleSheet(getStyle(name))
-
     # Método para buscar en un LineEdit
     def setupSearchBar(self, listLE, itemsList, numValidator = False):
         LEmodel, LEcompleter = QStringListModel(), QCompleter()
@@ -734,6 +726,10 @@ class adminGUI(QMainWindow, form_class):
         if len(itemsList) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
         table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
 
+    # Seleccionar un item de las listas Top 10 y Nuevo
+    def selectItem(self, n):
+        if self.click(): self.lineE23.setText(str(n))
+
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1023,6 +1019,18 @@ class adminGUI(QMainWindow, form_class):
     #==============================================================================================================================================================================
     # VISTA DE CONFIGURACIONES
     #==============================================================================================================================================================================
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Cambiar el tema de la interfáz
+    def setStyle(self, name):
+        if self.click(): self.setStyleSheet(getStyle(name))
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     def on_theme0_pressed(self): self.setStyle(styles[1])
     def on_theme1_pressed(self): self.setStyle(styles[5])
