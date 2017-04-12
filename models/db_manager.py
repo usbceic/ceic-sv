@@ -379,18 +379,18 @@ class dbManager(object):
             kwargs['creation_date'] = creation_date
 
         try:
-                self.session.query(Provider).filter_by(provider_name=oldName).update(kwargs)
-                self.session.commit()
-                if newName is not None:
-                    name = newName
-                else:
-                    name = oldName
-                print("Se ha actualizado la información del proveedor " + name + " satisfactoriamente")
-                return True
-            except Exception as e:
-                print("Ha ocurrido un error desconocido al intentar actualizar la información del usuario " + oldName, e)
-                self.session.rollback()
-                return False
+            self.session.query(Provider).filter_by(provider_name=oldName).update(kwargs)
+            self.session.commit()
+            if newName is not None:
+                name = newName
+            else:
+                name = oldName
+            print("Se ha actualizado la información del proveedor " + name + " satisfactoriamente")
+            return True
+        except Exception as e:
+            print("Ha ocurrido un error desconocido al intentar actualizar la información del usuario " + oldName, e)
+            self.session.rollback()
+            return False
         return False
 
 
