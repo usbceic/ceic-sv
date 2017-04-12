@@ -88,7 +88,7 @@ class Provider(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (self.provider_name, self.phone, self.email, self.pay_information, self.description, self.category)
+        kwargs = (self.provider_name, self.phone, self.email, self.pay_information, self.description)
         template = "<Provider(provider_name='%s', phone='%s', email='%s', pay_information='%s', description=='%s')>"
         return  template % kwargs
 

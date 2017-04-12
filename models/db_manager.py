@@ -55,7 +55,7 @@ class dbManager(object):
 
     """
     Método para hacer backup a la Base de Datos
-    Devuelve True si logro hacer backup. 
+    Devuelve True si logro hacer backup.
     En caso de encontrar que el ultimo backup esta corrupto, devuelve False
     """
     def backup(self):
@@ -361,7 +361,7 @@ class dbManager(object):
     '''
     Metodo para actualizar la información de un proveedor.
         -Retorna True si la actualización de datos fue hecha con exito.
-        -Retorna False si ocurrió un error durante la actualización de datos. 
+        -Retorna False si ocurrió un error durante la actualización de datos.
     '''
 
     def updateProviderInfo(self,oldName,newName=None,phone=None,email=None,pay_information=None,description=None,active=None,creation_date=None):
@@ -402,6 +402,17 @@ class dbManager(object):
             return False
         return False
 
+    '''
+    Metodo para obtener TODA la informacion de los proveedores existentes en la base de datos
+
+        -Retorna un queryset con TODOS los proveedores
+    '''
+    def getProvidersNames(self):
+        query = self.session.query(Provider.provider_name).all()
+        providersNames = []
+        for name in query:
+            providersNames.append(name[0])
+        return sorted(providersNames)
 
     '''
     Metodo para obtener TODA la informacion de los proveedores existentes en la base de datos
@@ -1379,7 +1390,7 @@ if __name__ == '__main__':
     print("-----------------------------------")
     for book in s.books:
         print(book)
-            
+
                 for subjects in b.subjects:
                     print(subjects)
     """
