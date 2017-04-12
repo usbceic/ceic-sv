@@ -73,13 +73,6 @@ def getStyle(name):
     return style
 
 ###################################################################################################################################################################################
-# VARIABLES:
-###################################################################################################################################################################################
-
-# Ejemplo de lista de cédulas de clientes
-clientList = ["513264", "28436485", "32564336", "105746567", "280765423", "670124583"]
-
-###################################################################################################################################################################################
 ## MANEJADOR DE LA INTERFAZ GRÁFICA:
 ###################################################################################################################################################################################
 
@@ -134,7 +127,7 @@ class adminGUI(QMainWindow, form_class):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Barras de búsqueda por cédula:
-        self.ciSearch = [self.lineE17, self.lineE47, self.lineE52, self.lineE57]
+        self.clientsSearch = [self.lineE17, self.lineE47, self.lineE52, self.lineE57]
 
         # Barras de búsqueda por nombre de producto:
         self.productSearch = [self.lineE23, self.lineE26, self.lineE33]
@@ -166,8 +159,13 @@ class adminGUI(QMainWindow, form_class):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Apartado de proveedores
+        self.providersSearch = [self.lineE149, self.lineE34]
+
+        # Apartado de proveedores
         self.providersLE0 = [self.lineE146, self.lineE147, self.lineE148]
         self.providersLE1 = [self.lineE149, self.lineE150, self.lineE151]
+        self.providersTE0 = [self.textE1, self.textE2]
+        self.providersTE1 = [self.textE3, self.textE4]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE CLIENTES
@@ -302,6 +300,14 @@ class adminGUI(QMainWindow, form_class):
         else:
             return sorted(productsList, key = lambda product: product[1])
 
+    # Borrar contenido de un PlainTextEdit:
+    def clearTE(self, textE):
+        textE.setPlainText("")
+
+    # Borrar contenido de una lista de PlainTextEdit:
+    def clearTEs(self, listTE):
+        for textE in listTE: textE.setPlainText("")
+
     # Borrar contenido de un LineEdit:
     def clearLE(self, lineE):
         lineE.setText("")
@@ -341,8 +347,9 @@ class adminGUI(QMainWindow, form_class):
 
     # Método para refrescar la interfaz
     def refresh(self):
-        self.refreshInventory()
         self.refreshSales()
+        self.refreshProviders()
+        self.refreshClients()
 
     def generalSetup(self):
         # Centrar posición de la ventana
@@ -681,9 +688,6 @@ class adminGUI(QMainWindow, form_class):
 
     # Método para refrescar la vista del Ventas y elementos relacionados
     def refreshSales(self):
-        # Configuración de la barra de búsqueda de cliente por CI
-        self.setupSearchBar(self.ciSearch, clientList, True)
-
         # Configurar restricciones de los LineEdit en la vista de ventas
         self.setupSalesLE()
 
@@ -969,6 +973,44 @@ class adminGUI(QMainWindow, form_class):
     #==============================================================================================================================================================================
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Método para refrescar la vista del Ventas y elementos relacionados
+    def refreshProviders(self):
+        # Configuración de la barra de búsqueda de cliente por CI
+        providersNames = self.db.getProvidersNames()
+        self.setupSearchBar(self.providersSearch, providersNames)
+
+        # Limpiar los campos
+        self.clearLEs(self.providersLE0)
+        self.clearLEs(self.providersLE1)
+        self.clearTEs(self.providersTE0)
+        self.clearTEs(self.providersTE1)
+
+        # Refrescar tabla
+        self.updateProvidersTable()
+
+    # Método para refrescar la tabla de factura en ventas
+    def updateProvidersTable(self):
+        table = self.table13
+        providers = self.db.getAllProviders()
+
+        self.clearTable(table)                                                       # Vaciar la tabla
+        table.setRowCount(len(providers))                                            # Contador de filas
+        for i in range(len(providers)):                                              # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(providers[i].provider_name)))   # Nombre
+            table.setItem(i, 1, QTableWidgetItem(str(providers[i].phone)))           # Teléfono
+            table.setItem(i, 2, QTableWidgetItem(str(providers[i].email)))           # Correo
+            table.setItem(i, 3, QTableWidgetItem(str(providers[i].description)))     # Descripción
+            table.setItem(i, 4, QTableWidgetItem(str(providers[i].pay_information))) # Informacion de pago
+
+        self.elem_actual = 0                                            # Definir la fila que se seleccionará
+        if len(providers) > 0: table.selectRow(self.elem_actual)        # Seleccionar fila
+        table.resizeColumnsToContents()                                 # Redimensionar columnas segun el contenido
+        self.setupTable(table)                                          # Reconfigurar tabla
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -986,13 +1028,49 @@ class adminGUI(QMainWindow, form_class):
                 self.db.createProvider(**kwargs)
 
                 self.clearLEs(self.providersLE0) # Limpiar formulario
-                                                 # Actualizar tabla
-                                                 # Actualizar autocompletado
+                self.refreshProviders()          # Refrescar vista
                 self.lineE146.setFocus()         # Enfocar
 
     #==============================================================================================================================================================================
     # VISTA DE CLIENTES
     #==============================================================================================================================================================================
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Método para refrescar la vista del Ventas y elementos relacionados
+    def refreshClients(self):
+        # Configuración de la barra de búsqueda de cliente por CI
+        clientsCI = self.db.getClientsCI()
+        self.setupSearchBar(self.clientsSearch, clientsCI, True)
+
+        # Limpiar los campos
+        self.clearLEs(self.clientsLE0)
+        self.clearLEs(self.clientsLE1)
+        self.clearLEs(self.clientsLE2)
+
+        # Refrescar tabla
+        self.updateClientsTable()
+
+    # Método para refrescar la tabla de factura en ventas
+    def updateClientsTable(self):
+        table = self.table7
+        clients = self.db.getClients()
+
+        self.clearTable(table)                                                # Vaciar la tabla
+        table.setRowCount(len(clients))                                       # Contador de filas
+        for i in range(len(clients)):                                         # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(clients[i].ci)))         # Cédula
+            table.setItem(i, 1, QTableWidgetItem(str(clients[i].firstname)))  # Nombre
+            table.setItem(i, 2, QTableWidgetItem(str(clients[i].lastname)))   # Apellido
+            table.setItem(i, 3, QTableWidgetItem(str(clients[i].balance)))    # Saldo
+
+
+        self.elem_actual = 0                                            # Definir la fila que se seleccionará
+        if len(clients) > 0: table.selectRow(self.elem_actual)          # Seleccionar fila
+        table.resizeColumnsToContents()                                 # Redimensionar columnas segun el contenido
+        self.setupTable(table)                                          # Reconfigurar tabla
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES

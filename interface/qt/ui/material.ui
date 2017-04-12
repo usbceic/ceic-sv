@@ -1060,7 +1060,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>7</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -6109,7 +6109,7 @@ QWidget:item:unchecked {
                   <string notr="true"/>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>1</number>
                  </property>
                  <widget class="QWidget" name="page11">
                   <layout class="QGridLayout" name="gridLayout_10">
@@ -14714,7 +14714,7 @@ QWidget:item:unchecked {
                   <string notr="true"/>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>1</number>
                  </property>
                  <widget class="QWidget" name="page48">
                   <layout class="QGridLayout" name="gridLayout_54">
@@ -15497,8 +15497,8 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox12">
             <property name="geometry">
              <rect>
-              <x>30</x>
-              <y>30</y>
+              <x>10</x>
+              <y>130</y>
               <width>281</width>
               <height>271</height>
              </rect>
@@ -16639,9 +16639,9 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox13">
             <property name="geometry">
              <rect>
-              <x>330</x>
-              <y>70</y>
-              <width>411</width>
+              <x>300</x>
+              <y>60</y>
+              <width>471</width>
               <height>431</height>
              </rect>
             </property>
@@ -16792,7 +16792,12 @@ QWidget:item:unchecked {
                          </column>
                          <column>
                           <property name="text">
-                           <string>Cliente</string>
+                           <string>Nombre</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Apellido</string>
                           </property>
                          </column>
                          <column>
