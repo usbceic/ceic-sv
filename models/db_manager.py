@@ -403,9 +403,8 @@ class dbManager(object):
         return False
 
     '''
-    Metodo para obtener TODA la informacion de los proveedores existentes en la base de datos
-
-        -Retorna un queryset con TODOS los proveedores
+    Metodo para obtener los nombres de TODOS los proveedores
+        - Retorna una lista con el nombre de cada proveedor
     '''
     def getProvidersNames(self):
         query = self.session.query(Provider.provider_name).all()
@@ -416,8 +415,7 @@ class dbManager(object):
 
     '''
     Metodo para obtener TODA la informacion de los proveedores existentes en la base de datos
-
-        -Retorna un queryset con TODOS los proveedores
+        - Retorna un queryset con TODOS los proveedores
     '''
     def getAllProviders(self):
         return self.session.query(Provider).all()
@@ -894,9 +892,20 @@ class dbManager(object):
             print("El cliente con ci " + str(ci) + " existe")
             return True
 
+    '''
+    Metodo para obtener las ci de TODOS los clientes
+        - Retorna una lista con el ci de cada cliente
+    '''
+    def getClientsCI(self):
+        query = self.session.query(Client.ci).all()
+        clientsCI = []
+        for ci in query:
+            clientsCI.append(str(ci[0]))
+        return sorted(clientsCI)
+
     # Método para buscar clientes.
     # Retorna queryset de los clientes que cumplan el filtro
-    def getClient(self, ci=None, firstname=None, lastname=None):
+    def getClients(self, ci=None, firstname=None, lastname=None):
         if ci is None and firstname is None and lastname is None:
             return self.session.query(Client).all()
 
@@ -1132,7 +1141,7 @@ class dbManager(object):
             return self.session.query(Product_list).all()
 
         kwargs = {}
-        if purchase_id is not None and self.existPurchase(purchase_id): 
+        if purchase_id is not None and self.existPurchase(purchase_id):
             kwargs['purchase_id'] = purchase_id
         if product_name is not None and self.existProduct(product_name):
             kwargs['product_id'] = self.getProductID(product_name)
@@ -1210,7 +1219,7 @@ class dbManager(object):
             return self.session.query(Service_list).all()
 
         kwargs = {}
-        if purchase_id is not None and self.existPurchase(purchase_id): 
+        if purchase_id is not None and self.existPurchase(purchase_id):
             kwargs['purchase_id'] = purchase_id
         if service_id is not None and self.existService(service_id):
             kwargs['service_id'] = service_id
@@ -1518,18 +1527,18 @@ if __name__ == '__main__':
     print("\nPrueba de Cliente y Busqueda\n")
     m.createClient(42, "Kurt", "Cobain")
     m.createClient(666, "Kurtis", "Cobain")
-    print(m.getClient(ci=42))
-    print(m.getClient(ci=43))
-    print(m.getClient(firstname="kurt"))
+    print(m.getClients(ci=42))
+    print(m.getClients(ci=43))
+    print(m.getClients(firstname="kurt"))
     """
     """
     print("\nPrueba de Cliente y Update\n")
     m.createClient(777, "David", "Grohl")
-    print(m.getClient(ci=777))
+    print(m.getClients(ci=777))
     m.updateClient(777, debt_permission=False)
-    print(m.getClient(ci=777))
+    print(m.getClients(ci=777))
     m.checkInClient(777)
-    print(m.getClient(ci=777))
+    print(m.getClients(ci=777))
     """
 
     """Pruebas de los métodos para productos"""

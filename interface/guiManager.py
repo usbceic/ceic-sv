@@ -73,13 +73,6 @@ def getStyle(name):
     return style
 
 ###################################################################################################################################################################################
-# VARIABLES:
-###################################################################################################################################################################################
-
-# Ejemplo de lista de cédulas de clientes
-clientList = ["513264", "28436485", "32564336", "105746567", "280765423", "670124583"]
-
-###################################################################################################################################################################################
 ## MANEJADOR DE LA INTERFAZ GRÁFICA:
 ###################################################################################################################################################################################
 
@@ -134,7 +127,7 @@ class adminGUI(QMainWindow, form_class):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Barras de búsqueda por cédula:
-        self.ciSearch = [self.lineE17, self.lineE47, self.lineE52, self.lineE57]
+        self.clientsSearch = [self.lineE17, self.lineE47, self.lineE52, self.lineE57]
 
         # Barras de búsqueda por nombre de producto:
         self.productSearch = [self.lineE23, self.lineE26, self.lineE33]
@@ -354,9 +347,9 @@ class adminGUI(QMainWindow, form_class):
 
     # Método para refrescar la interfaz
     def refresh(self):
-        self.refreshInventory()
         self.refreshSales()
         self.refreshProviders()
+        self.refreshClients()
 
     def generalSetup(self):
         # Centrar posición de la ventana
@@ -695,9 +688,6 @@ class adminGUI(QMainWindow, form_class):
 
     # Método para refrescar la vista del Ventas y elementos relacionados
     def refreshSales(self):
-        # Configuración de la barra de búsqueda de cliente por CI
-        self.setupSearchBar(self.ciSearch, clientList, True)
-
         # Configurar restricciones de los LineEdit en la vista de ventas
         self.setupSalesLE()
 
@@ -1044,6 +1034,43 @@ class adminGUI(QMainWindow, form_class):
     #==============================================================================================================================================================================
     # VISTA DE CLIENTES
     #==============================================================================================================================================================================
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Método para refrescar la vista del Ventas y elementos relacionados
+    def refreshClients(self):
+        # Configuración de la barra de búsqueda de cliente por CI
+        clientsCI = self.db.getClientsCI()
+        self.setupSearchBar(self.clientsSearch, clientsCI, True)
+
+        # Limpiar los campos
+        self.clearLEs(self.clientsLE0)
+        self.clearLEs(self.clientsLE1)
+        self.clearLEs(self.clientsLE2)
+
+        # Refrescar tabla
+        self.updateClientsTable()
+
+    # Método para refrescar la tabla de factura en ventas
+    def updateClientsTable(self):
+        table = self.table7
+        clients = self.db.getClients()
+
+        self.clearTable(table)                                                # Vaciar la tabla
+        table.setRowCount(len(clients))                                       # Contador de filas
+        for i in range(len(clients)):                                         # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(clients[i].ci)))         # Cédula
+            table.setItem(i, 1, QTableWidgetItem(str(clients[i].firstname)))  # Nombre
+            table.setItem(i, 2, QTableWidgetItem(str(clients[i].lastname)))   # Apellido
+            table.setItem(i, 3, QTableWidgetItem(str(clients[i].balance)))    # Saldo
+
+
+        self.elem_actual = 0                                            # Definir la fila que se seleccionará
+        if len(clients) > 0: table.selectRow(self.elem_actual)          # Seleccionar fila
+        table.resizeColumnsToContents()                                 # Redimensionar columnas segun el contenido
+        self.setupTable(table)                                          # Reconfigurar tabla
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES

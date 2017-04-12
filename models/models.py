@@ -188,7 +188,7 @@ class Service(this.Base):
     available    = Column(Boolean, nullable=False, default=False)
     description  = Column(String, default="")
     category     = Column(String, default="")
-    active         = Column(Boolean, nullable=False, default=True)
+    active       = Column(Boolean, nullable=False, default=True)
 
     # Constraints
     __table_args__ = (
@@ -411,7 +411,7 @@ class Reverse_product_list(this.Base):
     # Relaciones
     product_list = relationship("Product_list", back_populates="reversed_product_list")
     clerk = relationship("User", back_populates="reverse_product_list")
-    
+
 
     # Representación de una instancia de la clase
     def __repr__(self):
