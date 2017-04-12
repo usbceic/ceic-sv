@@ -132,6 +132,12 @@ class adminGUI(QMainWindow, form_class):
         # Barras de búsqueda por nombre de producto:
         self.productSearch = [self.lineE23, self.lineE26, self.lineE33]
 
+        # Barras de búsqueda por nombre de proveedor
+        self.providersSearch = [self.lineE149, self.lineE34]
+
+        # Barras de búsqueda por username de usuario
+        self.usersSearch = [self.lineE62, self.lineE75]
+
         # Tablas
         self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
                         self.table8, self.table9, self.table10, self.table11]
@@ -159,9 +165,6 @@ class adminGUI(QMainWindow, form_class):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Apartado de proveedores
-        self.providersSearch = [self.lineE149, self.lineE34]
-
-        # Apartado de proveedores
         self.providersLE0 = [self.lineE146, self.lineE147, self.lineE148]
         self.providersLE1 = [self.lineE149, self.lineE150, self.lineE151]
         self.providersTE0 = [self.textE1, self.textE2]
@@ -175,6 +178,15 @@ class adminGUI(QMainWindow, form_class):
         self.clientsLE0 = [self.lineE47, self.lineE48, self.lineE49, self.lineE50, self.lineE51]
         self.clientsLE1 = [self.lineE52, self.lineE53, self.lineE54, self.lineE55, self.lineE56]
         self.clientsLE2 = [self.lineE57, self.lineE58, self.lineE59, self.lineE60, self.lineE61]
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # LISTAS PARA LA VISTA DE USUARIOS
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        # Apartado de usuarios
+        self.usersLE0 = [self.lineE62, self.lineE63, self.lineE64, self.lineE65, self.lineE66, self.lineE68]
+        self.usersLE1 = [self.lineE69, self.lineE70, self.lineE71, self.lineE72, self.lineE73, self.lineE74]
+        self.usersLE2 = [self.lineE75, self.lineE76, self.lineE77, self.lineE78, self.lineE79]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE VENTAS
@@ -350,6 +362,7 @@ class adminGUI(QMainWindow, form_class):
         self.refreshSales()
         self.refreshProviders()
         self.refreshClients()
+        self.refreshUsers()
 
     def generalSetup(self):
         # Centrar posición de la ventana
@@ -850,7 +863,7 @@ class adminGUI(QMainWindow, form_class):
             if self.lineE17.text() != "":
                 ci = int(self.lineE17.text())
                 if self.db.existClient(ci):
-                    client = self.db.getClient(ci)[0]                            # Obtener cliente
+                    client = self.db.getClients(ci)[0]                            # Obtener cliente
                     self.lineE18.setText(client.firstname)                       # Establecer Nombre
                     self.lineE19.setText(client.lastname)                        # Establecer Apellido
                     self.lineE20.setText(str(client.balance))                    # Establecer Saldo
@@ -876,7 +889,7 @@ class adminGUI(QMainWindow, form_class):
                     if self.lineE17.text() != "":
                         ci = int(self.lineE17.text())
                         if self.db.existClient(ci):
-                            balance = self.db.getClient(ci)[0].balance
+                            balance = self.db.getClients(ci)[0].balance
 
                             if balance < cota1:
                                 cota1 = balance
@@ -919,7 +932,7 @@ class adminGUI(QMainWindow, form_class):
                     if self.lineE17.text() != "":
                         ci = int(self.lineE17.text())
                         if self.db.existClient(ci):
-                            balance = self.db.getClient(ci)[0].balance
+                            balance = self.db.getClients(ci)[0].balance
 
                             if balance < cota:
                                 cota = balance
@@ -1085,20 +1098,155 @@ class adminGUI(QMainWindow, form_class):
     # Botón para crear un cliente
     def on_pbutton17_pressed(self):
         if self.click():
-            if self.lineE53.text() != "" and self.lineE54.text() != "" and self.lineE55.text() != "":
-                kwargs = {
-                    "ci"        : self.lineE52.text(),
-                    "firstname" : self.lineE53.text(),
-                    "lastname"  : self.lineE54.text(),
-                    "phone"     : self.lineE55.text(),
-                    "email"     : self.lineE56.text()
-                }
-                self.db.createClient(**kwargs)
+            if self.lineE52.text() != "" and self.lineE53.text() != "" and self.lineE54.text() != "":
+                ci = int(self.lineE52.text())
+                if not self.db.existClient(ci):
+                    kwargs = {
+                        "ci"        : ci,
+                        "firstname" : self.lineE53.text(),
+                        "lastname"  : self.lineE54.text(),
+                        "phone"     : self.lineE55.text(),
+                        "email"     : self.lineE56.text()
+                    }
 
-                self.clearLEs(self.clientsLE1) # Limpiar formulario
-                                               # Actualizar tabla
-                                               # Actualizar autocompletado
-                self.lineE53.setFocus()        # Enfocar
+                    self.db.createClient(**kwargs) # Crear cliente
+                    self.clearLEs(self.clientsLE1) # Limpiar formulario
+                    self.refreshClients()          # Refrescar vista
+                    self.lineE52.setFocus()        # Enfocar
+
+    # Botón para editar un cliente
+    def on_pbutton19_pressed(self):
+        if self.click():
+            if self.lineE57.text() != "" and self.lineE58.text() != "" and self.lineE59.text() != "":
+                ci = int(self.lineE52.text())
+                if not self.db.existClient(ci):
+                    kwargs = {
+                        "firstname" : self.lineE58.text(),
+                        "lastname"  : self.lineE59.text(),
+                        "phone"     : self.lineE60.text(),
+                        "email"     : self.lineE61.text()
+                    }
+
+                    self.db.updateClient(**kwargs) # Crear cliente
+                    self.clearLEs(self.clientsLE2) # Limpiar formulario
+                    self.refreshClients()          # Refrescar vista
+                    self.lineE57.setFocus()        # Enfocar
+
+    # LineEdit para ingresar el nombre del producto seleccionado
+    def on_lineE57_textChanged(self):
+        if self.textChanged():
+            if self.lineE57.text() != "":
+                ci = self.lineE57.text()
+                if self.db.existClient(ci):
+                    client = self.db.getClients(ci)[0]
+                    self.lineE58.setText(client.firstname)
+                    self.lineE59.setText(client.lastname)
+                    self.lineE60.setText(client.phone)
+                    self.lineE61.setText(client.email)
+
+    #==============================================================================================================================================================================
+    # VISTA DE USUARIOS
+    #==============================================================================================================================================================================
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Método para refrescar la vista del Ventas y elementos relacionados
+    def refreshUsers(self):
+        # Configuración de la barra de búsqueda de cliente por CI
+        usersID = self.db.getUserNames()
+        self.setupSearchBar(self.usersSearch, usersID, True)
+
+        # Limpiar los campos
+        self.clearLEs(self.usersLE0)
+        self.clearLEs(self.usersLE1)
+        self.clearLEs(self.usersLE2)
+
+        # Refrescar tabla
+        self.updateUsersTable(0) # Tabla de colaboradores
+        self.updateUsersTable(1) # Tabla de vendedores
+        self.updateUsersTable(2) # Tabla de administradores
+
+    # Método para refrescar la tabla de factura en ventas
+    def updateUsersTable(self, permission_mask):
+        if permission_mask == 0:
+            table = self.table10
+            users = self.db.getUsers(permission_mask=permission_mask)
+
+        elif permission_mask == 1:
+            table = self.table9
+            users = self.db.getUsers(permission_mask=permission_mask)
+
+        else:
+            table = self.table8
+            users = self.db.getUsers(permission_mask=permission_mask)
+
+        self.clearTable(table)                                             # Vaciar la tabla
+        table.setRowCount(len(users))                                      # Contador de filas
+        for i in range(len(users)):                                        # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(users[i].username)))  # Cédula
+            table.setItem(i, 1, QTableWidgetItem(str(users[i].firstname))) # Nombre
+            table.setItem(i, 2, QTableWidgetItem(str(users[i].lastname)))  # Apellido
+            table.setItem(i, 3, QTableWidgetItem(str(users[i].email)))     # Correo
+
+        self.elem_actual = 0                                 # Definir la fila que se seleccionará
+        if len(users) > 0: table.selectRow(self.elem_actual) # Seleccionar fila
+        table.resizeColumnsToContents()                      # Redimensionar columnas segun el contenido
+        self.setupTable(table)                               # Reconfigurar tabla
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Botón para crear un usuario
+    def on_pbutton21_pressed(self):
+        if self.click():
+            if self.lineE52.text() != "" and self.lineE53.text() != "" and self.lineE54.text() != "":
+                ci = int(self.lineE52.text())
+                if not self.db.existClient(ci):
+                    kwargs = {
+                        "ci"        : ci,
+                        "firstname" : self.lineE53.text(),
+                        "lastname"  : self.lineE54.text(),
+                        "phone"     : self.lineE55.text(),
+                        "email"     : self.lineE56.text()
+                    }
+
+                    self.db.createClient(**kwargs) # Crear cliente
+                    self.clearLEs(self.clientsLE1) # Limpiar formulario
+                    self.refreshClients()          # Refrescar vista
+                    self.lineE52.setFocus()        # Enfocar
+
+    # Botón para editar un usuario
+    def on_pbutton23_pressed(self):
+        if self.click():
+            if self.lineE57.text() != "" and self.lineE58.text() != "" and self.lineE59.text() != "":
+                ci = int(self.lineE52.text())
+                if not self.db.existClient(ci):
+                    kwargs = {
+                        "firstname" : self.lineE58.text(),
+                        "lastname"  : self.lineE59.text(),
+                        "phone"     : self.lineE60.text(),
+                        "email"     : self.lineE61.text()
+                    }
+
+                    self.db.updateClient(**kwargs) # Crear cliente
+                    self.clearLEs(self.clientsLE2) # Limpiar formulario
+                    self.refreshClients()          # Refrescar vista
+                    self.lineE57.setFocus()        # Enfocar
+
+    # LineEdit para ingresar el nombre del producto seleccionado
+    def on_lineE75_textChanged(self):
+        if self.textChanged():
+            if self.lineE57.text() != "":
+                ci = self.lineE57.text()
+                if self.db.existClient(ci):
+                    client = self.db.getClients(ci)[0]
+                    self.lineE58.setText(client.firstname)
+                    self.lineE59.setText(client.lastname)
+                    self.lineE60.setText(client.phone)
+                    self.lineE61.setText(client.email)
 
     #==============================================================================================================================================================================
     # VISTA DE CONFIGURACIONES

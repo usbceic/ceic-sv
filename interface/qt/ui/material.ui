@@ -1060,7 +1060,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>7</number>
+           <number>8</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -15535,7 +15535,7 @@ QWidget:item:unchecked {
                   <string notr="true"/>
                  </property>
                  <property name="currentIndex">
-                  <number>1</number>
+                  <number>0</number>
                  </property>
                  <widget class="QWidget" name="page22">
                   <layout class="QGridLayout" name="gridLayout_69">
@@ -17151,7 +17151,7 @@ QWidget:item:unchecked {
                       </widget>
                      </item>
                      <item>
-                      <spacer name="horizontalSpacer_315">
+                      <spacer name="horizontalSpacer_357">
                        <property name="orientation">
                         <enum>Qt::Horizontal</enum>
                        </property>
@@ -17188,6 +17188,19 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
+                           <item row="0" column="1">
+                            <widget class="QLineEdit" name="lineE62">
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="readOnly">
+                              <bool>false</bool>
+                             </property>
+                            </widget>
+                           </item>
                            <item row="1" column="0">
                             <widget class="QLabel" name="text165">
                              <property name="font">
@@ -17201,6 +17214,19 @@ QWidget:item:unchecked {
                              </property>
                              <property name="text">
                               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nombre&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="1">
+                            <widget class="QLineEdit" name="lineE63">
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="readOnly">
+                              <bool>true</bool>
                              </property>
                             </widget>
                            </item>
@@ -17220,6 +17246,19 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
+                           <item row="2" column="1">
+                            <widget class="QLineEdit" name="lineE64">
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="readOnly">
+                              <bool>true</bool>
+                             </property>
+                            </widget>
+                           </item>
                            <item row="3" column="0">
                             <widget class="QLabel" name="text167">
                              <property name="font">
@@ -17233,6 +17272,19 @@ QWidget:item:unchecked {
                              </property>
                              <property name="text">
                               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="3" column="1">
+                            <widget class="QLineEdit" name="lineE65">
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="readOnly">
+                              <bool>true</bool>
                              </property>
                             </widget>
                            </item>
@@ -17252,23 +17304,20 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="0">
-                            <widget class="QLabel" name="text169">
-                             <property name="font">
-                              <font>
-                               <family>Open Sans</family>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
+                           <item row="4" column="1">
+                            <widget class="QLineEdit" name="lineE66">
                              <property name="styleSheet">
-                              <string notr="true">background-color: transparent;</string>
+                              <string notr="true"/>
                              </property>
                              <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clave&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                              <string/>
+                             </property>
+                             <property name="readOnly">
+                              <bool>true</bool>
                              </property>
                             </widget>
                            </item>
-                           <item row="6" column="0">
+                           <item row="5" column="0">
                             <widget class="QLabel" name="text170">
                              <property name="font">
                               <font>
@@ -17284,85 +17333,7 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
-                           <item row="0" column="1">
-                            <widget class="QLineEdit" name="lineE62">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>false</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QLineEdit" name="lineE63">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="1">
-                            <widget class="QLineEdit" name="lineE64">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="1">
-                            <widget class="QLineEdit" name="lineE65">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="4" column="1">
-                            <widget class="QLineEdit" name="lineE66">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
                            <item row="5" column="1">
-                            <widget class="QLineEdit" name="lineE67">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="6" column="1">
                             <widget class="QLineEdit" name="lineE68">
                              <property name="styleSheet">
                               <string notr="true"/>
@@ -17415,7 +17386,7 @@ QWidget:item:unchecked {
                        <property name="sizeHint" stdset="0">
                         <size>
                          <width>40</width>
-                         <height>36</height>
+                         <height>50</height>
                         </size>
                        </property>
                       </spacer>
@@ -17931,6 +17902,19 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
+                           <item row="0" column="1">
+                            <widget class="QLineEdit" name="lineE75">
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="readOnly">
+                              <bool>false</bool>
+                             </property>
+                            </widget>
+                           </item>
                            <item row="1" column="0">
                             <widget class="QLabel" name="text179">
                              <property name="font">
@@ -17944,6 +17928,19 @@ QWidget:item:unchecked {
                              </property>
                              <property name="text">
                               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nombre&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="1">
+                            <widget class="QLineEdit" name="lineE76">
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="readOnly">
+                              <bool>true</bool>
                              </property>
                             </widget>
                            </item>
@@ -17963,6 +17960,19 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
+                           <item row="2" column="1">
+                            <widget class="QLineEdit" name="lineE77">
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="readOnly">
+                              <bool>true</bool>
+                             </property>
+                            </widget>
+                           </item>
                            <item row="3" column="0">
                             <widget class="QLabel" name="text181">
                              <property name="font">
@@ -17976,6 +17986,19 @@ QWidget:item:unchecked {
                              </property>
                              <property name="text">
                               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="3" column="1">
+                            <widget class="QLineEdit" name="lineE78">
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="readOnly">
+                              <bool>true</bool>
                              </property>
                             </widget>
                            </item>
@@ -17995,23 +18018,20 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="0">
-                            <widget class="QLabel" name="text183">
-                             <property name="font">
-                              <font>
-                               <family>Open Sans</family>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
+                           <item row="4" column="1">
+                            <widget class="QLineEdit" name="lineE79">
                              <property name="styleSheet">
-                              <string notr="true">background-color: transparent;</string>
+                              <string notr="true"/>
                              </property>
                              <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clave&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                              <string/>
+                             </property>
+                             <property name="readOnly">
+                              <bool>true</bool>
                              </property>
                             </widget>
                            </item>
-                           <item row="6" column="0">
+                           <item row="5" column="0">
                             <widget class="QLabel" name="text184">
                              <property name="font">
                               <font>
@@ -18027,85 +18047,7 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
-                           <item row="0" column="1">
-                            <widget class="QLineEdit" name="lineE75">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>false</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QLineEdit" name="lineE76">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>false</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="1">
-                            <widget class="QLineEdit" name="lineE77">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>false</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="1">
-                            <widget class="QLineEdit" name="lineE78">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>false</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="4" column="1">
-                            <widget class="QLineEdit" name="lineE79">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>false</bool>
-                             </property>
-                            </widget>
-                           </item>
                            <item row="5" column="1">
-                            <widget class="QLineEdit" name="lineE80">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>false</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="6" column="1">
                             <widget class="QComboBox" name="cbox9">
                              <property name="font">
                               <font>
@@ -18347,7 +18289,7 @@ QWidget:item:unchecked {
                     <string notr="true"/>
                    </property>
                    <property name="currentIndex">
-                    <number>0</number>
+                    <number>1</number>
                    </property>
                    <widget class="QWidget" name="page30">
                     <layout class="QGridLayout" name="gridLayout_106">
@@ -18465,7 +18407,12 @@ QWidget:item:unchecked {
                          </column>
                          <column>
                           <property name="text">
-                           <string>Registro</string>
+                           <string>Apellido</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Correo</string>
                           </property>
                          </column>
                         </widget>
@@ -18590,7 +18537,12 @@ QWidget:item:unchecked {
                          </column>
                          <column>
                           <property name="text">
-                           <string>Registro</string>
+                           <string>Apellido</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Correo</string>
                           </property>
                          </column>
                         </widget>
@@ -18715,7 +18667,12 @@ QWidget:item:unchecked {
                          </column>
                          <column>
                           <property name="text">
-                           <string>Registro</string>
+                           <string>Apellido</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Correo</string>
                           </property>
                          </column>
                         </widget>

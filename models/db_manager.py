@@ -290,7 +290,11 @@ class dbManager(object):
      - Retorna un queryset con todos los nombres de usuario
     """
     def getUserNames(self):
-        return self.session.query(User.username).all()
+        query = self.session.query(User.username).all()
+        usersNames = []
+        for name in query:
+            usersNames.append(name[0])
+        return sorted(usersNames)
 
     """
     Método para obtener información de un usuario
@@ -300,11 +304,17 @@ class dbManager(object):
         return self.session.query(User.firstname, User.lastname, User.email, User.profile, User.permission_mask, User.last_login).filter(User.username == username).one()
 
     """
-    Método para obtener información de todos los usuarios
-     - Retorna un queryset con la información básica de todos los usuarios
+    Método para retornar usuarios segun un filtro especificado
+     - Retorna un queryset con los usuarios que pasan el filtro
     """
-    def getUsersInfo(self):
-        return self.session.query(User.firstname, User.lastname, User.email, User.profile, User.permission_mask, User.last_login).all()
+    def getUsers(self, username = None, firstname = None, lastname = None, permission_mask = None):
+        filters = {}
+        if username != None: filters["username"] = username
+        if firstname != None: filters["firstname"] = firstname
+        if lastname != None: filters["lastname"] = lastname
+        if permission_mask != None: filters["permission_mask"] = permission_mask
+
+        return self.session.query(User).filter_by(**filters).all()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PROVEEDORES:
