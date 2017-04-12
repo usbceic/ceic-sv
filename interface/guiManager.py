@@ -1052,11 +1052,17 @@ class adminGUI(QMainWindow, form_class):
 
         # Refrescar tabla
         self.updateClientsTable()
+        self.updateClientsTable(True)
 
     # Método para refrescar la tabla de factura en ventas
-    def updateClientsTable(self):
-        table = self.table7
-        clients = self.db.getClients()
+    def updateClientsTable(self, debt = False):
+        if debt:
+            table = self.table6
+            clients = self.db.getClients(debt=debt)
+
+        else:
+            table = self.table7
+            clients = self.db.getClients()
 
         self.clearTable(table)                                                # Vaciar la tabla
         table.setRowCount(len(clients))                                       # Contador de filas

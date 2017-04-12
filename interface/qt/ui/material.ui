@@ -15497,7 +15497,7 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox12">
             <property name="geometry">
              <rect>
-              <x>10</x>
+              <x>20</x>
               <y>130</y>
               <width>281</width>
               <height>271</height>
@@ -16639,9 +16639,9 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox13">
             <property name="geometry">
              <rect>
-              <x>300</x>
+              <x>310</x>
               <y>60</y>
-              <width>471</width>
+              <width>441</width>
               <height>431</height>
              </rect>
             </property>
@@ -16679,7 +16679,7 @@ QWidget:item:unchecked {
                     <string notr="true"/>
                    </property>
                    <property name="currentIndex">
-                    <number>0</number>
+                    <number>1</number>
                    </property>
                    <widget class="QWidget" name="page25">
                     <layout class="QGridLayout" name="gridLayout_50">
@@ -16922,7 +16922,12 @@ QWidget:item:unchecked {
                          </column>
                          <column>
                           <property name="text">
-                           <string>Cliente</string>
+                           <string>Nombre</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
+                           <string>Apellido</string>
                           </property>
                          </column>
                          <column>

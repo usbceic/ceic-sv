@@ -905,8 +905,8 @@ class dbManager(object):
 
     # Método para buscar clientes.
     # Retorna queryset de los clientes que cumplan el filtro
-    def getClients(self, ci=None, firstname=None, lastname=None):
-        if ci is None and firstname is None and lastname is None:
+    def getClients(self, ci=None, firstname=None, lastname=None, debt = False):
+        if ci is None and firstname is None and lastname is None and not debt:
             return self.session.query(Client).all()
 
         filters = and_()
@@ -919,8 +919,10 @@ class dbManager(object):
         if lastname is not None:
             filters = and_(filters, Client.lastname.ilike("%"+lastname+"%"))
 
-        return self.session.query(Client).filter(*filters).all()
+        if debt:
+            filters = and_(filters, Client.balance < 0)
 
+        return self.session.query(Client).filter(*filters).all()
 
     # Método para crear un cliente nuevo
     # Retorna true cuando el cliente es creado satisfactoreamente y false cuando no se puede crear o cuando ya existia el cliente
