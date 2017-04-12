@@ -233,6 +233,17 @@ class dialog0GUI(QDialog, dialog0):
         super(dialog0GUI, self).__init__(parent)
         self.setupUi(self)
 
+
+    def click(self):
+        if self.clicked:
+            self.clicked = False
+            return True
+        else:
+            self.clicked = True
+            return False
+
+    def on_dpbutton0_pressed(self): self.accept()
+
 class dialog1GUI(QDialog, dialog1):
     #==============================================================================================================================================================================
     # Constructor de la clase
