@@ -390,24 +390,28 @@ class Reverse_product_list(this.Base):
     # Atributos
     product_id   = Column(GUID, nullable=False, primary_key=True)
     purchase_id  = Column(GUID, nullable=False, primary_key=True)
-    clerk        = Column(String, nullable=False)
+    clerk_id     = Column(String, nullable=False)
     reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
     amount       = Column(Integer, nullable=False)
     cash         = Column(Boolean, default=True)
+    cash_amount  = Column(Numeric, nullable=False, default=0.0)
     description  = Column(String, nullable=False)
 
     # Constraints
     __table_args__ = (
         # Verificaciones
         CheckConstraint('amount > 0', name='exp_reverse_product_list_valid_amount'),
+        CheckConstraint('(cash_amount >= 0 AND cash) OR (cash_amount = 0 AND NOT cash)', name='exp_reverse_product_list_valid_cash_amount'),
 
         # Claves foraneas
         ForeignKeyConstraint(['product_id', 'purchase_id'], ['product_list.product_id', 'product_list.purchase_id']),
-        ForeignKeyConstraint(['clerk'], ['users.username']),
+        ForeignKeyConstraint(['clerk_id'], ['users.username']),
     )
 
     # Relaciones
     product_list = relationship("Product_list", back_populates="reversed_product_list")
+    clerk = relationship("User", back_populates="reverse_product_list")
+    
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -425,24 +429,27 @@ class Reverse_service_list(this.Base):
     # Atributos
     service_id   = Column(GUID, nullable=False, primary_key=True)
     purchase_id  = Column(GUID, nullable=False, primary_key=True)
-    clerk        = Column(String, nullable=False)
+    clerk_id     = Column(String, nullable=False)
     reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
     amount       = Column(Integer, nullable=False)
     cash         = Column(Boolean, default=True)
+    cash_amount  = Column(Numeric, nullable=False, default=0.0)
     description  = Column(String, nullable=False)
 
     # Constraints
     __table_args__ = (
         # Verificaciones
         CheckConstraint('amount > 0', name='exp_reverse_service_list_valid_amount'),
+        CheckConstraint('(cash_amount >= 0 AND cash) OR (cash_amount = 0 AND NOT cash)', name='exp_reverse_service_list_valid_cash_amount'),
 
         # Claves foraneas
         ForeignKeyConstraint(['service_id', 'purchase_id'], ['service_list.service_id', 'service_list.purchase_id']),
-        ForeignKeyConstraint(['clerk'], ['users.username']),
+        ForeignKeyConstraint(['clerk_id'], ['users.username']),
     )
 
     # Relaciones
     service_list = relationship("Service_list", back_populates="reversed_service_list")
+    clerk = relationship("User", back_populates="reverse_service_list")
 
     # Representación de una instancia de la clase
     def __repr__(self):
