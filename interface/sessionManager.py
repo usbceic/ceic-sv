@@ -100,7 +100,7 @@ class loginGUI(QMainWindow, loginWindow):
         self.setupPage1()
         self.setupPage2()
 
-        # Se connectan los botones entre otras cosas con algunos de los métodos definidos a continuación
+        # Se conectan los botones entre otras cosas con algunos de los métodos definidos a continuación
         QMetaObject.connectSlotsByName(self)
 
         # Variable de control para los QPushButton
