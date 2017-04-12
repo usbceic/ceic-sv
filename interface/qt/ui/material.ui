@@ -17091,7 +17091,7 @@ QWidget:item:unchecked {
               <x>20</x>
               <y>30</y>
               <width>281</width>
-              <height>291</height>
+              <height>261</height>
              </rect>
             </property>
             <property name="title">
@@ -17260,7 +17260,7 @@ QWidget:item:unchecked {
                             </widget>
                            </item>
                            <item row="3" column="0">
-                            <widget class="QLabel" name="text167">
+                            <widget class="QLabel" name="text168">
                              <property name="font">
                               <font>
                                <family>Open Sans</family>
@@ -17271,7 +17271,7 @@ QWidget:item:unchecked {
                               <string notr="true">background-color: transparent;</string>
                              </property>
                              <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                              </property>
                             </widget>
                            </item>
@@ -17289,35 +17289,6 @@ QWidget:item:unchecked {
                             </widget>
                            </item>
                            <item row="4" column="0">
-                            <widget class="QLabel" name="text168">
-                             <property name="font">
-                              <font>
-                               <family>Open Sans</family>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">background-color: transparent;</string>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="4" column="1">
-                            <widget class="QLineEdit" name="lineE66">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="5" column="0">
                             <widget class="QLabel" name="text170">
                              <property name="font">
                               <font>
@@ -17333,8 +17304,8 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="1">
-                            <widget class="QLineEdit" name="lineE68">
+                           <item row="4" column="1">
+                            <widget class="QLineEdit" name="lineE66">
                              <property name="styleSheet">
                               <string notr="true"/>
                              </property>
@@ -17455,102 +17426,6 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
-                           <item row="1" column="0">
-                            <widget class="QLabel" name="text172">
-                             <property name="font">
-                              <font>
-                               <family>Open Sans</family>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">background-color: transparent;</string>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nombre&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="0">
-                            <widget class="QLabel" name="text173">
-                             <property name="font">
-                              <font>
-                               <family>Open Sans</family>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">background-color: transparent;</string>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apellido&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="3" column="0">
-                            <widget class="QLabel" name="text174">
-                             <property name="font">
-                              <font>
-                               <family>Open Sans</family>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">background-color: transparent;</string>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="4" column="0">
-                            <widget class="QLabel" name="text175">
-                             <property name="font">
-                              <font>
-                               <family>Open Sans</family>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">background-color: transparent;</string>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="5" column="0">
-                            <widget class="QLabel" name="text176">
-                             <property name="font">
-                              <font>
-                               <family>Open Sans</family>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">background-color: transparent;</string>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clave&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="6" column="0">
-                            <widget class="QLabel" name="text177">
-                             <property name="font">
-                              <font>
-                               <family>Open Sans</family>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">background-color: transparent;</string>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rango&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                            </widget>
-                           </item>
                            <item row="0" column="1">
                             <widget class="QLineEdit" name="lineE69">
                              <property name="font">
@@ -17566,6 +17441,22 @@ QWidget:item:unchecked {
                              </property>
                              <property name="readOnly">
                               <bool>false</bool>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="0">
+                            <widget class="QLabel" name="text172">
+                             <property name="font">
+                              <font>
+                               <family>Open Sans</family>
+                               <pointsize>11</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">background-color: transparent;</string>
+                             </property>
+                             <property name="text">
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nombre&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                              </property>
                             </widget>
                            </item>
@@ -17587,6 +17478,22 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
+                           <item row="2" column="0">
+                            <widget class="QLabel" name="text173">
+                             <property name="font">
+                              <font>
+                               <family>Open Sans</family>
+                               <pointsize>11</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">background-color: transparent;</string>
+                             </property>
+                             <property name="text">
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apellido&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                             </property>
+                            </widget>
+                           </item>
                            <item row="2" column="1">
                             <widget class="QLineEdit" name="lineE71">
                              <property name="font">
@@ -17602,6 +17509,22 @@ QWidget:item:unchecked {
                              </property>
                              <property name="readOnly">
                               <bool>false</bool>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="3" column="0">
+                            <widget class="QLabel" name="text175">
+                             <property name="font">
+                              <font>
+                               <family>Open Sans</family>
+                               <pointsize>11</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">background-color: transparent;</string>
+                             </property>
+                             <property name="text">
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                              </property>
                             </widget>
                            </item>
@@ -17623,6 +17546,22 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
+                           <item row="4" column="0">
+                            <widget class="QLabel" name="text176">
+                             <property name="font">
+                              <font>
+                               <family>Open Sans</family>
+                               <pointsize>11</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">background-color: transparent;</string>
+                             </property>
+                             <property name="text">
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clave&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                             </property>
+                            </widget>
+                           </item>
                            <item row="4" column="1">
                             <widget class="QLineEdit" name="lineE73">
                              <property name="font">
@@ -17641,25 +17580,23 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="1">
-                            <widget class="QLineEdit" name="lineE74">
+                           <item row="5" column="0">
+                            <widget class="QLabel" name="text177">
                              <property name="font">
                               <font>
                                <family>Open Sans</family>
+                               <pointsize>11</pointsize>
                               </font>
                              </property>
                              <property name="styleSheet">
-                              <string notr="true"/>
+                              <string notr="true">background-color: transparent;</string>
                              </property>
                              <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>false</bool>
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rango&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                              </property>
                             </widget>
                            </item>
-                           <item row="6" column="1">
+                           <item row="5" column="1">
                             <widget class="QComboBox" name="cbox8">
                              <property name="font">
                               <font>
@@ -17974,7 +17911,7 @@ QWidget:item:unchecked {
                             </widget>
                            </item>
                            <item row="3" column="0">
-                            <widget class="QLabel" name="text181">
+                            <widget class="QLabel" name="text182">
                              <property name="font">
                               <font>
                                <family>Open Sans</family>
@@ -17985,7 +17922,7 @@ QWidget:item:unchecked {
                               <string notr="true">background-color: transparent;</string>
                              </property>
                              <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                              </property>
                             </widget>
                            </item>
@@ -18003,35 +17940,6 @@ QWidget:item:unchecked {
                             </widget>
                            </item>
                            <item row="4" column="0">
-                            <widget class="QLabel" name="text182">
-                             <property name="font">
-                              <font>
-                               <family>Open Sans</family>
-                               <pointsize>11</pointsize>
-                              </font>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">background-color: transparent;</string>
-                             </property>
-                             <property name="text">
-                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="4" column="1">
-                            <widget class="QLineEdit" name="lineE79">
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="5" column="0">
                             <widget class="QLabel" name="text184">
                              <property name="font">
                               <font>
@@ -18047,7 +17955,7 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
-                           <item row="5" column="1">
+                           <item row="4" column="1">
                             <widget class="QComboBox" name="cbox9">
                              <property name="font">
                               <font>

@@ -184,9 +184,9 @@ class adminGUI(QMainWindow, form_class):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Apartado de usuarios
-        self.usersLE0 = [self.lineE62, self.lineE63, self.lineE64, self.lineE65, self.lineE66, self.lineE68]
-        self.usersLE1 = [self.lineE69, self.lineE70, self.lineE71, self.lineE72, self.lineE73, self.lineE74]
-        self.usersLE2 = [self.lineE75, self.lineE76, self.lineE77, self.lineE78, self.lineE79]
+        self.usersLE0 = [self.lineE62, self.lineE63, self.lineE64, self.lineE65, self.lineE66]
+        self.usersLE1 = [self.lineE69, self.lineE70, self.lineE71, self.lineE72, self.lineE73]
+        self.usersLE2 = [self.lineE75, self.lineE76, self.lineE77, self.lineE78]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE VENTAS
@@ -1136,7 +1136,7 @@ class adminGUI(QMainWindow, form_class):
     def on_lineE57_textChanged(self):
         if self.textChanged():
             if self.lineE57.text() != "":
-                ci = self.lineE57.text()
+                ci = int(self.lineE57.text())
                 if self.db.existClient(ci):
                     client = self.db.getClients(ci)[0]
                     self.lineE58.setText(client.firstname)
@@ -1156,7 +1156,7 @@ class adminGUI(QMainWindow, form_class):
     def refreshUsers(self):
         # Configuración de la barra de búsqueda de cliente por CI
         usersID = self.db.getUserNames()
-        self.setupSearchBar(self.usersSearch, usersID, True)
+        self.setupSearchBar(self.usersSearch, usersID)
 
         # Limpiar los campos
         self.clearLEs(self.usersLE0)
@@ -1236,17 +1236,28 @@ class adminGUI(QMainWindow, form_class):
                     self.refreshClients()          # Refrescar vista
                     self.lineE57.setFocus()        # Enfocar
 
-    # LineEdit para ingresar el nombre del producto seleccionado
+    # LineEdit para ingresar el username en el apartado de editar
     def on_lineE75_textChanged(self):
         if self.textChanged():
-            if self.lineE57.text() != "":
-                ci = self.lineE57.text()
-                if self.db.existClient(ci):
-                    client = self.db.getClients(ci)[0]
-                    self.lineE58.setText(client.firstname)
-                    self.lineE59.setText(client.lastname)
-                    self.lineE60.setText(client.phone)
-                    self.lineE61.setText(client.email)
+            if self.lineE75.text() != "":
+                username = self.lineE75.text()
+                if self.db.existUser(username):
+                    user = self.db.getUsers(username)[0]
+                    self.lineE76.setText(user.firstname)
+                    self.lineE77.setText(user.lastname)
+                    self.lineE78.setText(user.email)
+
+    # LineEdit para ingresar el username en el apartado de consultas
+    def on_lineE62_textChanged(self):
+        if self.textChanged():
+            if self.lineE62.text() != "":
+                username = self.lineE62.text()
+                if self.db.existUser(username):
+                    user = self.db.getUsers(username)[0]
+                    self.lineE63.setText(user.firstname)
+                    self.lineE64.setText(user.lastname)
+                    self.lineE65.setText(user.email)
+                    self.lineE66.setText(str(user.permission_mask))
 
     #==============================================================================================================================================================================
     # VISTA DE CONFIGURACIONES
