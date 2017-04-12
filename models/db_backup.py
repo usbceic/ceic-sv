@@ -28,6 +28,7 @@ from sqlalchemy.util import KeyedTuple
 from queue import PriorityQueue
 import re
 import os
+import shutil
 import inspect
 import datetime
 
@@ -48,6 +49,7 @@ class DBBackup(object):
 
     _bacbkup_folder_name_ = "Backup"
     _bacbkup_old_folder_name_ = _bacbkup_folder_name_ + "_Old"
+    _get_dir_function = os.getcwd
 
     """docstring for DBBackup"""
     def __init__(self):
@@ -113,10 +115,12 @@ class DBBackup(object):
 
     """
     Método para hacer backup a toda la base de datos
+    Devuelve True si logro hacer backup. 
+    En caso de encontrar que el ultimo backup esta corrupto, devuelve False
     """
     def backup(self):
         print("Iniciando Backup")
-        cur_dir = os.getcwd()
+        cur_dir = DBBackup._get_dir_function()
         backup_dir = os.path.join(cur_dir, DBBackup._bacbkup_folder_name_)
         backup_old_dir = os.path.join(cur_dir, DBBackup._bacbkup_old_folder_name_)
 
@@ -143,7 +147,8 @@ class DBBackup(object):
                     break
 
             if not found:
-                raise Exception('Error de Formato con los Archivos de Backup Viejo') 
+                print('Error de Formato con los Archivos de Backup Viejo')
+                return False 
             print("Hora del Backup Antiguo:", backup_date)
             os.rename(backup_dir, os.path.join(backup_old_dir, backup_date))
             print("Backup Antiguo Movido a Carpeta de Backups Antiguos")
@@ -162,6 +167,7 @@ class DBBackup(object):
             print("\tGuardada  Tabla:", table_name)
         print("Fin de Guardando Tablas")
         print("Backup Completado")
+        return True 
 
     """
     Método para hacer restore a toda la db.
@@ -170,7 +176,7 @@ class DBBackup(object):
     """
     def restore(self):
         print("Iniciando Restore:")
-        cur_dir = os.getcwd()
+        cur_dir = DBBackup._get_dir_function()
         backup_dir = os.path.join(cur_dir, DBBackup._bacbkup_folder_name_)
 
 
@@ -225,5 +231,28 @@ class DBBackup(object):
         print("Restore Completado")
         return True
 
+    """
+    Método para borrar el último backup
+    Retorna True si la carpeta no existe o  si fue borrada con éxito.
+    False en caso contrario.
+    """
+    def deleteLastBackup(self):
+        print("Borrando Carpeta de Ultimo Backup")
+        cur_dir = DBBackup._get_dir_function()
+        backup_dir = os.path.join(cur_dir, DBBackup._bacbkup_folder_name_)
+
+        if not os.path.exists(backup_dir):
+            print("\tCarpeta de Backup no encontrada")
+            return True
+
+        try:
+            shutil.rmtree(backup_dir)
+            print("Borrado Completado")
+            return True
+        except Exception as e:
+            print("\tError borrando backup")
+            print("\tRazon:", e)
+            return False
+        
 
 
