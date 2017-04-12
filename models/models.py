@@ -314,8 +314,8 @@ class Product_list(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.product_id), str(self.purchase_id), str(self.price), str(self.amount), str(self.payed))
-        template = "<Product_list(product_id='%s', purchase_id='%s', price='%s', amount='%s', payed=='%s')>"
+        kwargs = (str(self.product_id), str(self.purchase_id), str(self.price), str(self.amount))
+        template = "<Product_list(product_id='%s', purchase_id='%s', price='%s', amount='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================
@@ -347,8 +347,8 @@ class Service_list(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.service_id), str(self.purchase_id), str(self.price), str(self.amount), str(self.payed))
-        template = "<Service_list(service_id='%s', purchase_id='%s', price='%s', amount='%s', payed=='%s')>"
+        kwargs = (str(self.service_id), str(self.purchase_id), str(self.price), str(self.amount))
+        template = "<Service_list(service_id='%s', purchase_id='%s', price='%s', amount='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================
@@ -415,8 +415,8 @@ class Reverse_product_list(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.product_id), str(self.purchase_id), self.clerk, str(self.reverse_date), str(self.amount), str(self.cash), self.description)
-        template = "<Reverse_product_list(product_id='%s', purchase_id='%s', clerk='%s', reverse_date='%s', amount='%s', cash=='%s', description=='%s')>"
+        kwargs = (str(self.product_id), str(self.purchase_id), self.clerk, str(self.reverse_date), str(self.amount), str(self.cash), self.description, str(self.cash_amount))
+        template = "<Reverse_product_list(product_id='%s', purchase_id='%s', clerk='%s', reverse_date='%s', amount='%s', cash=='%s', description=='%s', cash_amount=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================
@@ -453,8 +453,8 @@ class Reverse_service_list(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.product_id), str(self.purchase_id), self.clerk, str(self.reverse_date), str(self.amount), str(self.cash), self.description)
-        template = "<Reverse_service_list(service_id='%s', purchase_id='%s', clerk='%s', reverse_date='%s', amount='%s', cash=='%s', description=='%s')>"
+        kwargs = (str(self.product_id), str(self.purchase_id), self.clerk, str(self.reverse_date), str(self.amount), str(self.cash), self.description, str(self.cash_amount))
+        template = "<Reverse_service_list(service_id='%s', purchase_id='%s', clerk='%s', reverse_date='%s', amount='%s', cash=='%s', description=='%s', cash_amount=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================

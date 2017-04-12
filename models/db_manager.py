@@ -1038,10 +1038,10 @@ class dbManager(object):
     def existProductList(self, product_id, purchase_id):
         count = self.session.query(Product_list).filter_by(product_id=product_id, purchase_id=purchase_id).count()
         if count == 0:
-            print("La lista de " + product_id + "asociada a la compra " + purchase_id + " NO existe")
+            print("La lista de " + str(product_id) + "asociada a la compra " + str(purchase_id) + " NO existe")
             return False
         else:
-            print("La lista de " + product_id + "asociada a la compra " + purchase_id + " existe")
+            print("La lista de " + str(product_id) + "asociada a la compra " + str(purchase_id) + " existe")
             return True
 
     """
@@ -1145,10 +1145,10 @@ class dbManager(object):
     def existServiceList(self, service_id, purchase_id):
         count = self.session.query(Service_list).filter_by(service_id=service_id, purchase_id=purchase_id).count()
         if count == 0:
-            print("La lista de " + service_id + "asociada a la compra " + purchase_id + " NO existe")
+            print("La lista de " + str(service_id) + "asociada a la compra " + str(purchase_id) + " NO existe")
             return False
         else:
-            print("La lista de " + service_id + "asociada a la compra " + purchase_id + " existe")
+            print("La lista de " + str(service_id) + "asociada a la compra " + str(purchase_id) + " existe")
             return True
 
     """
@@ -1362,10 +1362,24 @@ class dbManager(object):
      - Retorna False:
         * Cuando no se puede crear
     """
-    def createReverseProductList(self, product_list, clerk_username, amount, cash=True, cash_amount=0, description=""):
+    def createReverseProductList(self, product_list, clerk_username, amount, cash=True, cash_amount=None, description=""):
         if not self.existProductList(product_list.product_id, product_list.purchase_id) \
             or not self.existUser(clerk_username) or self.existReverseProductList(product_list.product_id, product_list.purchase_id):
             return False
+
+        if product_list.amount < amount:
+            print("Error, No se puede devolver mas de lo que se vendio")
+            return False
+
+        if cash_amount is None:
+            if cash:
+                cash_amount = product_list.price * amount
+            else:
+                cash_amount = 0
+        else:
+            if cash_amount > product_list.price * product_list.amount:
+                print("No se puede devolver mas dinero que el costo de todos los productos")
+                return False
 
         kwargs = {
             'product_id' : product_list.product_id,
@@ -1394,7 +1408,69 @@ class dbManager(object):
     # MÉTODOS PARA EL CONTROL DE REVERSE SERVICE LIST:
     #==============================================================================================================================================================================
 
-    # Completar
+    """
+    Método para verificar que una devolución de lista de servicios
+     - Retorna True:
+        * Cuando la devolución de lista de servicios existe
+     - Retorna False:
+        * Cuando la devolución de lista de servicios NO existe
+    """
+    def existReverseServiceList(self, service_id, purchase_id):
+        count = self.session.query(Reverse_service_list).filter_by(service_id=service_id, purchase_id=purchase_id).count()
+        if count == 0:
+            print("La Devolucion de la lista de servicios asociada al ID " + str((service_id, purchase_id)) + " NO existe")
+            return False
+        else:
+            print("La Devolucion de la lista de servicios asociada al ID " + str((service_id, purchase_id)) + " existe")
+            return True
+
+    """
+    Método para crear una devolución de lista de productos
+     - Retorna True:
+        * Cuando la devolución de lista de productos es creada satisfactoreamente
+     - Retorna False:
+        * Cuando no se puede crear
+    """
+    def createReverseServiceList(self, service_list, clerk_username, amount, cash=True, cash_amount=None, description=""):
+        if not self.existServiceList(service_list.service_id, service_list.purchase_id) \
+            or not self.existUser(clerk_username) or self.existReverseServiceList(service_list.service_id, service_list.purchase_id):
+            return False
+
+        if service_list.amount < amount:
+            print("Error, No se puede devolver mas de lo que se vendio")
+            return False
+
+        if cash_amount is None:
+            if cash:
+                cash_amount = service_list.price * amount
+            else:
+                cash_amount = 0
+        else:
+            if cash_amount > service_list.price * service_list.amount:
+                print("No se puede devolver mas dinero que el costo de todos los servicios")
+                return False
+
+        kwargs = {
+            'service_id' : service_list.service_id,
+            'purchase_id' : service_list.purchase_id,
+            'clerk_id' : clerk_username,
+            'amount' : amount,
+            'cash' : cash,
+            'cash_amount' : cash_amount,
+            'description' : description
+        }
+        new_reverse = Reverse_service_list(**kwargs)
+        new_reverse.service_list = service_list
+        self.session.add(new_reverse)
+
+        try:
+            self.session.commit()
+            print("Se ha añadido correctamente la devolucion de la lista de servicios a la compra")
+            return True
+        except Exception as e:
+            print("Error desconocido al intentar añadir la devolucion de la lista de servicios a la compra", e)
+            self.session.rollback()
+            return False
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DEL LOG DE OPERACIONES:
@@ -1539,6 +1615,12 @@ if __name__ == '__main__':
     m.createProductList(purchase, "agua", 1100, 2)
     m.createCheckout(purchase, 1000)
     m.createCheckout(purchase, 1200)
+
+    product_list_agua = m.getProductList(purchase, "agua")[0]
+    print(product_list_agua)
+
+    m.createReverseProductList(product_list_agua, "Hola", 2)
+    print(product_list_agua.reversed_product_list)
 
     """
     m.createService("ExtraLifes", 1)
