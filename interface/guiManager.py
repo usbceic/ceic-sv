@@ -933,6 +933,10 @@ class adminGUI(QMainWindow, form_class):
                         if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)
                         if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)
 
+                        self.selectedProductRemaining = {}
+                        self.selectedProductName = ""
+                        self.selectedProducts = {}
+
                         self.clearLEs(self.salesClientLE1)
                         self.clearLEs(self.salesCheckoutLE)
                         self.clearTable(self.table11)
