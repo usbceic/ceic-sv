@@ -937,6 +937,8 @@ class adminGUI(QMainWindow, form_class):
                         self.selectedProductName = ""
                         self.selectedProducts = {}
 
+                        self.refresh()
+
                         self.clearLEs(self.salesClientLE1)
                         self.clearLEs(self.salesCheckoutLE)
                         self.clearTable(self.table11)
@@ -1122,8 +1124,9 @@ class adminGUI(QMainWindow, form_class):
                 self.db.createProvider(**kwargs)
 
                 self.clearLEs(self.providersLE0) # Limpiar formulario
-                                                # Actualizar tabla
-                self.lineE146.setFocus()        # Enfocar
+                                                 # Actualizar tabla
+                                                 # Actualizar autocompletado
+                self.lineE146.setFocus()         # Enfocar
 
     #==============================================================================================================================================================================
     # Configuración de botones de clientes
@@ -1143,8 +1146,9 @@ class adminGUI(QMainWindow, form_class):
                 self.db.createClient(**kwargs)
 
                 self.clearLEs(self.clientsLE1) # Limpiar formulario
-                                              # Actualizar tabla
-                self.lineE53.setFocus()       # Enfocar
+                                               # Actualizar tabla
+                                               # Actualizar autocompletado
+                self.lineE53.setFocus()        # Enfocar
 
     #==============================================================================================================================================================================
     # Manejador de eventos de teclas presionadas
