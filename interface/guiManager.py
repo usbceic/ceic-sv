@@ -915,25 +915,29 @@ class adminGUI(QMainWindow, form_class):
         if self.click():
             if (self.lineE17.text() and self.lineE21.text()) != "":
                 ci = int(self.lineE17.text())
-                total = float(self.lineE21.text())
-                efectivo = 0
-                saldo = 0
+                if  self.db.existClient(ci):
+                    total = float(self.lineE21.text())
+                    efectivo = 0
+                    saldo = 0
 
-                if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
-                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+                    if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                    if self.lineE152.text() != "": saldo = float(self.lineE152.text())
 
-                if efectivo + saldo >= total:
+                    if efectivo + saldo >= total:
 
-                    purchase_id = self.db.createPurchase(ci, self.user)
+                        purchase_id = self.db.createPurchase(ci, self.user)
 
-                    for key, val in self.selectedProducts.items():
-                        self.db.createProductList(purchase_id, key, float(val[0]), int(val[1]))
+                        for key, val in self.selectedProducts.items():
+                            self.db.createProductList(purchase_id, key, float(val[0]), int(val[1]))
 
-                    if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)
-                    if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)
+                        if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)
+                        if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)
 
-                    self.clearLEs(self.salesClientLE1)
-                    self.clearLEs(self.salesCheckoutLE)
+                        self.clearLEs(self.salesClientLE1)
+                        self.clearLEs(self.salesCheckoutLE)
+                        self.clearTable(self.table11)
+                        self.setupSalesLE()
+                        self.lineE17.setFocus()
 
     # LineEdit para ingresar la cédula del cliente
     def on_lineE17_textChanged(self):
