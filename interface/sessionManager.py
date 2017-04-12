@@ -216,8 +216,9 @@ class loginGUI(QMainWindow, loginWindow):
         self.show()
 
     def closeEvent(self, event):
-        event.ignore()
-        self.hide()
+        #event.ignore()
+        #self.hide()
+        event.accept()
 
 class dialog0GUI(QDialog, dialog0):
     #==============================================================================================================================================================================
