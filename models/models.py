@@ -120,7 +120,6 @@ class Product(this.Base):
     # Relaciones
     lot                  = relationship("Lot")
     product_list         = relationship("Product_list")
-    reverse_product_list = relationship("Reverse_product_list")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -199,7 +198,6 @@ class Service(this.Base):
 
     # Relaciones
     service_list         = relationship("Service_list")
-    reverse_service_list = relationship("Reverse_service_list")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -311,6 +309,9 @@ class Product_list(this.Base):
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
     )
 
+    # Relaciones
+    reversed_product_list = relationship("Reverse_product_list", uselist=False, back_populates="product_list")
+
     # Representación de una instancia de la clase
     def __repr__(self):
         kwargs = (str(self.product_id), str(self.purchase_id), str(self.price), str(self.amount), str(self.payed))
@@ -340,6 +341,9 @@ class Service_list(this.Base):
         ForeignKeyConstraint(['service_id'], ['service.service_id']),
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
     )
+
+    # Relaciones
+    reversed_service_list = relationship("Reverse_service_list", uselist=False, back_populates="service_list")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -398,10 +402,12 @@ class Reverse_product_list(this.Base):
         CheckConstraint('amount > 0', name='exp_reverse_product_list_valid_amount'),
 
         # Claves foraneas
-        ForeignKeyConstraint(['product_id'], ['product.product_id']),
-        ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
+        ForeignKeyConstraint(['product_id', 'purchase_id'], ['product_list.product_id', 'product_list.purchase_id']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
     )
+
+    # Relaciones
+    product_list = relationship("Product_list", back_populates="reversed_product_list")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -431,10 +437,12 @@ class Reverse_service_list(this.Base):
         CheckConstraint('amount > 0', name='exp_reverse_service_list_valid_amount'),
 
         # Claves foraneas
-        ForeignKeyConstraint(['service_id'], ['service.service_id']),
-        ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
+        ForeignKeyConstraint(['service_id', 'purchase_id'], ['service_list.service_id', 'service_list.purchase_id']),
         ForeignKeyConstraint(['clerk'], ['users.username']),
     )
+
+    # Relaciones
+    service_list = relationship("Service_list", back_populates="reversed_service_list")
 
     # Representación de una instancia de la clase
     def __repr__(self):
