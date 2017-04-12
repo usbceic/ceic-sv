@@ -1125,6 +1125,23 @@ class dbManager(object):
                 self.session.rollback()
                 print("No se pudo actualizar el lote")
 
+    # Método para buscar ProductList.
+    # Retorna queryset de los ProductList que cumplan el filtro
+    def getProductList(self, purchase_id=None, product_name=None):
+        if purchase_id is None  and product_name is None:
+            return self.session.query(Product_list).all()
+
+        kwargs = {}
+        if purchase_id is not None and self.existPurchase(purchase_id): 
+            kwargs['purchase_id'] = purchase_id
+        if product_name is not None and self.existProduct(product_name):
+            kwargs['product_id'] = self.getProductID(product_name)
+
+        # Diccionario Vacio
+        if not kwargs:
+            return []
+        return self.session.query(Product_list).filter_by(**kwargs).all()
+
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LISTAS DE SERVICIOS:
     #==============================================================================================================================================================================
@@ -1185,6 +1202,23 @@ class dbManager(object):
             except Exception as e:
                 self.session.rollback()
                 print("No se pudo actualizar la compra")
+
+    # Método para buscar ServiceList.
+    # Retorna queryset de los ServiceList que cumplan el filtro
+    def getServiceList(self, purchase_id=None, service_id=None):
+        if purchase_id is None  and service_id is None:
+            return self.session.query(Service_list).all()
+
+        kwargs = {}
+        if purchase_id is not None and self.existPurchase(purchase_id): 
+            kwargs['purchase_id'] = purchase_id
+        if service_id is not None and self.existService(service_id):
+            kwargs['service_id'] = service_id
+
+        # Diccionario Vacio
+        if not kwargs:
+            return []
+        return self.session.query(Service_list).filter_by(**kwargs).all()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PAGOS (CHECKOUT):
@@ -1316,7 +1350,56 @@ class dbManager(object):
     # MÉTODOS PARA EL CONTROL DE REVERSE PRODUCT LIST:
     #==============================================================================================================================================================================
 
-    # Completar
+    """
+    Método para verificar que una devolución de lista de productos
+     - Retorna True:
+        * Cuando la devolución de lista de productos existe
+     - Retorna False:
+        * Cuando la devolución de lista de productos NO existe
+    """
+    def existReverseProductList(self, product_id, purchase_id):
+        count = self.session.query(Reverse_product_list).filter_by(product_id=product_id, purchase_id=purchase_id).count()
+        if count == 0:
+            print("La Devolucion de la lista de productos asociada al ID " + str((product_id, purchase_id)) + " NO existe")
+            return False
+        else:
+            print("La Devolucion de la lista de productos asociada al ID " + str((product_id, purchase_id)) + " existe")
+            return True
+
+    """
+    Método para crear una devolución de lista de productos
+     - Retorna True:
+        * Cuando la devolución de lista de productos es creada satisfactoreamente
+     - Retorna False:
+        * Cuando no se puede crear
+    """
+    def createReverseProductList(self, product_list, clerk_username, amount, cash=True, cash_amount=0, description=""):
+        if not self.existProductList(product_list.product_id, product_list.purchase_id) \
+            or not self.existUser(clerk_username) or self.existReverseProductList(product_list.product_id, product_list.purchase_id):
+            return False
+
+        kwargs = {
+            'product_id' : product_list.product_id,
+            'purchase_id' : product_list.purchase_id,
+            'clerk_id' : clerk_username,
+            'amount' : amount,
+            'cash' : cash,
+            'cash_amount' : cash_amount,
+            'description' : description
+        }
+        new_reverse = Reverse_product_list(**kwargs)
+        new_reverse.product_list = product_list
+        self.session.add(new_reverse)
+
+        try:
+            self.session.commit()
+            print("Se ha añadido correctamente la devolucion de la lista de productos a la compra")
+            return True
+        except Exception as e:
+            print("Error desconocido al intentar añadir la devolucion de la lista de productos a la compra", e)
+            self.session.rollback()
+            return False
+
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE REVERSE SERVICE LIST:
