@@ -518,6 +518,7 @@ class adminGUI(QMainWindow, form_class):
         if self.rbutton6.isChecked() or self.rbutton7.isChecked(): self.addProductInput()
         else: self.deleteProductInput()
 
+    # Añadir campo extra en el apartado de productos
     def addProductInput(self):
         if (not hasattr(self, 'lineExtra') and not hasattr(self, 'textExtra')) or ((self.textExtra and self.lineExtra) == None):
             self.text64.setText("Buscar")
@@ -560,6 +561,7 @@ class adminGUI(QMainWindow, form_class):
             self.productLayout.addRow(self.textExtra, self.lineExtra)
             self.setStyle(self.theme)
 
+    # Eliminar el campo extra en el apartado de productos
     def deleteProductInput(self):
         if (self.textExtra and self.lineExtra) != None:
             self.productLayout.removeWidget(self.textExtra)
@@ -669,17 +671,6 @@ class adminGUI(QMainWindow, form_class):
 
             # Modalidad para consultar productos
             elif self.rbutton6.isChecked():
-                productName = self.lineE26.text()
-                product = self.productsInfo[self.productsNames.index(productName)]
-
-                self.lineE28.setText(str(product[0]))   # Product ID
-                self.lineE28.setText(str(product[2]))   # Precio
-                self.lineE29.setText(product[5])        # Categoria
-                self.lineE30.setText(str(product[4]))   # Lotes
-                self.lineExtra.setText(str(product[3])) # Disp. Total
-
-                # Refrescar toda la interfaz
-                self.refreshInventory()
 
                 # Enfocar
                 self.lineE26.setFocus()
@@ -770,10 +761,11 @@ class adminGUI(QMainWindow, form_class):
                 if productName in self.productsNames:
                     product = self.productsInfo[self.productsNames.index(productName)]
                     self.currentProduct = str(product[0]) # Product ID
-                    self.lineE27.setText(str(product[2])) # Precio
-                    self.lineE28.setText(product[5])      # Categoria
-                    self.lineE29.setText(str(product[4])) # Lotes
-                    self.lineE30.setText(str(product[3])) # Disp. Total
+                    self.lineE27.setText(str(product[1]))   # Product ID
+                    self.lineE28.setText(str(product[2]))   # Precio
+                    self.lineE29.setText(product[5])        # Categoria
+                    self.lineE30.setText(str(product[4]))   # Lotes
+                    self.lineExtra.setText(str(product[3])) # Disp. Total
 
     #==============================================================================================================================================================================
     # VISTA DE VENTAS
