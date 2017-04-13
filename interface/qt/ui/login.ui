@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>252</width>
-    <height>525</height>
+    <height>530</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -287,7 +287,7 @@
                  <property name="sizeHint" stdset="0">
                   <size>
                    <width>40</width>
-                   <height>20</height>
+                   <height>15</height>
                   </size>
                  </property>
                 </spacer>
@@ -300,7 +300,7 @@
                  <property name="sizeHint" stdset="0">
                   <size>
                    <width>40</width>
-                   <height>20</height>
+                   <height>15</height>
                   </size>
                  </property>
                 </spacer>
@@ -765,7 +765,7 @@
                  <property name="sizeHint" stdset="0">
                   <size>
                    <width>20</width>
-                   <height>85</height>
+                   <height>100</height>
                   </size>
                  </property>
                 </spacer>
