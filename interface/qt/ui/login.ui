@@ -1007,10 +1007,13 @@
                   </item>
                   <item>
                    <layout class="QGridLayout" name="gridLayout_17">
-                    <item row="0" column="4">
+                    <item row="0" column="3">
                      <spacer name="horizontalSpacer_19">
                       <property name="orientation">
                        <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeType">
+                       <enum>QSizePolicy::Expanding</enum>
                       </property>
                       <property name="sizeHint" stdset="0">
                        <size>
@@ -1020,7 +1023,7 @@
                       </property>
                      </spacer>
                     </item>
-                    <item row="0" column="3">
+                    <item row="0" column="2">
                      <widget class="QPushButton" name="pubutton6">
                       <property name="focusPolicy">
                        <enum>Qt::NoFocus</enum>
@@ -1044,27 +1047,17 @@
                      </widget>
                     </item>
                     <item row="0" column="1">
-                     <spacer name="verticalSpacer_3">
+                     <spacer name="horizontalSpacer_16">
                       <property name="orientation">
-                       <enum>Qt::Vertical</enum>
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeType">
+                       <enum>QSizePolicy::Fixed</enum>
                       </property>
                       <property name="sizeHint" stdset="0">
                        <size>
-                        <width>20</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                     </spacer>
-                    </item>
-                    <item row="0" column="2">
-                     <spacer name="verticalSpacer_4">
-                      <property name="orientation">
-                       <enum>Qt::Vertical</enum>
-                      </property>
-                      <property name="sizeHint" stdset="0">
-                       <size>
-                        <width>20</width>
-                        <height>20</height>
+                        <width>40</width>
+                        <height>10</height>
                        </size>
                       </property>
                      </spacer>
