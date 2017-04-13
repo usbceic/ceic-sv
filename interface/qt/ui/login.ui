@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>228</width>
-    <height>519</height>
+    <height>486</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -154,7 +154,7 @@
     border: 1px solid transparent;
     border-radius: 4px;
     background: transparent;
-	min-height: 0.2em;
+	min-height: 0.1em;
 }
 
 /*Configuración del estilo al pasar por encima y presionar os botones para volver atrás*/
@@ -299,7 +299,7 @@
                  <property name="sizeHint" stdset="0">
                   <size>
                    <width>40</width>
-                   <height>15</height>
+                   <height>10</height>
                   </size>
                  </property>
                 </spacer>
@@ -377,6 +377,12 @@
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout">
+             <property name="topMargin">
+              <number>4</number>
+             </property>
+             <property name="bottomMargin">
+              <number>4</number>
+             </property>
              <item>
               <layout class="QGridLayout" name="gridLayout_2">
                <item row="0" column="0">
@@ -685,7 +691,7 @@
                      <property name="sizeHint" stdset="0">
                       <size>
                        <width>40</width>
-                       <height>20</height>
+                       <height>10</height>
                       </size>
                      </property>
                     </spacer>
@@ -764,7 +770,7 @@
                  <property name="sizeHint" stdset="0">
                   <size>
                    <width>20</width>
-                   <height>90</height>
+                   <height>40</height>
                   </size>
                  </property>
                 </spacer>
@@ -928,107 +934,65 @@
                <number>0</number>
               </property>
               <item>
-               <layout class="QGridLayout" name="gridLayout_10">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item row="2" column="0">
-                 <spacer name="horizontalSpacer_16">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <layout class="QGridLayout" name="gridLayout_18">
+                  <property name="spacing">
+                   <number>0</number>
                   </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>10</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item row="1" column="0">
-                 <layout class="QGridLayout" name="gridLayout_17">
-                  <item row="0" column="2">
-                   <spacer name="horizontalSpacer_19">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                  <item row="0" column="1">
-                   <widget class="QPushButton" name="pubutton6">
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true"/>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="../resources/gui.qrc">
-                      <normaloff>:/login/camera</normaloff>:/login/camera</iconset>
-                    </property>
-                    <property name="iconSize">
-                     <size>
-                      <width>32</width>
-                      <height>32</height>
-                     </size>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="0">
-                   <spacer name="horizontalSpacer_18">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
+                  <item row="1" column="1">
+                   <layout class="QGridLayout" name="gridLayout_5">
+                    <item row="0" column="0">
+                     <widget class="QPushButton" name="pubutton8">
+                      <property name="font">
+                       <font>
+                        <family>Open Sans</family>
+                        <pointsize>10</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
+                       </font>
+                      </property>
+                      <property name="focusPolicy">
+                       <enum>Qt::NoFocus</enum>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="../resources/gui.qrc">
+                        <normaloff>:/arrows/prev_arrow3</normaloff>:/arrows/prev_arrow3</iconset>
+                      </property>
+                      <property name="iconSize">
+                       <size>
+                        <width>22</width>
+                        <height>22</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <spacer name="verticalSpacer">
+                      <property name="orientation">
+                       <enum>Qt::Vertical</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>5</width>
+                        <height>5</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </item>
-                <item row="0" column="0">
-                 <layout class="QGridLayout" name="gridLayout_5">
-                  <item row="0" column="0">
-                   <widget class="QPushButton" name="pubutton8">
-                    <property name="font">
-                     <font>
-                      <family>Open Sans</family>
-                      <pointsize>10</pointsize>
-                      <weight>75</weight>
-                      <bold>true</bold>
-                     </font>
-                    </property>
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="../resources/gui.qrc">
-                      <normaloff>:/arrows/prev_arrow3</normaloff>:/arrows/prev_arrow3</iconset>
-                    </property>
-                    <property name="iconSize">
-                     <size>
-                      <width>26</width>
-                      <height>26</height>
-                     </size>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="1">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_13">
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item>
                    <spacer name="horizontalSpacer_26">
                     <property name="orientation">
                      <enum>Qt::Horizontal</enum>
@@ -1036,10 +1000,76 @@
                     <property name="sizeHint" stdset="0">
                      <size>
                       <width>40</width>
-                      <height>10</height>
+                      <height>2</height>
                      </size>
                     </property>
                    </spacer>
+                  </item>
+                  <item>
+                   <layout class="QGridLayout" name="gridLayout_17">
+                    <item row="0" column="4">
+                     <spacer name="horizontalSpacer_19">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item row="0" column="3">
+                     <widget class="QPushButton" name="pubutton6">
+                      <property name="focusPolicy">
+                       <enum>Qt::NoFocus</enum>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true"/>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="../resources/gui.qrc">
+                        <normaloff>:/login/camera</normaloff>:/login/camera</iconset>
+                      </property>
+                      <property name="iconSize">
+                       <size>
+                        <width>32</width>
+                        <height>32</height>
+                       </size>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <spacer name="verticalSpacer_3">
+                      <property name="orientation">
+                       <enum>Qt::Vertical</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>20</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item row="0" column="2">
+                     <spacer name="verticalSpacer_4">
+                      <property name="orientation">
+                       <enum>Qt::Vertical</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>20</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </item>
@@ -1067,13 +1097,13 @@
                   <number>12</number>
                  </property>
                  <property name="topMargin">
-                  <number>9</number>
+                  <number>4</number>
                  </property>
                  <property name="rightMargin">
                   <number>12</number>
                  </property>
                  <property name="bottomMargin">
-                  <number>9</number>
+                  <number>4</number>
                  </property>
                  <item>
                   <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -1413,7 +1443,7 @@
               <property name="sizeHint" stdset="0">
                <size>
                 <width>40</width>
-                <height>10</height>
+                <height>5</height>
                </size>
               </property>
              </spacer>
