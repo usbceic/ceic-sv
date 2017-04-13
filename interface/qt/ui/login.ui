@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>245</width>
-    <height>446</height>
+    <width>230</width>
+    <height>444</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,7 +44,8 @@
 /*Configurar el color de fondo de cada pagina del Stacked*/
 #pag0, #pag1, #page2 {
      background: transparent;
-    padding: -8px;
+	min-width: 22em;
+     padding: -8px;
 }
 
 /***********************************
