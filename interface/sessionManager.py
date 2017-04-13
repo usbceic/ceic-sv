@@ -100,6 +100,8 @@ class loginGUI(QMainWindow, loginWindow):
         self.setupPage1()
         self.setupPage2()
 
+        self.setFixedSize(self.sizeHint())
+
         # Se conectan los botones entre otras cosas con algunos de los métodos definidos a continuación
         QMetaObject.connectSlotsByName(self)
 
