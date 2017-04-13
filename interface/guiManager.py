@@ -532,8 +532,30 @@ class adminGUI(QMainWindow, form_class):
                 color: #757575;
                 background: transparent;
                 font-family: Open Sans;
-                font-size: 11pt;"""
-            )
+                font-size: 11pt;
+            """)
+
+            if self.rbutton6.isChecked():
+
+                self.lineExtra.setStyleSheet("""
+                    border: 1px solid silver;
+                    border-radius: 2px;
+                    min-width: 5.5em;
+                    min-height: 1.25em;
+                    padding: 2px;
+                    background: #F5F5F5;
+                """)
+
+                self.lineExtra.setReadOnly(True)
+
+            else:
+                self.lineExtra.setStyleSheet("""
+                    border: 1px solid #BDBDBD;
+                    border-radius: 2px;
+                    min-width: 5.5em;
+                    min-height: 1.25em;
+                    padding: 2px;
+                """)
 
             self.productLayout.addRow(self.textExtra, self.lineExtra)
             self.setStyle(self.theme)
