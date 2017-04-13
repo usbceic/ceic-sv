@@ -671,15 +671,14 @@ class adminGUI(QMainWindow, form_class):
 
             # Modalidad para consultar productos
             elif self.rbutton6.isChecked():
-
                 # Enfocar
                 self.lineE26.setFocus()
 
             # Modalidad para editar productos
             elif self.rbutton7.isChecked():
-                productName = self.lineE26.text()
-                productPrice = self.lineE27.text()
-                productCategoy = self.lineE28.text()
+                productName = self.lineE27.text()
+                productPrice = self.lineE28.text()
+                productCategoy = self.lineE29.text()
 
                 # Refrescar toda la interfaz
                 self.refreshInventory()
