@@ -108,6 +108,9 @@ class loginGUI(QMainWindow, loginWindow):
         # Variable de control para los QPushButton
         self.clicked = False
 
+        # Se establece la pagina de inicio de sesión por defecto
+        self.MainStacked.setCurrentIndex(0)
+
     def click(self):
         if self.clicked:
             self.clicked = False
@@ -128,7 +131,7 @@ class loginGUI(QMainWindow, loginWindow):
             if self.db.checkPassword(user, password):
                 self.lineEd0.setText("")
                 self.lineEd1.setText("")
-                self.label0.setFocus()
+                self.footer.setFocus()
                 self.mainWindow = adminGUI(user, self.db, self)
                 self.back = self.mainWindow.userBn0
                 self.back.clicked.connect(self.back_pressed)
@@ -141,46 +144,40 @@ class loginGUI(QMainWindow, loginWindow):
     def setupPage0(self):
         self.lineEd0.setPlaceholderText("Usuario")
         self.lineEd1.setPlaceholderText("Contraseña")
-        self.label0.setFocus()
+        self.footer.setFocus()
 
     def setupPage1(self):
         self.lineEd2.setPlaceholderText("Usuario")
         self.lineEd3.setPlaceholderText("Nombre")
         self.lineEd4.setPlaceholderText("Apellido")
-        #self.lineEd5.setPlaceholderText("Número de teléfono")
-        self.lineEd6.setPlaceholderText("Correo electrónico")
-        self.lineEd7.setPlaceholderText("Contraseña")
-        self.lineEd8.setPlaceholderText("Confirmar contraseña")
+        self.lineEd5.setPlaceholderText("Correo electrónico")
+        self.lineEd6.setPlaceholderText("Contraseña")
+        self.lineEd7.setPlaceholderText("Confirmar contraseña")
 
     def setupPage2(self):
-        self.lineEd9.setPlaceholderText("Correo asociado a su cuenta")
-        self.lineEd10.setPlaceholderText("Nombre de usuario")
-        self.lineEd11.setPlaceholderText("Nueva contraseña")
-        self.lineEd12.setPlaceholderText("Confirmar contraseña")
-        #self.lineEd13.setPlaceholderText("Administrador o Master")
-        #self.lineEd14.setPlaceholderText("Contraseña")
+        self.lineEd8.setPlaceholderText("Correo asociado a su cuenta")
 
-    def on_pubutton3_pressed(self):
+    def on_button3_pressed(self):
         if self.click():
             self.MainStacked.setCurrentIndex(2)
 
-    def on_pubutton4_pressed(self):
+    def on_button4_pressed(self):
         if self.click():
             self.startSession(self.lineEd0.text(), self.lineEd1.text())
 
-    def on_pubutton5_pressed(self):
+    def on_button5_pressed(self):
         if self.click():
             self.MainStacked.setCurrentIndex(1)
 
-    def on_pubutton7_pressed(self):
+    def on_button6_pressed(self):
         if self.click():
             dialog1GUI(self).exec_()
 
-    def on_pubutton8_pressed(self):
+    def on_button7_pressed(self):
         if self.click():
             self.MainStacked.setCurrentIndex(0)
 
-    def on_pubutton9_pressed(self):
+    def on_button9_pressed(self):
         if self.click():
             self.MainStacked.setCurrentIndex(0)
 
@@ -201,18 +198,18 @@ class loginGUI(QMainWindow, loginWindow):
 
     def mousePressEvent(self, QMouseEvent):
         position = QMouseEvent.pos().y()
-        if position >= 425 or position <= 369 or 391 <= position <= 403: self.label0.setFocus()
+        if position >= 425 or position <= 369 or 391 <= position <= 403: self.footer.setFocus()
 
     def mouseReleaseEvent(self, QMouseEvent):
         position = QCursor().pos().y()
-        if position >= 425 or position <= 369 or 391 <= position <= 403: self.label0.setFocus()
+        if position >= 425 or position <= 369 or 391 <= position <= 403: self.footer.setFocus()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return:
             self.startSession(self.lineEd0.text(), self.lineEd1.text())
-            if self.lineEd9.text() != "":
-                self.mail.sendPRM("cserradag96@gmail.com", "El Juego")
-                self.lineEd9.setText("")
+            if self.lineEd8.text() != "":
+                self.mail.sendPRM(self.lineEd8.text(), "El Juego")
+                self.lineEd8.setText("")
 
     def on_mainWindow_closed(self):
         self.show()
