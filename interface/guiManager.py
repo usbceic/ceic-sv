@@ -1215,19 +1215,18 @@ class adminGUI(QMainWindow, form_class):
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
         if self.click():
-            if self.lineE57.text() != "" and self.lineE58.text() != "" and self.lineE59.text() != "":
+            if self.lineE75.text() != "":
                 username = self.lineE75.text()
                 if self.db.existUser(username):
+
                     kwargs = {
-                        "firstname" : self.lineE58.text(),
-                        "lastname"  : self.lineE59.text(),
-                        "phone"     : self.lineE60.text(),
-                        "email"     : self.lineE61.text()
+                        "username"        : username,
+                        "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
                     }
 
-                    self.db.updateUser(**kwargs) # Crear cliente
-                    self.refreshUsers()          # Refrescar vista
-                    self.lineE57.setFocus()      # Enfocar
+                    self.db.updateUserRange(**kwargs) # Actualizar cliente
+                    self.refreshUsers()               # Refrescar vista
+                    self.lineE75.setFocus()           # Enfocar
 
     # LineEdit para ingresar el username en el apartado de editar
     def on_lineE75_textChanged(self):
