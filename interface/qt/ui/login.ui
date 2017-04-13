@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>228</width>
-    <height>531</height>
+    <height>519</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -67,7 +67,7 @@
 /* Configuración de los titulos*/
 #label1, #label2, #label3 {
     background: #BBDEFB;
-    min-height: 3em;
+    min-height: 2em;
 }
 
 /***********************************
@@ -252,7 +252,7 @@
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="pag0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
