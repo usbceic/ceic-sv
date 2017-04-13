@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>224</width>
-    <height>441</height>
+    <width>245</width>
+    <height>446</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -80,7 +80,7 @@
 #header {
     background: #BBDEFB;
     border: 1px inline transparent;
-    border-radius: 25px;
+    border-radius: 10px;
     min-width: 5em;
     min-height: 5em;
     padding: 6px;
@@ -110,7 +110,7 @@
 /*Estilo por defecto de los botones para acceder/continuar/aceptar*/
 #button4, #button6, #button8 {
     color: #FFFFFF;
-    border: 1px outset #BDBDBD;
+    border: 1px outline #BDBDBD;
     border-radius: 2px;
     background: #2196F3;
     min-height: 3em;
