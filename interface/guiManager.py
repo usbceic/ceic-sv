@@ -34,7 +34,7 @@ from PyQt4.uic import loadUiType
 from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
 
 # Módulo con estructuras de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon
+from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel
 
 # Módulo manejador de la base de datos
 from db_manager import dbManager
@@ -121,6 +121,12 @@ class adminGUI(QMainWindow, form_class):
         self.selectedProductRemaining = {}  # Diccionario de cotas superiores para el spinBox de ventas
         self.selectedProductName = ""       # Nombre del producto seleccionado actualmente en la vista de ventas
         self.selectedProducts = {}          # Diccionario de productos en la factura en la vista de ventas
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # PREFERENCIAS DE USUARIO
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        self.theme = "default.qss"
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS DE PROPOSITO GENERAL
@@ -239,6 +245,13 @@ class adminGUI(QMainWindow, form_class):
     def setSize(self):
         self.setFixedSize(self.width(), self.height())
         #self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
+
+
+    #==============================================================================================================================================================================
+    # CONFIGURACIÓN DE LAS PREFERENCIAS DE USUARIO
+    #==============================================================================================================================================================================
+
+    # Falta agregar
 
     #==============================================================================================================================================================================
     # MÉTODOS GENERALES MULTIPROPÓSITOS
@@ -501,6 +514,45 @@ class adminGUI(QMainWindow, form_class):
         self.clearLEs(self.productsRO0)
         self.clearLEs(self.lotsRO0)
 
+        # Adición de campos extras
+        if self.rbutton6.isChecked() or self.rbutton7.isChecked(): self.addProductInput()
+        else: self.deleteProductInput()
+
+    def addProductInput(self):
+        if (not hasattr(self, 'lineExtra') and not hasattr(self, 'textExtra')) or ((self.textExtra and self.lineExtra) == None):
+            self.text64.setText("Buscar")
+            self.text65.setText("Nombre")
+            self.text66.setText("Precio")
+            self.text67.setText("Categoria")
+            self.text68.setText("Lotes")
+            self.lineExtra = QLineEdit()
+            self.textExtra = QLabel("Disp. total")
+
+            self.textExtra.setStyleSheet("""
+                color: #757575;
+                background: transparent;
+                font-family: Open Sans;
+                font-size: 11pt;"""
+            )
+
+            self.productLayout.addRow(self.textExtra, self.lineExtra)
+            self.setStyle(self.theme)
+
+    def deleteProductInput(self):
+        if (self.textExtra and self.lineExtra) != None:
+            self.productLayout.removeWidget(self.textExtra)
+            self.productLayout.removeWidget(self.lineExtra)
+            self.textExtra.deleteLater()
+            self.lineExtra.deleteLater()
+            self.textExtra = None
+            self.lineExtra = None
+
+            self.text64.setText("Nombre")
+            self.text65.setText("Precio")
+            self.text66.setText("Categoria")
+            self.text67.setText("Lotes")
+            self.text68.setText("Disp. total")
+
     # Método para refrescar la tabla de productos en el inventario
     def updateProductTable(self, table, itemsList):
         self.clearTable(table)
@@ -525,24 +577,28 @@ class adminGUI(QMainWindow, form_class):
     # Radio button para agregar nuevos productos
     def on_rbutton5_pressed(self):
         if self.click():
+            self.deleteProductInput()
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
 
     # Radio button para consultar productos
     def on_rbutton6_pressed(self):
         if self.click():
+            self.addProductInput()
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1)
 
     # Radio button para editar productos
     def on_rbutton7_pressed(self):
         if self.click():
+            self.addProductInput()
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
 
     # Radio button para eliminar productos
     def on_rbutton8_pressed(self):
         if self.click():
+            self.deleteProductInput()
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1)
 
@@ -592,7 +648,13 @@ class adminGUI(QMainWindow, form_class):
             # Modalidad para consultar productos
             elif self.rbutton6.isChecked():
                 productName = self.lineE26.text()
-                product = self.db.getProductByNameOrID(productName)
+                product = self.productsInfo[self.productsNames.index(productName)]
+
+                self.lineE28.setText(str(product[0]))   # Product ID
+                self.lineE28.setText(str(product[2]))   # Precio
+                self.lineE29.setText(product[5])        # Categoria
+                self.lineE30.setText(str(product[4]))   # Lotes
+                self.lineExtra.setText(str(product[3])) # Disp. Total
 
                 # Refrescar toda la interfaz
                 self.refreshInventory()
@@ -1132,6 +1194,10 @@ class adminGUI(QMainWindow, form_class):
                     self.refreshClients()          # Refrescar vista
                     self.lineE57.setFocus()        # Enfocar
 
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # CAMPOS DE TEXTO
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     # LineEdit para ingresar el nombre del producto seleccionado
     def on_lineE57_textChanged(self):
         if self.textChanged():
@@ -1215,19 +1281,22 @@ class adminGUI(QMainWindow, form_class):
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
         if self.click():
-            if self.lineE57.text() != "" and self.lineE58.text() != "" and self.lineE59.text() != "":
+            if self.lineE75.text() != "":
                 username = self.lineE75.text()
                 if self.db.existUser(username):
+
                     kwargs = {
-                        "firstname" : self.lineE58.text(),
-                        "lastname"  : self.lineE59.text(),
-                        "phone"     : self.lineE60.text(),
-                        "email"     : self.lineE61.text()
+                        "username"        : username,
+                        "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
                     }
 
-                    self.db.updateUser(**kwargs) # Crear cliente
-                    self.refreshUsers()          # Refrescar vista
-                    self.lineE57.setFocus()      # Enfocar
+                    self.db.updateUserRange(**kwargs) # Actualizar cliente
+                    self.refreshUsers()               # Refrescar vista
+                    self.lineE75.setFocus()           # Enfocar
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # CAMPOS DE TEXTO
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     # LineEdit para ingresar el username en el apartado de editar
     def on_lineE75_textChanged(self):

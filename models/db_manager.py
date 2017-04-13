@@ -267,11 +267,11 @@ class dbManager(object):
         * Cuando el usuario no existe
         * Cuando no pudo cambiarse el rango por alguna otra razón
     """
-    def updateUserRange(self, username, newRange):
+    def updateUserRange(self, username, permission_mask):
         if self.existUser(username):
-            if self.validRange(newRange):
+            if self.validRange(permission_mask):
                 try:
-                    self.session.execute(update(User).where(User.username==username).values(permission_mask=newRange))
+                    self.session.execute(update(User).where(User.username==username).values(permission_mask=permission_mask))
                     self.session.commit()
                     print("Se ha cambiado el rango de " + username + " satisfactoriamente")
                     return True
