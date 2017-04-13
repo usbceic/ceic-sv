@@ -92,6 +92,28 @@ class dbManager(object):
         return False
 
     """
+    Método para obtener el rango asociado a una máscara de permisos
+     - Retorna el rango correspondiente a la máscara de permisos especificada
+    """
+    def getRange(self, permission_mask):
+        if permission_mask == 0: return "Colaborador"
+        elif permission_mask == 1: return "Vendedor"
+        elif permission_mask == 2: return "Administrador"
+        else: return "Dios"
+
+    """
+    Método para obtener la máscara de permisos asociada a un rango
+     - Retorna un número correspondiente ala máscara de permisos asociada al rango especificado
+    """
+    def getPermissionMask(self, userRange):
+        userRange = userRange.lower().strip()
+
+        if userRange == "colaborador": return 0
+        elif userRange == "vendedor": return 1
+        elif userRange == "administrador": return 2
+        else: return 3
+
+    """
     Método para verificar que un usuario existe.
      - Retorna True:
         * Cuando el usuario existe

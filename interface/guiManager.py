@@ -1170,22 +1170,15 @@ class adminGUI(QMainWindow, form_class):
 
     # Método para refrescar la tabla de factura en ventas
     def updateUsersTable(self, permission_mask):
-        if permission_mask == 0:
-            table = self.table10
-            users = self.db.getUsers(permission_mask=permission_mask)
+        if permission_mask == 0: table = self.table10
+        elif permission_mask == 1: table = self.table9
+        else: table = self.table8
 
-        elif permission_mask == 1:
-            table = self.table9
-            users = self.db.getUsers(permission_mask=permission_mask)
-
-        else:
-            table = self.table8
-            users = self.db.getUsers(permission_mask=permission_mask)
-
+        users = self.db.getUsers(permission_mask=permission_mask)
         self.clearTable(table)                                             # Vaciar la tabla
         table.setRowCount(len(users))                                      # Contador de filas
         for i in range(len(users)):                                        # Llenar tabla
-            table.setItem(i, 0, QTableWidgetItem(str(users[i].username)))  # Cédula
+            table.setItem(i, 0, QTableWidgetItem(str(users[i].username)))  # Username
             table.setItem(i, 1, QTableWidgetItem(str(users[i].firstname))) # Nombre
             table.setItem(i, 2, QTableWidgetItem(str(users[i].lastname)))  # Apellido
             table.setItem(i, 3, QTableWidgetItem(str(users[i].email)))     # Correo
@@ -1202,28 +1195,29 @@ class adminGUI(QMainWindow, form_class):
     # Botón para crear un usuario
     def on_pbutton21_pressed(self):
         if self.click():
-            if self.lineE52.text() != "" and self.lineE53.text() != "" and self.lineE54.text() != "":
-                ci = int(self.lineE52.text())
-                if not self.db.existClient(ci):
+            if (self.lineE69.text() and self.lineE70.text() and self.lineE71.text() and self.lineE72.text() and self.lineE73.text()) != "":
+                username = self.lineE69.text()
+                if not self.db.existUser(username):
+
                     kwargs = {
-                        "ci"        : ci,
-                        "firstname" : self.lineE53.text(),
-                        "lastname"  : self.lineE54.text(),
-                        "phone"     : self.lineE55.text(),
-                        "email"     : self.lineE56.text()
+                        "username"        : username,
+                        "firstname"       : self.lineE70.text(),
+                        "lastname"        : self.lineE71.text(),
+                        "email"           : self.lineE72.text(),
+                        "password"        : self.lineE73.text(),
+                        "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
                     }
 
-                    self.db.createClient(**kwargs) # Crear cliente
-                    self.clearLEs(self.clientsLE1) # Limpiar formulario
-                    self.refreshClients()          # Refrescar vista
-                    self.lineE52.setFocus()        # Enfocar
+                    self.db.createUser(**kwargs) # Crear cliente
+                    self.refreshUsers()          # Refrescar vista
+                    self.lineE69.setFocus()      # Enfocar
 
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
         if self.click():
             if self.lineE57.text() != "" and self.lineE58.text() != "" and self.lineE59.text() != "":
-                ci = int(self.lineE52.text())
-                if not self.db.existClient(ci):
+                username = self.lineE75.text()
+                if self.db.existUser(username):
                     kwargs = {
                         "firstname" : self.lineE58.text(),
                         "lastname"  : self.lineE59.text(),
@@ -1231,10 +1225,9 @@ class adminGUI(QMainWindow, form_class):
                         "email"     : self.lineE61.text()
                     }
 
-                    self.db.updateClient(**kwargs) # Crear cliente
-                    self.clearLEs(self.clientsLE2) # Limpiar formulario
-                    self.refreshClients()          # Refrescar vista
-                    self.lineE57.setFocus()        # Enfocar
+                    self.db.updateUser(**kwargs) # Crear cliente
+                    self.refreshUsers()          # Refrescar vista
+                    self.lineE57.setFocus()      # Enfocar
 
     # LineEdit para ingresar el username en el apartado de editar
     def on_lineE75_textChanged(self):
@@ -1257,7 +1250,7 @@ class adminGUI(QMainWindow, form_class):
                     self.lineE63.setText(user.firstname)
                     self.lineE64.setText(user.lastname)
                     self.lineE65.setText(user.email)
-                    self.lineE66.setText(str(user.permission_mask))
+                    self.lineE66.setText(self.db.getRange(user.permission_mask))
 
     #==============================================================================================================================================================================
     # VISTA DE CONFIGURACIONES
