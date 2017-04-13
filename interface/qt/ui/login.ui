@@ -273,7 +273,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="pag0">
      <widget class="QGroupBox" name="gbox0">
@@ -651,7 +651,7 @@
         <x>20</x>
         <y>260</y>
         <width>251</width>
-        <height>42</height>
+        <height>69</height>
        </rect>
       </property>
       <property name="font">
@@ -698,8 +698,8 @@
        <rect>
         <x>100</x>
         <y>20</y>
-        <width>90</width>
-        <height>90</height>
+        <width>132</width>
+        <height>132</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -858,6 +858,9 @@
            <property name="text">
             <string/>
            </property>
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
            <property name="readOnly">
             <bool>false</bool>
            </property>
@@ -882,6 +885,9 @@
            </property>
            <property name="text">
             <string/>
+           </property>
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
            </property>
            <property name="readOnly">
             <bool>false</bool>
@@ -962,8 +968,8 @@
        <rect>
         <x>100</x>
         <y>20</y>
-        <width>90</width>
-        <height>90</height>
+        <width>132</width>
+        <height>132</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -1026,7 +1032,7 @@
         <x>190</x>
         <y>420</y>
         <width>74</width>
-        <height>42</height>
+        <height>69</height>
        </rect>
       </property>
       <property name="font">
@@ -1050,7 +1056,7 @@
         <x>120</x>
         <y>420</y>
         <width>71</width>
-        <height>38</height>
+        <height>65</height>
        </rect>
       </property>
       <property name="font">
@@ -1330,8 +1336,8 @@
        <rect>
         <x>100</x>
         <y>20</y>
-        <width>90</width>
-        <height>90</height>
+        <width>132</width>
+        <height>132</height>
        </rect>
       </property>
       <property name="focusPolicy">
@@ -1360,7 +1366,7 @@
         <x>170</x>
         <y>420</y>
         <width>91</width>
-        <height>42</height>
+        <height>69</height>
        </rect>
       </property>
       <property name="font">
@@ -1384,7 +1390,7 @@
         <x>100</x>
         <y>420</y>
         <width>71</width>
-        <height>38</height>
+        <height>65</height>
        </rect>
       </property>
       <property name="font">
@@ -1408,7 +1414,7 @@
         <x>170</x>
         <y>220</y>
         <width>91</width>
-        <height>42</height>
+        <height>69</height>
        </rect>
       </property>
       <property name="font">
@@ -1432,7 +1438,7 @@
         <x>100</x>
         <y>220</y>
         <width>71</width>
-        <height>38</height>
+        <height>65</height>
        </rect>
       </property>
       <property name="font">
