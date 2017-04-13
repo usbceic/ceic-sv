@@ -528,12 +528,12 @@ class adminGUI(QMainWindow, form_class):
             self.lineExtra = QLineEdit()
             self.textExtra = QLabel("Disp. total")
 
-            self.textExtra.setStyleSheet({"""
+            self.textExtra.setStyleSheet("""
                 color: #757575;
                 background: transparent;
                 font-family: Open Sans;
                 font-size: 11pt;"""
-            })
+            )
 
             self.productLayout.addRow(self.textExtra, self.lineExtra)
             self.setStyle(self.theme)
