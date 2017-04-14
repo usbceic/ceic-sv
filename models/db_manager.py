@@ -343,7 +343,7 @@ class dbManager(object):
     #==============================================================================================================================================================================
 
     '''
-    Metodo para verificar la existencia de un proveedor
+    Método para verificar la existencia de un proveedor
     retorna True si existe
     retorna False si no existe
     '''
@@ -357,7 +357,7 @@ class dbManager(object):
             return True
 
     '''
-    Metodo para agregar un proveedor
+    Método para agregar un proveedor
     Retorna True si el proveedor fue agregado con exito
     Retorna False cuando el proveedor ya existe
     Genera una excepcion cuando algo sale mal
@@ -391,7 +391,7 @@ class dbManager(object):
             return False
 
     '''
-    Metodo para actualizar la información de un proveedor.
+    Método para actualizar la información de un proveedor.
         -Retorna True si la actualización de datos fue hecha con exito.
         -Retorna False si ocurrió un error durante la actualización de datos.
     '''
@@ -435,7 +435,7 @@ class dbManager(object):
         return False
 
     '''
-    Metodo para obtener los nombres de TODOS los proveedores
+    Método para obtener los nombres de TODOS los proveedores
         - Retorna una lista con el nombre de cada proveedor
     '''
     def getProvidersNames(self):
@@ -446,14 +446,21 @@ class dbManager(object):
         return sorted(providersNames)
 
     '''
-    Metodo para obtener TODA la informacion de los proveedores existentes en la base de datos
+    Método para obtener TODA la informacion de un proveedor dado su nombre
+        - Retorna la instancia de Proveedor correspondiente al nombre
+    '''
+    def getProvider(self, provider_name):
+        return self.session.query(Provider).filter_by(provider_name=provider_name).one()
+
+    '''
+    Método para obtener TODA la informacion de los proveedores existentes en la base de datos
         - Retorna un queryset con TODOS los proveedores
     '''
     def getAllProviders(self):
         return self.session.query(Provider).all()
 
     '''
-    Metodo para obtener TODOS los nombres de los proveedores existentes en la base de datos en orden lexicografico.
+    Método para obtener TODOS los nombres de los proveedores existentes en la base de datos en orden lexicografico.
         - Retorna un queryset con los nombres de todos los proveedores en orden lexicografico.
     '''
 
@@ -461,7 +468,7 @@ class dbManager(object):
         return self.session.query(Provider.provider_name).all().order_by(Provider.provider_name)
 
     '''
-    Metodo para obtener TODOS los nombres de los proveedores existentes en la base de datos en orden de creación.
+    Método para obtener TODOS los nombres de los proveedores existentes en la base de datos en orden de creación.
         - Retorna un queryset con los nombres de todos los proveedores en orden de creacion.
     '''
 
@@ -469,7 +476,7 @@ class dbManager(object):
         return self.session.query(Provider.provider_name).all().order_by(Provider.creation_date)
 
     '''
-    Metodo para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden lexicografico.
+    Método para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden lexicografico.
         - Retorna un queryset con los nombres de todos los proveedores en orden lexicografico.
     '''
 
@@ -477,7 +484,7 @@ class dbManager(object):
         return self.session.query(Provider.provider_name).filter(Provider.active == True).order_by(Provider.provider_name)
 
     '''
-    Metodo para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden de creación.
+    Método para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden de creación.
         - Retorna un queryset con los nombres de todos los proveedores en orden de creacion.
     '''
 
@@ -485,7 +492,7 @@ class dbManager(object):
         return self.session.query(Provider.provider_name).filter(Provider.active == True).order_by(Provider.creation_date)
 
     '''
-    Metodo para obtener TODOS los nombres de los proveedores NO ACTIVOS en la base de datos en orden lexicografico.
+    Método para obtener TODOS los nombres de los proveedores NO ACTIVOS en la base de datos en orden lexicografico.
         - Retorna un queryset con los nombres de todos los proveedores en orden lexicografico.
     '''
 
@@ -493,7 +500,7 @@ class dbManager(object):
         return self.session.query(Provider.provider_name).filter(Provider.active == False).order_by(Provider.provider_name)
 
     '''
-    Metodo para obtener TODOS los nombres de los proveedores NO ACTIVOS en la base de datos en orden de creación.
+    Método para obtener TODOS los nombres de los proveedores NO ACTIVOS en la base de datos en orden de creación.
         - Retorna un queryset con los nombres de todos los proveedores en orden de creacion.
     '''
 
@@ -558,17 +565,14 @@ class dbManager(object):
     Método para buscar un producto por su nombre o por su id
      - Retorna un queryset con el resultado de la búsqueda
     """
-    def getProductByNameOrID(self, product_name=None, product_id=None, onlyAvailable=True):
-        if product_name == None and product_id == None: return []
-        if product_name != None and product_id != None:
-            if onlyAvailable: return self.session.query(Product).filter_by(or_(product_name=product_name.title().strip(), product_id=product_id), available=True).all()
-            return self.session.query(Product).filter_by(or_(product_name=product_name.title().strip(), product_id=product_id)).all()
-        elif product_name != None:
-            if onlyAvailable: return self.session.query(Product).filter_by(product_name=product_name.title().strip(), available=True).all()
-            return self.session.query(Product).filter_by(product_name=product_name.title().strip()).all()
-        else:
-            if onlyAvailable: return self.session.query(Product).filter_by(product_id=product_id, available=True).all()
-            return self.session.query(Product).filter_by(product_id=product_id).all()
+    def getProductByNameOrID(self, product_name=None, product_id=None, available=None):
+        product_name = product_name.title().strip()
+        filters = and_()
+        if (product_name and product_id) != None: filters = and_(filters, or_(Product.product_name == product_name, Product.product_id == product_id))
+        elif product_name != None: filters = and_(filters, Product.product_name == product_name)
+        else: filters = and_(filters, Product.product_id == product_id)
+        if available != None: filters = and_(filters, Product.available == available)
+        return self.session.query(Product).filter(*filters).all()
 
     """
     Método para obtener el id de un producto especificando su nombre
@@ -956,7 +960,7 @@ class dbManager(object):
             return True
 
     '''
-    Metodo para obtener las ci de TODOS los clientes
+    Método para obtener las ci de TODOS los clientes
         - Retorna una lista con el ci de cada cliente
     '''
     def getClientsCI(self):
