@@ -41,6 +41,8 @@ from db_manager import dbManager
 
 from datetime import datetime
 
+from shutil import copy2
+
 ###################################################################################################################################################################################
 ## CONSTANTES:
 ###################################################################################################################################################################################
@@ -549,6 +551,7 @@ class adminGUI(QMainWindow, form_class):
         self.currentLot = "0"
         self.currentLots = {}
         self.clearCB(self.cbox5)
+        self.selectedItem1.setIcon(QIcon(':/buttons/cross'))
 
         # Adición de campos extras
         if self.rbutton7.isChecked(): self.addProductInput()
@@ -631,6 +634,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
             self.text64.setText("Nombre")
+            self.selectedItem1.setIcon(QIcon(':/buttons/cross'))
 
     # Radio button para consultar productos
     def on_rbutton6_pressed(self):
@@ -639,6 +643,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1)
             self.text64.setText("Buscar")
+            self.selectedItem1.setIcon(QIcon(':/buttons/cross'))
 
     # Radio button para editar productos
     def on_rbutton7_pressed(self):
@@ -646,6 +651,7 @@ class adminGUI(QMainWindow, form_class):
             self.addProductInput()
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO3)
+            self.selectedItem1.setIcon(QIcon(':/buttons/cross'))
 
     # Radio button para eliminar productos
     def on_rbutton8_pressed(self):
@@ -654,6 +660,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1)
             self.text64.setText("Nombre")
+            self.selectedItem1.setIcon(QIcon(':/buttons/cross'))
 
     # Radio button para agregar nuevos lotes
     def on_rbutton9_pressed(self):
@@ -662,6 +669,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO2, False, self.lotsRO3)
             self.readOnlyCB(self.cbox5, True)
+            self.selectedItem2.setIcon(QIcon(':/buttons/cross'))
 
     # Radio button para consultar lotes
     def on_rbutton10_pressed(self):
@@ -670,6 +678,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
             self.readOnlyCB(self.cbox5, False)
+            self.selectedItem2.setIcon(QIcon(':/buttons/cross'))
 
     # Radio button para editar lotes
     def on_rbutton11_pressed(self):
@@ -678,6 +687,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO0, False)
             self.readOnlyCB(self.cbox5, False)
+            self.selectedItem2.setIcon(QIcon(':/buttons/cross'))
 
     # Radio button para eliminar lotes
     def on_rbutton12_pressed(self):
@@ -686,6 +696,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
             self.readOnlyCB(self.cbox5, False)
+            self.selectedItem2.setIcon(QIcon(':/buttons/cross'))
 
     # Boton "Aceptar" en el apartado de productos
     def on_pbutton11_pressed(self):
@@ -702,6 +713,8 @@ class adminGUI(QMainWindow, form_class):
                         # Agregar el producto a la BD
                         self.db.createProduct(product_name, price, categoy)
 
+                        copy2(self.tempImage, join(productPath, product_name))
+
                         # Refrescar toda la interfaz
                         self.refreshInventory()
 
@@ -715,7 +728,7 @@ class adminGUI(QMainWindow, form_class):
 
             # Modalidad para editar productos
             elif self.rbutton7.isChecked():
-                if self.lineE26.text != "":
+                if self.lineE26.text() != "":
                     product_name = self.lineE26.text()
                     if self.db.existProduct(product_name):
                         newName = self.lineE27.text()
@@ -734,7 +747,7 @@ class adminGUI(QMainWindow, form_class):
 
             # Modalidad para eliminar productos
             elif self.rbutton8.isChecked():
-                if self.lineE26.text != "":
+                if self.lineE26.text() != "":
                     product_name = self.lineE26.text()
                     if self.db.existProduct(product_name):
                         # Eliminar producto
@@ -826,10 +839,11 @@ class adminGUI(QMainWindow, form_class):
     # Boton para ver/agregar imágen de un producto
     def on_selectedItem1_pressed(self):
         if self.click():
-            filePath = QFileDialog.getOpenFileName(self, 'Seleccionar imágen', QDir.currentPath(), "Imágenes (*.bmp *.jpg *.jpeg *.png)")
-            if filePath != "":
-                self.selectedItem1.setIcon(QIcon(filePath))
-                self.tempImage = filePath
+            if self.rbutton5.isChecked():
+                filePath = QFileDialog.getOpenFileName(self, 'Seleccionar imágen', QDir.currentPath(), "Imágenes (*.bmp *.jpg *.jpeg *.png)")
+                if filePath != "":
+                    self.selectedItem1.setIcon(QIcon(filePath))
+                    self.tempImage = filePath
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
@@ -842,6 +856,7 @@ class adminGUI(QMainWindow, form_class):
                 product_name = self.lineE26.text()
                 if self.db.existProduct(product_name):
                     product = self.db.getProductByNameOrID(product_name=product_name, onlyAvailable=False)[0]
+                    self.selectedItem1.setIcon(QIcon(join(productPath, product_name)))
                     if self.rbutton7.isChecked():
                         self.lineE27.setText(product.product_name)        # Product Name
                         self.lineE28.setText(str(product.price))          # Precio

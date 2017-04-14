@@ -1685,12 +1685,14 @@ if __name__ == '__main__':
     """Pruebas de los métodos para productos"""
 
     # Probar createProduct
-    print("\nPrueba del método createProduct\n")
+    """print("\nPrueba del método createProduct\n")
     m.createProduct("Agua", 1100)
 
     print(m.getProducts(product_name=True, product_id=True, active=True))
 
-    """Pruebas de los métodos para lotes"""
+    """
+
+    """Pruebas de los métodos para lotes
     m.createUser("tobi", "loveurin", "obito", "uchiha", "tobi@akatsuki.com", 3)
     m.createProvider("kabuto", "xD")
     m.createLot("agua", "kabuto", "tobi", 20000, 42)
@@ -1705,7 +1707,7 @@ if __name__ == '__main__':
     print(product_list_agua)
 
     m.createReverseProductList(product_list_agua, "Hola", 2)
-    print(product_list_agua.reversed_product_list)
+    print(product_list_agua.reversed_product_list)"""
 
     """
     m.createService("ExtraLifes", 1)
