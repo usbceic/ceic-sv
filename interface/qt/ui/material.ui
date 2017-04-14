@@ -1066,7 +1066,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -6115,7 +6115,7 @@ QWidget:item:unchecked {
                   <string notr="true"/>
                  </property>
                  <property name="currentIndex">
-                  <number>1</number>
+                  <number>0</number>
                  </property>
                  <widget class="QWidget" name="page11">
                   <layout class="QGridLayout" name="gridLayout_10">
