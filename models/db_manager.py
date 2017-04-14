@@ -1429,7 +1429,7 @@ class dbManager(object):
     #==============================================================================================================================================================================
 
     """
-    Método para verificar que una devolución de lista de productos
+    Método para verificar que existe una devolución de lista de productos
      - Retorna True:
         * Cuando la devolución de lista de productos existe
      - Retorna False:
@@ -1498,7 +1498,7 @@ class dbManager(object):
     #==============================================================================================================================================================================
 
     """
-    Método para verificar que una devolución de lista de servicios
+    Método para verificar que existe una devolución de lista de servicios
      - Retorna True:
         * Cuando la devolución de lista de servicios existe
      - Retorna False:
@@ -1567,6 +1567,98 @@ class dbManager(object):
 
     # Completar
 
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE MONEDAS / BILLETES PARA PAGO:
+    #==============================================================================================================================================================================
+
+    """
+    Método para verificar que existe una Moneda / Billete en sistema
+     - Retorna True:
+        * Cuando la Moneda / Billete existe en sistema
+     - Retorna False:
+        * Cuando la Moneda / Billete NO existe en sistema
+    """
+    def existLegalTender(self, amount):
+        count = self.session.query(Legal_tender).filter_by(amount=amount).count()
+        if count == 0:
+            print("La Moneda / Billete de " + str(amount) + " NO existe en sistema")
+            return False
+        else:
+            print("La Moneda / Billete de " + str(amount) + " existe en sistema")
+            return True
+
+    """
+    Método para buscar Monedas / Billetes en sistema.
+     - Retorna queryset de los Legal_tender que cumplan el filtro
+     - Si amount es pasado, no se toman en cuenta los bound
+    """
+    def getLegalTender(self, amount=None, lower_bound=None, upper_bound=None):
+        if amount is None and lower_bound is None and upper_bound is None:
+            return self.session.query(Legal_tender).all()
+
+        if amount is not None:
+            return self.session.query(Legal_tender).filter_by(amount=amount).all()
+
+        filters = and_()
+        if price_lower_bound is not None:
+            filters = and_(filters, Legal_tender.amount >= lower_bound)
+
+        if price_upper_bound is not None:
+            filters = and_(filters, Legal_tender.amount <= upper_bound)
+
+        return self.session.query(Legal_tender).filter(*filters).all()
+
+    """
+    Método para crea una Moneda / Billete en sistema
+     - Retorna True:
+        * Cuando la Moneda / Billete es creada en el sistema
+     - Retorna False:
+        * Cuando la Moneda / Billete NO es creada en el sistema
+    """
+    def createLegalTender(self, amount):
+        if self.existLegalTender(amount):
+            return False
+
+        self.session.add(Legal_tender(amount=amount))
+        try:
+            self.session.commit()
+            print("La Moneda / Billete de " + str(amount) + " fue creada")
+            return True
+        except Exception as e:
+            print("Error desconocido al intentar crear La Moneda / Billete de " + str(amount) + ":", e)
+            self.session.rollback()
+            return False
+
+    """
+    Método para eliminar una Moneda / Billete en sistema
+     - Retorna True:
+        * Cuando la Moneda / Billete es eliminada del sistema
+     - Retorna False:
+        * Cuando la Moneda / Billete NO es eliminada del sistema
+    """
+    def deleteLegalTender(self, amount):
+        obj_list = self.getLegalTender(amount=amount)
+
+        if len(obj_list) == 0:
+            print("La Moneda / Billete de " + str(amount) + " NO existe en sistema")
+            return False
+
+        self.session.delete(obj_list[0])
+        try:
+            self.session.commit()
+            print("La Moneda / Billete de " + str(amount) + " fue eliminada")
+            return True
+        except Exception as e:
+            print("Error desconocido al intentar eliminar La Moneda / Billete de " + str(amount) + ":", e)
+            self.session.rollback()
+            return False 
+
+
+
+
+
+
+
 ###################################################################################################################################################################################
 ## PRUEBAS:
 ###################################################################################################################################################################################
@@ -1576,6 +1668,15 @@ if __name__ == '__main__':
     m = dbManager("sistema_ventas", "hola", dropAll=True)
     m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
 
+    """
+    m.deleteLegalTender(0)
+    m.createLegalTender(0)
+    m.createLegalTender(1)
+    m.createLegalTender(2)
+    print(m.getLegalTender())
+    m.deleteLegalTender(1)
+    print(m.getLegalTender())
+    """
     """
     m.restore()
     m.deleteLastBackup()
