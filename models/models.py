@@ -169,9 +169,9 @@ class Lot(this.Base):
     # Representación de una instancia de la clase
     def __repr__(self):
         kwargs = (str(self.lot_id), str(self.product_id), self.provider_id, self.received_by, str(self.cost), str(self.quantity), str(self.adquisition_date), str(self.perishable),
-            str(self.expiration_date), str(self.available), str(self.current), self.description, self.category,)
+            str(self.expiration_date), str(self.available), str(self.current))
         template = "<Lot(lot_id='%s', product_id='%s', provider_id='%s', received_by='%s', cost='%s',  quantity='%s',  adquisition_date='%s',  perishable='%s', "
-        template += "expiration_date='%s', available='%s', current='%s', description=='%s', category=='%s')>"
+        template += "expiration_date='%s', available='%s', current='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================

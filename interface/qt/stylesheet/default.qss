@@ -359,6 +359,18 @@
     min-height: 1.25em;
 }
 
+/*Configuración del estilo por defecto de todos los comboBox desactivados*/
+#cbox0[enabled="false"], #cbox1[enabled="false"], #cbox2[enabled="false"], #cbox3[enabled="false"], #cbox4[enabled="false"], #cbox5[enabled="false"], #cbox6[enabled="false"], #cbox7[enabled="false"], #cbox8[enabled="false"], #cbox9[enabled="false"], #cbox10[enabled="false"], #cbox11[enabled="false"], #cbox12[enabled="false"], #cbox13[enabled="false"], #cbox14[enabled="false"], #cbox15[enabled="false"], #cbox16[enabled="false"], #cbox17[enabled="false"], #cbox18[enabled="false"], #cbox19[enabled="false"], #cbox20[enabled="false"], #cbox21[enabled="false"], #cbox22[enabled="false"], #cbox23[enabled="false"], #cbox24[enabled="false"], #cbox25[enabled="false"], #cbox26[enabled="false"], #cbox27[enabled="false"], #cbox28[enabled="false"], #cbox29[enabled="false"] {
+    border: 1px solid silver;
+    background: #F5F5F5;
+}
+
+/*Configuración del estilo por defecto de todos los comboBox activados*/
+#cbox0[enabled="true"], #cbox1[enabled="true"], #cbox2[enabled="true"], #cbox3[enabled="true"], #cbox4[enabled="true"], #cbox5[enabled="true"], #cbox6[enabled="true"], #cbox7[enabled="true"], #cbox8[enabled="true"], #cbox9[enabled="true"], #cbox10[enabled="true"], #cbox11[enabled="true"], #cbox12[enabled="true"], #cbox13[enabled="true"], #cbox14[enabled="true"], #cbox15[enabled="true"], #cbox16[enabled="true"], #cbox17[enabled="true"], #cbox18[enabled="true"], #cbox19[enabled="true"], #cbox20[enabled="true"], #cbox21[enabled="true"], #cbox22[enabled="true"], #cbox23[enabled="true"], #cbox24[enabled="true"], #cbox25[enabled="true"], #cbox26[enabled="true"], #cbox27[enabled="true"], #cbox28[enabled="true"], #cbox29[enabled="true"] {
+    border: 1px solid #BDBDBD;
+    background: #FFFFFF;
+}
+
 /*Configuración del estilo de todos los comboBox cuando estan en uso*/
 #cbox0::on, #cbox1::on, #cbox2::on, #cbox3::on, #cbox4::on, #cbox5::on, #cbox6::on, #cbox7::on, #cbox8::on, #cbox9::on, #cbox10::on, #cbox11::on, #cbox12::on, #cbox13::on, #cbox14::on, #cbox15::on, #cbox16::on, #cbox17::on, #cbox18::on, #cbox19::on, #cbox20::on, #cbox21::on, #cbox22::on, #cbox23::on, #cbox24::on, #cbox25::on, #cbox26::on, #cbox27::on, #cbox28::on, #cbox29::on{
     padding-top: 10px;

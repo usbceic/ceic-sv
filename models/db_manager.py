@@ -773,9 +773,30 @@ class dbManager(object):
     Método para retornar los lotes asociados a un producto
      - Retorna un queryset con los resultados de la búsqueda
     """
-    def getLotsByProductID(self, product_id, onlyAvailables = True):
-        if onlyAvailables: return self.session.query(Lot).filter_by(product_id=product_id, onlyAvailables=True).all()
-        return self.session.query(Lot).filter_by(product_id=product_id).all()
+    def getLotsIDByProductID(self, product_id, available = True):
+        values = {
+            "product_id" : product_id,
+            "available"  : available
+        }
+
+        query = self.session.query(Lot.lot_id).filter_by(**values).all()
+        lotIDs = []
+        for ID in query:
+            lotIDs.append(str(ID[0]))
+        return sorted(lotIDs)
+
+    """
+    Método para retornar los lotes asociados a un filtro
+     - Retorna un queryset con los resultados de la búsqueda
+    """
+    def getLots(self, lot_id = None, product_id = None, provider_id = None, available = None):
+        values = {}
+        if lot_id != None: values["lot_id"] = lot_id
+        if product_id != None: values["product_id"] = product_id
+        if provider_id != None: values["provider_id"] = provider_id
+        if available != None: values["available"] = available
+
+        return self.session.query(Lot).filter_by(**values).all()
 
     """
     Método para eliminar lotes (Marcar como no disponible)
@@ -786,7 +807,7 @@ class dbManager(object):
         * Cuando NO logra marcar el lote como no disponible
     """
     def deleteLot(self, lot_id):
-        if existLot(lot_id):
+        if self.existLot(lot_id):
             try:
                 self.session.execute(update(Lot).where(Lot.lot_id==lot_id).values(available=False))
                 self.session.commit()

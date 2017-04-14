@@ -39,6 +39,8 @@ from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter,
 # Módulo manejador de la base de datos
 from db_manager import dbManager
 
+from datetime import datetime
+
 ###################################################################################################################################################################################
 ## CONSTANTES:
 ###################################################################################################################################################################################
@@ -99,10 +101,16 @@ class adminGUI(QMainWindow, form_class):
 
         self.clicked = False                # QPushbutton presionado
         self.writing = False                # Texto de un QLineEdit cambiado
+        self.newIndex = False
+        self.lotMutex1 = False
+        self.lotMutex2 = False
+        self.currentLot = "0"
+        self.currentLots = {}
         self.tempImage = ""                 # Imagen seleccionada
         self.selectedProductRemaining = {}  # Diccionario de cotas superiores para el spinBox de ventas
         self.selectedProductName = ""       # Nombre del producto seleccionado actualmente en la vista de ventas
         self.selectedProducts = {}          # Diccionario de productos en la factura en la vista de ventas
+        self.dateFormat = "%d-%m-%Y %H:%M:%S.%f"
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # PREFERENCIAS DE USUARIO
@@ -258,6 +266,15 @@ class adminGUI(QMainWindow, form_class):
             self.writing = True
             return False
 
+    # Cambio de texto en un QLineEdit
+    def indexChanged(self):
+        if self.newIndex:
+            self.newIndex = False
+            return True
+        else:
+            self.newIndex = True
+            return False
+
     # Cambiar página de un QStackedWidget
     def setPage(self, stacked, index):
         if self.click(): stacked.setCurrentIndex(index)
@@ -307,6 +324,18 @@ class adminGUI(QMainWindow, form_class):
 
         else:
             return sorted(productsList, key = lambda product: product[1])
+
+    def readOnlyCB(self, cbox, readOnly):
+        if readOnly: cbox.setStyleSheet("border: 1px solid silver; background: #F5F5F5;")
+        else: cbox.setStyleSheet("border: 1px solid #BDBDBD; background: #FFFFFF;")
+
+    # Borrar contenido de una lista de PlainTextEdit:
+    def clearCBs(self, listCB):
+        for CB in listCB: CB.clear()
+
+    # Borrar contenido de un ComboBox:
+    def clearCB(self, cbox):
+        cbox.clear()
 
     # Borrar contenido de un PlainTextEdit:
     def clearTE(self, textE):
@@ -515,6 +544,12 @@ class adminGUI(QMainWindow, form_class):
         self.clearLEs(self.productsRO0)
         self.clearLEs(self.lotsRO0)
 
+        self.lotMutex1 = False
+        self.lotMutex2 = False
+        self.currentLot = "0"
+        self.currentLots = {}
+        self.clearCB(self.cbox5)
+
         # Adición de campos extras
         if self.rbutton7.isChecked(): self.addProductInput()
         else:
@@ -623,26 +658,34 @@ class adminGUI(QMainWindow, form_class):
     # Radio button para agregar nuevos lotes
     def on_rbutton9_pressed(self):
         if self.click():
+            self.clearCB(self.cbox5)
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO2, False, self.lotsRO3)
+            self.readOnlyCB(self.cbox5, True)
 
     # Radio button para consultar lotes
     def on_rbutton10_pressed(self):
         if self.click():
+            self.clearCB(self.cbox5)
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
+            self.readOnlyCB(self.cbox5, False)
 
     # Radio button para editar lotes
     def on_rbutton11_pressed(self):
         if self.click():
+            self.clearCB(self.cbox5)
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO0, False)
+            self.readOnlyCB(self.cbox5, False)
 
     # Radio button para eliminar lotes
     def on_rbutton12_pressed(self):
         if self.click():
+            self.clearCB(self.cbox5)
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
+            self.readOnlyCB(self.cbox5, False)
 
     # Boton "Aceptar" en el apartado de productos
     def on_pbutton11_pressed(self):
@@ -733,20 +776,52 @@ class adminGUI(QMainWindow, form_class):
                     # Agregar el lote a la BD
                     self.db.createLot(**kwargs)
 
-                    self.refreshInventory()               # Refrescar toda la interfaz
+                    self.refreshInventory()      # Refrescar toda la interfaz
                     self.lineE33.setFocus()      # Enfocar
 
-            elif self.rbutton10.isChecked(): # Modalidad para consultar lotes
-                self.refreshInventory()               # Refrescar toda la interfaz
+            # Modalidad para consultar lotes
+            elif self.rbutton10.isChecked():
+                self.refreshInventory()      # Refrescar toda la interfaz
                 self.lineE33.setFocus()      # Enfocar
 
-            elif self.rbutton11.isChecked(): # Modalidad para editar lotes
-                self.refreshInventory()               # Refrescar toda la interfaz
-                self.lineE33.setFocus()      # Enfocar
+            # Modalidad para editar lotes
+            elif self.rbutton11.isChecked():
+                if (self.lineE33.text() and self.lineE34.text()) != "":
+                    product_name = self.lineE33.text()        # Producto
+                    provider_id = self.lineE34.text()         # Proveedor
+                    if self.db.existProduct(product_name) and self.db.existProvider(provider_id):
 
-            elif self.rbutton12.isChecked(): # Modalidad para eliminar lotes
-                self.refreshInventory()               # Refrescar toda la interfaz
-                self.lineE33.setFocus()      # Enfocar
+                        lot_id = self.currentLots[self.currentLot]                        # Lote
+                        cost = float(self.lineE35.text())                                 # Costo
+                        if self.lineE36.text() != "None":
+                            expiration_date = datetime.strptime(self.lineE36.text(), self.dateFormat)  # Caducidad
+                        quantity = int(self.lineE37.text())                               # Cantidad
+                        remaining = int(self.lineE38.text())                              # Disponibles
+
+                        self.db.updateLot(lot_id, product_name, provider_id, cost, quantity, remaining)
+
+                        # Refrescar toda la interfaz
+                        self.refreshInventory()
+
+                        # Enfocar
+                        self.lineE33.setFocus()
+
+            # Modalidad para eliminar lotes
+            elif self.rbutton12.isChecked():
+                if (self.lineE33.text() and self.lineE34.text()) != "":
+                    product_name = self.lineE33.text()        # Producto
+                    provider_id = self.lineE34.text()         # Proveedor
+                    if self.db.existProduct(product_name) and self.db.existProvider(provider_id):
+
+                        lot_id = self.currentLots[self.currentLot]                        # Lote
+
+                        self.db.deleteLot(lot_id)
+
+                        # Refrescar toda la interfaz
+                        self.refreshInventory()
+
+                        # Enfocar
+                        self.lineE33.setFocus()
 
     # Boton para ver/agregar imágen de un producto
     def on_selectedItem1_pressed(self):
@@ -779,6 +854,49 @@ class adminGUI(QMainWindow, form_class):
                         self.lineE28.setText(product.category)            # Categoria
                         self.lineE29.setText(str(product.remaining_lots)) # Lotes
                         self.lineE30.setText(str(product.remaining))      # Disp. Total
+
+    # LineEdit para ingresar nombres de los productos
+    def on_lineE33_textChanged(self):
+        if self.textChanged():
+            if not self.rbutton9.isChecked() and self.lineE33.text() != "":
+                product_name = self.lineE33.text()
+                if self.db.existProduct(product_name):
+                    product_id = self.db.getProductID(product_name)
+                    lotIDs = self.db.getLotsIDByProductID(product_id)
+                    self.currentLots = {}
+                    self.lotMutex1 = False
+                    for i in range(1, len(lotIDs)+1):
+                        self.cbox5.addItem(str(i))
+                        self.currentLots[str(i)] = lotIDs[i-1]
+                    self.currentLot = "1"
+                    self.lotMutex1 = True
+
+                    lot_id = self.currentLots[self.currentLot]
+                    lot = self.db.getLots(lot_id=lot_id)[0]
+
+                    self.lineE34.setText(lot.provider_id)          # Proveedor
+                    self.lineE35.setText(str(lot.cost))            # Precio
+                    self.lineE36.setText(str(lot.expiration_date)) # Categoria
+                    self.lineE37.setText(str(lot.quantity))        # Lotes
+                    self.lineE38.setText(str(lot.remaining))       # Disp. Total
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # COMBO BOX
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # ComboBox para elegir el número de lote
+    def on_cbox5_currentIndexChanged(self):
+        if self.indexChanged() and self.lotMutex1:
+            if self.currentLot != self.cbox5.currentText() and self.currentLot != "0":
+                self.currentLot = self.cbox5.currentText()
+                lot_id = self.currentLots[self.currentLot]
+                lot = self.db.getLots(lot_id=lot_id)[0]
+
+                self.lineE34.setText(lot.provider_id)          # Proveedor
+                self.lineE35.setText(str(lot.cost))            # Precio
+                self.lineE36.setText(str(lot.expiration_date)) # Categoria
+                self.lineE37.setText(str(lot.quantity))        # Lotes
+                self.lineE38.setText(str(lot.remaining))       # Disp. Total
 
     #==============================================================================================================================================================================
     # VISTA DE VENTAS

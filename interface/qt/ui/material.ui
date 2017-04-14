@@ -391,6 +391,12 @@
     min-height: 1.25em;
 }
 
+/*Configuración del estilo por defecto de todos los comboBox desactivados*/
+#cbox0[enabled=&quot;false&quot;], #cbox1[enabled=&quot;false&quot;], #cbox2[enabled=&quot;false&quot;], #cbox3[enabled=&quot;false&quot;], #cbox4[enabled=&quot;false&quot;], #cbox5[enabled=&quot;false&quot;], #cbox6[enabled=&quot;false&quot;], #cbox7[enabled=&quot;false&quot;], #cbox8[enabled=&quot;false&quot;], #cbox9[enabled=&quot;false&quot;], #cbox10[enabled=&quot;false&quot;], #cbox11[enabled=&quot;false&quot;], #cbox12[enabled=&quot;false&quot;], #cbox13[enabled=&quot;false&quot;], #cbox14[enabled=&quot;false&quot;], #cbox15[enabled=&quot;false&quot;], #cbox16[enabled=&quot;false&quot;], #cbox17[enabled=&quot;false&quot;], #cbox18[enabled=&quot;false&quot;], #cbox19[enabled=&quot;false&quot;], #cbox20[enabled=&quot;false&quot;], #cbox21[enabled=&quot;false&quot;], #cbox22[enabled=&quot;false&quot;], #cbox23[enabled=&quot;false&quot;], #cbox24[enabled=&quot;false&quot;], #cbox25[enabled=&quot;false&quot;], #cbox26[enabled=&quot;false&quot;], #cbox27[enabled=&quot;false&quot;], #cbox28[enabled=&quot;false&quot;], #cbox29[enabled=&quot;false&quot;] {
+    border: 1px solid silver;
+    background: #F5F5F5;
+}
+
 /*Configuración del estilo de todos los comboBox cuando estan en uso*/
 #cbox0::on, #cbox1::on, #cbox2::on, #cbox3::on, #cbox4::on, #cbox5::on, #cbox6::on, #cbox7::on, #cbox8::on, #cbox9::on, #cbox10::on, #cbox11::on, #cbox12::on, #cbox13::on, #cbox14::on, #cbox15::on, #cbox16::on, #cbox17::on, #cbox18::on, #cbox19::on, #cbox20::on, #cbox21::on, #cbox22::on, #cbox23::on, #cbox24::on, #cbox25::on, #cbox26::on, #cbox27::on, #cbox28::on, #cbox29::on{
     padding-top: 10px;
@@ -1060,7 +1066,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>6</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -6865,6 +6871,9 @@ QWidget:item:unchecked {
                            </item>
                            <item row="1" column="1">
                             <widget class="QComboBox" name="cbox5">
+                             <property name="enabled">
+                              <bool>true</bool>
+                             </property>
                              <property name="font">
                               <font>
                                <family>Open Sans</family>
