@@ -97,26 +97,8 @@ class adminGUI(QMainWindow, form_class):
         # Constantes para fácilitar el uso de varios métodos de la clase
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        # Parametros para buscar con la función getProducts el nombre de los productos activos
-        self.productsParams0 = {
-            "product_name" : True,
-            "active"       : True
-        }
-
-        # Parametros para buscar con la función getProducts la información necesaria para mostrar un producto en el inventario
-        self.productsParams1 = {
-            "product_id"     : True,
-            "product_name"   : True,
-            "price"          : True,
-            "remaining"      : True,
-            "remaining_lots" : True,
-            "category"       : True,
-            "active"         : True
-        }
-
         self.clicked = False                # QPushbutton presionado
         self.writing = False                # Texto de un QLineEdit cambiado
-        self.currentProduct = None          # Instancia de producto en uso
         self.tempImage = ""                 # Imagen seleccionada
         self.selectedProductRemaining = {}  # Diccionario de cotas superiores para el spinBox de ventas
         self.selectedProductName = ""       # Nombre del producto seleccionado actualmente en la vista de ventas
@@ -156,6 +138,7 @@ class adminGUI(QMainWindow, form_class):
         self.productsRO0 = [self.lineE26, self.lineE27, self.lineE28, self.lineE29, self.lineE30]
         self.productsRO1 = [self.lineE27, self.lineE28, self.lineE29, self.lineE30]
         self.productsRO2 = [self.lineE27, self.lineE28]
+        self.productsRO3 = [self.lineE27, self.lineE28, self.lineE29]
 
         # Apartado de lotes en inventario
         self.lotsRO0 = [self.lineE33, self.lineE34, self.lineE35, self.lineE36, self.lineE37, self.lineE38]
@@ -489,6 +472,23 @@ class adminGUI(QMainWindow, form_class):
 
     # Método para refrescar la vista del Inventario y elementos relacionados
     def refreshInventory(self):
+        # Parametros para buscar con la función getProducts el nombre de los productos activos
+        self.productsParams0 = {
+            "product_name" : True,
+            "active"       : True
+        }
+
+        # Parametros para buscar con la función getProducts la información necesaria para mostrar un producto en el inventario
+        self.productsParams1 = {
+            "product_id"     : True,
+            "product_name"   : True,
+            "price"          : True,
+            "remaining"      : True,
+            "remaining_lots" : True,
+            "category"       : True,
+            "active"         : True
+        }
+
         # Listas de nombres de los productos
         self.productsNames = self.getProductList(self.productsParams0)                # Completa
         self.productsNamesAvailable = self.getProductList(self.productsParams0, 1)    # Disponibles
@@ -511,12 +511,16 @@ class adminGUI(QMainWindow, form_class):
         self.setupTables(self.productTables)
 
         # Limpiar campos
+        if hasattr(self, 'lineExtra') and self.lineExtra != None: self.clearLE(self.lineExtra)
         self.clearLEs(self.productsRO0)
         self.clearLEs(self.lotsRO0)
 
         # Adición de campos extras
-        if self.rbutton6.isChecked() or self.rbutton7.isChecked(): self.addProductInput()
-        else: self.deleteProductInput()
+        if self.rbutton7.isChecked(): self.addProductInput()
+        else:
+            self.deleteProductInput()
+            if self.rbutton6.isChecked():
+                self.text64.setText("Buscar")
 
     # Añadir campo extra en el apartado de productos
     def addProductInput(self):
@@ -536,34 +540,21 @@ class adminGUI(QMainWindow, form_class):
                 font-size: 11pt;
             """)
 
-            if self.rbutton6.isChecked():
+            self.lineExtra.setStyleSheet("""
+                border: 1px solid silver;
+                border-radius: 2px;
+                min-width: 5.5em;
+                min-height: 1.25em;
+                padding: 2px;
+                background: #F5F5F5;
+            """)
 
-                self.lineExtra.setStyleSheet("""
-                    border: 1px solid silver;
-                    border-radius: 2px;
-                    min-width: 5.5em;
-                    min-height: 1.25em;
-                    padding: 2px;
-                    background: #F5F5F5;
-                """)
-
-                self.lineExtra.setReadOnly(True)
-
-            else:
-                self.lineExtra.setStyleSheet("""
-                    border: 1px solid #BDBDBD;
-                    border-radius: 2px;
-                    min-width: 5.5em;
-                    min-height: 1.25em;
-                    padding: 2px;
-                """)
-
+            self.lineExtra.setReadOnly(True)
             self.productLayout.addRow(self.textExtra, self.lineExtra)
-            self.setStyle(self.theme)
 
     # Eliminar el campo extra en el apartado de productos
     def deleteProductInput(self):
-        if (self.textExtra and self.lineExtra) != None:
+        if hasattr(self, 'lineExtra') and hasattr(self, 'textExtra') and ((self.textExtra and self.lineExtra) != None):
             self.productLayout.removeWidget(self.textExtra)
             self.productLayout.removeWidget(self.lineExtra)
             self.textExtra.deleteLater()
@@ -604,20 +595,22 @@ class adminGUI(QMainWindow, form_class):
             self.deleteProductInput()
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
+            self.text64.setText("Nombre")
 
     # Radio button para consultar productos
     def on_rbutton6_pressed(self):
         if self.click():
-            self.addProductInput()
+            self.deleteProductInput()
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1)
+            self.text64.setText("Buscar")
 
     # Radio button para editar productos
     def on_rbutton7_pressed(self):
         if self.click():
             self.addProductInput()
             self.clearLEs(self.productsRO0)
-            self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
+            self.changeRO(self.productsRO1, listaLE1 = self.productsRO3)
 
     # Radio button para eliminar productos
     def on_rbutton8_pressed(self):
@@ -625,6 +618,7 @@ class adminGUI(QMainWindow, form_class):
             self.deleteProductInput()
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1)
+            self.text64.setText("Nombre")
 
     # Radio button para agregar nuevos lotes
     def on_rbutton9_pressed(self):
@@ -655,19 +649,21 @@ class adminGUI(QMainWindow, form_class):
         if self.click():
             # Modalidad para agregar nuevos productos
             if self.rbutton5.isChecked():
-                # Obtener información del nuevo producto
-                productName = self.lineE26.text()
-                productPrice = self.lineE27.text()
-                productCategoy = self.lineE28.text()
+                if self.lineE26.text() != "":
+                    product_name = self.lineE26.text()
+                    if not self.db.existProduct(product_name):
+                        # Obtener información del nuevo producto
+                        price = self.lineE27.text()
+                        categoy = self.lineE28.text()
 
-                # Agregar el producto a la BD
-                self.db.createProduct(productName, productPrice, productCategoy)
+                        # Agregar el producto a la BD
+                        self.db.createProduct(product_name, price, categoy)
 
-                # Refrescar toda la interfaz
-                self.refreshInventory()
+                        # Refrescar toda la interfaz
+                        self.refreshInventory()
 
-                # Enfocar
-                self.lineE26.setFocus()
+                        # Enfocar
+                        self.lineE26.setFocus()
 
             # Modalidad para consultar productos
             elif self.rbutton6.isChecked():
@@ -676,24 +672,36 @@ class adminGUI(QMainWindow, form_class):
 
             # Modalidad para editar productos
             elif self.rbutton7.isChecked():
-                productName = self.lineE27.text()
-                productPrice = self.lineE28.text()
-                productCategoy = self.lineE29.text()
+                if self.lineE26.text != "":
+                    product_name = self.lineE26.text()
+                    if self.db.existProduct(product_name):
+                        newName = self.lineE27.text()
+                        newPrice = float(self.lineE28.text())
+                        newCategory = self.lineE29.text()
 
-                # Refrescar toda la interfaz
-                self.refreshInventory()
+                        if newName != "" and newPrice > 0:
+                            # Actualizar información de producto
+                            self.db.updateProduct(product_name, newName, newPrice, newCategory)
 
-                # Enfocar
-                self.lineE26.setFocus()
+                        # Refrescar toda la interfaz
+                        self.refreshInventory()
+
+                        # Enfocar
+                        self.lineE26.setFocus()
 
             # Modalidad para eliminar productos
             elif self.rbutton8.isChecked():
+                if self.lineE26.text != "":
+                    product_name = self.lineE26.text()
+                    if self.db.existProduct(product_name):
+                        # Eliminar producto
+                        self.db.deleteProduct(product_name)
 
-                # Refrescar toda la interfaz
-                self.refreshInventory()
+                        # Refrescar toda la interfaz
+                        self.refreshInventory()
 
-                # Enfocar
-                self.lineE26.setFocus()
+                        # Enfocar
+                        self.lineE26.setFocus()
 
     # Boton "Aceptar" en el apartado de lotes
     def on_pbutton13_pressed(self):
@@ -755,16 +763,22 @@ class adminGUI(QMainWindow, form_class):
     # LineEdit para ingresar nombres de los productos
     def on_lineE26_textChanged(self):
         if self.textChanged():
-            if (self.rbutton6.isChecked() or self.rbutton8.isChecked() or self.rbutton7.isChecked()) and self.lineE26.text() != "":
-                productName = self.lineE26.text()
-                if productName in self.productsNames:
-                    product = self.productsInfo[self.productsNames.index(productName)]
-                    self.currentProduct = str(product[0]) # Product ID
-                    self.lineE27.setText(str(product[1]))   # Product ID
-                    self.lineE28.setText(str(product[2]))   # Precio
-                    self.lineE29.setText(product[5])        # Categoria
-                    self.lineE30.setText(str(product[4]))   # Lotes
-                    self.lineExtra.setText(str(product[3])) # Disp. Total
+            if not self.rbutton5.isChecked() and self.lineE26.text() != "":
+                product_name = self.lineE26.text()
+                if self.db.existProduct(product_name):
+                    product = self.db.getProductByNameOrID(product_name=product_name, onlyAvailable=False)[0]
+                    if self.rbutton7.isChecked():
+                        self.lineE27.setText(product.product_name)        # Product Name
+                        self.lineE28.setText(str(product.price))          # Precio
+                        self.lineE29.setText(product.category)            # Categoria
+                        self.lineE30.setText(str(product.remaining_lots)) # Lotes
+                        self.lineExtra.setText(str(product.remaining))    # Disp. Total
+
+                    else:
+                        self.lineE27.setText(str(product.price))          # Precio
+                        self.lineE28.setText(product.category)            # Categoria
+                        self.lineE29.setText(str(product.remaining_lots)) # Lotes
+                        self.lineE30.setText(str(product.remaining))      # Disp. Total
 
     #==============================================================================================================================================================================
     # VISTA DE VENTAS

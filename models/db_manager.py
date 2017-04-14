@@ -362,8 +362,8 @@ class dbManager(object):
     Retorna False cuando el proveedor ya existe
     Genera una excepcion cuando algo sale mal
     '''
-    def createProvider(self, provider_name, pay_information = None, phone = None, email = None, description = None):
-        if(self.existProvider(provider_name)):
+    def createProvider(self, provider_name, pay_information = "", phone = "", email = "", description = ""):
+        if (self.existProvider(provider_name)):
             return False
         kwargs = {'provider_name' : provider_name}
 
@@ -511,9 +511,12 @@ class dbManager(object):
      - Retorna False:
         * Cuando el producto NO existe
     """
-    def existProduct(self, product_name, available = None, active=True):
-        if available != None: count = self.session.query(Product).filter_by(product_name=product_name.lower().strip(), available=available, active=active).count()
-        else: count = self.session.query(Product).filter_by(product_name=product_name.lower().strip(), active=active).count()
+    def existProduct(self, product_name, available = None, active = True):
+        values = {"product_name" : product_name.lower().strip()}
+        if available != None: values["available"] = available
+        if active != None: values["active"] = active
+
+        count = self.session.query(Product).filter_by(**values).count()
 
         if count == 0:
             print("El producto " + product_name + " NO existe")
@@ -526,12 +529,13 @@ class dbManager(object):
     Método para crear un producto nuevo
      - Retorna True:
         * Cuando el producto es creado satisfactoreamente
+        * Cuando el producto ya existía pero estaba desactivado
      - Retorna False:
-        * Cuando ya existe el producto
+        * Cuando ya existe el producto y está activo
         * Cuando no se puede crear
     """
     def createProduct(self, product_name, price, category=""):
-        if not self.existProduct(product_name):
+        if not self.existProduct(product_name, active = None):
             self.session.add(Product(product_name=product_name.lower().strip(), price=price, category=category))
             try:
                 self.session.commit()
@@ -541,8 +545,13 @@ class dbManager(object):
                 print("Error desconocido al crear el producto: " + product_name +":", e)
                 self.session.rollback()
                 return False
+        elif self.existProduct(product_name, active=False):
+            self.updateProduct(product_name, product_name, price, category, active = True)
+            print("Se ha actualizado el producto " + product_name + " y se reactivo.")
+            return True
+
         else:
-            print("No se puede crear el producto " + product_name + " porque ya existe")
+            print("No se puede crear el producto " + product_name + " porque ya existe y está activo")
             return False
 
     """
@@ -604,12 +613,13 @@ class dbManager(object):
         * Cuando el producto no existe
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
-    def updateProduct(self, product_name, new_product_name=None, price=None, category=None):
-        if self.existProduct(product_name):
+    def updateProduct(self, product_name, new_product_name=None, price=None, category=None, active = None):
+        if self.existProduct(product_name, active = None):
             values = {}
             if new_product_name != None: values["product_name"] = new_product_name.lower().strip()
             if price != None: values["price"] = price
             if category != None: values["category"] = category
+            if active != None: values["active"] = active
             try:
                 self.session.query(Product).filter_by(product_name=product_name.lower().strip()).update(values)
                 self.session.commit()
@@ -631,7 +641,7 @@ class dbManager(object):
         * Cuando no se puede eliminar (desactivar) por alguna razón
     """
     def deleteProduct(self, product_name):
-        if existProduct(product_name):
+        if self.existProduct(product_name):
             try:
                 self.session.execute(update(Product).where(Product.product_name==product_name.lower().strip()).values(active=False))
                 self.session.commit()
