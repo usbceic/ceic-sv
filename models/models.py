@@ -504,12 +504,13 @@ class Operation_log(this.Base):
     operation_log_id = Column(GUID, primary_key=True, default=GUID.random_value)
     clerk            = Column(String, nullable=False)
     op_type          = Column(Integer, nullable=False)
-    open_record      = Column(Boolean, default=False)
+    open_record      = Column(Boolean, default=None)
     recorded         = Column(DateTime, nullable=False, default=datetime.datetime.now)
     transfer_balance = Column(Numeric, nullable=False, default=0)
     cash_balance     = Column(Numeric, nullable=False, default=0)
     cash_total       = Column(Numeric, nullable=False)
     total_money      = Column(Numeric, nullable=False)
+    description      = Column(String, nullable=False)
 
     # Constraints
     __table_args__ = (
