@@ -529,6 +529,25 @@ class Operation_log(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
+# Tabla de Monedas / Billetes para pago
+#==================================================================================================================================================================================
+class Legal_tender(this.Base):
+    # Nombre
+    __tablename__ = 'legal_tender'
+
+    amount = Column(Numeric, nullable=False, primary_key=True)
+
+    # Constraints
+    __table_args__ = (
+        # Verificaciones
+        CheckConstraint('amount > 0', name='exp_legal_tender_amount'),
+    )
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        return "<Legal_tender(amount='%s')>" % (str(self.amount))
+
+#==================================================================================================================================================================================
 # Tabla que asocia libros con asignaturas
 #==================================================================================================================================================================================
 class Associated_with(this.Base):
