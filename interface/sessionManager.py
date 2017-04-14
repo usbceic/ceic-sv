@@ -93,6 +93,7 @@ class loginGUI(QMainWindow, loginWindow):
 
         self.userDef = False
         self.passDef = False
+        self.guiExist = False
 
         self.center()
 
@@ -132,7 +133,10 @@ class loginGUI(QMainWindow, loginWindow):
                 self.lineEd0.setText("")
                 self.lineEd1.setText("")
                 self.footer.setFocus()
-                self.mainWindow = adminGUI(user, self.db, self)
+                if not self.guiExist:
+                    self.mainWindow = adminGUI(user, self.db, self)
+                    self.guiExist = True
+                else: self.mainWindow.changeUser(user)
                 self.back = self.mainWindow.userBn0
                 self.back.clicked.connect(self.back_pressed)
                 self.mainWindow.closed.connect(self.show)

@@ -103,7 +103,7 @@
 ***********************************/
 
 /*Configuración de los textos normales*/
-#text0, #text1, #text2, #text3, #text4, #text5, #text6, #text7, #text8, #text9, #text10, #text11, #text12, #text13, #text14, #text15, #text16, #text17, #text18, #text19, #text20, #text21, #text22, #text23, #text24, #text25, #text26, #text27, #text28, #text29, #text30, #text31, #text32, #text33, #text34, #text35, #text36, #text37, #text38, #text39, #text40, #text41, #text42, #text43, #text44, #text45, #text46, #text47, #text48, #text49, #text50, #text51, #text52, #text53, #text54, #text55, #text56, #text57, #text58, #text59, #text60, #text61, #text62, #text63, #text64, #text65, #text66, #text67, #text68, #text69, #text70, #text71, #text72, #text73, #text74, #text75, #text76, #text77, #text78, #text79, #text80, #text81, #text82, #text83, #text84, #text85, #text86, #text87, #text88, #text89, #text90, #text91, #text92, #text93, #text94, #text95, #text96, #text97, #text98, #text99, #text100, #text101, #text102, #text103, #text104, #text105, #text106, #text107, #text108, #text109, #text110, #text111, #text112, #text113, #text114, #text115, #text116, #text117, #text118, #text119, #text120, #text121, #text122, #text123, #text124, #text125, #text126, #text127, #text128, #text129, #text130, #text131, #text132, #text133, #text134, #text135, #text136, #text137, #text138, #text139, #text140, #text141, #text142, #text143, #text144, #text145, #text146, #text147, #text148, #text149, #text150, #text151, #text152, #text153, #text154, #text155, #text156, #text157, #text158, #text159, #text160, #text161, #text162, #text163, #text164, #text165, #text166, #text167, #text168, #text169, #text170, #text171, #text172, #text173, #text174, #text175, #text176, #text177, #text178, #text179, #text180, #text181, #text182, #text183, #text184, #text185, #text186, #text187, #text188, #text189, #text190, #text191, #text192, #text193, #text194, #text195, #text196, #text197, #text198, #text199, #text200, #text201, #text202, #text203, #text204, #text205, #text206, #text207, #text208, #text209, #text210, #text211, #text212, #text213, #text214, #text215, #text216, #text217, #text218, #text219 {
+#text0, #text1, #text2, #text3, #text4, #text5, #text6, #text7, #text8, #text9, #text10, #text11, #text12, #text13, #text14, #text15, #text16, #text17, #text18, #text19, #text20, #text21, #text22, #text23, #text24, #text25, #text26, #text27, #text28, #text29, #text30, #text31, #text32, #text33, #text34, #text35, #text36, #text37, #text38, #text39, #text40, #text41, #text42, #text43, #text44, #text45, #text46, #text47, #text48, #text49, #text50, #text51, #text52, #text53, #text54, #text55, #text56, #text57, #text58, #text59, #text60, #text61, #text62, #text63, #text64, #text65, #text66, #text67, #text68, #text69, #text70, #text71, #text72, #text73, #text74, #text75, #text76, #text77, #text78, #text79, #text80, #text81, #text82, #text83, #text84, #text85, #text86, #text87, #text88, #text89, #text90, #text91, #text92, #text93, #text94, #text95, #text96, #text97, #text98, #text99, #text100, #text101, #text102, #text103, #text104, #text105, #text106, #text107, #text108, #text109, #text110, #text111, #text112, #text113, #text114, #text115, #text116, #text117, #text118, #text119, #text120, #text121, #text122, #text123, #text124, #text125, #text126, #text127, #text128, #text129, #text130, #text131, #text132, #text133, #text134, #text135, #text136, #text137, #text138, #text139, #text140, #text141, #text142, #text143, #text144, #text145, #text146, #text147, #text148, #text149, #text150, #text151, #text152, #text153, #text154, #text155, #text156, #text157, #text158, #text159, #text160, #text161, #text162, #text163, #text164, #text165, #text166, #text167, #text168, #text169, #text170, #text171, #text172, #text173, #text174, #text175, #text176, #text177, #text178, #text179, #text180, #text181, #text182, #text183, #text184, #text185, #text186, #text187, #text188, #text189, #text190, #text191, #text192, #text193, #text194, #text195, #text196, #text197, #text198, #text199, #text200, #text201, #text202, #text203, #text204, #text205, #text206, #text207, #text208, #text209, #text210, #text211, #text212, #text213, #text214, #text215, #text216, #text217, #text218, #text219{
     color: #757575;
     background: transparent;
     font-family: Open Sans;
@@ -116,7 +116,7 @@
 }
 
 /*Configuración de los textos normales*/
-#title0, #title1, #title2, #title3, #title4, #title5, #title6, #title7, #title8, #title9, #title10, #title11, #title12, #title13, #title14, #title15, #title16, #title17, #title18, #title19, #title20, #title21, #title22, #title23, #title24, #title25, #title26, #title27, #title28, #title29, #title30, #title31, #title32, #title33, #title34, #title35, #title36, #title37, #title38, #title39, #title40, #title41, #title42, #title43, #title44, #title45, #title46, #title47, #title48, #title49, #title50 {
+#title0, #title1, #title2, #title3, #title4, #title5, #title6, #title7, #title8, #title9, #title10, #title11, #title12, #title13, #title14, #title15, #title16, #title17, #title18, #title19, #title20, #title21, #title22, #title23, #title24, #title25, #title26, #title27, #title28, #title29, #title30, #title31, #title32, #title33, #title34, #title35, #title36, #title37, #title38, #title39, #title40, #title41, #title42, #title43, #title44, #title45, #title46, #title47, #title48, #title49, #title50, #title51 {
     color: #212121;
     border: 1px solid #BDBDBD;
     border-radius: 2px;
@@ -161,7 +161,7 @@
 ***********************************/
 
 /*Configurar el estilo por defecto de las flechas de movimiento de los  subStacked*/
-#arrow0, #arrow1, #arrow2, #arrow3, #arrow4, #arrow5, #arrow6, #arrow7, #arrow8, #arrow9, #arrow10, #arrow11, #arrow12, #arrow13, #arrow14, #arrow15, #arrow16, #arrow17, #arrow18, #arrow19, #arrow20, #arrow21, #arrow22, #arrow23, #arrow24, #arrow25, #arrow26, #arrow27, #arrow28, #arrow29{
+#arrow0, #arrow1, #arrow2, #arrow3, #arrow4, #arrow5, #arrow6, #arrow7, #arrow8, #arrow9, #arrow10, #arrow11, #arrow12, #arrow13, #arrow14, #arrow15, #arrow16, #arrow17, #arrow18, #arrow19, #arrow20, #arrow21, #arrow22, #arrow23, #arrow24, #arrow25, #arrow26, #arrow27, #arrow28, #arrow29, #arrow30, #arrow31{
      background: transparent;
      border: none;
      min-width: 2em;
@@ -169,7 +169,7 @@
 }
 
 /*Configurar el estilo de las flechas de movimiento de los subStacked cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
-#arrow0:hover, #arrow1:hover, #arrow2:hover, #arrow3:hover, #arrow4:hover, #arrow5:hover, #arrow6:hover, #arrow7:hover, #arrow8:hover, #arrow9:hover, #arrow10:hover, #arrow11:hover, #arrow12:hover, #arrow13:hover, #arrow14:hover, #arrow15:hover, #arrow16:hover, #arrow17:hover, #arrow18:hover, #arrow19:hover, #arrow20:hover, #arrow21:hover, #arrow22:hover, #arrow23:hover, #arrow24:hover, #arrow25:hover, #arrow26:hover, #arrow27:hover, #arrow28:hover, #arrow29:hover, #arrow0:pressed, #arrow1:pressed, #arrow2:pressed, #arrow3:pressed, #arrow4:pressed, #arrow5:pressed, #arrow6:pressed, #arrow7:pressed, #arrow8:pressed, #arrow9:pressed, #arrow10:pressed, #arrow11:pressed, #arrow12:pressed, #arrow13:pressed, #arrow14:pressed, #arrow15:pressed, #arrow16:pressed, #arrow17:pressed, #arrow18:pressed, #arrow19:pressed, #arrow20:pressed, #arrow21:pressed, #arrow22:pressed, #arrow23:pressed, #arrow24:pressed, #arrow25:pressed, #arrow26:pressed, #arrow27:pressed, #arrow28:pressed, #arrow29:pressed{
+#arrow0:hover, #arrow1:hover, #arrow2:hover, #arrow3:hover, #arrow4:hover, #arrow5:hover, #arrow6:hover, #arrow7:hover, #arrow8:hover, #arrow9:hover, #arrow10:hover, #arrow11:hover, #arrow12:hover, #arrow13:hover, #arrow14:hover, #arrow15:hover, #arrow16:hover, #arrow17:hover, #arrow18:hover, #arrow19:hover, #arrow20:hover, #arrow21:hover, #arrow22:hover, #arrow23:hover, #arrow24:hover, #arrow25:hover, #arrow26:hover, #arrow27:hover, #arrow28:hover, #arrow29:hover, #arrow30:hover, #arrow31:hover, #arrow0:pressed, #arrow1:pressed, #arrow2:pressed, #arrow3:pressed, #arrow4:pressed, #arrow5:pressed, #arrow6:pressed, #arrow7:pressed, #arrow8:pressed, #arrow9:pressed, #arrow10:pressed, #arrow11:pressed, #arrow12:pressed, #arrow13:pressed, #arrow14:pressed, #arrow15:pressed, #arrow16:pressed, #arrow17:pressed, #arrow18:pressed, #arrow19:pressed, #arrow20:pressed, #arrow21:pressed, #arrow22:pressed, #arrow23:pressed, #arrow24:pressed, #arrow25:pressed, #arrow26:pressed, #arrow27:pressed, #arrow28:pressed, #arrow29:pressed, #arrow30:pressed, #arrow31:pressed{
     background: #BBDEFB;
 }
 
@@ -189,6 +189,7 @@
 #arrow24, #arrow25 {min-height: 23em;}
 #arrow26, #arrow27 {min-height: 21em;}
 #arrow28, #arrow29 {min-height: 31em;}
+#arrow30, #arrow31 {min-height: 18em;}
 
 /*Configurar el estilo por defecto de las flechas de movimiento de las tablas*/
 #arrow42, #arrow43, #arrow44, #arrow45, #arrow46, #arrow47, #arrow48, #arrow49, #arrow50, #arrow51, #arrow52, #arrow53, #arrow54, #arrow55, #arrow56, #arrow57, #arrow58, #arrow59, #arrow60, #arrow61, #arrow62, #arrow63, #arrow64, #arrow65, #arrow66, #arrow67, #arrow68, #arrow69, #arrow70, #arrow71, #arrow72, #arrow73, #arrow74, #arrow75, #arrow76, #arrow77, #arrow78, #arrow79, #arrow80, #arrow81, #arrow82, #arrow83, #arrow84, #arrow85, #arrow86, #arrow87, #arrow88, #arrow89, #arrow90, #arrow91{
@@ -223,7 +224,7 @@
 }
 
 /*Configurar el estilo por defecto de las imagenes de productos estaticos restantes en la interfáz*/
-#selectedItem0, #selectedItem1, #selectedItem2{
+#selectedItem0, #selectedItem1, #selectedItem2, #userImageButton{
     background: #FFFFFF;
     border: 1px solid #BDBDBD;
     min-width: 48px;
@@ -231,7 +232,7 @@
 }
 
 /*Configurar el estilo de las imagenes de productos estaticos restantes en la interfáz cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
-#selectedItem0:hover, #selectedItem1:hover, #selectedItem2:hover, #selectedItem0:pressed, #selectedItem1:pressed, #selectedItem2:pressed{
+#selectedItem0:hover, #selectedItem1:hover, #selectedItem2:hover, #userImageButton:hover, #selectedItem0:pressed, #selectedItem1:pressed, #selectedItem2:pressed, #userImageButton:pressed{
     background: #BBDEFB
 }
 
@@ -256,6 +257,12 @@
 /*Configurar el estilo de las botones de aplicar, aceptar, cancelar... cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
 #pbutton0:hover, #pbutton1:hover, #pbutton2:hover, #pbutton3:hover, #pbutton4:hover, #pbutton5:hover, #pbutton6:hover, #pbutton7:hover, #pbutton8:hover, #pbutton9:hover, #pbutton10:hover, #pbutton11:hover, #pbutton12:hover, #pbutton13:hover, #pbutton14:hover, #pbutton15:hover, #pbutton16:hover, #pbutton17:hover, #pbutton18:hover, #pbutton19:hover, #pbutton20:hover, #pbutton21:hover, #pbutton22:hover, #pbutton23:hover,#pbutton24:hover, #pbutton25:hover, #pbutton26:hover, #pbutton27:hover, #pbutton28:hover, #pbutton29:hover, #pbutton30:hover, #pbutton31:hover, #pbutton32:hover, #pbutton33:hover, #pbutton34:hover, #pbutton35:hover, #pbutton36:hover, #pbutton37:hover, #pbutton38:hover, #pbutton39:hover, #pbutton40:hover, #pbutton41:hover, #pbutton42:hover, #pbutton43:hover, #pbutton44:hover, #pbutton45:hover, #pbutton46:hover, #pbutton47:hover, #pbutton48:hover, #pbutton49:hover, #pbutton50:hover, #pbutton0:pressed, #pbutton1:pressed, #pbutton2:pressed, #pbutton3:pressed, #pbutton4:pressed, #pbutton5:pressed, #pbutton6:pressed, #pbutton7:pressed, #pbutton8:pressed, #pbutton9:pressed, #pbutton10:pressed, #pbutton11:pressed, #pbutton12:pressed, #pbutton13:pressed, #pbutton14:pressed, #pbutton15:pressed, #pbutton16:pressed, #pbutton17:pressed, #pbutton18:pressed, #pbutton19:pressed, #pbutton20:pressed, #pbutton21:pressed, #pbutton22:pressed, #pbutton23:pressed, #pbutton24:pressed, #pbutton25:pressed, #pbutton26:pressed, #pbutton27:pressed, #pbutton28:pressed, #pbutton29:pressed, #pbutton30:pressed, #pbutton31:pressed, #pbutton32:pressed, #pbutton33:pressed, #pbutton34:pressed, #pbutton35:pressed, #pbutton36:pressed, #pbutton37:pressed, #pbutton38:pressed, #pbutton39:pressed, #pbutton40:pressed, #pbutton41:pressed, #pbutton42:pressed, #pbutton43:pressed, #pbutton44:pressed, #pbutton45:pressed, #pbutton46:pressed, #pbutton47:pressed, #pbutton48:pressed, #pbutton49:pressed, #pbutton50:pressed{
     background: #1976D2;
+}
+
+/*Configurar el estilo de las botones de aplicar, aceptar, cancelar... cuando estan desactivados*/
+#pbutton0[enabled="false"], #pbutton1[enabled="false"], #pbutton2[enabled="false"], #pbutton3[enabled="false"], #pbutton4[enabled="false"], #pbutton5[enabled="false"], #pbutton6[enabled="false"], #pbutton7[enabled="false"], #pbutton8[enabled="false"], #pbutton9[enabled="false"], #pbutton10[enabled="false"], #pbutton11[enabled="false"], #pbutton12[enabled="false"], #pbutton13[enabled="false"], #pbutton14[enabled="false"], #pbutton15[enabled="false"], #pbutton16[enabled="false"], #pbutton17[enabled="false"], #pbutton18[enabled="false"], #pbutton19[enabled="false"], #pbutton20[enabled="false"], #pbutton21[enabled="false"], #pbutton22[enabled="false"], #pbutton23[enabled="false"],#pbutton24[enabled="false"], #pbutton25[enabled="false"], #pbutton26[enabled="false"], #pbutton27[enabled="false"], #pbutton28[enabled="false"], #pbutton29[enabled="false"], #pbutton30[enabled="false"], #pbutton31[enabled="false"], #pbutton32[enabled="false"], #pbutton33[enabled="false"], #pbutton34[enabled="false"], #pbutton35[enabled="false"], #pbutton36[enabled="false"], #pbutton37[enabled="false"], #pbutton38[enabled="false"], #pbutton39[enabled="false"], #pbutton40[enabled="false"], #pbutton41[enabled="false"], #pbutton42[enabled="false"], #pbutton43[enabled="false"], #pbutton44[enabled="false"], #pbutton45[enabled="false"], #pbutton46[enabled="false"], #pbutton47[enabled="false"], #pbutton48[enabled="false"], #pbutton49[enabled="false"], #pbutton50[enabled="false"]{
+    background: #1976D2;
+    color:#F5F5F5;
 }
 
 /*Configurar el estilo por defecto de las botones de aplicar, aceptar, cancelar...*/
@@ -351,6 +358,12 @@
     padding: 1px 1px 1px 4px;
     min-width: 9em;
     min-height: 1.25em;
+}
+
+/*Configuración del estilo por defecto de todos los comboBox desactivados*/
+#cbox0[enabled="false"], #cbox1[enabled="false"], #cbox2[enabled="false"], #cbox3[enabled="false"], #cbox4[enabled="false"], #cbox5[enabled="false"], #cbox6[enabled="false"], #cbox7[enabled="false"], #cbox8[enabled="false"], #cbox9[enabled="false"], #cbox10[enabled="false"], #cbox11[enabled="false"], #cbox12[enabled="false"], #cbox13[enabled="false"], #cbox14[enabled="false"], #cbox15[enabled="false"], #cbox16[enabled="false"], #cbox17[enabled="false"], #cbox18[enabled="false"], #cbox19[enabled="false"], #cbox20[enabled="false"], #cbox21[enabled="false"], #cbox22[enabled="false"], #cbox23[enabled="false"], #cbox24[enabled="false"], #cbox25[enabled="false"], #cbox26[enabled="false"], #cbox27[enabled="false"], #cbox28[enabled="false"], #cbox29[enabled="false"] {
+    border: 1px solid silver;
+    background: #F5F5F5;
 }
 
 /*Configuración del estilo de todos los comboBox cuando estan en uso*/

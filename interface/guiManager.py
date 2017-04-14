@@ -166,6 +166,7 @@ class adminGUI(QMainWindow, form_class):
         # Apartado de proveedores
         self.providersLE0 = [self.lineE146, self.lineE147, self.lineE148]
         self.providersLE1 = [self.lineE149, self.lineE150, self.lineE151]
+        self.providersLE2 = [self.lineE150, self.lineE151]
         self.providersTE0 = [self.textE1, self.textE2]
         self.providersTE1 = [self.textE3, self.textE4]
 
@@ -204,6 +205,12 @@ class adminGUI(QMainWindow, form_class):
 
         # SpinLines en la vista de ventas
         self.spinBox = [self.spinLine0]
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # LISTAS PARA LA VISTA DE CONFIGURACIONES
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        self.confLE0 = [self.lineE153, self.lineE154, self.lineE155]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # Cargar configuraciones iniciales
@@ -389,7 +396,7 @@ class adminGUI(QMainWindow, form_class):
         self.refreshSales()
         self.refreshProviders()
         self.refreshClients()
-        self.refreshUsers()
+        self.refreshConfigurations()
 
     def generalSetup(self):
         # Centrar posición de la ventana
@@ -477,6 +484,7 @@ class adminGUI(QMainWindow, form_class):
     def on_arrow25_pressed(self): self.changePage(self.subStacked15)    # Cambiar la página del substaked15 hacia la derecha
     def on_arrow27_pressed(self): self.changePage(self.subStacked16)    # Cambiar la página del substaked16 hacia la derecha
     def on_arrow29_pressed(self): self.changePage(self.subStacked17)    # Cambiar la página del substaked17 hacia la derecha
+    def on_arrow31_pressed(self): self.changePage(self.subStacked18)    # Cambiar la página del substaked18 hacia la derecha
 
     def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)   # Cambiar la página del substaked3 hacia la izquierda
     def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)   # Cambiar la página del substaked4 hacia la izquierda
@@ -493,6 +501,7 @@ class adminGUI(QMainWindow, form_class):
     def on_arrow24_pressed(self): self.changePage(self.subStacked15, 1) # Cambiar la página del substaked15 hacia la izquierda
     def on_arrow26_pressed(self): self.changePage(self.subStacked16, 1) # Cambiar la página del substaked16 hacia la izquierda
     def on_arrow28_pressed(self): self.changePage(self.subStacked17, 1) # Cambiar la página del substaked17 hacia la izquierda
+    def on_arrow30_pressed(self): self.changePage(self.subStacked18, 1) # Cambiar la página del substaked18 hacia la izquierda
 
     #==============================================================================================================================================================================
     # VISTA DE INVENTARIO
@@ -801,8 +810,8 @@ class adminGUI(QMainWindow, form_class):
             elif self.rbutton11.isChecked():
                 if (self.lineE33.text() and self.lineE34.text()) != "":
                     product_name = self.lineE33.text()        # Producto
-                    provider_id = self.lineE34.text()         # Proveedor
-                    if self.db.existProduct(product_name) and self.db.existProvider(provider_id):
+                    provider_name = self.lineE34.text()         # Proveedor
+                    if self.db.existProduct(product_name) and self.db.existProvider(provider_name):
 
                         lot_id = self.currentLots[self.currentLot]                        # Lote
                         cost = float(self.lineE35.text())                                 # Costo
@@ -811,7 +820,7 @@ class adminGUI(QMainWindow, form_class):
                         quantity = int(self.lineE37.text())                               # Cantidad
                         remaining = int(self.lineE38.text())                              # Disponibles
 
-                        self.db.updateLot(lot_id, product_name, provider_id, cost, quantity, remaining)
+                        self.db.updateLot(lot_id, product_name, provider_name, cost, quantity, remaining)
 
                         # Refrescar toda la interfaz
                         self.refreshInventory()
@@ -823,8 +832,8 @@ class adminGUI(QMainWindow, form_class):
             elif self.rbutton12.isChecked():
                 if (self.lineE33.text() and self.lineE34.text()) != "":
                     product_name = self.lineE33.text()        # Producto
-                    provider_id = self.lineE34.text()         # Proveedor
-                    if self.db.existProduct(product_name) and self.db.existProvider(provider_id):
+                    provider_name = self.lineE34.text()         # Proveedor
+                    if self.db.existProduct(product_name) and self.db.existProvider(provider_name):
 
                         lot_id = self.currentLots[self.currentLot]                        # Lote
 
@@ -876,6 +885,7 @@ class adminGUI(QMainWindow, form_class):
             if not self.rbutton9.isChecked() and self.lineE33.text() != "":
                 product_name = self.lineE33.text()
                 if self.db.existProduct(product_name):
+                    self.selectedItem2.setIcon(QIcon(join(productPath, product_name)))
                     product_id = self.db.getProductID(product_name)
                     lotIDs = self.db.getLotsIDByProductID(product_id)
                     self.currentLots = {}
@@ -889,7 +899,7 @@ class adminGUI(QMainWindow, form_class):
                     lot_id = self.currentLots[self.currentLot]
                     lot = self.db.getLots(lot_id=lot_id)[0]
 
-                    self.lineE34.setText(lot.provider_id)          # Proveedor
+                    self.lineE34.setText(lot.provider_name)          # Proveedor
                     self.lineE35.setText(str(lot.cost))            # Precio
                     self.lineE36.setText(str(lot.expiration_date)) # Categoria
                     self.lineE37.setText(str(lot.quantity))        # Lotes
@@ -907,7 +917,7 @@ class adminGUI(QMainWindow, form_class):
                 lot_id = self.currentLots[self.currentLot]
                 lot = self.db.getLots(lot_id=lot_id)[0]
 
-                self.lineE34.setText(lot.provider_id)          # Proveedor
+                self.lineE34.setText(lot.provider_name)          # Proveedor
                 self.lineE35.setText(str(lot.cost))            # Precio
                 self.lineE36.setText(str(lot.expiration_date)) # Categoria
                 self.lineE37.setText(str(lot.quantity))        # Lotes
@@ -1095,10 +1105,9 @@ class adminGUI(QMainWindow, form_class):
                     self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
                     self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
 
-    # LineEdit para ingresar el monto a pagar en efectivo
+    # LineEdit para ingresar el total a pagar
     def on_lineE21_textChanged(self):
         if self.textChanged():
-            print("Irga si se activa")
             if self.lineE21.text() != "":
                 total = float(self.lineE21.text())
                 cota1 = total
@@ -1189,19 +1198,21 @@ class adminGUI(QMainWindow, form_class):
     # LineEdit para ingresar el nombre del producto seleccionado
     def on_lineE23_textChanged(self):
         if self.textChanged():
-            name = self.lineE23.text()
-            if self.db.existProduct(name, available=True):
-                product = self.db.getProductByNameOrID(name)[0]                         # Obtener cliente
-                self.lineE24.setText(str(product.price))                                # Establecer Nombre
-                self.selectedProductName = name
+            product_name = self.lineE23.text()
+            if self.db.existProduct(product_name):
+                product = self.db.getProductByNameOrID(product_name)[0]
+                self.lineE24.setText(str(product.price))
+                self.selectedProductName = product_name
 
-                if name not in self.selectedProducts:
-                    self.selectedProductRemaining[name] = product.remaining
+                if product_name not in self.selectedProducts:
+                    self.selectedProductRemaining[product_name] = product.remaining
 
-                # cargar imagen
+                self.selectedItem0.setIcon(QIcon(join(productPath, product_name)))
+
             else:
                 self.clearLEs(self.selectedProductLE0)
                 self.clearSpinLine(self.spinLine0)
+                self.selectedItem0.setIcon(QIcon(':/buttons/cross'))
 
     #==============================================================================================================================================================================
     # VISTA DE PROVEEDORES
@@ -1265,6 +1276,25 @@ class adminGUI(QMainWindow, form_class):
                 self.clearLEs(self.providersLE0) # Limpiar formulario
                 self.refreshProviders()          # Refrescar vista
                 self.lineE146.setFocus()         # Enfocar
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # CAMPOS DE TEXTO
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # LineEdit para ingresar el nombre del proveedor en el aparato de editar
+    def on_lineE149_textChanged(self):
+        if self.textChanged():
+            provider_name = self.lineE149.text()
+            if self.db.existProvider(provider_name):
+                provider = self.db.getProvider(provider_name)
+                self.lineE150.setText(provider.phone)
+                self.lineE151.setText(provider.email)
+                self.textE3.setPlainText(provider.description)
+                self.textE4.setPlainText(provider.pay_information)
+
+            else:
+                self.clearLEs(self.providersLE2)
+                self.clearTEs(self.providersTE1)
 
     #==============================================================================================================================================================================
     # VISTA DE CLIENTES
@@ -1493,18 +1523,88 @@ class adminGUI(QMainWindow, form_class):
     def setStyle(self, name):
         if self.click(): self.setStyleSheet(getStyle(name))
 
+    def loadUserInfo(self):
+        user = self.db.getUsers(self.user)[0]
+        self.lineE81.setText(user.username)
+        self.lineE82.setText(user.firstname)
+        self.lineE83.setText(user.lastname)
+        self.lineE84.setText(user.email)
+        self.lineE85.setText(self.db.getRange(user.permission_mask))
+
+    def loadUserPreferences(self):
+        user = self.db.getUsers(self.user)[0]
+        self.theme = user.profile
+        self.setStyle(self.theme)
+
+    def changeUser(self, user):
+        self.user = user
+        self.refresh()
+
+    def refreshConfigurations(self):
+        self.refreshUsers()
+        self.clearLEs(self.confLE0)
+        self.loadUserInfo()
+        self.loadUserPreferences()
+
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    def on_theme0_pressed(self): self.setStyle(styles[1])
-    def on_theme1_pressed(self): self.setStyle(styles[5])
-    def on_theme2_pressed(self): self.setStyle(styles[3])
-    def on_theme3_pressed(self): self.setStyle(styles[4])
-    def on_theme4_pressed(self): self.setStyle(styles[6])
-    def on_theme5_pressed(self): self.setStyle(styles[7])
-    def on_theme6_pressed(self): self.setStyle(styles[2])
-    def on_theme7_pressed(self): self.setStyle(styles[0])
+    def on_theme0_pressed(self):
+        self.setStyle(styles[1])
+        self.theme = styles[1]
+
+    def on_theme1_pressed(self):
+        self.setStyle(styles[5])
+        self.theme = styles[5]
+
+    def on_theme2_pressed(self):
+        self.setStyle(styles[3])
+        self.theme = styles[3]
+
+    def on_theme3_pressed(self):
+        self.setStyle(styles[4])
+        self.theme = styles[4]
+
+    def on_theme4_pressed(self):
+        self.setStyle(styles[6])
+        self.theme = styles[6]
+
+    def on_theme5_pressed(self):
+        self.setStyle(styles[7])
+        self.theme = styles[7]
+
+    def on_theme6_pressed(self):
+        self.setStyle(styles[2])
+        self.theme = styles[2]
+
+    def on_theme7_pressed(self):
+        self.setStyle(styles[0])
+        self.theme = styles[0]
+
+    # Boton para guardar cambios
+    def on_pbutton26_pressed(self):
+        if self.click():
+            # Perfil
+            if self.subStacked18.currentIndex() == 0:
+                if (self.lineE82.text() and self.lineE83.text() and self.lineE84.text()) != "":
+                    self.db.updateUserInfo(self.user, self.lineE82.text(), self.lineE83.text(), self.lineE84.text())
+                    self.refreshUsers()
+
+            # Contraseña
+            elif self.subStacked18.currentIndex() == 1:
+                if self.lineE153.text() != "":
+                    password = self.lineE153.text()
+                    if self.db.checkPassword(self.user, password):
+                        if (self.lineE154.text() and self.lineE155.text()) != "":
+                            if self.lineE154.text() == self.lineE155.text():
+                                newPassword = self.lineE154.text()
+                                self.db.changePassword(self.user, password, newPassword)
+                                self.clearLEs(self.confLE0)
+
+            # Tema
+            else:
+                self.db.updateUserProfile(self.user, self.theme)
 
     #==============================================================================================================================================================================
     # MANEJADOR DE EVENTOS DE TECLADO

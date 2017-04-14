@@ -14,7 +14,7 @@
     <x>0</x>
     <y>0</y>
     <width>831</width>
-    <height>682</height>
+    <height>688</height>
    </rect>
   </property>
   <property name="font">
@@ -148,7 +148,7 @@
 }
 
 /*Configuración de los textos normales*/
-#title0, #title1, #title2, #title3, #title4, #title5, #title6, #title7, #title8, #title9, #title10, #title11, #title12, #title13, #title14, #title15, #title16, #title17, #title18, #title19, #title20, #title21, #title22, #title23, #title24, #title25, #title26, #title27, #title28, #title29, #title30, #title31, #title32, #title33, #title34, #title35, #title36, #title37, #title38, #title39, #title40, #title41, #title42, #title43, #title44, #title45, #title46, #title47, #title48, #title49, #title50 {
+#title0, #title1, #title2, #title3, #title4, #title5, #title6, #title7, #title8, #title9, #title10, #title11, #title12, #title13, #title14, #title15, #title16, #title17, #title18, #title19, #title20, #title21, #title22, #title23, #title24, #title25, #title26, #title27, #title28, #title29, #title30, #title31, #title32, #title33, #title34, #title35, #title36, #title37, #title38, #title39, #title40, #title41, #title42, #title43, #title44, #title45, #title46, #title47, #title48, #title49, #title50, #title51 {
     color: #212121;
     border: 1px solid #BDBDBD;
     border-radius: 2px;
@@ -193,7 +193,7 @@
 ***********************************/
 
 /*Configurar el estilo por defecto de las flechas de movimiento de los  subStacked*/
-#arrow0, #arrow1, #arrow2, #arrow3, #arrow4, #arrow5, #arrow6, #arrow7, #arrow8, #arrow9, #arrow10, #arrow11, #arrow12, #arrow13, #arrow14, #arrow15, #arrow16, #arrow17, #arrow18, #arrow19, #arrow20, #arrow21, #arrow22, #arrow23, #arrow24, #arrow25, #arrow26, #arrow27, #arrow28, #arrow29{
+#arrow0, #arrow1, #arrow2, #arrow3, #arrow4, #arrow5, #arrow6, #arrow7, #arrow8, #arrow9, #arrow10, #arrow11, #arrow12, #arrow13, #arrow14, #arrow15, #arrow16, #arrow17, #arrow18, #arrow19, #arrow20, #arrow21, #arrow22, #arrow23, #arrow24, #arrow25, #arrow26, #arrow27, #arrow28, #arrow29, #arrow30, #arrow31{
      background: transparent;
      border: none;
      min-width: 2em;
@@ -201,7 +201,7 @@
 }
 
 /*Configurar el estilo de las flechas de movimiento de los subStacked cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
-#arrow0:hover, #arrow1:hover, #arrow2:hover, #arrow3:hover, #arrow4:hover, #arrow5:hover, #arrow6:hover, #arrow7:hover, #arrow8:hover, #arrow9:hover, #arrow10:hover, #arrow11:hover, #arrow12:hover, #arrow13:hover, #arrow14:hover, #arrow15:hover, #arrow16:hover, #arrow17:hover, #arrow18:hover, #arrow19:hover, #arrow20:hover, #arrow21:hover, #arrow22:hover, #arrow23:hover, #arrow24:hover, #arrow25:hover, #arrow26:hover, #arrow27:hover, #arrow28:hover, #arrow29:hover, #arrow0:pressed, #arrow1:pressed, #arrow2:pressed, #arrow3:pressed, #arrow4:pressed, #arrow5:pressed, #arrow6:pressed, #arrow7:pressed, #arrow8:pressed, #arrow9:pressed, #arrow10:pressed, #arrow11:pressed, #arrow12:pressed, #arrow13:pressed, #arrow14:pressed, #arrow15:pressed, #arrow16:pressed, #arrow17:pressed, #arrow18:pressed, #arrow19:pressed, #arrow20:pressed, #arrow21:pressed, #arrow22:pressed, #arrow23:pressed, #arrow24:pressed, #arrow25:pressed, #arrow26:pressed, #arrow27:pressed, #arrow28:pressed, #arrow29:pressed{
+#arrow0:hover, #arrow1:hover, #arrow2:hover, #arrow3:hover, #arrow4:hover, #arrow5:hover, #arrow6:hover, #arrow7:hover, #arrow8:hover, #arrow9:hover, #arrow10:hover, #arrow11:hover, #arrow12:hover, #arrow13:hover, #arrow14:hover, #arrow15:hover, #arrow16:hover, #arrow17:hover, #arrow18:hover, #arrow19:hover, #arrow20:hover, #arrow21:hover, #arrow22:hover, #arrow23:hover, #arrow24:hover, #arrow25:hover, #arrow26:hover, #arrow27:hover, #arrow28:hover, #arrow29:hover, #arrow30:hover, #arrow31:hover, #arrow0:pressed, #arrow1:pressed, #arrow2:pressed, #arrow3:pressed, #arrow4:pressed, #arrow5:pressed, #arrow6:pressed, #arrow7:pressed, #arrow8:pressed, #arrow9:pressed, #arrow10:pressed, #arrow11:pressed, #arrow12:pressed, #arrow13:pressed, #arrow14:pressed, #arrow15:pressed, #arrow16:pressed, #arrow17:pressed, #arrow18:pressed, #arrow19:pressed, #arrow20:pressed, #arrow21:pressed, #arrow22:pressed, #arrow23:pressed, #arrow24:pressed, #arrow25:pressed, #arrow26:pressed, #arrow27:pressed, #arrow28:pressed, #arrow29:pressed, #arrow30:pressed, #arrow31:pressed{
     background: #BBDEFB;
 }
 
@@ -221,6 +221,7 @@
 #arrow24, #arrow25 {min-height: 23em;}
 #arrow26, #arrow27 {min-height: 21em;}
 #arrow28, #arrow29 {min-height: 31em;}
+#arrow30, #arrow31 {min-height: 16em;}
 
 /*Configurar el estilo por defecto de las flechas de movimiento de las tablas*/
 #arrow42, #arrow43, #arrow44, #arrow45, #arrow46, #arrow47, #arrow48, #arrow49, #arrow50, #arrow51, #arrow52, #arrow53, #arrow54, #arrow55, #arrow56, #arrow57, #arrow58, #arrow59, #arrow60, #arrow61, #arrow62, #arrow63, #arrow64, #arrow65, #arrow66, #arrow67, #arrow68, #arrow69, #arrow70, #arrow71, #arrow72, #arrow73, #arrow74, #arrow75, #arrow76, #arrow77, #arrow78, #arrow79, #arrow80, #arrow81, #arrow82, #arrow83, #arrow84, #arrow85, #arrow86, #arrow87, #arrow88, #arrow89, #arrow90, #arrow91{
@@ -255,7 +256,7 @@
 }
 
 /*Configurar el estilo por defecto de las imagenes de productos estaticos restantes en la interfáz*/
-#selectedItem0, #selectedItem1, #selectedItem2{
+#selectedItem0, #selectedItem1, #selectedItem2, #userImageButton{
     background: #FFFFFF;
     border: 1px solid #BDBDBD;
     min-width: 48px;
@@ -263,7 +264,7 @@
 }
 
 /*Configurar el estilo de las imagenes de productos estaticos restantes en la interfáz cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
-#selectedItem0:hover, #selectedItem1:hover, #selectedItem2:hover, #selectedItem0:pressed, #selectedItem1:pressed, #selectedItem2:pressed{
+#selectedItem0:hover, #selectedItem1:hover, #selectedItem2:hover, #userImageButton:hover, #selectedItem0:pressed, #selectedItem1:pressed, #selectedItem2:pressed, #userImageButton:pressed{
     background: #BBDEFB
 }
 
@@ -1066,7 +1067,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>9</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -1074,7 +1075,7 @@ QWidget:item:unchecked {
              <rect>
               <x>10</x>
               <y>10</y>
-              <width>251</width>
+              <width>231</width>
               <height>402</height>
              </rect>
             </property>
@@ -2258,7 +2259,7 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox1">
             <property name="geometry">
              <rect>
-              <x>270</x>
+              <x>250</x>
               <y>40</y>
               <width>251</width>
               <height>381</height>
@@ -3037,7 +3038,7 @@ QWidget:item:unchecked {
            <widget class="QStackedWidget" name="subStacked2">
             <property name="geometry">
              <rect>
-              <x>530</x>
+              <x>510</x>
               <y>60</y>
               <width>241</width>
               <height>471</height>
@@ -18748,8 +18749,8 @@ QWidget:item:unchecked {
              <rect>
               <x>20</x>
               <y>20</y>
-              <width>231</width>
-              <height>421</height>
+              <width>341</width>
+              <height>261</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -18758,626 +18759,751 @@ QWidget:item:unchecked {
             <property name="title">
              <string/>
             </property>
-            <layout class="QGridLayout" name="gridLayout_123">
-             <item row="0" column="0">
-              <layout class="QVBoxLayout" name="verticalLayout_33">
+            <layout class="QVBoxLayout" name="verticalLayout_54">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_30">
+               <property name="spacing">
+                <number>0</number>
+               </property>
                <item>
-                <widget class="QLabel" name="title36">
-                 <property name="font">
-                  <font>
-                   <family>Open Sans</family>
-                   <pointsize>12</pointsize>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
+                <widget class="QPushButton" name="arrow31">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
                  </property>
                  <property name="styleSheet">
                   <string notr="true"/>
                  </property>
                  <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Perfil&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../resources/gui.qrc">
+                   <normaloff>:/arrows/prev_arrow</normaloff>:/arrows/prev_arrow</iconset>
                  </property>
                 </widget>
                </item>
                <item>
-                <spacer name="horizontalSpacer_345">
+                <widget class="QStackedWidget" name="subStacked18">
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="currentIndex">
+                  <number>0</number>
+                 </property>
+                 <widget class="QWidget" name="page38">
+                  <layout class="QVBoxLayout" name="verticalLayout_55">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_53">
+                     <item>
+                      <widget class="QLabel" name="title36">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>12</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Perfil&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QGridLayout" name="gridLayout_129">
+                       <item row="0" column="0">
+                        <spacer name="horizontalSpacer_162">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="1">
+                        <layout class="QFormLayout" name="clientLt6_26">
+                         <property name="fieldGrowthPolicy">
+                          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                         </property>
+                         <item row="0" column="0">
+                          <widget class="QLabel" name="text185">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;UserID&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <widget class="QLineEdit" name="lineE81">
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>true</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLabel" name="text186">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nombre&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <widget class="QLineEdit" name="lineE82">
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="text187">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apellido&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1">
+                          <widget class="QLineEdit" name="lineE83">
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="0">
+                          <widget class="QLabel" name="text189">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="1">
+                          <widget class="QLineEdit" name="lineE84">
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="0">
+                          <widget class="QLabel" name="text191">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rango&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="4" column="1">
+                          <widget class="QLineEdit" name="lineE85">
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>true</bool>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item row="0" column="2">
+                        <spacer name="horizontalSpacer_163">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                 <widget class="QWidget" name="page39">
+                  <layout class="QVBoxLayout" name="verticalLayout_57">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_33">
+                     <item>
+                      <widget class="QLabel" name="title50">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>12</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contraseña&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QGridLayout" name="gridLayout_149">
+                       <item row="0" column="0">
+                        <spacer name="horizontalSpacer_169">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="1">
+                        <layout class="QFormLayout" name="clientLt6_27">
+                         <property name="fieldGrowthPolicy">
+                          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                         </property>
+                         <item row="0" column="0">
+                          <widget class="QLabel" name="text216">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clave actual&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <widget class="QLineEdit" name="lineE153">
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="echoMode">
+                            <enum>QLineEdit::Password</enum>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLabel" name="text217">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clave nueva&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <widget class="QLineEdit" name="lineE154">
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="echoMode">
+                            <enum>QLineEdit::Password</enum>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="text218">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="2" column="1">
+                          <widget class="QLineEdit" name="lineE155">
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="echoMode">
+                            <enum>QLineEdit::Password</enum>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item row="0" column="2">
+                        <spacer name="horizontalSpacer_170">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>20</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_18">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                 <widget class="QWidget" name="page40">
+                  <layout class="QVBoxLayout" name="verticalLayout_56">
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_52">
+                     <item>
+                      <widget class="QLabel" name="title51">
+                       <property name="font">
+                        <font>
+                         <family>Open Sans</family>
+                         <pointsize>12</pointsize>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tema&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QGridLayout" name="gridLayout_130">
+                       <item row="1" column="2">
+                        <spacer name="horizontalSpacer_165">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>25</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="1" column="0">
+                        <spacer name="horizontalSpacer_164">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>25</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="1" column="1">
+                        <layout class="QGridLayout" name="gridLayout_122">
+                         <item row="0" column="0">
+                          <widget class="QPushButton" name="theme0">
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>32</width>
+                             <height>32</height>
+                            </size>
+                           </property>
+                           <property name="checkable">
+                            <bool>true</bool>
+                           </property>
+                           <property name="checked">
+                            <bool>true</bool>
+                           </property>
+                           <property name="default">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="2">
+                          <widget class="QPushButton" name="theme2">
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>32</width>
+                             <height>32</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="1">
+                          <widget class="QPushButton" name="theme1">
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>32</width>
+                             <height>32</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="3">
+                          <widget class="QPushButton" name="theme7">
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>32</width>
+                             <height>32</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QPushButton" name="theme4">
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>32</width>
+                             <height>32</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="0" column="3">
+                          <widget class="QPushButton" name="theme3">
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>32</width>
+                             <height>32</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="1">
+                          <widget class="QPushButton" name="theme5">
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>32</width>
+                             <height>32</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="2">
+                          <widget class="QPushButton" name="theme6">
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>32</width>
+                             <height>32</height>
+                            </size>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_17">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </widget>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="arrow30">
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../resources/gui.qrc">
+                   <normaloff>:/arrows/next_arrow</normaloff>:/arrows/next_arrow</iconset>
+                 </property>
+                 <property name="checkable">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="Line" name="line_50">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QGridLayout" name="gridLayout_138">
+               <item row="0" column="2">
+                <widget class="QPushButton" name="pbutton26">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>Guardar</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <spacer name="horizontalSpacer_175">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
                    <width>40</width>
-                   <height>4</height>
+                   <height>20</height>
                   </size>
                  </property>
                 </spacer>
                </item>
-               <item>
-                <layout class="QGridLayout" name="gridLayout_129">
-                 <item row="0" column="0">
-                  <spacer name="horizontalSpacer_162">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="0" column="1">
-                  <layout class="QFormLayout" name="clientLt6_26">
-                   <property name="fieldGrowthPolicy">
-                    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-                   </property>
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="text185">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <pointsize>11</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: transparent;</string>
-                     </property>
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;UserID&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QLineEdit" name="lineE81">
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="text186">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <pointsize>11</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: transparent;</string>
-                     </property>
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nombre&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="1">
-                    <widget class="QLineEdit" name="lineE82">
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>false</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="0">
-                    <widget class="QLabel" name="text187">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <pointsize>11</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: transparent;</string>
-                     </property>
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apellido&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="2" column="1">
-                    <widget class="QLineEdit" name="lineE83">
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>false</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="3" column="0">
-                    <widget class="QLabel" name="text188">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <pointsize>11</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: transparent;</string>
-                     </property>
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="3" column="1">
-                    <widget class="QLineEdit" name="lineE84">
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>false</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="0">
-                    <widget class="QLabel" name="text189">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <pointsize>11</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: transparent;</string>
-                     </property>
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="1">
-                    <widget class="QLineEdit" name="lineE85">
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>false</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="5" column="0">
-                    <widget class="QLabel" name="text190">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <pointsize>11</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: transparent;</string>
-                     </property>
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Contraseña&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="5" column="1">
-                    <widget class="QLineEdit" name="lineE86">
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>false</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="6" column="0">
-                    <widget class="QLabel" name="text191">
-                     <property name="font">
-                      <font>
-                       <family>Open Sans</family>
-                       <pointsize>11</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">background-color: transparent;</string>
-                     </property>
-                     <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rango&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="6" column="1">
-                    <widget class="QLineEdit" name="lineE87">
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item row="0" column="2">
-                  <spacer name="horizontalSpacer_163">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="Line" name="line_46">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+               <item row="0" column="1">
+                <widget class="QPushButton" name="cancelpb20">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>Cancelar</string>
                  </property>
                 </widget>
-               </item>
-               <item>
-                <layout class="QGridLayout" name="gridLayout_139">
-                 <item row="0" column="1">
-                  <spacer name="horizontalSpacer_177">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="0" column="3">
-                  <spacer name="inventorySr10_6">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="0" column="2">
-                  <widget class="QLabel" name="text192">
-                   <property name="font">
-                    <font>
-                     <family>Open Sans</family>
-                     <pointsize>11</pointsize>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">background-color: transparent;</string>
-                   </property>
-                   <property name="text">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tema&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="Line" name="line_40">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <layout class="QGridLayout" name="gridLayout_130">
-                 <item row="1" column="2">
-                  <spacer name="horizontalSpacer_165">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>25</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="1" column="0">
-                  <spacer name="horizontalSpacer_164">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>25</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="1" column="1">
-                  <layout class="QGridLayout" name="gridLayout_122">
-                   <item row="0" column="0">
-                    <widget class="QPushButton" name="theme0">
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>32</width>
-                       <height>32</height>
-                      </size>
-                     </property>
-                     <property name="checkable">
-                      <bool>true</bool>
-                     </property>
-                     <property name="checked">
-                      <bool>true</bool>
-                     </property>
-                     <property name="default">
-                      <bool>false</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="2">
-                    <widget class="QPushButton" name="theme2">
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>32</width>
-                       <height>32</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QPushButton" name="theme1">
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>32</width>
-                       <height>32</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="3">
-                    <widget class="QPushButton" name="theme7">
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>32</width>
-                       <height>32</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="0">
-                    <widget class="QPushButton" name="theme4">
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>32</width>
-                       <height>32</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="3">
-                    <widget class="QPushButton" name="theme3">
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>32</width>
-                       <height>32</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="1">
-                    <widget class="QPushButton" name="theme5">
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>32</width>
-                       <height>32</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="2">
-                    <widget class="QPushButton" name="theme6">
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true"/>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>32</width>
-                       <height>32</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="Line" name="line_50">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <layout class="QGridLayout" name="gridLayout_138">
-                 <item row="0" column="2">
-                  <widget class="QPushButton" name="pbutton26">
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>PointingHandCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true"/>
-                   </property>
-                   <property name="text">
-                    <string>Guardar</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0">
-                  <spacer name="horizontalSpacer_175">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QPushButton" name="cancelpb20">
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="cursor">
-                    <cursorShape>PointingHandCursor</cursorShape>
-                   </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::NoFocus</enum>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true"/>
-                   </property>
-                   <property name="text">
-                    <string>Cancelar</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
                </item>
               </layout>
-             </item>
-             <item row="1" column="0">
-              <spacer name="horizontalSpacer_107">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>5</height>
-                </size>
-               </property>
-              </spacer>
              </item>
             </layout>
            </widget>
            <widget class="QGroupBox" name="groupBox6">
             <property name="geometry">
              <rect>
-              <x>270</x>
+              <x>370</x>
               <y>20</y>
               <width>251</width>
               <height>371</height>
@@ -20177,21 +20303,11 @@ QWidget:item:unchecked {
                </item>
               </layout>
              </item>
-             <item row="1" column="0">
-              <spacer name="horizontalSpacer_161">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>5</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
             </layout>
            </widget>
+           <zorder>groupBox5</zorder>
+           <zorder>groupBox6</zorder>
+           <zorder>subStacked18</zorder>
           </widget>
           <widget class="QWidget" name="mainPage10">
            <widget class="QGroupBox" name="groupBox16">
