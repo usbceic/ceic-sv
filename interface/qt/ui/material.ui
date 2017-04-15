@@ -13,8 +13,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>833</width>
-    <height>702</height>
+    <width>824</width>
+    <height>695</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -89,14 +89,12 @@
     border: none;
     border-top: 1px inset #BDBDBD;
     padding: -6px;
-    min-width: 4em;
  }
 
 #home, #sales, #inventory, #querys, #books, #loans, #providers, #clients, #transfer, #users, #configure, #help{
     background: transparent;
     border: 1px solid transparent;
     border-radius: 2px;
-    min-width: 3em;
     padding: 2px;
 }
 
@@ -1134,7 +1132,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -3879,7 +3877,7 @@ QWidget:item:unchecked {
             <property name="geometry">
              <rect>
               <x>30</x>
-              <y>30</y>
+              <y>20</y>
               <width>221</width>
               <height>321</height>
              </rect>
@@ -4453,7 +4451,7 @@ QWidget:item:unchecked {
             <property name="geometry">
              <rect>
               <x>260</x>
-              <y>30</y>
+              <y>20</y>
               <width>461</width>
               <height>281</height>
              </rect>
@@ -4598,7 +4596,7 @@ QWidget:item:unchecked {
             <property name="geometry">
              <rect>
               <x>30</x>
-              <y>360</y>
+              <y>350</y>
               <width>241</width>
               <height>201</height>
              </rect>
@@ -5003,7 +5001,7 @@ QWidget:item:unchecked {
             <property name="geometry">
              <rect>
               <x>290</x>
-              <y>320</y>
+              <y>310</y>
               <width>435</width>
               <height>231</height>
              </rect>
@@ -21212,8 +21210,8 @@ p, li { white-space: pre-wrap; }
              <rect>
               <x>20</x>
               <y>20</y>
-              <width>741</width>
-              <height>451</height>
+              <width>731</width>
+              <height>521</height>
              </rect>
             </property>
             <property name="title">
