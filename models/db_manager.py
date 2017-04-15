@@ -1639,7 +1639,193 @@ class dbManager(object):
                 print("Razon:", e)
                 return False
 
+    """
+    Método para Obtener el ÚLTIMO inicio y fin de día de ventas del período
+     - Devuelve tupla donde el primer elemento marca el inicio y el segundo elemento marca el final
+    """
+    def getDayStartAndEnd(self):
+        period = self.getPeriodStartAndEnd()
 
+        if period[0] is None or (period[0] is not None and period[1] is not None):
+            return (None, None)
+
+
+        filters = and_(
+                    Operation_log.recorded >= period[0].recorded,
+                    Operation_log.op_type == 1,
+                    Operation_log.open_record == True
+                )
+
+        possible_day_start = self.session.query(Operation_log).filter(*filters).order_by(Operation_log.recorded.desc()).first()
+        
+        if possible_day_start is None:
+            return (None, None)
+
+        filters = and_(
+                    Operation_log.recorded >= possible_day_start.recorded,
+                    Operation_log.op_type == 1,
+                    Operation_log.open_record == False
+                )
+
+        if_ended = self.session.query(Operation_log).filter(*filters).order_by(Operation_log.recorded.desc()).first()
+        if if_ended is None:
+            return (possible_day_start, None)
+        else:
+            return (possible_day_start, if_ended)
+
+    """
+    Método para saber si el día está abierto del período
+    """
+    def isOpenDay(self):
+        possible_day = self.getDayStartAndEnd()
+        return possible_day[0] is not None and possible_day[1] is None
+
+    """
+    Método para Iniciar Día. 
+     - Devuelve Tupla, donde la primera posicion marca si esta abierto el período y la segunda si se logró abrir el día
+     - Devuelve tupla (True, True) si se logró con éxito
+     - Devuelve (False, False), (True, False) en caso contrario
+    """
+    def startDay(self, clerk, starting_cash, starting_total, description=""):
+        is_open_period = self.isOpenPeriod()
+
+        if not is_open_period:
+            print("No se puede abrir el dia si el periodo esta cerrado")
+            return (False, False)
+
+
+        last_day = self.getDayStartAndEnd()
+
+        # Estamos en un dia abierto o no existe otro dia
+        if last_day[1] is None:
+            # No existe otro Dia
+            if last_day[0] is None:
+                new_day = Operation_log(clerk=clerk, op_type=1, open_record=True, cash_total=starting_cash, total_money=starting_total, description=description)
+                self.session.add(new_day)
+                try:
+                    self.session.commit()
+                    print("Inicio de Dia Exitoso")
+                    print("Info:", new_day)
+                    return (True, True)
+                except Exception as e:
+                    self.session.rollback()
+                    print("Error Desconocido al Abrir Dia")
+                    print("Razon:", e)
+                    return (True, False)
+
+            # Dia ya abierto
+            else:
+                print("Dia ya abierto")
+                print("Info:", last_day[0])
+                return (True, False)
+        # Esta cerrado el ultimo Dia
+        else:
+            new_day = Operation_log(clerk=clerk, op_type=1, open_record=True, cash_total=starting_cash, total_money=starting_total, description=description)
+            self.session.add(new_day)
+            try:
+                self.session.commit()
+                print("Inicio de Dia Exitoso")
+                print("Info:", new_day)
+                return (True, True)
+            except Exception as e:
+                self.session.rollback()
+                print("Error Desconocido al Abrir Dia")
+                print("Razon:", e)
+                return (True, False)
+
+    """
+    Método para Obtener el ÚLTIMO inicio y fin de turno de ventas del día
+     - Devuelve tupla donde el primer elemento marca el inicio y el segundo elemento marca el final
+    """
+    def getTurnStartAndEnd(self):
+        day = self.getDayStartAndEnd()
+
+        if day[0] is None or (day[0] is not None and day[1] is not None):
+            return (None, None)
+
+
+        filters = and_(
+                    Operation_log.recorded >= day[0].recorded,
+                    Operation_log.op_type == 2,
+                    Operation_log.open_record == True
+                )
+
+        possible_turn_start = self.session.query(Operation_log).filter(*filters).order_by(Operation_log.recorded.desc()).first()
+        
+        if possible_turn_start is None:
+            return (None, None)
+
+        filters = and_(
+                    Operation_log.recorded >= possible_turn_start.recorded,
+                    Operation_log.op_type == 2,
+                    Operation_log.open_record == False
+                )
+
+        if_ended = self.session.query(Operation_log).filter(*filters).order_by(Operation_log.recorded.desc()).first()
+        if if_ended is None:
+            return (possible_turn_start, None)
+        else:
+            return (possible_turn_start, if_ended)
+
+    """
+    Método para saber si el turno está abierto del período
+    """
+    def isOpenTurn(self):
+        possible_turn = self.getTurnStartAndEnd()
+        return possible_turn[0] is not None and possible_turn[1] is None
+
+    """
+    Método para Iniciar Turno. 
+     - Devuelve Tupla, donde la primera posicion marca si esta abierto el día y la segunda si se logró abrir el turno
+     - Devuelve tupla (True, True) si se logró con éxito
+     - Devuelve (False, False), (True, False) en caso contrario
+    """
+    def startTurn(self, clerk, description=""):
+        day = self.getDayStartAndEnd()
+
+        if day[0] is None or (day[0] is not None and day[1] is not None):
+            print("No se puede abrir el turno si el dia esta cerrado")
+            return (False, False)
+
+
+        last_turn = self.getTurnStartAndEnd()
+
+        # Estamos en un turno abierto o no existe otro turno
+        if last_turn[1] is None:
+            # No existe otro turno
+            if last_turn[0] is None:
+                new_turn = Operation_log(clerk=clerk, op_type=2, open_record=True, cash_total=day[0].cash_total, total_money=day[0].total_money, description=description)
+                self.session.add(new_turn)
+                try:
+                    self.session.commit()
+                    print("Inicio de Turno Exitoso")
+                    print("Info:", new_turn)
+                    return (True, True)
+                except Exception as e:
+                    self.session.rollback()
+                    print("Error Desconocido al Abrir Turno")
+                    print("Razon:", e)
+                    return (True, False)
+
+            # Turno ya abierto
+            else:
+                print("Turno ya abierto")
+                print("Info:", last_turn[0])
+                return (True, False)
+        # Esta cerrado el ultimo Turno
+        else:
+            new_turn = Operation_log(clerk=clerk, op_type=2, open_record=True, cash_total=last_turn[1].cash_total, total_money=last_turn[1].total_money, description=description)
+            self.session.add(new_turn)
+            try:
+                self.session.commit()
+                print("Inicio de Turno Exitoso")
+                print("Info:", new_turn)
+                return (True, True)
+            except Exception as e:
+                self.session.rollback()
+                print("Error Desconocido al Abrir Turno")
+                print("Razon:", e)
+                return (True, False)
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE MONEDAS / BILLETES PARA PAGO:
@@ -1742,14 +1928,71 @@ if __name__ == '__main__':
     m = dbManager("sistema_ventas", "hola", dropAll=True)
     m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
 
+    # Abrir turno antes de dia
+    print("----------------------------------------------")
+    print(m.isOpenTurn())
+    print(m.getTurnStartAndEnd())
+    print(m.startTurn("Hola", description="Prueba"))
+
+    # Abrir dia antes de periodo
+    print("----------------------------------------------")
+    print(m.isOpenDay())
+    print(m.getDayStartAndEnd())
+    print(m.startDay("Hola", starting_cash=10, starting_total=20, description="Prueba"))
+
+    # Abrir periodo
+    print("----------------------------------------------")
     print(m.isOpenPeriod())
     print(m.getPeriodStartAndEnd())
     print(m.startPeriod("Hola", starting_cash=10, starting_total=20, description="Prueba"))
+
+    # Mostrar que esta abierto periodo y que no se puede abrir otra vez
+    print("----------------------------------------------")
     print(m.isOpenPeriod())
     print(m.getPeriodStartAndEnd())
     print(m.startPeriod("Hola", starting_cash=10, starting_total=20, description="Prueba"))
+
+    # Mostrar que sigue abierto periodo
+    print("----------------------------------------------")
     print(m.isOpenPeriod())
     print(m.getPeriodStartAndEnd())
+
+    # Abrir dia
+    print("----------------------------------------------")
+    print(m.isOpenDay())
+    print(m.getDayStartAndEnd())
+    print(m.startDay("Hola", starting_cash=100, starting_total=200, description="Prueba"))
+
+    # Mostrar que esta abierto dia y que no se puede abrir otra vez
+    print("----------------------------------------------")
+    print(m.isOpenDay())
+    print(m.getDayStartAndEnd())
+    print(m.startDay("Hola", starting_cash=10, starting_total=20, description="Prueba"))
+
+    # Mostrar que sigue abierto dia
+    print("----------------------------------------------")
+    print(m.isOpenDay())
+    print(m.getDayStartAndEnd())
+
+    # Abrir turno
+    print("----------------------------------------------")
+    print(m.isOpenTurn())
+    print(m.getTurnStartAndEnd())
+    print(m.startTurn("Hola", description="Prueba"))
+
+    # Mostrar que esta abierto turno y que no se puede abrir otra vez
+    print("----------------------------------------------")
+    print(m.isOpenTurn())
+    print(m.getTurnStartAndEnd())
+    print(m.startTurn("Hola", description="Prueba"))
+
+    # Mostrar que sigue abierto turno
+    print("----------------------------------------------")
+    print(m.isOpenTurn())
+    print(m.getTurnStartAndEnd())
+
+
+
     """
     m.deleteLegalTender(0)
     m.createLegalTender(0)
