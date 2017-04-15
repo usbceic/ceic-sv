@@ -456,16 +456,22 @@ QWidget:item:unchecked {
 ***********************************/
 
 /*Configuración del estilo por defecto de todos los DataTimeEdit*/
-#dtE0, #dtE1{
+#dtE0, #dtE1, #dtE2{
     border: 1px solid #BDBDBD;
     border-radius: 2px;
-    padding: 0.1em 0em 0.1em 0.7em;
-    font-size: 11pt;
-    font-weight: normal;
+    min-width: 5.5em;
+    min-height: 1.25em;
+    padding: 2px;
+}
+
+/*Configuración del estilo por defecto de todos los DataTimeEdit cuando estan en modo de solo lectura*/
+#dtE0[readOnly=&quot;true&quot;], #dtE1[readOnly=&quot;true&quot;], #dtE2[readOnly=&quot;true&quot;]{
+    border: 1px solid silver;
+    background: #F5F5F5;
 }
 
 /*Configuración del estilo de todos los DataTimeEdit cuando se desplegan*/
-#dtE0::drop-down, #dtE1::drop-down{
+#dtE0::drop-down, #dtE1::drop-down, #dtE2::drop-down{ 
     background: #FFFFFF;
     border-radius: 2px;
     border-left: 1px solid #BDBDBD;
@@ -473,13 +479,13 @@ QWidget:item:unchecked {
 }
 
 /*Configuración del estilo por defecto de la flecha de todos los DataTimeEdit*/
-#dtE0::down-arrow, #dtE1::down-arrow{
+#dtE0::down-arrow, #dtE1::down-arrow, #dtE2::down-arrow{
     image: url(:/arrows/down);
     border-color: transparent;
 }
 
 /*Configuración del estilo por defecto del calendario de todos los DataTimeEdit*/
-#dtE0 QWidget#qt_calendar_navigationbar, #dtE1 QWidget#qt_calendar_navigationbar{
+#dtE0 QWidget#qt_calendar_navigationbar, #dtE1 QWidget#qt_calendar_navigationbar, #dtE2 QWidget#qt_calendar_navigationbar{
      background: rgb(245,245,245);
      min-height:2em;
      border: 1px solid #BDBDBD;
@@ -487,7 +493,7 @@ QWidget:item:unchecked {
 }
 
 /*Configuración del estilo de los botones de los calendarios de todos los DataTimeEdit*/
-#dtE0 QToolButton, #dtE1 QToolButton{
+#dtE0 QToolButton, #dtE1 QToolButton, #dtE2 QToolButton{
      color: #212121;
      background: rgb(245,245,245);
      border-style: solid;
@@ -498,14 +504,14 @@ QWidget:item:unchecked {
 }
 
 /*Configuración del estilo de la vista del panel de los calendarios de todos los DataTimeEdit*/
-#dtE0 QAbstractItemView, #dtE1 QAbstractItemView {
+#dtE0 QAbstractItemView, #dtE1 QAbstractItemView, #dtE2 QAbstractItemView {
      selection-background-color: rgb(245,245,245);
      min-height:8em;
      selection-color: #212121;
 }
 
 /*Configuración del estilo de la tabla de los calendarios de todos los DataTimeEdit*/
-#dtE0 QTableView, #dtE1 QTableView{
+#dtE0 QTableView, #dtE1 QTableView, #dtE2 QTableView{
     border: 1px solid #BDBDBD;
     border-radius: 4px;
     padding: 2px 2px 2px 2x;
@@ -1109,7 +1115,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -7045,30 +7051,6 @@ QWidget:item:unchecked {
                              </property>
                             </widget>
                            </item>
-                           <item row="0" column="1">
-                            <widget class="QLineEdit" name="lineE36">
-                             <property name="enabled">
-                              <bool>true</bool>
-                             </property>
-                             <property name="font">
-                              <font>
-                               <family>Open Sans</family>
-                              </font>
-                             </property>
-                             <property name="focusPolicy">
-                              <enum>Qt::StrongFocus</enum>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="readOnly">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
                            <item row="1" column="0">
                             <widget class="QLabel" name="text74">
                              <property name="font">
@@ -7145,6 +7127,19 @@ QWidget:item:unchecked {
                               <string/>
                              </property>
                              <property name="readOnly">
+                              <bool>true</bool>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="1">
+                            <widget class="QDateEdit" name="dtE2">
+                             <property name="readOnly">
+                              <bool>true</bool>
+                             </property>
+                             <property name="displayFormat">
+                              <string>dd/MM/yyyy</string>
+                             </property>
+                             <property name="calendarPopup">
                               <bool>true</bool>
                              </property>
                             </widget>
@@ -16746,9 +16741,6 @@ QWidget:item:unchecked {
              </item>
             </layout>
            </widget>
-           <zorder>groupBox13</zorder>
-           <zorder>lineE4_2</zorder>
-           <zorder>groupBox12</zorder>
           </widget>
           <widget class="QWidget" name="mainPage8">
            <widget class="QGroupBox" name="groupBox26">
@@ -17390,8 +17382,6 @@ QWidget:item:unchecked {
              </item>
             </layout>
            </widget>
-           <zorder>groupBox26</zorder>
-           <zorder></zorder>
           </widget>
           <widget class="QWidget" name="mainPage9">
            <widget class="QGroupBox" name="groupBox14">

@@ -9,10 +9,8 @@ from os.path import isfile, isdir, join
 genPath = ""
 palettePath = "palette/"
 hexColor = '#[0-9A-F]{6}'
-savePath = "stylegen/"
-
-# Verificar que exista carpeta de salida
-if not isdir(savePath): mkdir(savePath)
+savePath0 = "MainWindow/"
+savePath1 = "LoginWindow/"
 
 # Instrucciones
 print("\nPara generar un stylesheet para MainWindow ingrese 0")
@@ -21,9 +19,18 @@ print("Para generar un stylesheet para LoginWindow ingrese 1\n")
 # Bucle par que el usuario marque una opcion válida
 while True:
     op = int(input("Selección: "))
-    if op == 0: genName = "main-gen.qss"
-    elif op == 1: genName = "login-gen.qss"
-    else: continue
+    if op == 0:
+        genName = "main-gen.qss"
+        savePath = savePath0
+    elif op == 1:
+        genName = "login-gen.qss"
+        savePath = savePath1
+    else:
+        continue
+
+    # Verificar que exista carpeta de salida
+    if not isdir(savePath): mkdir(savePath)
+
     break
 
 try:
@@ -60,7 +67,12 @@ try:
         tmp = tmp.replace("divider-color", colors[7])
 
         # Guardar archivo generado
-        newName = genName[:len(genName)-7]+paletteName.replace(".css", ".qss")
+        aux = paletteName.split("-")
+        key = ""
+        for i in range(len(aux)//2):
+            key += aux[i]
+            if i < len(aux)//2-1: key += "-"
+        newName = key+".qss"
         new = open(savePath+newName, 'w')
         new.write(tmp)
         new.close()

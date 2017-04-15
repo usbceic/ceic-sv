@@ -58,7 +58,7 @@ productPath = join(getcwd(), "interface/images/inventory/")
 MainUI = "material.ui"
 
 # Styles
-styles = ["teal.qss", "default.qss", "pink.qss", "green.qss", "orange.qss", "purple.qss", "red.qss", "yellow.qss"]
+styles = ["teal.qss", "blue.qss", "pink.qss", "green.qss", "orange.qss", "purple.qss", "red.qss", "yellow.qss"]
 LEpopup = "LEpopup.qss"
 
 # Interfaz .ui creada con qt designer
@@ -115,13 +115,13 @@ class adminGUI(QMainWindow, form_class):
         self.selectedProductRemaining = {}  # Diccionario de cotas superiores para el spinBox de ventas
         self.selectedProductName = ""       # Nombre del producto seleccionado actualmente en la vista de ventas
         self.selectedProducts = {}          # Diccionario de productos en la factura en la vista de ventas
-        self.dateFormat = "%d-%m-%Y %H:%M:%S.%f"
+        self.dateFormat = "%d/%m/%Y"
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # PREFERENCIAS DE USUARIO
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        self.theme = "default.qss"
+        self.theme = "blue.qss"
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS DE PROPOSITO GENERAL
@@ -154,9 +154,9 @@ class adminGUI(QMainWindow, form_class):
         self.productsRO3 = [self.lineE27, self.lineE28, self.lineE29]
 
         # Apartado de lotes en inventario
-        self.lotsRO0 = [self.lineE33, self.lineE34, self.lineE35, self.lineE36, self.lineE37, self.lineE38]
-        self.lotsRO1 = [self.lineE34, self.lineE35, self.lineE36, self.lineE37, self.lineE38]
-        self.lotsRO2 = [self.lineE34, self.lineE35, self.lineE36, self.lineE37]
+        self.lotsRO0 = [self.lineE33, self.lineE34, self.lineE35, self.lineE37, self.lineE38]
+        self.lotsRO1 = [self.lineE34, self.lineE35, self.lineE37, self.lineE38]
+        self.lotsRO2 = [self.lineE34, self.lineE35, self.lineE37]
         self.lotsRO3 = [self.lineE38]
 
         # Tablas de productos
@@ -347,6 +347,7 @@ class adminGUI(QMainWindow, form_class):
         else:
             return sorted(productsList, key = lambda product: product[1])
 
+    # Establecer un comboBox como de solo lectura
     def readOnlyCB(self, cbox, readOnly):
         if readOnly: cbox.setStyleSheet("border: 1px solid silver; background: #F5F5F5;")
         else: cbox.setStyleSheet("border: 1px solid #BDBDBD; background: #FFFFFF;")
@@ -378,7 +379,7 @@ class adminGUI(QMainWindow, form_class):
     # Marcar en solo lectura uno o más LineEdit:
     def ReadOnlyLE(self, listLE, boolean):
         for lineE in listLE: lineE.setReadOnly(boolean)
-        self.setStyleSheet(getStyle(styles[1]))
+        self.setStyle(self.theme)
 
     # Cambio de estado de los line edits en un apartado
     def changeRO(self, listaLE0, boolean = True, listaLE1 = []):
@@ -574,6 +575,7 @@ class adminGUI(QMainWindow, form_class):
         if hasattr(self, 'lineExtra') and self.lineExtra != None: self.clearLE(self.lineExtra)
         self.clearLEs(self.productsRO0)
         self.clearLEs(self.lotsRO0)
+        #self.dtE2.clear()
 
         self.lotMutex1 = False
         self.lotMutex2 = False
@@ -799,21 +801,21 @@ class adminGUI(QMainWindow, form_class):
                 product_name = self.lineE33.text()
                 provider_name = self.lineE34.text()
                 cost = self.lineE35.text()
-                expiration_date = self.lineE36.text()
+                #expiration_date = self.dtE2.text()
                 quantity = self.lineE37.text()
 
                 # Verificar completitud de los campos obligatorios
                 if (product_name and provider_name and cost and quantity) != "":
 
                     kwargs = {
-                        "product_name" : product_name,
-                        "provider_name"  : provider_name,
-                        "received_by"  : self.user,
-                        "cost"         : int(cost),
-                        "quantity"     : quantity
+                        "product_name"  : product_name,
+                        "provider_name" : provider_name,
+                        "received_by"   : self.user,
+                        "cost"          : int(cost),
+                        "quantity"      : quantity
                     }
 
-                    if expiration_date != "": kwargs["expiration_date"] = expiration_date
+                    #if expiration_date != "": kwargs["expiration_date"] = expiration_date
 
                     # Agregar el lote a la BD
                     self.db.createLot(**kwargs)
@@ -835,8 +837,8 @@ class adminGUI(QMainWindow, form_class):
 
                         lot_id = self.currentLots[self.currentLot]                        # Lote
                         cost = float(self.lineE35.text())                                 # Costo
-                        if self.lineE36.text() != "None":
-                            expiration_date = datetime.strptime(self.lineE36.text(), self.dateFormat)  # Caducidad
+                        """if self.dtE2.text() != "None":
+                            expiration_date = datetime.strptime(self.dtE2.text(), self.dateFormat)  # Caducidad"""
                         quantity = int(self.lineE37.text())                               # Cantidad
                         remaining = int(self.lineE38.text())                              # Disponibles
 
@@ -908,22 +910,25 @@ class adminGUI(QMainWindow, form_class):
                     self.selectedItem2.setIcon(QIcon(join(productPath, product_name)))
                     product_id = self.db.getProductID(product_name)
                     lotIDs = self.db.getLotsIDByProductID(product_id)
+                    self.currentLot = "0"
                     self.currentLots = {}
                     self.lotMutex1 = False
                     for i in range(1, len(lotIDs)+1):
                         self.cbox5.addItem(str(i))
                         self.currentLots[str(i)] = lotIDs[i-1]
-                    self.currentLot = "1"
+
+                    if len(lotIDs) > 0:
+                        self.currentLot = "1"
+                        lot_id = self.currentLots[self.currentLot]
+                        lot = self.db.getLots(lot_id=lot_id)[0]
+
+                        self.lineE34.setText(lot.provider_name)      # Proveedor
+                        self.lineE35.setText(str(lot.cost))          # Costo
+                        #self.dtE2.setText(str(lot.expiration_date)) # Caducidad
+                        self.lineE37.setText(str(lot.quantity))      # Cantidad
+                        self.lineE38.setText(str(lot.remaining))     # Disponibilidad
+
                     self.lotMutex1 = True
-
-                    lot_id = self.currentLots[self.currentLot]
-                    lot = self.db.getLots(lot_id=lot_id)[0]
-
-                    self.lineE34.setText(lot.provider_name)          # Proveedor
-                    self.lineE35.setText(str(lot.cost))            # Precio
-                    self.lineE36.setText(str(lot.expiration_date)) # Categoria
-                    self.lineE37.setText(str(lot.quantity))        # Lotes
-                    self.lineE38.setText(str(lot.remaining))       # Disp. Total
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # COMBO BOX
@@ -937,11 +942,11 @@ class adminGUI(QMainWindow, form_class):
                 lot_id = self.currentLots[self.currentLot]
                 lot = self.db.getLots(lot_id=lot_id)[0]
 
-                self.lineE34.setText(lot.provider_name)          # Proveedor
-                self.lineE35.setText(str(lot.cost))            # Precio
-                self.lineE36.setText(str(lot.expiration_date)) # Categoria
-                self.lineE37.setText(str(lot.quantity))        # Lotes
-                self.lineE38.setText(str(lot.remaining))       # Disp. Total
+                self.lineE34.setText(lot.provider_name)      # Proveedor
+                self.lineE35.setText(str(lot.cost))          # Costo
+                #self.dtE2.setText(str(lot.expiration_date)) # Caducidad
+                self.lineE37.setText(str(lot.quantity))      # Cantidad
+                self.lineE38.setText(str(lot.remaining))     # Disponibilidad
 
     #==============================================================================================================================================================================
     # VISTA DE VENTAS
@@ -1634,7 +1639,7 @@ class adminGUI(QMainWindow, form_class):
 
     # Cambiar el tema de la interfáz
     def setStyle(self, name):
-        if self.click(): self.setStyleSheet(getStyle(name))
+        self.setStyleSheet(getStyle(name))
 
     # Método para cargar la información del usuario
     def loadUserInfo(self):
@@ -1649,7 +1654,8 @@ class adminGUI(QMainWindow, form_class):
     # Método para cargar las preferencias del usuario
     def loadUserPreferences(self):
         user = self.db.getUsers(self.user)[0]
-        self.theme = user.profile
+        if user.profile != "": self.theme = user.profile
+        else: self.theme = "blue.qss"
         self.setStyle(self.theme)
 
     # Método para cambiar el usuario que usa la intefáz
@@ -1670,43 +1676,51 @@ class adminGUI(QMainWindow, form_class):
 
     # Boton para establecer el tema 0
     def on_theme0_pressed(self):
-        self.setStyle(styles[1])
-        self.theme = styles[1]
+        if self.click():
+            self.setStyle(styles[1])
+            self.theme = styles[1]
 
     # Boton para establecer el tema 1
     def on_theme1_pressed(self):
-        self.setStyle(styles[5])
-        self.theme = styles[5]
+        if self.click():
+            self.setStyle(styles[5])
+            self.theme = styles[5]
 
     # Boton para establecer el tema 2
     def on_theme2_pressed(self):
-        self.setStyle(styles[3])
-        self.theme = styles[3]
+        if self.click():
+            self.setStyle(styles[3])
+            self.theme = styles[3]
 
     # Boton para establecer el tema 3
     def on_theme3_pressed(self):
-        self.setStyle(styles[4])
-        self.theme = styles[4]
+        if self.click():
+            self.setStyle(styles[4])
+            self.theme = styles[4]
 
     # Boton para establecer el tema 4
     def on_theme4_pressed(self):
-        self.setStyle(styles[6])
-        self.theme = styles[6]
+        if self.click():
+            self.setStyle(styles[6])
+            self.theme = styles[6]
 
     # Boton para establecer el tema 5
     def on_theme5_pressed(self):
-        self.setStyle(styles[7])
-        self.theme = styles[7]
+        if self.click():
+            self.setStyle(styles[7])
+            self.theme = styles[7]
 
     # Boton para establecer el tema 6
     def on_theme6_pressed(self):
-        self.setStyle(styles[2])
-        self.theme = styles[2]
+        if self.click():
+            self.setStyle(styles[2])
+            self.theme = styles[2]
 
     # Boton para establecer el tema 7
     def on_theme7_pressed(self):
-        self.setStyle(styles[0])
-        self.theme = styles[0]
+        if self.click():
+            self.setStyle(styles[0])
+            self.theme = styles[0]
 
     # Boton para hacer backup
     def on_pbutton24_pressed(self):
