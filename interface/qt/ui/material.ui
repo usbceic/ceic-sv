@@ -1212,7 +1212,7 @@ QWidget:item:unchecked {
              <rect>
               <x>20</x>
               <y>30</y>
-              <width>231</width>
+              <width>241</width>
               <height>421</height>
              </rect>
             </property>
@@ -2396,10 +2396,10 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox1">
             <property name="geometry">
              <rect>
-              <x>260</x>
+              <x>270</x>
               <y>60</y>
-              <width>241</width>
-              <height>411</height>
+              <width>231</width>
+              <height>421</height>
              </rect>
             </property>
             <property name="styleSheet">
