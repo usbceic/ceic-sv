@@ -1565,7 +1565,81 @@ class dbManager(object):
     # MÉTODOS PARA EL CONTROL DEL LOG DE OPERACIONES:
     #==============================================================================================================================================================================
 
-    # Completar
+    """
+    Método para Obtener el ÚLTIMO inicio y fin de período de ventas (Generalmente un Trimestre)
+     - Devuelve tupla donde el primer elemento marca el inicio y el segundo elemento marca el final
+    """
+    def getPeriodStartAndEnd(self):
+        possible_period_start = self.session.query(Operation_log).filter_by(open_record=True, op_type=0).order_by(Operation_log.recorded.desc()).first()
+        
+        if possible_period_start is None:
+            return (None, None)
+
+        filters = and_(
+                    Operation_log.recorded >= possible_period_start.recorded,
+                    Operation_log.op_type == 0,
+                    Operation_log.open_record == False
+                )
+
+        if_ended = self.session.query(Operation_log).filter(*filters).order_by(Operation_log.recorded.desc()).first()
+        if if_ended is None:
+            return (possible_period_start, None)
+        else:
+            return (possible_period_start, if_ended)
+
+    """
+    Método para saber si el perído está abierto
+    """
+    def isOpenPeriod(self):
+        possible_period = self.getPeriodStartAndEnd()
+        return possible_period[0] is not None and possible_period[1] is None
+
+    """
+    Método para Iniciar Perído
+     - Devuelve True si se logró con éxito
+     - Devuelve False en caso contrario
+    """
+    def startPeriod(self, clerk, starting_cash, starting_total, description=""):
+        last_period = self.getPeriodStartAndEnd()
+
+        # Estamos en un periodo abierto o no existe otro periodo
+        if last_period[1] is None:
+            # No existe otro periodo
+            if last_period[0] is None:
+                new_period = Operation_log(clerk=clerk, op_type=0, open_record=True, cash_total=starting_cash, total_money=starting_total, description=description)
+                self.session.add(new_period)
+                try:
+                    self.session.commit()
+                    print("Inicio de Periodo Exitoso")
+                    print("Info:", new_period)
+                    return True
+                except Exception as e:
+                    self.session.rollback()
+                    print("Error Desconocido al Abrir Periodo")
+                    print("Razon:", e)
+                    return False
+
+            # Periodo ya abierto
+            else:
+                print("Periodo ya abierto")
+                print("Info:", last_period[0])
+                return False
+        # Esta cerrado el ultimo periodo
+        else:
+            new_period = Operation_log(clerk=clerk, op_type=0, open_record=True, cash_total=starting_cash, total_money=starting_total, description=description)
+            self.session.add(new_period)
+            try:
+                self.session.commit()
+                print("Inicio de Periodo Exitoso")
+                print("Info:", new_period)
+                return True
+            except Exception as e:
+                self.session.rollback()
+                print("Error Desconocido al Abrir Periodo")
+                print("Razon:", e)
+                return False
+
+
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE MONEDAS / BILLETES PARA PAGO:
@@ -1668,6 +1742,14 @@ if __name__ == '__main__':
     m = dbManager("sistema_ventas", "hola", dropAll=True)
     m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
 
+    print(m.isOpenPeriod())
+    print(m.getPeriodStartAndEnd())
+    print(m.startPeriod("Hola", starting_cash=10, starting_total=20, description="Prueba"))
+    print(m.isOpenPeriod())
+    print(m.getPeriodStartAndEnd())
+    print(m.startPeriod("Hola", starting_cash=10, starting_total=20, description="Prueba"))
+    print(m.isOpenPeriod())
+    print(m.getPeriodStartAndEnd())
     """
     m.deleteLegalTender(0)
     m.createLegalTender(0)
