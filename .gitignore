@@ -100,6 +100,10 @@ __pycache__
 clients.sql
 
 Backup*
+Backup_Old*
 /models/Backup*
+/models/Backup/*
 /models/Backup/*.sql
+/models/Backup_Old*
+/models/Backup_Old/*
 /models/Backup_Old/*.sql
