@@ -884,7 +884,7 @@ class adminGUI(QMainWindow, form_class):
             if not self.rbutton5.isChecked() and self.lineE26.text() != "":
                 product_name = self.lineE26.text()
                 if self.db.existProduct(product_name):
-                    product = self.db.getProductByNameOrID(product_name=product_name, onlyAvailable=False)[0]
+                    product = self.db.getProductByNameOrID(product_name=product_name)[0]
                     self.selectedItem1.setIcon(QIcon(join(productPath, product_name)))
                     if self.rbutton7.isChecked():
                         self.lineE27.setText(product.product_name)        # Product Name
