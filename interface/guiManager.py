@@ -60,20 +60,21 @@ MainUI = "material.ui"
 # Styles
 styles = [
     "amber.qss",
+    "black.qss",
     "blue-grey.qss",
     "blue.qss",
     "brown.qss",
     "cyan.qss",
     "deep-orange.qss",
     "deep-purple.qss",
-    "light-blue.qss",
-    "light-green.qss",
-    "lime.qss",
-    "pink.qss",
     "green.qss",
     "grey.qss",
     "indigo.qss",
+    "light-blue.qss",
+    "light-green.qss",
+    "lime.qss",
     "orange.qss",
+    "pink.qss",
     "purple.qss",
     "red.qss",
     "teal.qss",
@@ -260,10 +261,6 @@ class adminGUI(QMainWindow, form_class):
         # Refrescar todos los elementos de la interfaz
         self.refresh()
 
-        # Se establece la pagina de caja por defecto
-        self.MainStacked.setCurrentIndex(0)
-        self.MainTitle.setText("Caja")
-
     #==============================================================================================================================================================================
     # CONFIGURACIONES DE LA VENTANA
     #==============================================================================================================================================================================
@@ -432,6 +429,10 @@ class adminGUI(QMainWindow, form_class):
         self.refreshProviders()
         self.refreshTransfers()
         self.refreshConfigurations()
+
+        # Se establece la pagina de caja por defecto
+        self.MainStacked.setCurrentIndex(0)
+        self.MainTitle.setText("Caja")
 
     def generalSetup(self):
         # Centrar posición de la ventana

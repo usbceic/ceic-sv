@@ -305,26 +305,26 @@
 }
 
 /*Color botones*/
-#theme0 {background: #2196F3;}
-#theme1 {background: #9C27B0;}
-#theme2 {background: #4CAF50;}
-#theme3 {background: #FF9800;}
-#theme4 {background: #F44336;}
-#theme5 {background: #FFEB3B;}
-#theme6 {background: #E91E63;}
-#theme7 {background: #009688;}
-#theme8 {background: #9C27B0;}
-#theme9 {background: #9C27B0;}
-#theme10 {background: #9C27B0;}
-#theme11 {background: #9C27B0;}
-#theme12 {background: #9C27B0;}
-#theme13 {background: #9C27B0;}
-#theme14 {background: #9C27B0;}
-#theme15 {background: #9C27B0;}
+#theme0 {background: #FFC107;}
+#theme1 {background: #000000;}
+#theme2 {background: #607D8B;}
+#theme3 {background: #2196F3;}
+#theme4 {background: #795548;}
+#theme5 {background: #00BCD4;}
+#theme6 {background: #FF5722;}
+#theme7 {background: #673AB7;}
+#theme8 {background: #4CAF50;}
+#theme9 {background: #9E9E9E;}
+#theme10 {background: #3F51B5;}
+#theme11 {background: #03A9F4;}
+#theme12 {background: #8BC34A;}
+#theme13 {background: #CDDC39;}
+#theme14 {background: #FF9800;}
+#theme15 {background: #E91E63;}
 #theme16 {background: #9C27B0;}
-#theme17 {background: #9C27B0;}
-#theme18 {background: #9C27B0;}
-#theme19 {background: #9C27B0;}
+#theme17 {background: #F44336;}
+#theme18 {background: #009688;}
+#theme19 {background: #FFEB3B;}
 
 /***********************************
 * LineEdit
