@@ -83,7 +83,7 @@
     border: none;
     border-top: 1px inset #BDBDBD;
     padding: -6px;
-    min-width: 5em;
+    min-width: 4em;
  }
 
 #home, #sales, #inventory, #querys, #books, #loans, #providers, #clients, #transfer, #users, #configure, #help{
@@ -733,6 +733,9 @@ QWidget:item:unchecked {
            <string/>
           </property>
           <layout class="QGridLayout" name="gridLayout_79">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetMinimumSize</enum>
+           </property>
            <item row="0" column="0">
             <layout class="QGridLayout" name="gridLayout_143">
              <item row="4" column="0">
@@ -3864,7 +3867,7 @@ QWidget:item:unchecked {
             <property name="geometry">
              <rect>
               <x>19</x>
-              <y>10</y>
+              <y>20</y>
               <width>221</width>
               <height>321</height>
              </rect>
@@ -4429,7 +4432,7 @@ QWidget:item:unchecked {
             <property name="geometry">
              <rect>
               <x>252</x>
-              <y>10</y>
+              <y>20</y>
               <width>511</width>
               <height>281</height>
              </rect>
@@ -4565,7 +4568,7 @@ QWidget:item:unchecked {
             <property name="geometry">
              <rect>
               <x>30</x>
-              <y>340</y>
+              <y>350</y>
               <width>251</width>
               <height>211</height>
              </rect>
@@ -4961,7 +4964,7 @@ QWidget:item:unchecked {
             <property name="geometry">
              <rect>
               <x>300</x>
-              <y>310</y>
+              <y>320</y>
               <width>421</width>
               <height>231</height>
              </rect>

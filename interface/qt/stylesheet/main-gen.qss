@@ -51,7 +51,7 @@
     border: none;
     border-top: 1px inset divider-color;
     padding: -6px;
-    min-width: 5em;
+    min-width: 4em;
  }
 
 #home, #sales, #inventory, #querys, #books, #loans, #providers, #clients, #transfer, #users, #configure, #help{
