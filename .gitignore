@@ -99,5 +99,7 @@ ENV/
 __pycache__
 clients.sql
 
-/models/Backup/*
-/models/Backup_Old/*
+Backup*
+/models/Backup*
+/models/Backup/*.sql
+/models/Backup_Old/*.sql
