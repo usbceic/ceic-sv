@@ -46,6 +46,7 @@
     <file alias="help">../images/help.png</file>
     <file alias="books">../images/books.png</file>
     <file alias="loans">../images/loans.png</file>
+    <file alias="transfer">../images/transfer.png</file>
     <file alias="tools">../images/tools.png</file>
     <file alias="cash">../images/cash.png</file>
     <file alias="sale">../images/sales.png</file>

@@ -1058,6 +1058,22 @@ class dbManager(object):
         return False
 
     """
+    Método para añadir saldo al balance de un cliente
+     - No retorna nada
+    """
+    def addToClientBalance(self, ci, amount):
+        balance = self.session.query(Client.balance).filter_by(ci=ci).scalar()
+        for i in range(10):
+            self.session.query(Client).filter_by(ci=ci).update({"balance" : float(balance)+float(amount)})
+            try:
+                self.session.commit()
+                print("Se ha actualizado correctamente el saldo del cliente")
+                break
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar el saldo del cliente", e)
+
+    """
     Método para hacer check in de un cliente
      - Retorna True:
         * Cuando logra hacer check in correctamente
@@ -1415,7 +1431,7 @@ class dbManager(object):
     def afterInsertTransfer(self, ci, amount):
         balance = self.session.query(Client.balance).filter_by(ci=ci).scalar()
         for i in range(10):
-            self.session.query(Client).filter_by(ci=ci).update({"balance" : balance+amount})
+            self.session.query(Client).filter_by(ci=ci).update({"balance" : float(balance)+float(amount)})
             try:
                 self.session.commit()
                 print("Se ha actualizado correctamente el saldo del cliente")
@@ -1571,7 +1587,7 @@ class dbManager(object):
     """
     def getPeriodStartAndEnd(self):
         possible_period_start = self.session.query(Operation_log).filter_by(open_record=True, op_type=0).order_by(Operation_log.recorded.desc()).first()
-        
+
         if possible_period_start is None:
             return (None, None)
 
@@ -1725,7 +1741,7 @@ class dbManager(object):
         except Exception as e:
             print("Error desconocido al intentar eliminar La Moneda / Billete de " + str(amount) + ":", e)
             self.session.rollback()
-            return False 
+            return False
 
 
 

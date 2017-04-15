@@ -24,6 +24,15 @@ from os import getcwd
 # Importación de función para unir paths con el formato del sistema
 from os.path import join
 
+# Módulo con funciones para manejo de archivos en alto nivel (en especifico para este caso... copiar)
+from shutil import copy2
+
+# Módulo que contiene el tipo de dato datetime para hcaer operaciones con fechas
+from datetime import datetime
+
+# Módulo manejador de la base de datos
+from db_manager import dbManager
+
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
 
@@ -35,13 +44,6 @@ from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
 
 # Módulo con estructuras de Qt
 from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel
-
-# Módulo manejador de la base de datos
-from db_manager import dbManager
-
-from datetime import datetime
-
-from shutil import copy2
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -104,6 +106,7 @@ class adminGUI(QMainWindow, form_class):
         self.clicked = False                # QPushbutton presionado
         self.writing = False                # Texto de un QLineEdit cambiado
         self.newIndex = False
+        self.indexMutex = False
         self.lotMutex1 = False
         self.lotMutex2 = False
         self.currentLot = "0"
@@ -175,9 +178,19 @@ class adminGUI(QMainWindow, form_class):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Apartado de clientes
-        self.clientsLE0 = [self.lineE47, self.lineE48, self.lineE49, self.lineE50, self.lineE51]
-        self.clientsLE1 = [self.lineE52, self.lineE53, self.lineE54, self.lineE55, self.lineE56]
-        self.clientsLE2 = [self.lineE57, self.lineE58, self.lineE59, self.lineE60, self.lineE61]
+        self.clientsLE0 = [self.lineE52, self.lineE53, self.lineE54, self.lineE55, self.lineE56]
+        self.clientsLE1 = [self.lineE57, self.lineE58, self.lineE59, self.lineE60, self.lineE61]
+        self.clientsLE2 = [self.lineE58, self.lineE59, self.lineE60, self.lineE61]
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # LISTAS PARA LA VISTA DE RECARGAS
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        # Apartado de cliente
+        self.transfersLE0 = [self.lineE47, self.lineE48, self.lineE49, self.lineE50, self.lineE51]
+        self.transfersLE1 = [self.lineE48, self.lineE49, self.lineE50]
+        self.transfersLE2 = [self.lineE51, self.lineE156, self.lineE157]
+        self.transfersLE3 = [self.lineE158]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE USUARIOS
@@ -210,6 +223,7 @@ class adminGUI(QMainWindow, form_class):
         # LISTAS PARA LA VISTA DE CONFIGURACIONES
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+        # Apartado de cambio de contraseña
         self.confLE0 = [self.lineE153, self.lineE154, self.lineE155]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -245,7 +259,6 @@ class adminGUI(QMainWindow, form_class):
     def setSize(self):
         self.setFixedSize(self.width(), self.height())
         #self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
-
 
     #==============================================================================================================================================================================
     # CONFIGURACIÓN DE LAS PREFERENCIAS DE USUARIO
@@ -395,7 +408,7 @@ class adminGUI(QMainWindow, form_class):
     def refresh(self):
         self.refreshSales()
         self.refreshProviders()
-        self.refreshClients()
+        self.refreshTransfers()
         self.refreshConfigurations()
 
     def generalSetup(self):
@@ -454,19 +467,24 @@ class adminGUI(QMainWindow, form_class):
         self.setPage(self.MainStacked, 7)
         self.MainTitle.setText("Clientes")
 
+    # Cambiar a la página de clientes
+    def on_transfer_pressed(self):
+        self.setPage(self.MainStacked, 8)
+        self.MainTitle.setText("Recargas de saldo")
+
     # Cambiar a la página de usuarios
     def on_users_pressed(self):
-        self.setPage(self.MainStacked, 8)
+        self.setPage(self.MainStacked, 9)
         self.MainTitle.setText("Usuarios")
 
     # Cambiar a la página de configuraciones
     def on_configure_pressed(self):
-        self.setPage(self.MainStacked, 9)
+        self.setPage(self.MainStacked, 10)
         self.MainTitle.setText("Configuraciones")
 
     # Cambiar a la página de ayuda
     def on_help_pressed(self):
-        self.setPage(self.MainStacked, 10)
+        self.setPage(self.MainStacked, 11)
         self.MainTitle.setText("Ayuda")
 
     def on_arrow1_pressed(self): self.changePage(self.subStacked3)      # Cambiar la página del substaked3 hacia la derecha
@@ -1314,8 +1332,8 @@ class adminGUI(QMainWindow, form_class):
 
         # Limpiar los campos
         self.clearLEs(self.clientsLE0)
+        self.clearLEs(self.clientsLE0)
         self.clearLEs(self.clientsLE1)
-        self.clearLEs(self.clientsLE2)
 
         # Refrescar tabla
         self.updateClientsTable()
@@ -1364,7 +1382,7 @@ class adminGUI(QMainWindow, form_class):
                     }
 
                     self.db.createClient(**kwargs) # Crear cliente
-                    self.clearLEs(self.clientsLE1) # Limpiar formulario
+                    self.clearLEs(self.clientsLE0) # Limpiar formulario
                     self.refreshClients()          # Refrescar vista
                     self.lineE52.setFocus()        # Enfocar
 
@@ -1382,7 +1400,7 @@ class adminGUI(QMainWindow, form_class):
                     }
 
                     self.db.updateClient(**kwargs) # Crear cliente
-                    self.clearLEs(self.clientsLE2) # Limpiar formulario
+                    self.clearLEs(self.clientsLE1) # Limpiar formulario
                     self.refreshClients()          # Refrescar vista
                     self.lineE57.setFocus()        # Enfocar
 
@@ -1390,7 +1408,7 @@ class adminGUI(QMainWindow, form_class):
     # CAMPOS DE TEXTO
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    # LineEdit para ingresar el nombre del producto seleccionado
+    # LineEdit para ingresar la cédula del cliente
     def on_lineE57_textChanged(self):
         if self.textChanged():
             if self.lineE57.text() != "":
@@ -1401,6 +1419,99 @@ class adminGUI(QMainWindow, form_class):
                     self.lineE59.setText(client.lastname)
                     self.lineE60.setText(client.phone)
                     self.lineE61.setText(client.email)
+
+                else:
+                    self.clearLEs(self.clientsLE2)
+
+            else:
+                self.clearLEs(self.clientsLE2)
+
+    #==============================================================================================================================================================================
+    # VISTA DE RECARGAS
+    #==============================================================================================================================================================================
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    def refreshTransfers(self):
+        self.clearLEs(self.transfersLE0)
+        self.clearLEs(self.transfersLE2)
+        self.clearLEs(self.transfersLE3)
+        self.clearTE(self.textE7)
+
+        self.refreshClients()
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    def on_pbutton15_pressed(self):
+        if self.click():
+            if self.lineE47.text() != "":
+                ci = int(self.lineE47.text())
+                if self.db.existClient(ci):
+                    pay_type = self.cbox7.currentText()
+                    if pay_type == "Efectivo":
+                        if self.lineE158.text() != "":
+                            amount = float(self.lineE158.text())
+
+                            self.db.addToClientBalance(ci, amount)
+
+                            self.refreshTransfers()
+
+                            self.lineE47.setFocus()
+
+                    else:
+                        if (self.lineE51.text() and self.lineE156.text() and self.lineE157.text() and self.textE7.toPlainText()) != "":
+                            amount = float(self.lineE51.text())
+                            bank = self.lineE156.text()
+                            confirmation_code = self.lineE157.text()
+                            description = self.textE7.toPlainText()
+
+                            self.db.createTransfer(ci, self.user, amount, bank, confirmation_code, description)
+
+                            self.refreshTransfers()
+
+                            self.lineE47.setFocus()
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # CAMPOS DE TEXTO
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # LineEdit para ingresar la cédula del cliente
+    def on_lineE47_textChanged(self):
+        if self.textChanged():
+            if self.lineE47.text() != "":
+                ci = int(self.lineE47.text())
+                if self.db.existClient(ci):
+                    client = self.db.getClients(ci)[0]
+                    self.lineE48.setText(client.firstname)
+                    self.lineE49.setText(client.lastname)
+                    self.lineE50.setText(str(client.balance))
+
+                else:
+                    self.clearLEs(self.transfersLE1)
+
+            else:
+                self.clearLEs(self.transfersLE1)
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # COMBO BOX
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # ComboBox para elegir el número de lote
+    def on_cbox7_currentIndexChanged(self):
+        if self.indexChanged():
+            if self.indexMutex:
+                pay_type = self.cbox7.currentText()
+                if pay_type == "Efectivo": self.subStacked20.setCurrentIndex(1)
+                else: self.subStacked20.setCurrentIndex(0)
+                self.indexMutex = False
+                print("xD")
+
+            else:
+                self.indexMutex = True
 
     #==============================================================================================================================================================================
     # VISTA DE USUARIOS
@@ -1525,6 +1636,7 @@ class adminGUI(QMainWindow, form_class):
     def setStyle(self, name):
         if self.click(): self.setStyleSheet(getStyle(name))
 
+    # Método para cargar la información del usuario
     def loadUserInfo(self):
         user = self.db.getUsers(self.user)[0]
         self.lineE81.setText(user.username)
@@ -1532,16 +1644,20 @@ class adminGUI(QMainWindow, form_class):
         self.lineE83.setText(user.lastname)
         self.lineE84.setText(user.email)
         self.lineE85.setText(self.db.getRange(user.permission_mask))
+        #self.userBn0.setText(" ".join([user.firstname, user.lastname]))
 
+    # Método para cargar las preferencias del usuario
     def loadUserPreferences(self):
         user = self.db.getUsers(self.user)[0]
         self.theme = user.profile
         self.setStyle(self.theme)
 
+    # Método para cambiar el usuario que usa la intefáz
     def changeUser(self, user):
         self.user = user
         self.refresh()
 
+    # Método para refrescar la vista de Configuraciones y componentes relacionados
     def refreshConfigurations(self):
         self.refreshUsers()
         self.clearLEs(self.confLE0)
@@ -1552,34 +1668,42 @@ class adminGUI(QMainWindow, form_class):
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    # Boton para establecer el tema 0
     def on_theme0_pressed(self):
         self.setStyle(styles[1])
         self.theme = styles[1]
 
+    # Boton para establecer el tema 1
     def on_theme1_pressed(self):
         self.setStyle(styles[5])
         self.theme = styles[5]
 
+    # Boton para establecer el tema 2
     def on_theme2_pressed(self):
         self.setStyle(styles[3])
         self.theme = styles[3]
 
+    # Boton para establecer el tema 3
     def on_theme3_pressed(self):
         self.setStyle(styles[4])
         self.theme = styles[4]
 
+    # Boton para establecer el tema 4
     def on_theme4_pressed(self):
         self.setStyle(styles[6])
         self.theme = styles[6]
 
+    # Boton para establecer el tema 5
     def on_theme5_pressed(self):
         self.setStyle(styles[7])
         self.theme = styles[7]
 
+    # Boton para establecer el tema 6
     def on_theme6_pressed(self):
         self.setStyle(styles[2])
         self.theme = styles[2]
 
+    # Boton para establecer el tema 7
     def on_theme7_pressed(self):
         self.setStyle(styles[0])
         self.theme = styles[0]
