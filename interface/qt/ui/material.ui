@@ -13,12 +13,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>848</width>
-    <height>700</height>
+    <width>833</width>
+    <height>702</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -740,7 +740,7 @@ QWidget:item:unchecked {
           </property>
           <layout class="QGridLayout" name="gridLayout_79">
            <property name="sizeConstraint">
-            <enum>QLayout::SetMinimumSize</enum>
+            <enum>QLayout::SetDefaultConstraint</enum>
            </property>
            <item row="0" column="0">
             <layout class="QGridLayout" name="gridLayout_143">
@@ -1125,7 +1125,7 @@ QWidget:item:unchecked {
         <item>
          <widget class="QStackedWidget" name="MainStacked">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -3878,11 +3878,17 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox2">
             <property name="geometry">
              <rect>
-              <x>19</x>
-              <y>20</y>
+              <x>30</x>
+              <y>30</y>
               <width>221</width>
               <height>321</height>
              </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
@@ -3891,6 +3897,9 @@ QWidget:item:unchecked {
              <string/>
             </property>
             <layout class="QGridLayout" name="gridLayout_207">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetMinimumSize</enum>
+             </property>
              <item row="4" column="0">
               <layout class="QVBoxLayout" name="verticalLayout_50">
                <property name="spacing">
@@ -4443,11 +4452,17 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox4">
             <property name="geometry">
              <rect>
-              <x>252</x>
-              <y>20</y>
-              <width>511</width>
+              <x>260</x>
+              <y>30</y>
+              <width>461</width>
               <height>281</height>
              </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
@@ -4456,6 +4471,9 @@ QWidget:item:unchecked {
              <string/>
             </property>
             <layout class="QGridLayout" name="gridLayout_209">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetMinimumSize</enum>
+             </property>
              <item row="0" column="0">
               <layout class="QVBoxLayout" name="salesLt1">
                <item>
@@ -4580,10 +4598,16 @@ QWidget:item:unchecked {
             <property name="geometry">
              <rect>
               <x>30</x>
-              <y>350</y>
-              <width>251</width>
-              <height>211</height>
+              <y>360</y>
+              <width>241</width>
+              <height>201</height>
              </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
@@ -4593,7 +4617,7 @@ QWidget:item:unchecked {
             </property>
             <layout class="QGridLayout" name="gridLayout_208">
              <property name="sizeConstraint">
-              <enum>QLayout::SetFixedSize</enum>
+              <enum>QLayout::SetDefaultConstraint</enum>
              </property>
              <item row="0" column="0">
               <layout class="QVBoxLayout" name="salesLt13">
@@ -4978,11 +5002,17 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox7">
             <property name="geometry">
              <rect>
-              <x>300</x>
+              <x>290</x>
               <y>320</y>
-              <width>421</width>
+              <width>435</width>
               <height>231</height>
              </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
             <property name="styleSheet">
              <string notr="true"/>
@@ -4991,6 +5021,9 @@ QWidget:item:unchecked {
              <string/>
             </property>
             <layout class="QGridLayout" name="gridLayout_210">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetDefaultConstraint</enum>
+             </property>
              <item row="0" column="0">
               <layout class="QHBoxLayout" name="horizontalLayout_5">
                <property name="spacing">
