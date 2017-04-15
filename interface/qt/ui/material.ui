@@ -14,7 +14,7 @@
     <x>0</x>
     <y>0</y>
     <width>824</width>
-    <height>695</height>
+    <height>689</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -740,10 +740,16 @@ QWidget:item:unchecked {
            <property name="sizeConstraint">
             <enum>QLayout::SetDefaultConstraint</enum>
            </property>
-           <item row="0" column="0">
-            <layout class="QGridLayout" name="gridLayout_143">
-             <item row="4" column="0">
-              <widget class="QPushButton" name="querys">
+           <item row="0" column="1">
+            <layout class="QGridLayout" name="gridLayout_28">
+             <item row="8" column="0">
+              <widget class="QPushButton" name="transfer">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
@@ -751,7 +757,7 @@ QWidget:item:unchecked {
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>Consultas</string>
+                <string>Recargas de saldo</string>
                </property>
                <property name="styleSheet">
                 <string notr="true"/>
@@ -761,7 +767,7 @@ QWidget:item:unchecked {
                </property>
                <property name="icon">
                 <iconset resource="../resources/gui.qrc">
-                 <normaloff>:/menubar/querys</normaloff>:/menubar/querys</iconset>
+                 <normaloff>:/menubar/transfer</normaloff>:/menubar/transfer</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -771,7 +777,7 @@ QWidget:item:unchecked {
                </property>
               </widget>
              </item>
-             <item row="12" column="0">
+             <item row="11" column="0">
               <spacer name="verticalSpacer_9">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -784,8 +790,14 @@ QWidget:item:unchecked {
                </property>
               </spacer>
              </item>
-             <item row="11" column="0">
-              <widget class="QPushButton" name="configure">
+             <item row="12" column="0">
+              <widget class="QPushButton" name="help">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
@@ -793,7 +805,7 @@ QWidget:item:unchecked {
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>Configuración</string>
+                <string>Ayuda</string>
                </property>
                <property name="styleSheet">
                 <string notr="true"/>
@@ -803,7 +815,7 @@ QWidget:item:unchecked {
                </property>
                <property name="icon">
                 <iconset resource="../resources/gui.qrc">
-                 <normaloff>:/menubar/tools</normaloff>:/menubar/tools</iconset>
+                 <normaloff>:/menubar/help</normaloff>:/menubar/help</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -813,8 +825,14 @@ QWidget:item:unchecked {
                </property>
               </widget>
              </item>
-             <item row="5" column="0">
+             <item row="4" column="0">
               <widget class="QPushButton" name="loans">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
@@ -844,6 +862,12 @@ QWidget:item:unchecked {
              </item>
              <item row="2" column="0">
               <widget class="QPushButton" name="inventory">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
@@ -871,98 +895,14 @@ QWidget:item:unchecked {
                </property>
               </widget>
              </item>
-             <item row="8" column="0">
-              <widget class="QPushButton" name="clients">
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="toolTip">
-                <string>Clientes</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../resources/gui.qrc">
-                 <normaloff>:/menubar/clients</normaloff>:/menubar/clients</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="10" column="0">
-              <widget class="QPushButton" name="users">
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="toolTip">
-                <string>Usuarios</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../resources/gui.qrc">
-                 <normaloff>:/menubar/users</normaloff>:/menubar/users</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QPushButton" name="sales">
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="toolTip">
-                <string>Ventas</string>
-               </property>
-               <property name="accessibleName">
-                <string/>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../resources/gui.qrc">
-                 <normaloff>:/menubar/sale</normaloff>:/menubar/sale</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-              </widget>
-             </item>
              <item row="0" column="0">
               <widget class="QPushButton" name="home">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
@@ -999,8 +939,192 @@ QWidget:item:unchecked {
                </property>
               </widget>
              </item>
+             <item row="1" column="0">
+              <widget class="QPushButton" name="sales">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="toolTip">
+                <string>Ventas</string>
+               </property>
+               <property name="accessibleName">
+                <string/>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../resources/gui.qrc">
+                 <normaloff>:/menubar/sale</normaloff>:/menubar/sale</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QPushButton" name="querys">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="toolTip">
+                <string>Consultas</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../resources/gui.qrc">
+                 <normaloff>:/menubar/querys</normaloff>:/menubar/querys</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
              <item row="6" column="0">
+              <widget class="QPushButton" name="providers">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="toolTip">
+                <string>Proveedores</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../resources/gui.qrc">
+                 <normaloff>:/menubar/providers</normaloff>:/menubar/providers</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QPushButton" name="clients">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="toolTip">
+                <string>Clientes</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../resources/gui.qrc">
+                 <normaloff>:/menubar/clients</normaloff>:/menubar/clients</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="9" column="0">
+              <widget class="QPushButton" name="users">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
+               </property>
+               <property name="toolTip">
+                <string>Usuarios</string>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../resources/gui.qrc">
+                 <normaloff>:/menubar/users</normaloff>:/menubar/users</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>32</width>
+                 <height>32</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
               <widget class="QPushButton" name="books">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
@@ -1028,8 +1152,14 @@ QWidget:item:unchecked {
                </property>
               </widget>
              </item>
-             <item row="13" column="0">
-              <widget class="QPushButton" name="help">
+             <item row="10" column="0">
+              <widget class="QPushButton" name="configure">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
@@ -1037,7 +1167,7 @@ QWidget:item:unchecked {
                 <enum>Qt::NoFocus</enum>
                </property>
                <property name="toolTip">
-                <string>Ayuda</string>
+                <string>Configuración</string>
                </property>
                <property name="styleSheet">
                 <string notr="true"/>
@@ -1047,65 +1177,7 @@ QWidget:item:unchecked {
                </property>
                <property name="icon">
                 <iconset resource="../resources/gui.qrc">
-                 <normaloff>:/menubar/help</normaloff>:/menubar/help</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="7" column="0">
-              <widget class="QPushButton" name="providers">
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="toolTip">
-                <string>Usuarios</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../resources/gui.qrc">
-                 <normaloff>:/menubar/providers</normaloff>:/menubar/providers</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>32</width>
-                 <height>32</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="9" column="0">
-              <widget class="QPushButton" name="transfer">
-               <property name="cursor">
-                <cursorShape>PointingHandCursor</cursorShape>
-               </property>
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
-               </property>
-               <property name="toolTip">
-                <string>Recargas</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../resources/gui.qrc">
-                 <normaloff>:/menubar/transfer</normaloff>:/menubar/transfer</iconset>
+                 <normaloff>:/menubar/tools</normaloff>:/menubar/tools</iconset>
                </property>
                <property name="iconSize">
                 <size>
