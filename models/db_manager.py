@@ -1827,6 +1827,36 @@ class dbManager(object):
                 print("Razon:", e)
                 return (True, False)
 
+    """
+    Método para agregar una entrada al sistema 
+     - Devuelve Tupla, donde la primera posicion marca si esta abierto el turno y la segunda si se crear la entrada
+     - Devuelve tupla (True, True) si se logró con éxito
+     - Devuelve (False, False), (True, False) en caso contrario
+    """
+    def createEntry(self, clerk, op_type, transfer_balance, cash_balance, description=""):
+        
+        if 0 <= op_type and op_type <= 2:
+            print("Las operaciones 0..2 estan reservadas")
+            return (False, False)
+
+        if not self.isOpenTurn():
+            print("No se puede agregar una entrada al sistema si el turno esta cerrado")
+            return (False, False)
+
+
+        new_entry = Operation_log(clerk=clerk, op_type=op_type, transfer_balance=transfer_balance, cash_balance=cash_balance, cash_total=0, total_money=0, description=description)
+        self.session.add(new_entry)
+        try:
+            self.session.commit()
+            print("Inicio de Turno Exitoso")
+            print("Info:", new_entry)
+            return (True, True)
+        except Exception as e:
+            self.session.rollback()
+            print("Error Desconocido al Abrir Turno")
+            print("Razon:", e)
+            return (True, False)
+
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE MONEDAS / BILLETES PARA PAGO:
     #==============================================================================================================================================================================
