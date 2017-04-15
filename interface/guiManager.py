@@ -485,6 +485,7 @@ class adminGUI(QMainWindow, form_class):
     def on_arrow27_pressed(self): self.changePage(self.subStacked16)    # Cambiar la página del substaked16 hacia la derecha
     def on_arrow29_pressed(self): self.changePage(self.subStacked17)    # Cambiar la página del substaked17 hacia la derecha
     def on_arrow31_pressed(self): self.changePage(self.subStacked18)    # Cambiar la página del substaked18 hacia la derecha
+    def on_arrow33_pressed(self): self.changePage(self.subStacked19)    # Cambiar la página del substaked18 hacia la derecha
 
     def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)   # Cambiar la página del substaked3 hacia la izquierda
     def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)   # Cambiar la página del substaked4 hacia la izquierda
@@ -502,6 +503,7 @@ class adminGUI(QMainWindow, form_class):
     def on_arrow26_pressed(self): self.changePage(self.subStacked16, 1) # Cambiar la página del substaked16 hacia la izquierda
     def on_arrow28_pressed(self): self.changePage(self.subStacked17, 1) # Cambiar la página del substaked17 hacia la izquierda
     def on_arrow30_pressed(self): self.changePage(self.subStacked18, 1) # Cambiar la página del substaked18 hacia la izquierda
+    def on_arrow32_pressed(self): self.changePage(self.subStacked19, 1) # Cambiar la página del substaked18 hacia la izquierda
 
     #==============================================================================================================================================================================
     # VISTA DE INVENTARIO
@@ -1581,6 +1583,17 @@ class adminGUI(QMainWindow, form_class):
     def on_theme7_pressed(self):
         self.setStyle(styles[0])
         self.theme = styles[0]
+
+    # Boton para hacer backup
+    def on_pbutton24_pressed(self):
+        if self.click():
+            self.db.backup()
+
+    # Boton para restaurar desde el ultimo backup
+    def on_pbutton25_pressed(self):
+        if self.click():
+            self.db.restore()
+            self.refresh()
 
     # Boton para guardar cambios
     def on_pbutton26_pressed(self):
