@@ -1204,7 +1204,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -1213,7 +1213,7 @@ QWidget:item:unchecked {
               <x>20</x>
               <y>30</y>
               <width>231</width>
-              <height>402</height>
+              <height>421</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -2399,7 +2399,7 @@ QWidget:item:unchecked {
               <x>260</x>
               <y>60</y>
               <width>241</width>
-              <height>381</height>
+              <height>411</height>
              </rect>
             </property>
             <property name="styleSheet">
