@@ -275,7 +275,8 @@ class adminGUI(QMainWindow, form_class):
 
     # Fijar tamaño de la ventana
     def setSize(self):
-        self.setFixedSize(self.width(), self.height())
+        #self.setFixedSize(self.width(), self.height())
+        self.setMinimumSize(self.sizeHint())
         #self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
 
     #==============================================================================================================================================================================
