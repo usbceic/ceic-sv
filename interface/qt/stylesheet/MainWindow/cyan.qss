@@ -291,7 +291,7 @@
 ***********************************/
 
 /* Configuración por defecto de los botones para cambiar el tema de la interfaz*/
-#theme0, #theme1, #theme2, #theme3, #theme4, #theme5, #theme6, #theme7, #theme8, #theme9, #theme10, #theme11, #theme12, #theme13, #theme14, #theme15{
+#theme0, #theme1, #theme2, #theme3, #theme4, #theme5, #theme6, #theme7, #theme8, #theme9, #theme10, #theme11, #theme12, #theme13, #theme14, #theme15, #theme16, #theme17, #theme18, #theme19{
      border: 1px solid BDBDBD;
      border-radius: 2px;
      min-width: 32px;
@@ -300,7 +300,7 @@
 }
 
 /* Configuración de los botones para cambiar el tema de la interfaz al pasar sobre ellos o presionarlos*/
-#theme0:hover, #theme1:hover, #theme2:hover, #theme3:hover, #theme4:hover, #theme5:hover, #theme6:hover, #theme7:hover, #theme8:hover, #theme9:hover, #theme10:hover, #theme11:hover, #theme12:hover, #theme13:hover, #theme14:hover, #theme15:hover, #theme0:pressed, #theme1:pressed, #theme2:pressed, #theme3:pressed, #theme4:pressed, #theme5:pressed, #theme6:pressed, #theme7:pressed, #theme8:pressed, #theme9:pressed, #theme10:pressed, #theme11:pressed, #theme12:pressed, #theme13:pressed, #theme14:pressed, #theme15:pressed{
+#theme0:hover, #theme1:hover, #theme2:hover, #theme3:hover, #theme4:hover, #theme5:hover, #theme6:hover, #theme7:hover, #theme8:hover, #theme9:hover, #theme10:hover, #theme11:hover, #theme12:hover, #theme13:hover, #theme14:hover, #theme15:hover, #theme16:hover, #theme17:hover, #theme18:hover, #theme19:hover, #theme0:pressed, #theme1:pressed, #theme2:pressed, #theme3:pressed, #theme4:pressed, #theme5:pressed, #theme6:pressed, #theme7:pressed, #theme8:pressed, #theme9:pressed, #theme10:pressed, #theme11:pressed, #theme12:pressed, #theme13:pressed, #theme14:pressed, #theme15:pressed, #theme16:pressed, #theme17:pressed, #theme18:pressed, #theme19:pressed{
      background: #B2EBF2;
 }
 
@@ -321,6 +321,10 @@
 #theme13 {background: #9C27B0;}
 #theme14 {background: #9C27B0;}
 #theme15 {background: #9C27B0;}
+#theme16 {background: #9C27B0;}
+#theme17 {background: #9C27B0;}
+#theme18 {background: #9C27B0;}
+#theme19 {background: #9C27B0;}
 
 /***********************************
 * LineEdit

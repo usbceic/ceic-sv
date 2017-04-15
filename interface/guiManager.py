@@ -58,7 +58,28 @@ productPath = join(getcwd(), "interface/images/inventory/")
 MainUI = "material.ui"
 
 # Styles
-styles = ["teal.qss", "blue.qss", "pink.qss", "green.qss", "orange.qss", "purple.qss", "red.qss", "yellow.qss"]
+styles = [
+    "amber.qss",
+    "blue-grey.qss",
+    "blue.qss",
+    "brown.qss",
+    "cyan.qss",
+    "deep-orange.qss",
+    "deep-purple.qss",
+    "light-blue.qss",
+    "light-green.qss",
+    "lime.qss",
+    "pink.qss",
+    "green.qss",
+    "grey.qss",
+    "indigo.qss",
+    "orange.qss",
+    "purple.qss",
+    "red.qss",
+    "teal.qss",
+    "yellow.qss"
+]
+
 LEpopup = "LEpopup.qss"
 
 # Interfaz .ui creada con qt designer
@@ -1677,50 +1698,122 @@ class adminGUI(QMainWindow, form_class):
     # Boton para establecer el tema 0
     def on_theme0_pressed(self):
         if self.click():
-            self.setStyle(styles[1])
-            self.theme = styles[1]
+            self.setStyle(styles[0])
+            self.theme = styles[0]
 
     # Boton para establecer el tema 1
     def on_theme1_pressed(self):
         if self.click():
-            self.setStyle(styles[5])
-            self.theme = styles[5]
+            self.setStyle(styles[1])
+            self.theme = styles[1]
 
     # Boton para establecer el tema 2
     def on_theme2_pressed(self):
         if self.click():
-            self.setStyle(styles[3])
-            self.theme = styles[3]
+            self.setStyle(styles[2])
+            self.theme = styles[2]
 
     # Boton para establecer el tema 3
     def on_theme3_pressed(self):
         if self.click():
-            self.setStyle(styles[4])
-            self.theme = styles[4]
+            self.setStyle(styles[3])
+            self.theme = styles[3]
 
     # Boton para establecer el tema 4
     def on_theme4_pressed(self):
         if self.click():
-            self.setStyle(styles[6])
-            self.theme = styles[6]
+            self.setStyle(styles[4])
+            self.theme = styles[4]
 
     # Boton para establecer el tema 5
     def on_theme5_pressed(self):
         if self.click():
-            self.setStyle(styles[7])
-            self.theme = styles[7]
+            self.setStyle(styles[5])
+            self.theme = styles[5]
 
     # Boton para establecer el tema 6
     def on_theme6_pressed(self):
         if self.click():
-            self.setStyle(styles[2])
-            self.theme = styles[2]
+            self.setStyle(styles[6])
+            self.theme = styles[6]
 
     # Boton para establecer el tema 7
     def on_theme7_pressed(self):
         if self.click():
-            self.setStyle(styles[0])
-            self.theme = styles[0]
+            self.setStyle(styles[7])
+            self.theme = styles[7]
+
+    # Boton para establecer el tema 0
+    def on_theme8_pressed(self):
+        if self.click():
+            self.setStyle(styles[8])
+            self.theme = styles[8]
+
+    # Boton para establecer el tema 1
+    def on_theme9_pressed(self):
+        if self.click():
+            self.setStyle(styles[9])
+            self.theme = styles[9]
+
+    # Boton para establecer el tema 2
+    def on_theme10_pressed(self):
+        if self.click():
+            self.setStyle(styles[10])
+            self.theme = styles[10]
+
+    # Boton para establecer el tema 3
+    def on_theme11_pressed(self):
+        if self.click():
+            self.setStyle(styles[11])
+            self.theme = styles[11]
+
+    # Boton para establecer el tema 4
+    def on_theme12_pressed(self):
+        if self.click():
+            self.setStyle(styles[12])
+            self.theme = styles[12]
+
+    # Boton para establecer el tema 5
+    def on_theme13_pressed(self):
+        if self.click():
+            self.setStyle(styles[13])
+            self.theme = styles[13]
+
+    # Boton para establecer el tema 6
+    def on_theme14_pressed(self):
+        if self.click():
+            self.setStyle(styles[14])
+            self.theme = styles[14]
+
+    # Boton para establecer el tema 7
+    def on_theme15_pressed(self):
+        if self.click():
+            self.setStyle(styles[15])
+            self.theme = styles[15]
+
+        # Boton para establecer el tema 0
+    def on_theme16_pressed(self):
+        if self.click():
+            self.setStyle(styles[16])
+            self.theme = styles[16]
+
+    # Boton para establecer el tema 1
+    def on_theme17_pressed(self):
+        if self.click():
+            self.setStyle(styles[17])
+            self.theme = styles[17]
+
+    # Boton para establecer el tema 2
+    def on_theme18_pressed(self):
+        if self.click():
+            self.setStyle(styles[18])
+            self.theme = styles[18]
+
+    # Boton para establecer el tema 3
+    def on_theme19_pressed(self):
+        if self.click():
+            self.setStyle(styles[19])
+            self.theme = styles[19]
 
     # Boton para hacer backup
     def on_pbutton24_pressed(self):
