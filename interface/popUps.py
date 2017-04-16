@@ -56,11 +56,18 @@ class errorPopUp(QDialog, popUp0):
         # INICIAR Y CONFIGURAR EL POPUP
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        # Interfaz
+        # Crear y configurar los objetos del ui
         super(errorPopUp, self).__init__(parent)
         self.setupUi(self)
+
+        # Configurar mensaje del popUp
+        if message != None: self.dtitle0.setText(message)
+
+        # Configurar resolucion del popUp
         self.setFixedSize(self.width(), self.height())
         self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)
+
+        # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
 
         # Conectar los eventos mediante los nombres de los métodos
@@ -94,11 +101,18 @@ class successPopUp(QDialog, popUp1):
         # INICIAR Y CONFIGURAR EL POPUP
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        # Interfaz
+        # Crear y configurar los objetos del ui
         super(successPopUp, self).__init__(parent)
         self.setupUi(self)
+
+        # Configurar mensaje del popUp
+        if message != None: self.dtitle0.setText(message)
+
+        # Configurar resolucion del popUp
         self.setFixedSize(self.width(), self.height())
         self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)
+
+        # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
 
         # Conectar los eventos mediante los nombres de los métodos
@@ -133,11 +147,15 @@ class authorizationPopUp(QDialog, popUp2):
         # INICIAR Y CONFIGURAR EL POPUP
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        # Interfaz
+        # Crear y configurar los objetos del ui
         super(authorizationPopUp, self).__init__(parent)
         self.setupUi(self)
+
+        # Configurar resolucion del popUp
         self.setFixedSize(self.width(), self.height())
         self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)
+
+        # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
 
         # Conectar los eventos mediante los nombres de los métodos

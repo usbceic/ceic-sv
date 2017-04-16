@@ -1045,7 +1045,6 @@ class adminGUI(QMainWindow, form_class):
     # Refrescar apartado de Top 10
     def refreshTop10(self):
         self.top10 = self.db.getTop10()
-        print(self.top10)
         for i in range(len(self.top10)):
             product_name = self.top10[i].product_name
             price = str(self.top10[i].price)
@@ -1678,7 +1677,6 @@ class adminGUI(QMainWindow, form_class):
                 if pay_type == "Efectivo": self.subStacked20.setCurrentIndex(1)
                 else: self.subStacked20.setCurrentIndex(0)
                 self.indexMutex = False
-                print("xD")
 
             else:
                 self.indexMutex = True

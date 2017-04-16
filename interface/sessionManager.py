@@ -144,7 +144,7 @@ class loginGUI(QMainWindow, loginWindow):
                 self.mainWindow.show()
                 self.hide()
 
-            else: errorPopUp(parent=self).exec_()
+            else: errorPopUp("Datos incorrectos", self).exec_()
 
     def setupPage0(self):
         self.lineEd0.setPlaceholderText("Usuario")
