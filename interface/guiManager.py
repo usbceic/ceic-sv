@@ -604,7 +604,7 @@ class adminGUI(QMainWindow, form_class):
         self.currentLot = "0"
         self.currentLots = {}
         self.clearCB(self.cbox5)
-        self.selectedItem1.setIcon(QIcon(':/buttons/cross'))
+        self.resetProductImage(self.selectedItem1)
 
         # Adición de campos extras
         if self.rbutton7.isChecked(): self.addProductInput()
@@ -612,6 +612,10 @@ class adminGUI(QMainWindow, form_class):
             self.deleteProductInput()
             if self.rbutton6.isChecked():
                 self.text64.setText("Buscar")
+
+    def resetProductImage(self, button):
+        self.tempImage = ""
+        button.setIcon(QIcon(':/buttons/cross'))
 
     # Añadir campo extra en el apartado de productos
     def addProductInput(self):
@@ -687,7 +691,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
             self.text64.setText("Nombre")
-            self.selectedItem1.setIcon(QIcon(':/buttons/cross'))
+            self.resetProductImage(self.selectedItem1)
 
     # Radio button para consultar productos
     def on_rbutton6_pressed(self):
@@ -696,7 +700,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1)
             self.text64.setText("Buscar")
-            self.selectedItem1.setIcon(QIcon(':/buttons/cross'))
+            self.resetProductImage(self.selectedItem1)
 
     # Radio button para editar productos
     def on_rbutton7_pressed(self):
@@ -704,7 +708,7 @@ class adminGUI(QMainWindow, form_class):
             self.addProductInput()
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO3)
-            self.selectedItem1.setIcon(QIcon(':/buttons/cross'))
+            self.resetProductImage(self.selectedItem1)
 
     # Radio button para eliminar productos
     def on_rbutton8_pressed(self):
@@ -713,7 +717,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1)
             self.text64.setText("Nombre")
-            self.selectedItem1.setIcon(QIcon(':/buttons/cross'))
+            self.resetProductImage(self.selectedItem1)
 
     # Radio button para agregar nuevos lotes
     def on_rbutton9_pressed(self):
@@ -722,7 +726,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO2, False, self.lotsRO3)
             self.readOnlyCB(self.cbox5, True)
-            self.selectedItem2.setIcon(QIcon(':/buttons/cross'))
+            self.resetProductImage(self.selectedItem2)
 
     # Radio button para consultar lotes
     def on_rbutton10_pressed(self):
@@ -731,7 +735,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
             self.readOnlyCB(self.cbox5, False)
-            self.selectedItem2.setIcon(QIcon(':/buttons/cross'))
+            self.resetProductImage(self.selectedItem2)
 
     # Radio button para editar lotes
     def on_rbutton11_pressed(self):
@@ -740,7 +744,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO0, False)
             self.readOnlyCB(self.cbox5, False)
-            self.selectedItem2.setIcon(QIcon(':/buttons/cross'))
+            self.resetProductImage(self.selectedItem2)
 
     # Radio button para eliminar lotes
     def on_rbutton12_pressed(self):
@@ -749,7 +753,7 @@ class adminGUI(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
             self.readOnlyCB(self.cbox5, False)
-            self.selectedItem2.setIcon(QIcon(':/buttons/cross'))
+            self.resetProductImage(self.selectedItem2)
 
     # Boton "Aceptar" en el apartado de productos
     def on_pbutton11_pressed(self):
@@ -766,7 +770,8 @@ class adminGUI(QMainWindow, form_class):
                         # Agregar el producto a la BD
                         self.db.createProduct(product_name, price, categoy)
 
-                        copy2(self.tempImage, join(productPath, product_name))
+                        if self.tempImage != "":
+                            copy2(self.tempImage, join(productPath, product_name))
 
                         # Refrescar toda la interfaz
                         self.refreshInventory()
@@ -926,7 +931,7 @@ class adminGUI(QMainWindow, form_class):
     # LineEdit para ingresar nombres de los productos
     def on_lineE33_textChanged(self):
         if self.textChanged():
-            if not self.rbutton9.isChecked() and self.lineE33.text() != "":
+            if self.lineE33.text() != "":
                 product_name = self.lineE33.text()
                 if self.db.existProduct(product_name):
                     self.selectedItem2.setIcon(QIcon(join(productPath, product_name)))
