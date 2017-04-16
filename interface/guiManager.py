@@ -125,21 +125,20 @@ class adminGUI(QMainWindow, form_class):
         # Constantes para fácilitar el uso de varios métodos de la clase
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        self.clicked = False                # QPushbutton presionado
-        self.writing = False                # Texto de un QLineEdit cambiado
-        self.newIndex = False
-        self.indexMutex = False
-        self.lotMutex1 = False
-        self.lotMutex2 = False
-        self.currentLot = "0"
-        self.currentLots = {}
+        self.clicked = False                # Variable de control para saber si un QPushbutton es presionado
+        self.writing = False                # Variable de control para saber si el texto de un QLineEdit ha cambiado
+        self.newIndex = False               # Variable de control para saber si se está cambiando la el index de un comboBox
+        self.indexMutex = False             # Semáforo especial para no actualizar dos veces al cambiar el index del comboBox de lotes
+        self.lotMutex1 = False              # Semáforo para saber cuando cargar la info de un lote en los QlineEdit
+        self.currentLot = "0"               # Variable de control para el comboBox de seleccion de lotes
+        self.currentLots = {}               # Diccionario para lotes de un producto consultado actualmente
         self.tempImage = ""                 # Imagen seleccionada
         self.selectedProductRemaining = {}  # Diccionario de cotas superiores para el spinBox de ventas
         self.selectedProductName = ""       # Nombre del producto seleccionado actualmente en la vista de ventas
         self.selectedProducts = {}          # Diccionario de productos en la factura en la vista de ventas
-        self.dateFormat = "%d/%m/%Y"
-        self.top10 = []
-        self.new10 = []
+        self.dateFormat = "%d/%m/%Y"        # Formato de fecha
+        self.top10 = []                     # Lista de productos en Top 10
+        self.new10 = []                     # Lista de productos en Nuevos
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # PREFERENCIAS DE USUARIO
@@ -608,8 +607,8 @@ class adminGUI(QMainWindow, form_class):
         self.clearLEs(self.lotsRO0)
         #self.dtE2.clear()
 
+        self.indexMutex = False
         self.lotMutex1 = False
-        self.lotMutex2 = False
         self.currentLot = "0"
         self.currentLots = {}
         self.clearCB(self.cbox5)
@@ -1039,6 +1038,7 @@ class adminGUI(QMainWindow, form_class):
         if len(itemsList) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
         table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
 
+    # Refrescar apartado de Top 10
     def refreshTop10(self):
         self.top10 = self.db.getTop10()
         print(self.top10)
@@ -1048,6 +1048,7 @@ class adminGUI(QMainWindow, form_class):
             self.popularItems[i].setIcon(QIcon(join(productPath, product_name)))
             self.popularTexts[i].setText(price)
 
+    # Refrescar apartado de Nuevos
     def refreshNew10(self):
         self.new10 = self.db.getNew10()
         for i in range(len(self.new10)):
@@ -1056,12 +1057,14 @@ class adminGUI(QMainWindow, form_class):
             self.newItems[i].setIcon(QIcon(join(productPath, product_name)))
             self.newTexts[i].setText(price)
 
+    # Restar al spinBox
     def substractToSalesSpinBox(self):
         count = int(self.spinLine0.text())
         if count > 0:
             self.spinLine0.setText(str(count-1))
             self.lineE25.setText(str(((count-1)*float(self.lineE24.text()))))
 
+    # Sumar al spinBox
     def addToSalesSpinBox(self):
         count = int(self.spinLine0.text())
         if self.selectedProductName in self.selectedProductRemaining:
@@ -1093,82 +1096,102 @@ class adminGUI(QMainWindow, form_class):
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    # Boton 1 del apartado de Top 10
     def on_popularItem0_pressed(self):
         if self.click():
             self.selectPopularItem(0)
 
+    # Boton 2 del apartado de Top 10
     def on_popularItem1_pressed(self):
         if self.click():
             self.selectPopularItem(1)
 
+    # Boton 3 del apartado de Top 10
     def on_popularItem2_pressed(self):
         if self.click():
             self.selectPopularItem(2)
 
+    # Boton 4 del apartado de Top 10
     def on_popularItem3_pressed(self):
         if self.click():
             self.selectPopularItem(3)
 
+    # Boton 5 del apartado de Top 10
     def on_popularItem4_pressed(self):
         if self.click():
             self.selectPopularItem(4)
 
+    # Boton 6 del apartado de Top 10
     def on_popularItem5_pressed(self):
         if self.click():
             self.selectPopularItem(5)
 
+    # Boton 7 del apartado de Top 10
     def on_popularItem6_pressed(self):
         if self.click():
             self.selectPopularItem(6)
 
+    # Boton 8 del apartado de Top 10
     def on_popularItem7_pressed(self):
         if self.click():
             self.selectPopularItem(7)
 
+    # Boton 9 del apartado de Top 10
     def on_popularItem8_pressed(self):
         if self.click():
             self.selectPopularItem(8)
 
+    # Boton 10 del apartado de Top 10
     def on_popularItem9_pressed(self):
         if self.click():
             self.selectPopularItem(9)
 
+    # Boton 1 del apartado de Nuevos
     def on_newItem0_pressed(self):
         if self.click():
             self.selectNewItem(0)
 
+    # Boton 2 del apartado de Nuevos
     def on_newItem1_pressed(self):
         if self.click():
             self.selectNewItem(1)
 
+    # Boton 3 del apartado de Nuevos
     def on_newItem2_pressed(self):
         if self.click():
             self.selectNewItem(2)
 
+    # Boton 4 del apartado de Nuevos
     def on_newItem3_pressed(self):
         if self.click():
             self.selectNewItem(3)
 
+    # Boton 5 del apartado de Nuevos
     def on_newItem4_pressed(self):
         if self.click():
             self.selectNewItem(4)
 
+    # Boton 6 del apartado de Nuevos
     def on_newItem5_pressed(self):
         if self.click():
             self.selectNewItem(5)
 
+    # Boton 7 del apartado de Nuevos
     def on_newItem6_pressed(self):
         if self.click():
             self.selectNewItem(6)
 
+    # Boton 8 del apartado de Nuevos
     def on_newItem7_pressed(self):
         if self.click():
             self.selectNewItem(7)
 
+    # Boton 9 del apartado de Nuevos
     def on_newItem8_pressed(self):
         if self.click():
             self.selectNewItem(8)
 
+    # Boton 10 del apartado de Nuevos
     def on_newItem9_pressed(self):
         if self.click():
             self.selectNewItem(9)
@@ -1575,6 +1598,7 @@ class adminGUI(QMainWindow, form_class):
     # MÉTODOS ESPECIALES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    # Refrescar vista de transferencias y componentes asociados
     def refreshTransfers(self):
         self.clearLEs(self.transfersLE0)
         self.clearLEs(self.transfersLE2)
@@ -1587,6 +1611,7 @@ class adminGUI(QMainWindow, form_class):
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    # Boton aceptar para hacer una recarga de saldo
     def on_pbutton15_pressed(self):
         if self.click():
             if self.lineE47.text() != "":
