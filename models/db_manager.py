@@ -22,7 +22,7 @@ from models import *
 from session import *
 
 from db_backup import *
-from sqlalchemy import func, distinct, update, event, and_, or_
+from sqlalchemy import func, distinct, update, event, and_, or_, desc
 from passlib.hash import bcrypt
 
 ###################################################################################################################################################################################
@@ -656,6 +656,20 @@ class dbManager(object):
                 self.session.rollback()
                 return False
         return False
+
+    """
+    Método para obtener los 10 productos más vendidos
+     - Retorna un queryset con los 10 productos más vendidos y cuantos items de cada uno se han vendido
+    """
+    def getTop10(self):
+        return self.session.query(Product_list.product_id, func.sum(Product_list.amount).label("total")).group_by(Product_list.product_id).order_by(desc("total")).limit(10).all()
+
+    """
+    Método para obtener los 10 productos más nuevos
+     - Retorna un queryset con los 10 productos más nuevos
+    """
+    def getNew10(self):
+        return self.session.query(Product).order_by(desc(Product.creation_date)).limit(10).all()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LOTES:
@@ -1673,7 +1687,7 @@ class dbManager(object):
                 )
 
         possible_day_start = self.session.query(Operation_log).filter(*filters).order_by(Operation_log.recorded.desc()).first()
-        
+
         if possible_day_start is None:
             return (None, None)
 
@@ -1697,7 +1711,7 @@ class dbManager(object):
         return possible_day[0] is not None and possible_day[1] is None
 
     """
-    Método para Iniciar Día. 
+    Método para Iniciar Día.
      - Devuelve Tupla, donde la primera posicion marca si esta abierto el período y la segunda si se logró abrir el día
      - Devuelve tupla (True, True) si se logró con éxito
      - Devuelve (False, False), (True, False) en caso contrario
@@ -1767,7 +1781,7 @@ class dbManager(object):
                 )
 
         possible_turn_start = self.session.query(Operation_log).filter(*filters).order_by(Operation_log.recorded.desc()).first()
-        
+
         if possible_turn_start is None:
             return (None, None)
 
@@ -1791,7 +1805,7 @@ class dbManager(object):
         return possible_turn[0] is not None and possible_turn[1] is None
 
     """
-    Método para Iniciar Turno. 
+    Método para Iniciar Turno.
      - Devuelve Tupla, donde la primera posicion marca si esta abierto el día y la segunda si se logró abrir el turno
      - Devuelve tupla (True, True) si se logró con éxito
      - Devuelve (False, False), (True, False) en caso contrario
@@ -1844,13 +1858,13 @@ class dbManager(object):
                 return (True, False)
 
     """
-    Método para agregar una entrada al sistema 
+    Método para agregar una entrada al sistema
      - Devuelve Tupla, donde la primera posicion marca si esta abierto el turno y la segunda si se crear la entrada
      - Devuelve tupla (True, True) si se logró con éxito
      - Devuelve (False, False), (True, False) en caso contrario
     """
     def createEntry(self, clerk, op_type, transfer_balance, cash_balance, description=""):
-        
+
         if 0 <= op_type and op_type <= 2:
             print("Las operaciones 0..2 estan reservadas")
             return (False, False)
@@ -1959,22 +1973,16 @@ class dbManager(object):
             self.session.rollback()
             return False
 
-
-
-
-
-
-
 ###################################################################################################################################################################################
 ## PRUEBAS:
 ###################################################################################################################################################################################
 
 # Prueba
 if __name__ == '__main__':
-    m = dbManager("sistema_ventas", "hola", dropAll=True)
+    m = dbManager("sistema_ventas", "hola", dropAll=False)
     m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
 
-    # Abrir turno antes de dia
+    """# Abrir turno antes de dia
     print("----------------------------------------------")
     print(m.isOpenTurn())
     print(m.getTurnStartAndEnd())
@@ -2035,9 +2043,7 @@ if __name__ == '__main__':
     # Mostrar que sigue abierto turno
     print("----------------------------------------------")
     print(m.isOpenTurn())
-    print(m.getTurnStartAndEnd())
-
-
+    print(m.getTurnStartAndEnd())"""
 
     """
     m.deleteLegalTender(0)
