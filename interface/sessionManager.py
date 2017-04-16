@@ -176,7 +176,17 @@ class loginGUI(QMainWindow, loginWindow):
 
     def on_button6_pressed(self):
         if self.click():
-            authorizationPopUp(parent=self).exec_()
+            popUp = authorizationPopUp(parent=self)
+            if popUp.exec_():
+                username, password = popUp.getValues()
+                if self.db.checkPassword(username, password):
+                    userRange = self.db.getUserRange(username)
+                    if userRange == "Administrador" or userRange == "Dios":
+                        print("xD")
+                    else:
+                        errorPopUp("El usuario no es administrador", self).exec_()
+                else:
+                    errorPopUp("Datos incorrectos", self).exec_()
 
     def on_button7_pressed(self):
         if self.click():

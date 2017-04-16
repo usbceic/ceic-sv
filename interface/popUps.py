@@ -64,8 +64,8 @@ class errorPopUp(QDialog, popUp0):
         if message != None: self.dtitle0.setText(message)
 
         # Configurar resolucion del popUp
-        self.setFixedSize(self.width(), self.height())
-        self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)
+        self.setMinimumSize(self.sizeHint())
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
 
         # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
@@ -109,8 +109,8 @@ class successPopUp(QDialog, popUp1):
         if message != None: self.dtitle0.setText(message)
 
         # Configurar resolucion del popUp
-        self.setFixedSize(self.width(), self.height())
-        self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)
+        self.setMinimumSize(self.sizeHint())
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
 
         # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
@@ -152,8 +152,8 @@ class authorizationPopUp(QDialog, popUp2):
         self.setupUi(self)
 
         # Configurar resolucion del popUp
-        self.setFixedSize(self.width(), self.height())
-        self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)
+        self.setMinimumSize(self.sizeHint())
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
 
         # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
@@ -174,8 +174,17 @@ class authorizationPopUp(QDialog, popUp2):
             self.clicked = True
             return False
 
+    # Función para retornar los valores de los lineEdit
+    def getValues(self):
+        return self.dlineE0.text(), self.dlineE1.text()
+
     # Acción al presionar el botón de continuar
     def on_dpbutton0_pressed(self):
+        if self.click():
+            self.accept()
+
+    # Acción al presionar el botón de cancelar
+    def on_dpbutton1_pressed(self):
         if self.click():
             self.accept()
 
