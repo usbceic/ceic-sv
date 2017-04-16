@@ -40,7 +40,7 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QSize
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
 
 # Módulo con estructuras de Qt
 from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel
@@ -113,7 +113,7 @@ class adminGUI(QMainWindow, form_class):
     #==============================================================================================================================================================================
     def __init__(self, user, database, parent=None):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # Iniciar y configurar la interfaz y la base de datos
+        # INICIAR Y CONFIGURAR LA CLASE Y EL MANEJADOR DE LA BASE DE DATOS
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         super(adminGUI, self).__init__(parent)  # Construcción de la instancia
@@ -122,7 +122,7 @@ class adminGUI(QMainWindow, form_class):
         self.db = database                      # Asignación del manejador de la base de datos
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # Constantes para fácilitar el uso de varios métodos de la clase
+        # VARIABLES PARA FACILITAR EL USO DE VARIOS MÉTODOS DE LA CLASE
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         self.clicked = False                # Variable de control para saber si un QPushbutton es presionado
@@ -257,7 +257,7 @@ class adminGUI(QMainWindow, form_class):
         self.confLE0 = [self.lineE153, self.lineE154, self.lineE155]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # Cargar configuraciones iniciales
+        # CARGAR CONFIGURACIONES INICIALES
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Se connectan los botones entre otras cosas con algunos de los métodos definidos a continuación
