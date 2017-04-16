@@ -17550,7 +17550,7 @@ QWidget:item:unchecked {
                   <string notr="true"/>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>1</number>
                  </property>
                  <widget class="QWidget" name="page27">
                   <layout class="QGridLayout" name="gridLayout_8">
@@ -17998,6 +17998,9 @@ QWidget:item:unchecked {
                              </property>
                              <property name="text">
                               <string/>
+                             </property>
+                             <property name="echoMode">
+                              <enum>QLineEdit::Password</enum>
                              </property>
                              <property name="readOnly">
                               <bool>false</bool>
