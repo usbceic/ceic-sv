@@ -20,10 +20,10 @@
 
 from models import *
 from session import *
-
 from db_backup import *
 from sqlalchemy import func, distinct, update, event, and_, or_, desc
 from passlib.hash import bcrypt
+from str_random import str_random
 
 ###################################################################################################################################################################################
 ## DECLARACIÓN DEL MANEJADOR:
@@ -127,6 +127,22 @@ class dbManager(object):
             return False
         else:
             print("El usuario " + username + " existe")
+            return True
+
+    """
+    Método para verificar si existe algun usuario al que pertenezca un correo especificado
+     - Retorna True:
+        * Cuando el email pertenece a algún usuario
+     - Retorna False:
+        * Cuando el email NO pertenece a ningun usuario
+    """
+    def existUserEmail(self, email, active=True):
+        count = self.session.query(User).filter_by(email=email, active=active).count()
+        if count == 0:
+            print("El email " + email + " NO esta registrado")
+            return False
+        else:
+            print("El email " + email + " esta registrado")
             return True
 
     """
@@ -239,6 +255,23 @@ class dbManager(object):
         return False
 
     """
+    Método para resetear la contraseña de un usuario generando una nueva
+     - Retorna un string de 8 caracteres que representa la nueva contraseña del usuario cuando logra resetear la contraseña
+     - Retorna None cuando no puede resetear la contraseña por alguna razón
+    """
+    def resetPassword(self, username):
+        try:
+            newPass = str_random()
+            self.session.execute(update(User).where(User.username==username).values(password=bcrypt.hash(newPass)))
+            self.session.commit()
+            print("Se ha cambiado la contraseña del ususario " + "satisfactoriamente")
+            return newPass
+        except Exception as e:
+            print("Ha ocurrido un error al intentar cambiar la contraseña del usuario " + username, e)
+            self.session.rollback()
+            return None
+
+    """
     Método para cambiar la el perfil de un ususario
      - Retorna True:
         * Cuando logra cambiar el perfil correctamente
@@ -329,11 +362,12 @@ class dbManager(object):
     Método para retornar usuarios segun un filtro especificado
      - Retorna un queryset con los usuarios que pasan el filtro
     """
-    def getUsers(self, username = None, firstname = None, lastname = None, permission_mask = None):
+    def getUsers(self, username = None, firstname = None, lastname = None, email = None, permission_mask = None):
         filters = {}
         if username != None: filters["username"] = username
         if firstname != None: filters["firstname"] = firstname
         if lastname != None: filters["lastname"] = lastname
+        if email != None: filters["email"] = email
         if permission_mask != None: filters["permission_mask"] = permission_mask
 
         return self.session.query(User).filter_by(**filters).all()
@@ -2016,7 +2050,7 @@ class dbManager(object):
 
 # Prueba
 if __name__ == '__main__':
-    m = dbManager("sistema_ventas", "hola", dropAll=False)
+    m = dbManager("sistema_ventas", "hola", dropAll=True)
     m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
 
     """# Abrir turno antes de dia

@@ -88,7 +88,7 @@ class loginGUI(QMainWindow, loginWindow):
 
         self.sessionOn = False
         self.db = dbManager("sistema_ventas", "hola", parent=self)
-        self.mail = emailManager(googleServer, "ceicsvoficial@gmail.com", "pizzabrownie")
+        self.mail = emailManager()
         self.trayIcon = trayIcon(QIcon("interface/qt/images/logo.png"), self)
         self.trayIcon.show()
 
@@ -145,6 +145,22 @@ class loginGUI(QMainWindow, loginWindow):
                 self.hide()
 
             else: errorPopUp("Datos incorrectos", self).exec_()
+
+    def sendMail(self):
+        if self.lineEd8.text() != "":
+            email = self.lineEd8.text()
+            if self.db.existUserEmail(email):
+                user = self.db.getUsers(email=email)[0]
+                newPass = self.db.resetPassword(user.username)
+                self.mail.sendPRM(email, newPass)
+                self.lineEd8.setText("")
+
+                successPopUp("Correo de recuperación enviado", self).exec_()
+
+                self.MainStacked.setCurrentIndex(0)
+
+            else:
+                errorPopUp("El correo no está registrado", self).exec_()
 
     def setupPage0(self):
         self.lineEd0.setPlaceholderText("Usuario")
@@ -217,6 +233,10 @@ class loginGUI(QMainWindow, loginWindow):
         if self.click():
             self.MainStacked.setCurrentIndex(0)
 
+    def on_button8_pressed(self):
+        if self.click():
+            self.sendMail()
+
     def on_button9_pressed(self):
         if self.click():
             self.MainStacked.setCurrentIndex(0)
@@ -246,10 +266,13 @@ class loginGUI(QMainWindow, loginWindow):
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return:
-            self.startSession(self.lineEd0.text(), self.lineEd1.text())
-            if self.lineEd8.text() != "":
-                self.mail.sendPRM(self.lineEd8.text(), "El Juego")
-                self.lineEd8.setText("")
+            if self.MainStacked.currentIndex() == 0:
+                self.startSession(self.lineEd0.text(), self.lineEd1.text())
+            elif self.MainStacked.currentIndex() == 1:
+                print("xD")
+            else:
+                self.sendMail()
+
 
     def on_mainWindow_closed(self):
         self.show()

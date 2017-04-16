@@ -44,7 +44,7 @@ class User(this.Base):
     password        = Column(String, nullable=False)
     firstname       = Column(String, nullable=False)
     lastname        = Column(String, nullable=False)
-    email           = Column(String, nullable=False)
+    email           = Column(String, nullable=False, unique=True)
     permission_mask = Column(Integer, nullable=False)
     profile         = Column(String, default="")
     active          = Column(Boolean, nullable=False, default=True)
