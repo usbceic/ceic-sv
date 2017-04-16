@@ -31,7 +31,7 @@ from PyQt4.uic import loadUiType
 from PyQt4.QtGui import QDialog
 
 # Módulo con estructuras de Qt
-from PyQt4.QtCore import Qt
+from PyQt4.QtCore import Qt, QMetaObject
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -51,7 +51,7 @@ class errorPopUp(QDialog, popUp0):
     #==============================================================================================================================================================================
     # CONSTRUCTOR DE LA CLASE
     #==============================================================================================================================================================================
-    def __init__(self, parent=None):
+    def __init__(self, message=None, parent=None):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # INICIAR Y CONFIGURAR EL POPUP
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -59,6 +59,16 @@ class errorPopUp(QDialog, popUp0):
         # Interfaz
         super(errorPopUp, self).__init__(parent)
         self.setupUi(self)
+        self.setFixedSize(self.width(), self.height())
+        self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)
+        self.clicked = False
+
+        # Conectar los eventos mediante los nombres de los métodos
+        QMetaObject.connectSlotsByName(self)
+
+    #==============================================================================================================================================================================
+    # MÉTODOS DE LA CLASE
+    #==============================================================================================================================================================================
 
     # Definición de click sobre un QPushButton
     def click(self):
@@ -71,14 +81,15 @@ class errorPopUp(QDialog, popUp0):
 
     # Acción al presionar el botón de continuar
     def on_dpbutton0_pressed(self):
-        self.accept()
+        if self.click():
+            self.accept()
 
 # PopUp para operaciones exitosas
 class successPopUp(QDialog, popUp1):
     #==============================================================================================================================================================================
     # CONSTRUCTOR DE LA CLASE
     #==============================================================================================================================================================================
-    def __init__(self, parent=None):
+    def __init__(self, message=None, parent=None):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # INICIAR Y CONFIGURAR EL POPUP
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -86,6 +97,16 @@ class successPopUp(QDialog, popUp1):
         # Interfaz
         super(successPopUp, self).__init__(parent)
         self.setupUi(self)
+        self.setFixedSize(self.width(), self.height())
+        self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)
+        self.clicked = False
+
+        # Conectar los eventos mediante los nombres de los métodos
+        QMetaObject.connectSlotsByName(self)
+
+    #==============================================================================================================================================================================
+    # MÉTODOS DE LA CLASE
+    #==============================================================================================================================================================================
 
     # Definición de click sobre un QPushButton
     def click(self):
@@ -98,7 +119,8 @@ class successPopUp(QDialog, popUp1):
 
     # Acción al presionar el botón de continuar
     def on_dpbutton0_pressed(self):
-        self.accept()
+        if self.click():
+            self.accept()
 
 # PopUp para autorizaciones de administrador
 class authorizationPopUp(QDialog, popUp2):
@@ -106,7 +128,7 @@ class authorizationPopUp(QDialog, popUp2):
     # CONSTRUCTOR DE LA CLASE
     #==============================================================================================================================================================================
 
-    def __init__(self, parent=None):
+    def __init__(self, message=None, parent=None):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # INICIAR Y CONFIGURAR EL POPUP
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -118,6 +140,13 @@ class authorizationPopUp(QDialog, popUp2):
         self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)
         self.clicked = False
 
+        # Conectar los eventos mediante los nombres de los métodos
+        QMetaObject.connectSlotsByName(self)
+
+    #==============================================================================================================================================================================
+    # MÉTODOS DE LA CLASE
+    #==============================================================================================================================================================================
+
     # Definición de click sobre un QPushButton
     def click(self):
         if self.clicked:
@@ -129,7 +158,8 @@ class authorizationPopUp(QDialog, popUp2):
 
     # Acción al presionar el botón de continuar
     def on_dpbutton0_pressed(self):
-        self.accept()
+        if self.click():
+            self.accept()
 
 ###################################################################################################################################################################################
 ## FIN :)

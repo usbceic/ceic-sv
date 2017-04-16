@@ -144,7 +144,7 @@ class loginGUI(QMainWindow, loginWindow):
                 self.mainWindow.show()
                 self.hide()
 
-            else: errorPopUp(self).exec_()
+            else: errorPopUp(parent=self).exec_()
 
     def setupPage0(self):
         self.lineEd0.setPlaceholderText("Usuario")
@@ -176,7 +176,7 @@ class loginGUI(QMainWindow, loginWindow):
 
     def on_button6_pressed(self):
         if self.click():
-            authorizationPopUp(self).exec_()
+            authorizationPopUp(parent=self).exec_()
 
     def on_button7_pressed(self):
         if self.click():
