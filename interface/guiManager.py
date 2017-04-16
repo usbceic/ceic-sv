@@ -1012,6 +1012,7 @@ class adminGUI(QMainWindow, form_class):
 
         # Refrescar el inventario
         self.refreshInventory()
+        self.refreshClients()
 
         # Enfocar
         self.lineE17.setFocus()
@@ -1236,7 +1237,7 @@ class adminGUI(QMainWindow, form_class):
     def on_pbutton9_pressed(self):
         if self.click():
             name = self.lineE23.text()
-            if self.db.existProduct(name):
+            if self.db.existProduct(name) and int(self.spinLine0.text()) > 0:
 
                 # Cargar información
                 product = self.db.getProductByNameOrID(name)[0]                     # Obtener cliente

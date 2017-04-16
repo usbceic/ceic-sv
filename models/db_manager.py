@@ -1090,6 +1090,22 @@ class dbManager(object):
                 print("No se pudo actualizar el saldo del cliente", e)
 
     """
+    Método para añadir saldo al balance de un cliente
+     - No retorna nada
+    """
+    def substractToClientBalance(self, ci, amount):
+        balance = self.session.query(Client.balance).filter_by(ci=ci).scalar()
+        for i in range(10):
+            self.session.query(Client).filter_by(ci=ci).update({"balance" : float(balance)-float(amount)})
+            try:
+                self.session.commit()
+                print("Se ha actualizado correctamente el saldo del cliente")
+                break
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar el saldo del cliente", e)
+
+    """
     Método para hacer check in de un cliente
      - Retorna True:
         * Cuando logra hacer check in correctamente
@@ -1144,6 +1160,12 @@ class dbManager(object):
             print("No se puede crear la compra porque NO existe el cliente o el vendedor")
             return None
 
+    """
+    Método para obtener la cédula del cliente asociado a una compra
+     - Retorna la cédula del cliente que realizo la compra especificada
+    """
+    def getPurchaseCI(self, purchase_id):
+        return self.session.query(Purchase.ci).filter_by(purchase_id=purchase_id).one()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LISTAS DE PRODUCTOS:
@@ -1349,6 +1371,11 @@ class dbManager(object):
             try:
                 self.session.commit()
                 print("Se ha creado correctamente el pago")
+
+                if with_balance:
+                    ci = self.getPurchaseCI(purchase_id)
+                    self.substractToClientBalance(ci, amount)
+
                 self.afterInsertCheckout(purchase_id)
                 return str(newCheckout.checkout_id)
             except Exception as e:
@@ -1983,8 +2010,6 @@ class dbManager(object):
 if __name__ == '__main__':
     m = dbManager("sistema_ventas", "hola", dropAll=False)
     m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
-
-    m.getTop10()
 
     """# Abrir turno antes de dia
     print("----------------------------------------------")
