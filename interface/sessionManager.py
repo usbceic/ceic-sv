@@ -176,17 +176,42 @@ class loginGUI(QMainWindow, loginWindow):
 
     def on_button6_pressed(self):
         if self.click():
-            popUp = authorizationPopUp(parent=self)
-            if popUp.exec_():
-                username, password = popUp.getValues()
-                if self.db.checkPassword(username, password):
-                    userRange = self.db.getUserRange(username)
-                    if userRange == "Administrador" or userRange == "Dios":
-                        print("xD")
+            flag = False
+            if (self.lineEd2.text() and self.lineEd3.text() and self.lineEd4.text() and self.lineEd5.text() and self.lineEd6.text()) != "":
+                if self.lineEd7.text() == self.lineEd6.text():
+                    username = self.lineEd2.text()
+                    if not self.db.existUser(username):
+
+                        kwargs = {
+                            "username"        : username,
+                            "firstname"       : self.lineEd3.text(),
+                            "lastname"        : self.lineEd4.text(),
+                            "email"           : self.lineEd5.text(),
+                            "password"        : self.lineEd6.text(),
+                            "permission_mask" : self.db.getPermissionMask(self.cobox0.currentText())
+                        }
+                        flag = True
+
                     else:
-                        errorPopUp("El usuario no es administrador", self).exec_()
+                        errorPopUp("El usuario "+username+" ya existe",self).exec_()
                 else:
-                    errorPopUp("Datos incorrectos", self).exec_()
+                    errorPopUp("Las contraseñas no coinciden",self).exec_()
+            else:
+                errorPopUp("Faltan datos",self).exec_()
+            if flag:
+                popUp = authorizationPopUp(parent=self)
+                if popUp.exec_():
+                    adminUsername, adminPassword = popUp.getValues()
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
+                            self.db.createUser(**kwargs) # Crear usuario
+                            successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
+                            self.MainStacked.setCurrentIndex(0)
+                        else:
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                    else:
+                        errorPopUp("Datos incorrectos", self).exec_()
 
     def on_button7_pressed(self):
         if self.click():
