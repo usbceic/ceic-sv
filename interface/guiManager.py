@@ -33,6 +33,9 @@ from datetime import datetime
 # Módulo manejador de la base de datos
 from db_manager import dbManager
 
+# Módulo con las clases para los popUp
+from popUps import errorPopUp, successPopUp, authorizationPopUp
+
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
 

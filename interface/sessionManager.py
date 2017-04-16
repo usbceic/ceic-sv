@@ -47,6 +47,9 @@ from guiManager import adminGUI
 # Manejador de correo electrónico
 from emailManager import emailManager, googleServer
 
+# Módulo con las clases para los popUp
+from popUps import errorPopUp, successPopUp, authorizationPopUp
+
 ###################################################################################################################################################################################
 ## CONSTANTES:
 ###################################################################################################################################################################################
@@ -61,8 +64,6 @@ MainUI = "login.ui"
 
 # Interfaz .ui creada con qt designer
 loginWindow = loadUiType(UIpath+MainUI)[0]
-dialog0 = loadUiType(UIpath+"dialog0.ui")[0]
-dialog1 = loadUiType(UIpath+"dialog1.ui")[0]
 
 ###################################################################################################################################################################################
 ## MANEJADOR DE LA INTERFAZ GRÁFICA:
@@ -143,7 +144,7 @@ class loginGUI(QMainWindow, loginWindow):
                 self.mainWindow.show()
                 self.hide()
 
-            else: dialog0GUI(self).exec_()
+            else: errorPopUp(self).exec_()
 
     def setupPage0(self):
         self.lineEd0.setPlaceholderText("Usuario")
@@ -175,7 +176,7 @@ class loginGUI(QMainWindow, loginWindow):
 
     def on_button6_pressed(self):
         if self.click():
-            dialog1GUI(self).exec_()
+            authorizationPopUp(self).exec_()
 
     def on_button7_pressed(self):
         if self.click():
@@ -223,58 +224,9 @@ class loginGUI(QMainWindow, loginWindow):
         #self.hide()
         event.accept()
 
-class dialog0GUI(QDialog, dialog0):
-    #==============================================================================================================================================================================
-    # Constructor de la clase
-    #==============================================================================================================================================================================
-
-    def __init__(self, parent=None):
-        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # Iniciar y configurar la interfaz y la base de datos
-        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        # Interfaz
-        super(dialog0GUI, self).__init__(parent)
-        self.setupUi(self)
-
-
-    def click(self):
-        if self.clicked:
-            self.clicked = False
-            return True
-        else:
-            self.clicked = True
-            return False
-
-    def on_dpbutton0_pressed(self): self.accept()
-
-class dialog1GUI(QDialog, dialog1):
-    #==============================================================================================================================================================================
-    # Constructor de la clase
-    #==============================================================================================================================================================================
-
-    def __init__(self, parent=None):
-        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # Iniciar y configurar la interfaz y la base de datos
-        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        # Interfaz
-        super(dialog1GUI, self).__init__(parent)
-        self.setupUi(self)
-        self.setFixedSize(self.width(), self.height())
-        self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)
-        self.clicked = False
-
-        # Definición de click sobre un QPushButton
-    def click(self):
-        if self.clicked:
-            self.clicked = False
-            return True
-        else:
-            self.clicked = True
-            return False
-
-    def on_dpbutton2_pressed(self): self.accept()
+###################################################################################################################################################################################
+## MANEJADOR DEL ICONO PARA LA BARRA DE NOTIFICACIONES:
+###################################################################################################################################################################################
 
 # Icono en la barra de notificaciones
 class trayIcon(QSystemTrayIcon):

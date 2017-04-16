@@ -10,6 +10,10 @@
     <file alias="down">../images/down_arrow.png</file>
     <file alias="up">../images/up_arrow.png</file>
   </qresource>
+  <qresource prefix="popUp">
+    <file alias="checkmark">../images/checkmark.png</file>
+    <file alias="uncheckmark">../images/uncheckmark.png</file>
+  </qresource>
   <qresource prefix="spinBox">
     <file alias="add">../images/add.png</file>
     <file alias="substract">../images/substract.png</file>

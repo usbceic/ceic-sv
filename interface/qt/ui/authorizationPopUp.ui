@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>dialog1</class>
- <widget class="QDialog" name="dialog1">
+ <class>authorizationPopUp</class>
+ <widget class="QDialog" name="authorizationPopUp">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>200</width>
-    <height>166</height>
+    <height>156</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Autorización</string>
   </property>
   <property name="styleSheet">
    <string notr="true">/*#########################################################
 ##                        QDialog                                                                                                                     ##
 ##########################################################*/
 
-#dialog1 {
+#authorizationPopUp {
 	background: white;
-}
-
-/***********************************
-* GroupBox
-***********************************/
-
-#dgbox0 {
-    background-color: rgb(245,245,245);
-    padding: -8px;
 }
 
 /***********************************
@@ -48,32 +39,32 @@
 ***********************************/
 
 /*Estilo por defecto del  boton para continuar/aceptar*/
-#dpbutton1{
+#dpbutton0{
     color: #FFFFFF;
     border: 1px outline #BDBDBD;
     border-radius: 2px;
     background: #2196F3;
-    min-height: 40px;
+    min-height: 30px;
     min-width: 80px;
     padding: 2px;
 }
 
 /*Estilo al pasar por encima y presionar el boton para continuar/aceptar*/
-#dpbutton1:hover, #dpbutton1:pressed{
+#dpbutton0:hover, #dpbutton0:pressed{
    background: #1976D2;
 }
 
 /*Estilo por defecto del  botones para limpiar/cancelar*/
-#dpbutton2{ 
+#dpbutton1{ 
     color: #2196F3;
     border: 1px solid transparent;
     background: transparent;
-    min-height: 40px;
+    min-height: 30px;
     min-width: 80px;
 }
 
 /*Configuración del estilo al pasar por encima y presionar el boton para limpiar/cancelar*/
-#dpbutton2:hover, #dpbutton2:pressed {
+#dpbutton1:hover, #dpbutton1:pressed {
     color: #1976D2;
 }
 
@@ -99,6 +90,7 @@
    font-family: Open Sans;
    font-size: 12pt;
    font-style: bold;
+   font-weight: 600;
    text-transform: capitalize;
    qproperty-alignment: 'AlignVCenter | AlignHCenter';
    padding: 4px;
@@ -264,7 +256,7 @@
      <item>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="1">
-        <widget class="QPushButton" name="dpbutton2">
+        <widget class="QPushButton" name="dpbutton1">
          <property name="font">
           <font>
            <family>Open Sans</family>
@@ -282,7 +274,7 @@
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QPushButton" name="dpbutton1">
+        <widget class="QPushButton" name="dpbutton0">
          <property name="font">
           <font>
            <family>Open Sans</family>
