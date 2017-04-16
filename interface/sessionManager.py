@@ -176,6 +176,21 @@ class loginGUI(QMainWindow, loginWindow):
     def on_button6_pressed(self):
         if self.click():
             dialog1GUI(self).exec_()
+            if (self.lineEd2.text() and self.lineEd3.text() and self.lineEd4.text() and self.lineEd5.text() and self.lineEd6.text()) != "" and self.lineEd7.text() == self.lineEd6.text():
+                username = self.lineEd2.text()
+                if not self.db.existUser(username):
+
+                    kwargs = {
+                        "username"        : username,
+                        "firstname"       : self.lineEd3.text(),
+                        "lastname"        : self.lineEd4.text(),
+                        "email"           : self.lineEd5.text(),
+                        "password"        : self.lineEd6.text(),
+                        "permission_mask" : self.db.getPermissionMask(self.cobox0.currentText())
+                    }
+
+                    self.db.createUser(**kwargs) # Crear cliente
+            self.MainStacked.setCurrentIndex(0)
 
     def on_button7_pressed(self):
         if self.click():
@@ -274,6 +289,14 @@ class dialog1GUI(QDialog, dialog1):
             self.clicked = True
             return False
 
+    def on_dpbutton1_pressed(self):
+        if self.click():
+            adminUsername = self.dlineE0.text()
+            adminPassword = self.dlineE1.text()
+            if (adminUsername and adminPassword) != "" and self.db.checkPassword(adminUsername,adminPassword) and self.db.getUserInfo(adminUsername).permission_mask >=2:
+                self.accept()
+            else:
+                print("Error durante autorizacion")
     def on_dpbutton2_pressed(self): self.accept()
 
 # Icono en la barra de notificaciones
