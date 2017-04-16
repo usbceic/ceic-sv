@@ -108,9 +108,9 @@ class dbManager(object):
     def getPermissionMask(self, userRange):
         userRange = userRange.title().strip()
 
-        if userRange == "colaborador": return 0
-        elif userRange == "vendedor": return 1
-        elif userRange == "administrador": return 2
+        if userRange == "Colaborador": return 0
+        elif userRange == "Vendedor": return 1
+        elif userRange == "Administrador": return 2
         else: return 3
 
     """
@@ -337,6 +337,14 @@ class dbManager(object):
         if permission_mask != None: filters["permission_mask"] = permission_mask
 
         return self.session.query(User).filter_by(**filters).all()
+
+    """
+    Método para retornar el rango de un usuario especificado
+     - Retorna el rango del usuario especificado
+    """
+    def getUserRange(self, username):
+        permission_mask = self.session.query(User.permission_mask).filter_by(username=username).scalar()
+        return self.getRange(permission_mask)
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PROVEEDORES:

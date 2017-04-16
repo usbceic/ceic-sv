@@ -47,6 +47,9 @@ from guiManager import adminGUI
 # Manejador de correo electrónico
 from emailManager import emailManager, googleServer
 
+# Módulo con las clases para los popUp
+from popUps import errorPopUp, successPopUp, authorizationPopUp
+
 ###################################################################################################################################################################################
 ## CONSTANTES:
 ###################################################################################################################################################################################
@@ -61,8 +64,6 @@ MainUI = "login.ui"
 
 # Interfaz .ui creada con qt designer
 loginWindow = loadUiType(UIpath+MainUI)[0]
-dialog0 = loadUiType(UIpath+"dialog0.ui")[0]
-dialog1 = loadUiType(UIpath+"dialog1.ui")[0]
 
 ###################################################################################################################################################################################
 ## MANEJADOR DE LA INTERFAZ GRÁFICA:
@@ -143,7 +144,7 @@ class loginGUI(QMainWindow, loginWindow):
                 self.mainWindow.show()
                 self.hide()
 
-            else: dialog0GUI(self).exec_()
+            else: errorPopUp("Datos incorrectos", self).exec_()
 
     def setupPage0(self):
         self.lineEd0.setPlaceholderText("Usuario")
@@ -175,22 +176,42 @@ class loginGUI(QMainWindow, loginWindow):
 
     def on_button6_pressed(self):
         if self.click():
-            dialog1GUI(self).exec_()
-            if (self.lineEd2.text() and self.lineEd3.text() and self.lineEd4.text() and self.lineEd5.text() and self.lineEd6.text()) != "" and self.lineEd7.text() == self.lineEd6.text():
-                username = self.lineEd2.text()
-                if not self.db.existUser(username):
+            flag = False
+            if (self.lineEd2.text() and self.lineEd3.text() and self.lineEd4.text() and self.lineEd5.text() and self.lineEd6.text()) != "":
+                if self.lineEd7.text() == self.lineEd6.text():
+                    username = self.lineEd2.text()
+                    if not self.db.existUser(username):
 
-                    kwargs = {
-                        "username"        : username,
-                        "firstname"       : self.lineEd3.text(),
-                        "lastname"        : self.lineEd4.text(),
-                        "email"           : self.lineEd5.text(),
-                        "password"        : self.lineEd6.text(),
-                        "permission_mask" : self.db.getPermissionMask(self.cobox0.currentText())
-                    }
+                        kwargs = {
+                            "username"        : username,
+                            "firstname"       : self.lineEd3.text(),
+                            "lastname"        : self.lineEd4.text(),
+                            "email"           : self.lineEd5.text(),
+                            "password"        : self.lineEd6.text(),
+                            "permission_mask" : self.db.getPermissionMask(self.cobox0.currentText())
+                        }
+                        flag = True
 
-                    self.db.createUser(**kwargs) # Crear cliente
-            self.MainStacked.setCurrentIndex(0)
+                    else:
+                        errorPopUp("El usuario "+username+" ya existe",self).exec_()
+                else:
+                    errorPopUp("Las contraseñas no coinciden",self).exec_()
+            else:
+                errorPopUp("Faltan datos",self).exec_()
+            if flag:
+                popUp = authorizationPopUp(parent=self)
+                if popUp.exec_():
+                    adminUsername, adminPassword = popUp.getValues()
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
+                            self.db.createUser(**kwargs) # Crear usuario
+                            successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
+                            self.MainStacked.setCurrentIndex(0)
+                        else:
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                    else:
+                        errorPopUp("Datos incorrectos", self).exec_()
 
     def on_button7_pressed(self):
         if self.click():
@@ -238,66 +259,9 @@ class loginGUI(QMainWindow, loginWindow):
         #self.hide()
         event.accept()
 
-class dialog0GUI(QDialog, dialog0):
-    #==============================================================================================================================================================================
-    # Constructor de la clase
-    #==============================================================================================================================================================================
-
-    def __init__(self, parent=None):
-        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # Iniciar y configurar la interfaz y la base de datos
-        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        # Interfaz
-        super(dialog0GUI, self).__init__(parent)
-        self.setupUi(self)
-
-
-    def click(self):
-        if self.clicked:
-            self.clicked = False
-            return True
-        else:
-            self.clicked = True
-            return False
-
-    def on_dpbutton0_pressed(self): self.accept()
-
-class dialog1GUI(QDialog, dialog1):
-    #==============================================================================================================================================================================
-    # Constructor de la clase
-    #==============================================================================================================================================================================
-
-    def __init__(self, parent=None):
-        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # Iniciar y configurar la interfaz y la base de datos
-        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        # Interfaz
-        super(dialog1GUI, self).__init__(parent)
-        self.setupUi(self)
-        self.setFixedSize(self.width(), self.height())
-        self.setWindowFlags(Qt.Window | Qt.WindowMaximizeButtonHint)
-        self.clicked = False
-
-        # Definición de click sobre un QPushButton
-    def click(self):
-        if self.clicked:
-            self.clicked = False
-            return True
-        else:
-            self.clicked = True
-            return False
-
-    def on_dpbutton1_pressed(self):
-        if self.click():
-            adminUsername = self.dlineE0.text()
-            adminPassword = self.dlineE1.text()
-            if (adminUsername and adminPassword) != "" and self.db.checkPassword(adminUsername,adminPassword) and self.db.getUserInfo(adminUsername).permission_mask >=2:
-                self.accept()
-            else:
-                print("Error durante autorizacion")
-    def on_dpbutton2_pressed(self): self.accept()
+###################################################################################################################################################################################
+## MANEJADOR DEL ICONO PARA LA BARRA DE NOTIFICACIONES:
+###################################################################################################################################################################################
 
 # Icono en la barra de notificaciones
 class trayIcon(QSystemTrayIcon):
