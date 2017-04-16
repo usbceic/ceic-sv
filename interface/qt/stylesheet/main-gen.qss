@@ -213,8 +213,8 @@
 #popularItem0, #popularItem1, #popularItem2, #popularItem3, #popularItem4, #popularItem5, #popularItem6, #popularItem7, #popularItem8, #popularItem9, #newItem0, #newItem1, #newItem2, #newItem3, #newItem4, #newItem5, #newItem6, #newItem7, #newItem8, #newItem9{
     background: #FFFFFF;
     border: 1px solid divider-color;
-    min-width: 48px;
-    min-height: 48px;
+    min-width: 64px;
+    min-height: 64px;
 }
 
 /*Configurar estilo de los botones de productos en la lista de  Top 10 y Nuevos cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
@@ -226,8 +226,8 @@
 #selectedItem0, #selectedItem1, #selectedItem2, #userImageButton{
     background: #FFFFFF;
     border: 1px solid divider-color;
-    min-width: 48px;
-    min-height: 48px;
+    min-width: 64px;
+    min-height: 64px;
 }
 
 /*Configurar el estilo de las imagenes de productos estaticos restantes en la interfáz cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/

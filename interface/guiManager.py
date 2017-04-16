@@ -40,7 +40,7 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QSize
 
 # Módulo con estructuras de Qt
 from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel
@@ -138,6 +138,8 @@ class adminGUI(QMainWindow, form_class):
         self.selectedProductName = ""       # Nombre del producto seleccionado actualmente en la vista de ventas
         self.selectedProducts = {}          # Diccionario de productos en la factura en la vista de ventas
         self.dateFormat = "%d/%m/%Y"
+        self.top10 = []
+        self.new10 = []
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # PREFERENCIAS DE USUARIO
@@ -240,6 +242,13 @@ class adminGUI(QMainWindow, form_class):
 
         # SpinLines en la vista de ventas
         self.spinBox = [self.spinLine0]
+
+        self.popularItems = [self.popularItem0, self.popularItem1, self.popularItem2, self.popularItem3, self.popularItem4, self.popularItem5, self.popularItem6, self.popularItem7, self.popularItem8, self.popularItem9]
+
+        self.newItems = [self.newItem0, self.newItem1, self.newItem2, self.newItem3, self.newItem4, self.newItem5, self.newItem6, self.newItem7, self.newItem8, self.newItem9]
+
+        self.popularTexts = [self.text44, self.text45, self.text46, self.text47, self.text48, self.text49, self.text50, self.text51, self.text52, self.text53]
+        self.newTexts = [self.text54, self.text55, self.text56, self.text57, self.text58, self.text59, self.text60, self.text61, self.text62, self.text63]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE CONFIGURACIONES
@@ -999,6 +1008,9 @@ class adminGUI(QMainWindow, form_class):
         self.clearLEs(self.salesCheckoutLE)
         self.clearTable(self.table11)
 
+        self.refreshTop10()
+        self.refreshNew10()
+
         # Refrescar el inventario
         self.refreshInventory()
 
@@ -1027,52 +1039,149 @@ class adminGUI(QMainWindow, form_class):
         if len(itemsList) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
         table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
 
+    def refreshTop10(self):
+        self.top10 = self.db.getTop10()
+        print(self.top10)
+        for i in range(len(self.top10)):
+            product_name = self.top10[i].product_name
+            price = str(self.top10[i].price)
+            self.popularItems[i].setIcon(QIcon(join(productPath, product_name)))
+            self.popularTexts[i].setText(price)
+
+    def refreshNew10(self):
+        self.new10 = self.db.getNew10()
+        for i in range(len(self.new10)):
+            product_name = self.new10[i].product_name
+            price = str(self.new10[i].price)
+            self.newItems[i].setIcon(QIcon(join(productPath, product_name)))
+            self.newTexts[i].setText(price)
+
+    def substractToSalesSpinBox(self):
+        count = int(self.spinLine0.text())
+        if count > 0:
+            self.spinLine0.setText(str(count-1))
+            self.lineE25.setText(str(((count-1)*float(self.lineE24.text()))))
+
+    def addToSalesSpinBox(self):
+        count = int(self.spinLine0.text())
+        if self.selectedProductName in self.selectedProductRemaining:
+            if count < self.selectedProductRemaining[self.selectedProductName]:
+                self.spinLine0.setText(str(count+1))
+                self.lineE25.setText(str(((count+1)*float(self.lineE24.text()))))
+
     # Seleccionar un item de las listas Top 10 y Nuevo
-    def selectItem(self, n):
-        if self.click(): self.lineE23.setText(str(n))
+    def selectPopularItem(self, n):
+        if n < len(self.top10):
+            product_name = self.top10[n].product_name
+            if self.lineE23.text() != product_name:
+                self.lineE23.setText(product_name)
+                self.clearSpinLines(self.spinBox)
+
+            self.addToSalesSpinBox()
+
+    # Seleccionar un item de las listas Top 10 y Nuevo
+    def selectNewItem(self, n):
+        if n < len(self.new10):
+            product_name = self.new10[n].product_name
+            if self.lineE23.text() != product_name:
+                self.lineE23.setText(product_name)
+                self.clearSpinLines(self.spinBox)
+
+            self.addToSalesSpinBox()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    def on_popularItem0_pressed(self): self.selectItem(0)
-    def on_popularItem1_pressed(self): self.selectItem(1)
-    def on_popularItem2_pressed(self): self.selectItem(2)
-    def on_popularItem3_pressed(self): self.selectItem(3)
-    def on_popularItem4_pressed(self): self.selectItem(4)
-    def on_popularItem5_pressed(self): self.selectItem(5)
-    def on_popularItem6_pressed(self): self.selectItem(6)
-    def on_popularItem7_pressed(self): self.selectItem(7)
-    def on_popularItem8_pressed(self): self.selectItem(8)
-    def on_popularItem9_pressed(self): self.selectItem(9)
+    def on_popularItem0_pressed(self):
+        if self.click():
+            self.selectPopularItem(0)
 
-    def on_newItem0_pressed(self): self.selectItem(0)
-    def on_newItem1_pressed(self): self.selectItem(1)
-    def on_newItem2_pressed(self): self.selectItem(2)
-    def on_newItem3_pressed(self): self.selectItem(3)
-    def on_newItem4_pressed(self): self.selectItem(4)
-    def on_newItem5_pressed(self): self.selectItem(5)
-    def on_newItem6_pressed(self): self.selectItem(6)
-    def on_newItem7_pressed(self): self.selectItem(7)
-    def on_newItem8_pressed(self): self.selectItem(8)
-    def on_newItem9_pressed(self): self.selectItem(9)
+    def on_popularItem1_pressed(self):
+        if self.click():
+            self.selectPopularItem(1)
+
+    def on_popularItem2_pressed(self):
+        if self.click():
+            self.selectPopularItem(2)
+
+    def on_popularItem3_pressed(self):
+        if self.click():
+            self.selectPopularItem(3)
+
+    def on_popularItem4_pressed(self):
+        if self.click():
+            self.selectPopularItem(4)
+
+    def on_popularItem5_pressed(self):
+        if self.click():
+            self.selectPopularItem(5)
+
+    def on_popularItem6_pressed(self):
+        if self.click():
+            self.selectPopularItem(6)
+
+    def on_popularItem7_pressed(self):
+        if self.click():
+            self.selectPopularItem(7)
+
+    def on_popularItem8_pressed(self):
+        if self.click():
+            self.selectPopularItem(8)
+
+    def on_popularItem9_pressed(self):
+        if self.click():
+            self.selectPopularItem(9)
+
+    def on_newItem0_pressed(self):
+        if self.click():
+            self.selectNewItem(0)
+
+    def on_newItem1_pressed(self):
+        if self.click():
+            self.selectNewItem(1)
+
+    def on_newItem2_pressed(self):
+        if self.click():
+            self.selectNewItem(2)
+
+    def on_newItem3_pressed(self):
+        if self.click():
+            self.selectNewItem(3)
+
+    def on_newItem4_pressed(self):
+        if self.click():
+            self.selectNewItem(4)
+
+    def on_newItem5_pressed(self):
+        if self.click():
+            self.selectNewItem(5)
+
+    def on_newItem6_pressed(self):
+        if self.click():
+            self.selectNewItem(6)
+
+    def on_newItem7_pressed(self):
+        if self.click():
+            self.selectNewItem(7)
+
+    def on_newItem8_pressed(self):
+        if self.click():
+            self.selectNewItem(8)
+
+    def on_newItem9_pressed(self):
+        if self.click():
+            self.selectNewItem(9)
 
     # Botón para sumar al spinLine
     def on_add0_pressed(self):
         if self.click():
-            count = int(self.spinLine0.text())
-            if self.selectedProductName in self.selectedProductRemaining:
-                if count < self.selectedProductRemaining[self.selectedProductName]:
-                    self.spinLine0.setText(str(count+1))
-                    self.lineE25.setText(str(((count+1)*float(self.lineE24.text()))))
+            self.addToSalesSpinBox()
 
     # Botón para restar al spinLine
     def on_substract0_pressed(self):
         if self.click():
-            count = int(self.spinLine0.text())
-            if count > 0:
-                self.spinLine0.setText(str(count-1))
-                self.lineE25.setText(str(((count-1)*float(self.lineE24.text()))))
+            self.substractToSalesSpinBox()
 
     # Botón para efectuar venta
     def on_pbutton7_pressed(self):

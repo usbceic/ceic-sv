@@ -659,17 +659,19 @@ class dbManager(object):
 
     """
     Método para obtener los 10 productos más vendidos
-     - Retorna un queryset con los 10 productos más vendidos y cuantos items de cada uno se han vendido
+     - Retorna un queryset con el nombre y precio de cada uno de los 10 productos más vendidos
     """
     def getTop10(self):
-        return self.session.query(Product_list.product_id, func.sum(Product_list.amount).label("total")).group_by(Product_list.product_id).order_by(desc("total")).limit(10).all()
+        subQuery = self.session.query(Product_list.product_id.label("product_id"), func.sum(Product_list.amount).label("total")).group_by(Product_list.product_id).order_by(desc("total")).limit(10).subquery("subQuery")
+
+        return self.session.query(Product.product_name.label("product_name"), Product.price.label("price")).join(subQuery, Product.product_id == subQuery.c.product_id).order_by(desc("total")).all()
 
     """
     Método para obtener los 10 productos más nuevos
      - Retorna un queryset con los 10 productos más nuevos
     """
     def getNew10(self):
-        return self.session.query(Product).order_by(desc(Product.creation_date)).limit(10).all()
+        return self.session.query(Product.product_name, Product.price).order_by(desc(Product.creation_date)).limit(10).all()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LOTES:
@@ -1981,6 +1983,8 @@ class dbManager(object):
 if __name__ == '__main__':
     m = dbManager("sistema_ventas", "hola", dropAll=False)
     m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
+
+    m.getTop10()
 
     """# Abrir turno antes de dia
     print("----------------------------------------------")
