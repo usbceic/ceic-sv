@@ -1958,6 +1958,86 @@ class dbManager(object):
             print("Razon:", e)
             return (True, False)
 
+
+    """
+    Método para obtener todas las operaciones entre dos fechas (inclusivas)
+     - Devuelve los query per se, no los objetos, en una tupla
+     - La tupla tiene el siguiente orden:
+       * Pagos en efectivo
+       * Productos devueltos con efectivo devuelto
+       * Servicios devueltos con efectivo devuelto
+       * Transferencias
+       * Todas las Operaciones en log
+    """
+    def _getOperations(self, lower_date=None, upper_date=None):
+
+        lower_none = lower_date is None
+        upper_none = upper_date is None
+        both_none =  lower_none and upper_none
+
+
+        if both_none:
+            cash_checkouts = self.session.query(Checkout).filter_by(with_balance=False)
+            product_reverse = self.session.query(Reverse_product_list).filter_by(cash=True)
+            service_reverse = self.session.query(Reverse_service_list).filter_by(cash=True)
+            transfers = self.session.query(Transfer)
+            log = self.session.query(Operation_log)
+        else:
+            filters_cash_checkouts = and_()
+            filters_product_reverse = and_()
+            filters_service_reverse = and_()
+            filters_transfer = and_()
+            filters_log = and_()
+
+            if not lower_none:
+                filters_cash_checkouts = and_(filters_cash_checkouts, Checkout.pay_date>=lower_date)
+                filters_product_reverse = and_(filters_product_reverse, Reverse_product_list.reverse_date>=lower_date)
+                filters_service_reverse = and_(filters_service_reverse, Reverse_service_list.reverse_date>=lower_date)
+                filters_transfer = and_(filters_transfer, Transfer.transfer_date>=lower_date)
+                filters_log = and_(filters_log, Operation_log.recorded>=lower_date)
+            
+            if not upper_none:
+                filters_cash_checkouts = and_(filters_cash_checkouts, Checkout.pay_date<=upper_date)
+                filters_product_reverse = and_(filters_product_reverse, Reverse_product_list.reverse_date<=upper_date)
+                filters_service_reverse = and_(filters_service_reverse, Reverse_service_list.reverse_date<=upper_date)
+                filters_transfer = and_(filters_transfer, Transfer.transfer_date<=upper_date)
+                filters_log = and_(filters_log, Operation_log.recorded<=upper_date)
+
+            filters_cash_checkouts = and_(filters_cash_checkouts, Checkout.with_balance==False)
+            filters_product_reverse = and_(filters_product_reverse, Reverse_product_list.cash==True)
+            filters_service_reverse = and_(filters_service_reverse, Reverse_service_list.cash==True)
+
+            cash_checkouts = self.session.query(Checkout).filter(*filters_cash_checkouts)
+            product_reverse = self.session.query(Reverse_product_list).filter(*filters_product_reverse)
+            service_reverse = self.session.query(Reverse_service_list).filter(*filters_service_reverse)
+            transfers = self.session.query(Transfer).filter(*filters_transfer)
+            log = self.session.query(Operation_log).filter(*filters_log)
+
+        return (cash_checkouts, product_reverse, service_reverse, transfers, log)
+
+
+    """
+    Método para obtener todas las operaciones entre dos fechas (inclusivas)
+     - Devuelve los objetos en una tupla
+     - La tupla tiene el siguiente orden:
+       * Pagos en efectivo
+       * Productos devueltos con efectivo devuelto
+       * Servicios devueltos con efectivo devuelto
+       * Transferencias
+       * Todas las Operaciones en log
+    """
+    def getOperations(self, lower_date=None, upper_date=None):
+        cash_checkouts, product_reverse, service_reverse, transfers, log = self._getOperations(lower_date, upper_date)
+        return (cash_checkouts.all(), product_reverse.all(), service_reverse.all(), transfers.all(), log.all())
+
+
+    def closeTurn(self, clerk, description="")
+        current_turn = self.getTurnStartAndEnd()
+
+        if current_turn[0] is None or (current_turn[0] is not None and current_turn[1] is not None):
+            print("No se puede cerrar el turno si el turno esta cerrado")
+            return (False, False)
+
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE MONEDAS / BILLETES PARA PAGO:
     #==============================================================================================================================================================================
