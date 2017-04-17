@@ -18,12 +18,14 @@
 ## PATH:
 ###################################################################################################################################################################################
 
-from sys import path              # Importación del path del sistema
-from os import getcwd             # Importación de la función para obtener el path actual
-from os.path import join, split   # Importación de funciónes para unir y separar paths con el formato del sistema
+from sys import path                        # Importación del path del sistema
+from os.path import join, split, basename   # Importación de funciones para unir y separar paths con el formato del sistema
 
-# Agregar la carpeta modules al path
-path.append(join(split(getcwd())[0], "modules"))
+# Para cada path en el path del sistema para la aplicación
+for current in path:
+    if basename(current) == "models":
+        path.append(join(split(current)[0], "modules"))  # Agregar la carpeta modules al path
+        break
 
 ###################################################################################################################################################################################
 ## DEPENDENCIAS:

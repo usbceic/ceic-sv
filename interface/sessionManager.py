@@ -15,16 +15,27 @@
 # Pablo Betancourt, pablodbc30@gmail.com
 
 ###################################################################################################################################################################################
+## PATH:
+###################################################################################################################################################################################
+
+from sys import path                        # Importación del path del sistema
+from os.path import join, split, basename   # Importación de funciones para unir y separar paths con el formato del sistema
+
+# Para cada path en el path del sistema para la aplicación
+for current in path:
+    if basename(current) == "interface":
+        path.append(join(split(current)[0], "modules"))                          # Agregar la carpeta modules al path
+        path.append(join(split(current)[0], "models"))                           # Agregar la carpeta models al path
+        UIpath = join(join(current, "qt"), "ui")                                 # Declara imagen para la plantilla UI
+        stylePath = join(join(join(current, "qt"), "stylesheet"), "LoginWindow") # Declarar path para los qss
+        splashPath = join(join(current, "qt"), "images")                         # Declarar path para la imagen splash
+        break
+
+###################################################################################################################################################################################
 ## MODÚLOS:
 ###################################################################################################################################################################################
 
 from sys import exit
-
-# Importación de la función para obtener el path actual
-from os import getcwd
-
-# Importación de función para unir paths con el formato del sistema
-from os.path import join
 
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
@@ -54,16 +65,12 @@ from popUps import errorPopUp, successPopUp, authorizationPopUp
 ## CONSTANTES:
 ###################################################################################################################################################################################
 
-# Paths
-UIpath = join(getcwd(), "interface/qt/ui/")
-stylePath = join(getcwd(), "interface/qt/stylesheet/")
-splashPath = join(getcwd(), "interface/qt/images/splash.png")
-
 # UI
 MainUI = "login.ui"
+splashName = "splash.png"
 
 # Interfaz .ui creada con qt designer
-loginWindow = loadUiType(UIpath+MainUI)[0]
+loginWindow = loadUiType(join(UIpath, MainUI))[0]
 
 ###################################################################################################################################################################################
 ## MANEJADOR DE LA INTERFAZ GRÁFICA:
@@ -83,7 +90,7 @@ class loginGUI(QMainWindow, loginWindow):
         super(loginGUI, self).__init__(parent)
         self.setupUi(self)
 
-        self.splash_img = QPixmap(splashPath)
+        self.splash_img = QPixmap(join(splashPath, splashName))
         self.splash = QSplashScreen(self.splash_img, Qt.WindowStaysOnTopHint)
 
         self.sessionOn = False

@@ -14,15 +14,22 @@
 # Christian Oliveros, 01christianol01@gmail.com
 # Pablo Betancourt, pablodbc30@gmail.com
 
+###################################################################################################################################################################################
+## PATH:
+###################################################################################################################################################################################
+
+from sys import path                        # Importación del path del sistema
+from os.path import join, split, basename   # Importación de funciones para unir y separar paths con el formato del sistema
+
+# Para cada path en el path del sistema para la aplicación
+for current in path:
+    if basename(current) == "modules":
+        templatesPath = join(current, "templates")  # Declarar path para los templates
+        break
+
 ####################################################################################################################################
 ## MODÚLOS:
 ####################################################################################################################################
-
-# Importación de la función para obtener el path actual
-from os import getcwd
-
-# Importación de función para unir paths con el formato del sistema
-from os.path import join  as join
 
 # Libreria para facilitar el envio de correos electrónicos
 from smtplib import SMTP, SMTP_SSL, SMTPAuthenticationError as AuthenticationError
@@ -33,9 +40,6 @@ from socket import gaierror as NetworkError
 ####################################################################################################################################
 ## CONSTANTES:
 ####################################################################################################################################
-
-# Paths
-templatesPath = join(getcwd(), "modules/templates")
 
 # Correo electrónico por defecto
 defaultEmail = "ceicsvoficial@gmail.com" # Dirección

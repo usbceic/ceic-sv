@@ -15,14 +15,21 @@
 # Pablo Betancourt, pablodbc30@gmail.com
 
 ###################################################################################################################################################################################
-## MODÚLOS:
+## PATH:
 ###################################################################################################################################################################################
 
-# Importación de la función para obtener el path actual
-from os import getcwd
+from sys import path                        # Importación del path del sistema
+from os.path import join, split, basename   # Importación de funciones para unir y separar paths con el formato del sistema
 
-# Importación de función para unir paths con el formato del sistema
-from os.path import join
+# Para cada path en el path del sistema para la aplicación
+for current in path:
+    if basename(current) == "interface":
+        UIpath = join(join(current, "qt"), "ui") # Declara imagen para la plantilla UI
+        break
+
+###################################################################################################################################################################################
+## MODÚLOS:
+###################################################################################################################################################################################
 
 # Módulo con las herramientas parar trabajar los archivos .ui
 from PyQt4.uic import loadUiType
@@ -37,10 +44,9 @@ from PyQt4.QtCore import Qt, QMetaObject
 ## CONSTANTES:
 ###################################################################################################################################################################################
 
-UIpath = join(getcwd(), "interface/qt/ui/")             # Path para las plantillas
-popUp0 = loadUiType(UIpath+"errorPopUp.ui")[0]          # Cargar platilla para el errorPopup
-popUp1 = loadUiType(UIpath+"successPopUp.ui")[0]        # Cargar platilla para el successPopup
-popUp2 = loadUiType(UIpath+"authorizationPopUp.ui")[0]  # Cargar platilla para el authorizationPopup
+popUp0 = loadUiType(join(UIpath, "errorPopUp.ui"))[0]          # Cargar platilla para el errorPopup
+popUp1 = loadUiType(join(UIpath, "successPopUp.ui"))[0]        # Cargar platilla para el successPopup
+popUp2 = loadUiType(join(UIpath, "authorizationPopUp.ui"))[0]  # Cargar platilla para el authorizationPopup
 
 ###################################################################################################################################################################################
 ## DECLARACION DE LOS POPUPS

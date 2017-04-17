@@ -15,14 +15,26 @@
 # Pablo Betancourt, pablodbc30@gmail.com
 
 ###################################################################################################################################################################################
-## MODÚLOS:
+## PATH:
 ###################################################################################################################################################################################
 
-# Importación de la función para obtener el path actual
-from os import getcwd
+from sys import path                        # Importación del path del sistema
+from os.path import join, split, basename   # Importación de funciones para unir y separar paths con el formato del sistema
 
-# Importación de función para unir paths con el formato del sistema
-from os.path import join
+# Para cada path en el path del sistema para la aplicación
+for current in path:
+    if basename(current) == "interface":
+        path.append(join(split(current)[0], "modules"))                          # Agregar la carpeta modules al path
+        path.append(join(split(current)[0], "models"))                           # Agregar la carpeta models al path
+        UIpath = join(join(current, "qt"), "ui")                                 # Declara imagen para la plantilla UI
+        stylePath = join(join(join(current, "qt"), "stylesheet"), "MainWindow")  # Declarar path para los qss
+        splashPath = join(join(current, "qt"), "images")                         # Declarar path para la imagen splash
+        productPath = join(join(current, "images"), "inventory")
+        break
+
+###################################################################################################################################################################################
+## MODÚLOS:
+###################################################################################################################################################################################
 
 # Módulo con funciones para manejo de archivos en alto nivel (en especifico para este caso... copiar)
 from shutil import copy2
@@ -51,11 +63,6 @@ from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter,
 ###################################################################################################################################################################################
 ## CONSTANTES:
 ###################################################################################################################################################################################
-
-# Paths
-UIpath = join(getcwd(), "interface/qt/ui/")
-stylePath = join(getcwd(), "interface/qt/stylesheet/MainWindow/")
-productPath = join(getcwd(), "interface/images/inventory/")
 
 # UI
 MainUI = "material.ui"
@@ -87,7 +94,7 @@ styles = [
 LEpopup = "LEpopup.qss"
 
 # Interfaz .ui creada con qt designer
-form_class = loadUiType(UIpath+MainUI)[0]
+form_class = loadUiType(join(UIpath, MainUI))[0]
 
 # Constante de primer inicio
 A = True
@@ -98,7 +105,7 @@ A = True
 
 # Devuelve un string con el stylesheet especificado por el parametro name
 def getStyle(name):
-    file = open(stylePath+name, "r")
+    file = open(join(stylePath, name), "r")
     style = file.read()
     file.close()
     return style
