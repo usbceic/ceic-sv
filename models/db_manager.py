@@ -39,6 +39,19 @@ from passlib.hash import bcrypt
 from str_random import str_random
 
 ###################################################################################################################################################################################
+## DECLARACIÓN DEL Ayudantes:
+###################################################################################################################################################################################
+
+"""
+Método que devuelve 0 si el objeto pasado es none, caso contrario devuelve el objeto
+"""
+def noneToZero(thing):
+    if thing is None:
+        return 0
+    else:
+        return thing
+
+###################################################################################################################################################################################
 ## DECLARACIÓN DEL MANEJADOR:
 ###################################################################################################################################################################################
 
@@ -1971,6 +1984,182 @@ class dbManager(object):
             print("Razon:", e)
             return (True, False)
 
+
+    """
+    Método para obtener todas las operaciones entre dos fechas (inclusivas)
+     - Devuelve los query per se, no los objetos, en una tupla
+     - La tupla tiene el siguiente orden:
+       * Pagos en efectivo
+       * Productos devueltos con efectivo devuelto
+       * Servicios devueltos con efectivo devuelto
+       * Transferencias
+       * Todas las Operaciones en log
+    """
+    def _getOperations(self, lower_date=None, upper_date=None):
+
+        lower_none = lower_date is None
+        upper_none = upper_date is None
+        both_none =  lower_none and upper_none
+
+
+        if both_none:
+            cash_checkouts = self.session.query(Checkout).filter_by(with_balance=False)
+            product_reverse = self.session.query(Reverse_product_list).filter_by(cash=True)
+            service_reverse = self.session.query(Reverse_service_list).filter_by(cash=True)
+            transfers = self.session.query(Transfer)
+            log = self.session.query(Operation_log)
+        else:
+            filters_cash_checkouts = and_()
+            filters_product_reverse = and_()
+            filters_service_reverse = and_()
+            filters_transfer = and_()
+            filters_log = and_()
+
+            if not lower_none:
+                filters_cash_checkouts = and_(filters_cash_checkouts, Checkout.pay_date>=lower_date)
+                filters_product_reverse = and_(filters_product_reverse, Reverse_product_list.reverse_date>=lower_date)
+                filters_service_reverse = and_(filters_service_reverse, Reverse_service_list.reverse_date>=lower_date)
+                filters_transfer = and_(filters_transfer, Transfer.transfer_date>=lower_date)
+                filters_log = and_(filters_log, Operation_log.recorded>=lower_date)
+            
+            if not upper_none:
+                filters_cash_checkouts = and_(filters_cash_checkouts, Checkout.pay_date<=upper_date)
+                filters_product_reverse = and_(filters_product_reverse, Reverse_product_list.reverse_date<=upper_date)
+                filters_service_reverse = and_(filters_service_reverse, Reverse_service_list.reverse_date<=upper_date)
+                filters_transfer = and_(filters_transfer, Transfer.transfer_date<=upper_date)
+                filters_log = and_(filters_log, Operation_log.recorded<=upper_date)
+
+            filters_cash_checkouts = and_(filters_cash_checkouts, Checkout.with_balance==False)
+            filters_product_reverse = and_(filters_product_reverse, Reverse_product_list.cash==True)
+            filters_service_reverse = and_(filters_service_reverse, Reverse_service_list.cash==True)
+
+            cash_checkouts = self.session.query(Checkout).filter(*filters_cash_checkouts)
+            product_reverse = self.session.query(Reverse_product_list).filter(*filters_product_reverse)
+            service_reverse = self.session.query(Reverse_service_list).filter(*filters_service_reverse)
+            transfers = self.session.query(Transfer).filter(*filters_transfer)
+            log = self.session.query(Operation_log).filter(*filters_log)
+
+        return (cash_checkouts, product_reverse, service_reverse, transfers, log)
+
+
+    """
+    Método para obtener todas las operaciones entre dos fechas (inclusivas)
+     - Devuelve los objetos en una tupla
+     - La tupla tiene el siguiente orden:
+       * Pagos en efectivo
+       * Productos devueltos con efectivo devuelto
+       * Servicios devueltos con efectivo devuelto
+       * Transferencias
+       * Todas las Operaciones en log
+    """
+    def getOperations(self, lower_date=None, upper_date=None):
+        cash_checkouts, product_reverse, service_reverse, transfers, log = self._getOperations(lower_date, upper_date)
+        return (cash_checkouts.all(), product_reverse.all(), service_reverse.all(), transfers.all(), log.all())
+
+    """
+    Método que devuelve el balance entre dos fechas inclusivas
+     - Devuelve Tupla donde le primer elemento es el balance de efectivo y el segundo elemento es el balance de transferencias
+    """
+    def getBalance(self, lower_date=None, upper_date=None):
+        cash_checkouts, product_reverse, service_reverse, transfers, log = self._getOperations(lower_date=None, upper_date=None)
+
+        cash_balance = 0
+
+        cash_balance += noneToZero(cash_checkouts.with_entities(func.sum(Checkout.amount)).scalar())
+        cash_balance -= noneToZero(product_reverse.with_entities(func.sum(Reverse_product_list.cash_amount)).scalar())
+        cash_balance -= noneToZero(service_reverse.with_entities(func.sum(Reverse_service_list.cash_amount)).scalar())
+        cash_balance += noneToZero(log.with_entities(func.sum(Operation_log.cash_balance)).scalar())
+
+        transfer_balance = 0
+        transfer_balance += noneToZero(transfers.with_entities(func.sum(Transfer.amount)).scalar())
+        transfer_balance += noneToZero(log.with_entities(func.sum(Operation_log.transfer_balance)).scalar())
+        return (cash_balance, transfer_balance)
+
+
+    """
+    Método para cerrar turno
+     - Devuelve True si hay cierre con éxito
+     - False en caso contrario
+    """
+    def closeTurn(self, clerk, description=""):
+        current_turn = self.getTurnStartAndEnd()
+
+        if current_turn[0] is None or (current_turn[0] is not None and current_turn[1] is not None):
+            print("No se puede Cerrar el turno si el turno esta cerrado")
+            return False
+
+        balance = self.getBalance(current_turn[0].recorded, None)
+
+        new_end_turn = Operation_log(clerk=clerk, op_type=2, open_record=False, cash_total=current_turn[0].cash_total+balance[0], total_money=current_turn[0].total_money+balance[0]+balance[1], description=description)
+        self.session.add(new_end_turn)
+        try:
+            self.session.commit()
+            print("Cierre de Turno Exitoso")
+            print("Info:", new_end_turn)
+            return True
+        except Exception as e:
+            self.session.rollback()
+            print("Error Desconocido al Cerrar Turno")
+            print("Razon:", e)
+            return False
+
+    """
+    Método para cerrar día
+     - Devuelve True si hay cierre con éxito
+     - False en caso contrario
+    """
+    def closeDay(self, clerk, description=""):
+        current_day = self.getDayStartAndEnd()
+
+        if current_day[0] is None or (current_day[0] is not None and current_day[1] is not None):
+            print("No se puede Cerrar el Dia si el turno esta cerrado")
+            return False
+
+        balance = self.getBalance(current_day[0].recorded, None)
+
+        new_end_day = Operation_log(clerk=clerk, op_type=1, open_record=False, cash_total=current_day[0].cash_total+balance[0], total_money=current_day[0].total_money+balance[0]+balance[1], description=description)
+        self.session.add(new_end_day)
+        try:
+            self.session.commit()
+            print("Cierre de Dia Exitoso")
+            print("Info:", new_end_day)
+            return True
+        except Exception as e:
+            self.session.rollback()
+            print("Error Desconocido al Cerrar Dia")
+            print("Razon:", e)
+            return False
+
+    """
+    Método para cerrar Período
+     - Devuelve True si hay cierre con éxito
+     - False en caso contrario
+    """
+    def closePeriod(self, clerk, description=""):
+        current_period = self.getPeriodStartAndEnd()
+
+        if current_period[0] is None or (current_period[0] is not None and current_period[1] is not None):
+            print("No se puede Cerrar el Periodo si el turno esta cerrado")
+            return False
+
+        balance = self.getBalance(current_period[0].recorded, None)
+
+        new_end_period = Operation_log(clerk=clerk, op_type=0, open_record=False, cash_total=current_period[0].cash_total+balance[0], total_money=current_period[0].total_money+balance[0]+balance[1], description=description)
+        self.session.add(new_end_period)
+        try:
+            self.session.commit()
+            print("Cierre de Periodo Exitoso")
+            print("Info:", new_end_period)
+            return True
+        except Exception as e:
+            self.session.rollback()
+            print("Error Desconocido al Cerrar Periodo")
+            print("Razon:", e)
+            return False
+
+
+
+
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE MONEDAS / BILLETES PARA PAGO:
     #==============================================================================================================================================================================
@@ -2066,7 +2255,9 @@ if __name__ == '__main__':
     m = dbManager("sistema_ventas", "hola", dropAll=True)
     m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
 
-    """# Abrir turno antes de dia
+    print(m.getBalance())
+
+    # Abrir turno antes de dia
     print("----------------------------------------------")
     print(m.isOpenTurn())
     print(m.getTurnStartAndEnd())
@@ -2127,7 +2318,21 @@ if __name__ == '__main__':
     # Mostrar que sigue abierto turno
     print("----------------------------------------------")
     print(m.isOpenTurn())
-    print(m.getTurnStartAndEnd())"""
+    print(m.getTurnStartAndEnd())
+
+    print("----------------------------------------------")
+    print(m.closeTurn("Hola", description="Prueba"))
+    print(m.isOpenTurn())
+
+    print("----------------------------------------------")
+    print(m.closeDay("Hola", description="Prueba"))
+    print(m.isOpenDay())
+
+    print("----------------------------------------------")
+    print(m.closePeriod("Hola", description="Prueba"))
+    print(m.isOpenPeriod())
+
+
 
     """
     m.deleteLegalTender(0)
@@ -2238,6 +2443,7 @@ if __name__ == '__main__':
     print(m.getClients(ci=43))
     print(m.getClients(firstname="kurt"))
     """
+    
     """
     print("\nPrueba de Cliente y Update\n")
     m.createClient(777, "David", "Grohl")
@@ -2248,17 +2454,20 @@ if __name__ == '__main__':
     print(m.getClients(ci=777))
     """
 
-    """Pruebas de los métodos para productos"""
 
+
+    """Pruebas de los métodos para productos"""
+    """
     # Probar createProduct
-    """print("\nPrueba del método createProduct\n")
+    print("\nPrueba del método createProduct\n")
     m.createProduct("Agua", 1100)
 
     print(m.getProducts(product_name=True, product_id=True, active=True))
-
     """
+    
 
-    """Pruebas de los métodos para lotes
+    """Pruebas de los métodos para lotes"""
+    """
     m.createUser("tobi", "loveurin", "obito", "uchiha", "tobi@akatsuki.com", 3)
     m.createProvider("kabuto", "xD")
     m.createLot("agua", "kabuto", "tobi", 20000, 42)
@@ -2269,11 +2478,17 @@ if __name__ == '__main__':
     m.createCheckout(purchase, 1000)
     m.createCheckout(purchase, 1200)
 
+    print(m.getBalance())
+
     product_list_agua = m.getProductList(purchase, "agua")[0]
     print(product_list_agua)
 
     m.createReverseProductList(product_list_agua, "Hola", 2)
-    print(product_list_agua.reversed_product_list)"""
+    print(product_list_agua.reversed_product_list)
+
+    print(m.getBalance())
+    """
+    
 
     """
     m.createService("ExtraLifes", 1)

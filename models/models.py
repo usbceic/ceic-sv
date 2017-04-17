@@ -470,7 +470,7 @@ class Transfer(this.Base):
     ci                = Column(Integer, nullable=False)
     clerk             = Column(String, nullable=False)
     transfer_date     = Column(DateTime, nullable=False, default=datetime.datetime.now)
-    amount            = Column(Integer, nullable=False)
+    amount            = Column(Numeric, nullable=False)
     bank              = Column(String, nullable=False)
     confirmation_code = Column(String, nullable=False)
     description       = Column(String, nullable=False)
