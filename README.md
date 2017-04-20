@@ -12,7 +12,7 @@ El proyecto aun está en fase beta.
 * A nivel de base de datos:
     - Todo el modelo está comentado y se tiene el esquema de la base digitalizado en extensiones ".svg" y ".png"
     - Todo el archivo de creación del modelo y comunicación entre el ORM (SQLAlchemy) y la base de datos como tal, están listos.
-    - Exeptuando el lo de operaciones para Caja, todos los métodos para insersión, actualización y eliminación de datos en la parte de ventas estan listos
+    - Exceptuando el lo de operaciones para Caja, todos los métodos para insersión, actualización y eliminación de datos en la parte de ventas estan listos
     - La mayoria de los triggers para la parte de ventas están listos
     - Para la parte de prestamos de libros, faltan todos los métodos para inserción, actualización y eliminacion de datos, así como los triggers pertinentes.
 
@@ -32,7 +32,6 @@ El proyecto aun está en fase beta.
     - Falta conectar el sistema de recuperacion de contraseñas por correo (siempre manda "El Juego" como contraseña).
     - Falta conectar la vista para prestamos de libros.
     - Falta conectar la vista de la biblioteca.
-    - Falta optimizar la interfaz para mejor compatibilidad con distintos tamaños de pantallas, sistemas operativos y arquitecturas.
     - Faltan pulir detalles y establecer atajos de teclado.
 
 * General:
@@ -46,13 +45,14 @@ El proyecto aun está en fase beta.
 * Esta aplicación trabaja con Python, Qt y PostgreSQL
 * Para correr la aplicación mediante la consola utilizar el comando *python ceic_suite.py*
 
-## Requisitos ##
+### Requisitos ###
 * Sistemas operativos soportados:
     - Ubuntu 13.04 o superior
     - Windows XP o superior
-* Sistema operativo recomendado: Ubuntu 16.04 de 32bits
-* Resolución de pantalla mínima: 800x600
-* Resolución de pantalla recomendada: 1024x768
+* Sistema operativo recomendado: Ubuntu 16.04
+* Escala de pantalla optima: 0.875
+* Resolución de pantalla mínima: 860x710
+* Resolución de pantalla recomendada: 1440x900
 * Instalar Python 3.4.x con las siguientes librerias:
     - PyQt4
     - SQLAlchemy
