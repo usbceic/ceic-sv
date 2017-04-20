@@ -1404,7 +1404,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -4293,7 +4293,7 @@ QWidget:item:unchecked {
                         <string notr="true">background-color: transparent;</string>
                        </property>
                        <property name="text">
-                        <string>Cédula</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Cédula&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="textFormat">
                         <enum>Qt::AutoText</enum>
@@ -4336,7 +4336,7 @@ QWidget:item:unchecked {
                         <string notr="true">background-color: transparent;</string>
                        </property>
                        <property name="text">
-                        <string>Nombre</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                       </widget>
                      </item>
@@ -4371,7 +4371,7 @@ QWidget:item:unchecked {
                         <string notr="true">background-color: transparent;</string>
                        </property>
                        <property name="text">
-                        <string>Apellido</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Apellido&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                       </widget>
                      </item>
@@ -4407,7 +4407,7 @@ QWidget:item:unchecked {
                         <string notr="true">background-color: transparent;</string>
                        </property>
                        <property name="text">
-                        <string>Saldo</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Saldo&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                       </widget>
                      </item>
@@ -4530,7 +4530,7 @@ QWidget:item:unchecked {
                         <string notr="true"/>
                        </property>
                        <property name="text">
-                        <string>Efectivo</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Efectivo&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                       </widget>
                      </item>
@@ -4565,7 +4565,7 @@ QWidget:item:unchecked {
                         <string notr="true"/>
                        </property>
                        <property name="text">
-                        <string>Saldo</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Saldo&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                       </widget>
                      </item>
@@ -4601,7 +4601,7 @@ QWidget:item:unchecked {
                         <string notr="true"/>
                        </property>
                        <property name="text">
-                        <string>Venta</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Venta&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                       </widget>
                      </item>
@@ -10238,7 +10238,7 @@ QWidget:item:unchecked {
                       <string notr="true">background-color: transparent;</string>
                      </property>
                      <property name="text">
-                      <string>Cédula</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Cédula&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -10257,7 +10257,7 @@ QWidget:item:unchecked {
                       <string notr="true">background-color: transparent;</string>
                      </property>
                      <property name="text">
-                      <string>Nombre</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -10274,7 +10274,7 @@ QWidget:item:unchecked {
                       <string notr="true">background-color: transparent;</string>
                      </property>
                      <property name="text">
-                      <string>Apellido</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Apellido&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -10389,7 +10389,7 @@ QWidget:item:unchecked {
                       <string notr="true">background-color: transparent;</string>
                      </property>
                      <property name="text">
-                      <string>Código</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Código&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -10406,7 +10406,7 @@ QWidget:item:unchecked {
                       <string notr="true">background-color: transparent;</string>
                      </property>
                      <property name="text">
-                      <string>Título</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Título&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -10423,7 +10423,7 @@ QWidget:item:unchecked {
                       <string notr="true">background-color: transparent;</string>
                      </property>
                      <property name="text">
-                      <string>Autor</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Autor&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -10538,7 +10538,7 @@ QWidget:item:unchecked {
                       <string notr="true">background-color: transparent;</string>
                      </property>
                      <property name="text">
-                      <string>Entrega</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Entrega&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -10950,7 +10950,7 @@ QWidget:item:unchecked {
                   <string notr="true"/>
                  </property>
                  <property name="currentIndex">
-                  <number>1</number>
+                  <number>0</number>
                  </property>
                  <widget class="QWidget" name="page44">
                   <layout class="QGridLayout" name="gridLayout_144">
@@ -11033,7 +11033,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Nombre</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11068,7 +11068,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Año</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Año&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11103,7 +11103,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>País</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;País&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11297,7 +11297,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Nombre</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11332,7 +11332,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Año</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Año&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11367,7 +11367,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>País</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;País&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11652,7 +11652,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Título</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Título&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11687,7 +11687,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Año</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Año&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11722,7 +11722,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Edición</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Edición&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11757,7 +11757,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Editorial</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Editorial&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11792,7 +11792,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Lenguaje</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Lenguaje&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11827,7 +11827,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>ISBN</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;ISBN&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11862,7 +11862,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Copias</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Copias&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -11897,7 +11897,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>BookID</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;BookID&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12080,7 +12080,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Título</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Título&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12115,7 +12115,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Año</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Año&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12150,7 +12150,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Edición</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Edición&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12167,7 +12167,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Editorial</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Editorial&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12202,7 +12202,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Lenguaje</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Lenguaje&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12237,7 +12237,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>ISBN</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;ISBN&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12272,7 +12272,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Disponibles</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Disponibles&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12325,7 +12325,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>BookID</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;BookID&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12595,7 +12595,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Código</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Código&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12630,7 +12630,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Nombre</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12811,7 +12811,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Código</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Código&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -12846,7 +12846,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Nombre</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13129,7 +13129,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>BookID</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;BookID&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13166,7 +13166,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Título</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Título&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13201,7 +13201,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Año</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Año&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13236,7 +13236,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Edición</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Edición&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13336,7 +13336,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Año</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Año&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13374,7 +13374,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>País</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;País&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13412,7 +13412,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Nombre</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13575,7 +13575,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>BookID</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;BookID&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13612,7 +13612,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Título</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Título&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13647,7 +13647,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Año</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Año&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13682,7 +13682,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Edición</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Edición&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13761,7 +13761,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Nombre</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13799,7 +13799,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Año</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Año&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -13837,7 +13837,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>País</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;País&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14110,7 +14110,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>BookID</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;BookID&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14147,7 +14147,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Título</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Título&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14182,7 +14182,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Año</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Año&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14217,7 +14217,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Edición</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Edición&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14296,7 +14296,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Código</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Código&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14334,7 +14334,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Nombre</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14531,7 +14531,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>BookID</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;BookID&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14568,7 +14568,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Título</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Título&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14603,7 +14603,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Año</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Año&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14638,7 +14638,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Edición</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Edición&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14717,7 +14717,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Código</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Código&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -14755,7 +14755,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>Nombre</string>
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Nombre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
