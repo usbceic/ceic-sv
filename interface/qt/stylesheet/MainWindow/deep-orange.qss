@@ -49,7 +49,7 @@
 #MenuBar {
     background: #FFFFFF;
     border: none;
-    border-top: 1px inset #BDBDBD;
+    border-top: 1px solid #BDBDBD;
     padding: -6px;
 }
 
@@ -70,8 +70,9 @@
 
 #MainStacked {
     border: none;
-    border-top: 1px inset #BDBDBD;
-    border-left: 1px inset #BDBDBD;
+    border-top: 1px solid #BDBDBD;
+    border-left: 1px solid #BDBDBD;
+    padding: -6px;
 }
 
 /*Colorea páginas del stacked principal*/
