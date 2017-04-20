@@ -87,7 +87,7 @@ class sessionManager(QMainWindow, loginWindow):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         super(sessionManager, self).__init__(parent)  # Construcción de la instancia
-        self.setupUi(self)                      # Configuración de la plantilla
+        self.setupUi(self)                            # Configuración de la plantilla
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # INICIAR LOS MANEJADORES PARA LA BASE DE DATOS Y EL CORREO ELECTRÓNICO
