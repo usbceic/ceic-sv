@@ -14,7 +14,7 @@
     <x>0</x>
     <y>0</y>
     <width>861</width>
-    <height>699</height>
+    <height>710</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -87,6 +87,7 @@
 #MenuBar {
     background: #FFFFFF;
     border: none;
+    border-top: 1px solid #BDBDBD;
     padding: -6px;
 }
 
@@ -107,15 +108,14 @@
 
 #MainStacked {
     border: none;
-    border-top: 1px inset #BDBDBD;
-    border-left: 1px inset #BDBDBD;
+    border-top: 1px solid #BDBDBD;
+    border-left: 1px solid #BDBDBD;
+    padding: -6px;
 }
 
 /*Colorea páginas del stacked principal*/
 #mainPage0, #mainPage1, #mainPage2, #mainPage3, #mainPage4, #mainPage5, #mainPage6, #mainPage7, #mainPage8, #mainPage9, #mainPage10, #mainPage11  {
     background: #F5F5F5;
-    border-top: 1px inset #BDBDBD;
-    border-left: 1px inset #BDBDBD;
 }
 
 /*Configurar el estilo de los subStacked fuera de GropBox*/
@@ -1404,7 +1404,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">

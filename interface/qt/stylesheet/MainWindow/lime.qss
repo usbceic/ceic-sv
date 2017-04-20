@@ -172,25 +172,6 @@
     background: #F0F4C3;
 }
 
-/*Altura de cada par de flechas*/
-#arrow0, #arrow1 {min-height: 18em;}
-#arrow2, #arrow3 {min-height: 18.5em;}
-#arrow4, #arrow5 {min-height: 22em;}
-#arrow6, #arrow7 {min-height: 12em;}
-#arrow8, #arrow9 {min-height: 29em;}
-#arrow10, #arrow11 {min-height: 20em;}
-#arrow12, #arrow13 {min-height: 34em;}
-#arrow14, #arrow15 {min-height: 23em;}
-#arrow16, #arrow17 {min-height: 35em;}
-#arrow18, #arrow19 {min-height: 25.5em;}
-#arrow20, #arrow21 {min-height: 13.5em;}
-#arrow22, #arrow23 {min-height: 10.5em;}
-#arrow24, #arrow25 {min-height: 23em;}
-#arrow26, #arrow27 {min-height: 21em;}
-#arrow28, #arrow29 {min-height: 31em;}
-#arrow30, #arrow31 {min-height: 16em;}
-#arrow32, #arrow33 {min-height: 29em;}
-
 /*Configurar el estilo por defecto de las flechas de movimiento de las tablas*/
 #arrow42, #arrow43, #arrow44, #arrow45, #arrow46, #arrow47, #arrow48, #arrow49, #arrow50, #arrow51, #arrow52, #arrow53, #arrow54, #arrow55, #arrow56, #arrow57, #arrow58, #arrow59, #arrow60, #arrow61, #arrow62, #arrow63, #arrow64, #arrow65, #arrow66, #arrow67, #arrow68, #arrow69, #arrow70, #arrow71, #arrow72, #arrow73, #arrow74, #arrow75, #arrow76, #arrow77, #arrow78, #arrow79, #arrow80, #arrow81, #arrow82, #arrow83, #arrow84, #arrow85, #arrow86, #arrow87, #arrow88, #arrow89, #arrow90, #arrow91{
      background: transparent;
