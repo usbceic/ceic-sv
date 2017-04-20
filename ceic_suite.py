@@ -33,8 +33,8 @@ path.append(join(getcwd(), "modules"))
 ####################################################################################################################################
 
 from sys import argv, exit
-from sessionManager import loginGUI
-from guiManager import adminGUI
+from sessionManager import sessionManager
+from guiManager import guiManager
 from PyQt4.QtGui import QApplication
 from PyQt4.QtCore import Qt, QTimer
 from db_manager import *
@@ -45,7 +45,7 @@ from db_manager import *
 
 def displayLogin():
     loginApp = QApplication(argv)
-    loginWindow = loginGUI()
+    loginWindow = sessionManager()
     loginWindow.splash.show()
     QTimer.singleShot(5000, lambda: loginWindow.splash.hide())
     QTimer.singleShot(5500, lambda: loginWindow.show())
@@ -53,7 +53,7 @@ def displayLogin():
 
 def displayMainWindow(mode, dbm):
     MainWindowApp = QApplication(argv)
-    if mode == 0: MainWindow = adminGUI(dbm)
+    if mode == 0: MainWindow = guiManager(dbm)
     #elif mode == 1: MainWindow = sellerGUI()
     #else: MainWindow = collaboratorGUI()
     MainWindow.show()

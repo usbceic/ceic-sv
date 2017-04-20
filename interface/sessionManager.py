@@ -53,7 +53,7 @@ from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal
 from db_manager import dbManager
 
 # Manejador de la ventana principal del programa
-from guiManager import adminGUI
+from guiManager import guiManager
 
 # Manejador de correo electrónico
 from emailManager import emailManager, googleServer
@@ -73,53 +73,104 @@ splashName = "splash.png"
 loginWindow = loadUiType(join(UIpath, MainUI))[0]
 
 ###################################################################################################################################################################################
-## MANEJADOR DE LA INTERFAZ GRÁFICA:
+## MANEJADOR DE LA INTERFAZ GRÁFICA DE LA VENTANA INICIAL:
 ###################################################################################################################################################################################
 
-class loginGUI(QMainWindow, loginWindow):
+class sessionManager(QMainWindow, loginWindow):
     #==============================================================================================================================================================================
-    # Constructor de la clase
+    # CONSTRUCTOR DE LA CLASE
     #==============================================================================================================================================================================
 
     def __init__(self, parent=None):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        # Iniciar y configurar la interfaz y la base de datos
+        # INICIAR Y CONFIGURAR LA INSTANCIA
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        # Interfaz
-        super(loginGUI, self).__init__(parent)
-        self.setupUi(self)
+        super(sessionManager, self).__init__(parent)  # Construcción de la instancia
+        self.setupUi(self)                      # Configuración de la plantilla
 
-        self.splash_img = QPixmap(join(splashPath, splashName))
-        self.splash = QSplashScreen(self.splash_img, Qt.WindowStaysOnTopHint)
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # INICIAR LOS MANEJADORES PARA LA BASE DE DATOS Y EL CORREO ELECTRÓNICO
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        self.sessionOn = False
-        self.db = dbManager("sistema_ventas", "hola", parent=self)
-        self.mail = emailManager()
-        self.trayIcon = trayIcon(QIcon("interface/qt/images/logo.png"), self)
-        self.trayIcon.show()
+        self.db = dbManager("sistema_ventas", "hola", parent=self)  # Iniciar el maejador de la base de datos
+        self.mail = emailManager()                                  # Iniciar el maejador del correo electrónico
 
-        self.userDef = False
-        self.passDef = False
-        self.guiExist = False
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # CREAR Y DESPLEGAR LA IMAGEN SPLASH
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        self.center()
+        self.splash_img = QPixmap(join(splashPath, splashName))               # Cargar imagen para la pantalla Splash
+        self.splash = QSplashScreen(self.splash_img, Qt.WindowStaysOnTopHint) # Crear la pantalla Splash
 
-        self.setupPage0()
-        self.setupPage1()
-        self.setupPage2()
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # CONECTAR E INICIAR EL ICONO DE LA BARRA DE NOTIFICACIONES
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        self.setMinimumSize(self.sizeHint())
+        self.trayIcon = trayIcon(QIcon("interface/qt/images/logo.png"), self)   # Crear el icono de la barra de notificaciones
+        self.trayIcon.show()                                                    # Mostrar el icono de la barra de notificaciones
 
-        # Se conectan los botones entre otras cosas con algunos de los métodos definidos a continuación
-        QMetaObject.connectSlotsByName(self)
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # VARIABLES PARA FACILITAR EL USO DE VARIOS MÉTODOS DE LA CLASE
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        # Variable de control para los QPushButton
-        self.clicked = False
+        self.clicked = False    # Variable de control para los QPushButton
+        self.userDef = False    # Variable para saber si ya se definio un usuario para iniciar sesión
+        self.passDef = False    # Variable para saber si ya se definio una contraseña para iniciar sesión
+        self.guiExist = False   # Variable para saber si ya se creó la ventana principal previamente
 
-        # Se establece la pagina de inicio de sesión por defecto
-        self.MainStacked.setCurrentIndex(0)
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # CARGAR CONFIGURACIONES INICIALES
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+        QMetaObject.connectSlotsByName(self)  # Se conectan los botones entre otras cosas con algunos de los métodos definidos a continuación
+        self.generalSetup()                   # Aplicar configuraciones generales de la interfaz
+
+    #==============================================================================================================================================================================
+    # CONFIGURACIONES DE LA VENTANA
+    #==============================================================================================================================================================================
+
+    # Método para centrar la ventana
+    def center(self):
+        frameGm = self.frameGeometry()
+        screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())
+        centerPoint = QApplication.desktop().screenGeometry(screen).center()
+        frameGm.moveCenter(centerPoint)
+        self.move(frameGm.topLeft())
+
+    # Configuración inicial para la vista de inicio de sesión
+    def setupPage0(self):
+        self.lineEd0.setPlaceholderText("Usuario")
+        self.lineEd1.setPlaceholderText("Contraseña")
+        self.footer.setFocus()
+
+    # Configuración inicial para la vista de registro de usuario
+    def setupPage1(self):
+        self.lineEd2.setPlaceholderText("Usuario")
+        self.lineEd3.setPlaceholderText("Nombre")
+        self.lineEd4.setPlaceholderText("Apellido")
+        self.lineEd5.setPlaceholderText("Correo electrónico")
+        self.lineEd6.setPlaceholderText("Contraseña")
+        self.lineEd7.setPlaceholderText("Confirmar contraseña")
+
+    # Configuración inicial para la vista de recuperación de contraseña
+    def setupPage2(self):
+        self.lineEd8.setPlaceholderText("Correo asociado a su cuenta")
+
+    # Método para aplicar la configuración inicial a toda la ventana
+    def generalSetup(self):
+        self.setMinimumSize(self.sizeHint()) # Configurar tamaño de la ventana
+        self.center()                        # Centrar ventana
+        self.setupPage0()                    # Configurar vista de inicio de sesión
+        self.setupPage1()                    # Configurar vista de registro de usuario
+        self.setupPage2()                    # Configurar vista de recuperación de contraseña
+        self.MainStacked.setCurrentIndex(0)  # Se establece la pagina de inicio de sesión por defecto
+
+    #==============================================================================================================================================================================
+    # MÉTODOS GENERALES MULTIPROPÓSITOS
+    #==============================================================================================================================================================================
+
+    # Definición de click sobre un QPushButton
     def click(self):
         if self.clicked:
             self.clicked = False
@@ -128,13 +179,15 @@ class loginGUI(QMainWindow, loginWindow):
             self.clicked = True
             return False
 
-    def center(self):
-        frameGm = self.frameGeometry()
-        screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())
-        centerPoint = QApplication.desktop().screenGeometry(screen).center()
-        frameGm.moveCenter(centerPoint)
-        self.move(frameGm.topLeft())
+    #==============================================================================================================================================================================
+    # VISTA DE INICIO DE SESIÓN
+    #==============================================================================================================================================================================
 
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Método para iniciar sesión
     def startSession(self, user, password):
         if self.userDef and self.passDef:
             if self.db.checkPassword(user, password):
@@ -142,17 +195,65 @@ class loginGUI(QMainWindow, loginWindow):
                 self.lineEd1.setText("")
                 self.footer.setFocus()
                 if not self.guiExist:
-                    self.mainWindow = adminGUI(user, self.db, self)
+                    self.mainWindow = guiManager(user, self.db, self)
                     self.guiExist = True
                 else: self.mainWindow.changeUser(user)
-                self.back = self.mainWindow.userBn0
-                self.back.clicked.connect(self.back_pressed)
+                self.closeSession = self.mainWindow.userBn0
+                self.closeSession.clicked.connect(self.closeSession_pressed)
                 self.mainWindow.closed.connect(self.show)
                 self.mainWindow.show()
                 self.hide()
 
             else: errorPopUp("Datos incorrectos", self).exec_()
 
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Boton para ir a la vista de olvide mi contraseña
+    def on_button3_pressed(self):
+        if self.click():
+            self.MainStacked.setCurrentIndex(2)
+            self.header.setIcon(QIcon(':/login/conf'))
+
+    # Boton para iniciar sesión
+    def on_button4_pressed(self):
+        if self.click():
+            self.startSession(self.lineEd0.text(), self.lineEd1.text())
+
+    # Boton para ir a la vista de registro
+    def on_button5_pressed(self):
+        if self.click():
+            self.MainStacked.setCurrentIndex(1)
+            self.header.setIcon(QIcon(':/login/camera'))
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # CAMPOS DE TEXTO
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Cambio de texto en el lineEdit para el nombre de usuario
+    def on_lineEd0_textChanged(self):
+        if self.lineEd0.text() == "": self.userDef = False
+        else: self.userDef = True
+
+    # Presionar enter estando en el lineEdit para el nombre de usuario
+    def on_lineEd0_returnPressed(self):
+        self.lineEd1.setFocus()
+
+    # Cambio de texto en el lineEdit para la contraseña
+    def on_lineEd1_textChanged(self):
+        if self.lineEd1.text() == "": self.passDef = False
+        else: self.passDef = True
+
+    #==============================================================================================================================================================================
+    # VISTA DE RECUPERACIÓN DE CONTRASEÑA
+    #==============================================================================================================================================================================
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Método para enviar un email
     def sendMail(self):
         if self.lineEd8.text() != "":
             email = self.lineEd8.text()
@@ -169,34 +270,30 @@ class loginGUI(QMainWindow, loginWindow):
             else:
                 errorPopUp("El correo no está registrado", self).exec_()
 
-    def setupPage0(self):
-        self.lineEd0.setPlaceholderText("Usuario")
-        self.lineEd1.setPlaceholderText("Contraseña")
-        self.footer.setFocus()
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    def setupPage1(self):
-        self.lineEd2.setPlaceholderText("Usuario")
-        self.lineEd3.setPlaceholderText("Nombre")
-        self.lineEd4.setPlaceholderText("Apellido")
-        self.lineEd5.setPlaceholderText("Correo electrónico")
-        self.lineEd6.setPlaceholderText("Contraseña")
-        self.lineEd7.setPlaceholderText("Confirmar contraseña")
-
-    def setupPage2(self):
-        self.lineEd8.setPlaceholderText("Correo asociado a su cuenta")
-
-    def on_button3_pressed(self):
+    # Boton para volver a la vista de inicio de sesión
+    def on_button7_pressed(self):
         if self.click():
-            self.MainStacked.setCurrentIndex(2)
+            self.MainStacked.setCurrentIndex(0)
+            self.header.setIcon(QIcon(':/login/users'))
 
-    def on_button4_pressed(self):
+    # Botón para enviar el correo de recuperación de contraseña
+    def on_button8_pressed(self):
         if self.click():
-            self.startSession(self.lineEd0.text(), self.lineEd1.text())
+            self.sendMail()
 
-    def on_button5_pressed(self):
-        if self.click():
-            self.MainStacked.setCurrentIndex(1)
+    #==============================================================================================================================================================================
+    # VISTA DE REGISTRO DE USUARIO
+    #==============================================================================================================================================================================
 
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Boton para crear un usuario
     def on_button6_pressed(self):
         if self.click():
             flag = False
@@ -236,41 +333,27 @@ class loginGUI(QMainWindow, loginWindow):
                     else:
                         errorPopUp("Datos incorrectos", self).exec_()
 
-    def on_button7_pressed(self):
-        if self.click():
-            self.MainStacked.setCurrentIndex(0)
-
-    def on_button8_pressed(self):
-        if self.click():
-            self.sendMail()
-
+    # Boton para descartar el registro
     def on_button9_pressed(self):
         if self.click():
             self.MainStacked.setCurrentIndex(0)
+            self.header.setIcon(QIcon(':/login/users'))
 
-    def back_pressed(self):
-        self.mainWindow.close()
-        self.show()
+    #==============================================================================================================================================================================
+    # EVENTOS
+    #==============================================================================================================================================================================
 
-    def on_lineEd0_textChanged(self):
-        if self.lineEd0.text() == "": self.userDef = False
-        else: self.userDef = True
-
-    def on_lineEd0_returnPressed(self):
-        self.lineEd1.setFocus()
-
-    def on_lineEd1_textChanged(self):
-        if self.lineEd1.text() == "": self.passDef = False
-        else: self.passDef = True
-
+    # Manejador de eventos al presionar con el mouse
     def mousePressEvent(self, QMouseEvent):
         position = QMouseEvent.pos().y()
         if position >= 425 or position <= 369 or 391 <= position <= 403: self.footer.setFocus()
 
+    # No recuerdo bien que hace, pero es tan importante como el anterior xD
     def mouseReleaseEvent(self, QMouseEvent):
         position = QCursor().pos().y()
         if position >= 425 or position <= 369 or 391 <= position <= 403: self.footer.setFocus()
 
+    # Manejador de eventos por teclado
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return:
             if self.MainStacked.currentIndex() == 0:
@@ -280,10 +363,16 @@ class loginGUI(QMainWindow, loginWindow):
             else:
                 self.sendMail()
 
+    # Acciones a tomar cuando el usuario cierra la sesión
+    def closeSession_pressed(self):
+        self.mainWindow.close()
+        self.show()
 
+    # Acciones a tomar cuando se cierra la ventana principal
     def on_mainWindow_closed(self):
         self.show()
 
+    # Acciones que tomar al intentar cerra la ventana de inicio
     def closeEvent(self, event):
         #event.ignore()
         #self.hide()

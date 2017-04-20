@@ -111,11 +111,10 @@ def getStyle(name):
     return style
 
 ###################################################################################################################################################################################
-## MANEJADOR DE LA INTERFAZ GRÁFICA:
+## MANEJADOR DE LA INTERFAZ GRÁFICA DE LA VENTANA PRINCIPAL:
 ###################################################################################################################################################################################
 
-# Manejador de la interfaz del administrador
-class adminGUI(QMainWindow, form_class):
+class guiManager(QMainWindow, form_class):
     closed = pyqtSignal() # Señal para saber si se cerró la ventana
 
     #==============================================================================================================================================================================
@@ -126,7 +125,7 @@ class adminGUI(QMainWindow, form_class):
         # INICIAR Y CONFIGURAR LA CLASE Y EL MANEJADOR DE LA BASE DE DATOS
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        super(adminGUI, self).__init__(parent)  # Construcción de la instancia
+        super(guiManager, self).__init__(parent)  # Construcción de la instancia
         self.setupUi(self)                      # Configuración de la plantilla
         self.user = user                        # Asignación del usuario que ejecuta la sesión
         self.db = database                      # Asignación del manejador de la base de datos
