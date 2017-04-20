@@ -35,6 +35,7 @@ for current in path:
 ## MODÚLOS:
 ###################################################################################################################################################################################
 
+# Función exit del sistema para finalizar correctamente el programa
 from sys import exit
 
 # Módulo que contiene los recursos de la interfaz
