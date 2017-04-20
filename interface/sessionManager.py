@@ -44,10 +44,10 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtGui import QMainWindow, QDialog, QApplication, QLineEdit, QCursor, QSplashScreen, QPixmap, QSystemTrayIcon, QIcon, QMenu, QAction
+from PyQt4.QtGui import QMainWindow, QApplication, QCursor, QSplashScreen, QPixmap, QSystemTrayIcon, QIcon, QMenu, QAction
 
 # Módulo con estructuras de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal
+from PyQt4.QtCore import Qt, QMetaObject
 
 # Manejador de la base de datos
 from db_manager import dbManager
@@ -56,7 +56,7 @@ from db_manager import dbManager
 from guiManager import guiManager
 
 # Manejador de correo electrónico
-from emailManager import emailManager, googleServer
+from emailManager import emailManager
 
 # Módulo con las clases para los popUp
 from popUps import errorPopUp, successPopUp, authorizationPopUp
