@@ -11,6 +11,7 @@
     <file alias="up">../images/up_arrow.png</file>
   </qresource>
   <qresource prefix="popUp">
+    <file alias="warningmark">../images/warningmark.png</file>
     <file alias="checkmark">../images/checkmark.png</file>
     <file alias="uncheckmark">../images/uncheckmark.png</file>
   </qresource>

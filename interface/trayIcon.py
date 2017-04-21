@@ -11,8 +11,6 @@
 ###################################################################################################################################################################################
 
 # Carlos Serrada, cserradag96@gmail.com
-# Christian Oliveros, 01christianol01@gmail.com
-# Pablo Betancourt, pablodbc30@gmail.com
 
 ###################################################################################################################################################################################
 ## MODÚLOS:
@@ -78,9 +76,10 @@ class trayIcon(QSystemTrayIcon):
 
     # Método para terminar el programa
     def killApp(self):
-        self.parent.hide()              # Ocultar la ventana de login
-        self.parent.mainWindow.hide()   # Ocultar la ventana principal
-        exit(0)                         # Salir del programa
+        if self.parent.guiExist:            # Si existe la ventana principal
+            self.parent.mainWindow.close()  # Cerrar la ventana principal
+        self.parent.close()                 # Cerrar la ventana de login
+        exit(0)                             # Salir del programa
 
 ###################################################################################################################################################################################
 ## FIN :)

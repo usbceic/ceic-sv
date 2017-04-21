@@ -11,8 +11,6 @@
 ###################################################################################################################################################################################
 
 # Carlos Serrada, cserradag96@gmail.com
-# Christian Oliveros, 01christianol01@gmail.com
-# Pablo Betancourt, pablodbc30@gmail.com
 
 ###################################################################################################################################################################################
 ## PATH:
@@ -498,19 +496,19 @@ class guiManager(QMainWindow, form_class):
 
     # Cambiar a la página de consultas
     def on_querys_pressed(self):
-        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+        if self.click():
             self.setPage(self.MainStacked, 3)
             self.MainTitle.setText("Consultas")
 
     # Cambiar a la página de préstamos
     def on_loans_pressed(self):
-        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+        if self.click():
             self.setPage(self.MainStacked, 4)
             self.MainTitle.setText("Préstamos")
 
     # Cambiar a la página de libros
     def on_books_pressed(self):
-        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+        if self.click():
             self.setPage(self.MainStacked, 5)
             self.MainTitle.setText("Libros")
 
@@ -534,19 +532,19 @@ class guiManager(QMainWindow, form_class):
 
     # Cambiar a la página de usuarios
     def on_users_pressed(self):
-        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+        if self.click():
             self.setPage(self.MainStacked, 9)
             self.MainTitle.setText("Usuarios")
 
     # Cambiar a la página de configuraciones
     def on_configure_pressed(self):
-        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+        if self.click():
             self.setPage(self.MainStacked, 10)
             self.MainTitle.setText("Configuraciones")
 
     # Cambiar a la página de ayuda
     def on_help_pressed(self):
-        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+        if self.click():
             self.setPage(self.MainStacked, 11)
             self.MainTitle.setText("Ayuda")
 

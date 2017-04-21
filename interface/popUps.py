@@ -11,8 +11,6 @@
 ###################################################################################################################################################################################
 
 # Carlos Serrada, cserradag96@gmail.com
-# Christian Oliveros, 01christianol01@gmail.com
-# Pablo Betancourt, pablodbc30@gmail.com
 
 ###################################################################################################################################################################################
 ## PATH:
@@ -45,14 +43,14 @@ from PyQt4.QtCore import Qt, QMetaObject
 ###################################################################################################################################################################################
 
 popUp0 = loadUiType(join(UIpath, "errorPopUp.ui"))[0]          # Cargar platilla para el errorPopup
-popUp1 = loadUiType(join(UIpath, "successPopUp.ui"))[0]        # Cargar platilla para el successPopup
-popUp2 = loadUiType(join(UIpath, "authorizationPopUp.ui"))[0]  # Cargar platilla para el authorizationPopup
+popUp1 = loadUiType(join(UIpath, "warningPopUp.ui"))[0]        # Cargar platilla para el warningPopup
+popUp2 = loadUiType(join(UIpath, "successPopUp.ui"))[0]        # Cargar platilla para el successPopup
+popUp3 = loadUiType(join(UIpath, "authorizationPopUp.ui"))[0]  # Cargar platilla para el authorizationPopup
 
 ###################################################################################################################################################################################
-## DECLARACION DE LOS POPUPS
+## DECLARACION DEL POPUPS PARA ERRORES
 ###################################################################################################################################################################################
 
-# PopUp para errores
 class errorPopUp(QDialog, popUp0):
     #==============================================================================================================================================================================
     # CONSTRUCTOR DE LA CLASE
@@ -97,8 +95,59 @@ class errorPopUp(QDialog, popUp0):
         if self.click():
             self.accept()
 
-# PopUp para operaciones exitosas
-class successPopUp(QDialog, popUp1):
+###################################################################################################################################################################################
+## DECLARACION DEL POPUPS PARA ALERTAS
+###################################################################################################################################################################################
+
+class warningPopUp(QDialog, popUp1):
+    #==============================================================================================================================================================================
+    # CONSTRUCTOR DE LA CLASE
+    #==============================================================================================================================================================================
+    def __init__(self, message=None, parent=None):
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # INICIAR Y CONFIGURAR EL POPUP
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        # Crear y configurar los objetos del ui
+        super(warningPopUp, self).__init__(parent)
+        self.setupUi(self)
+
+        # Configurar mensaje del popUp
+        if message != None: self.dtitle0.setText(message)
+
+        # Configurar resolucion del popUp
+        self.setMinimumSize(self.sizeHint())
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
+
+        # Variable de control para saber cuando se hcae click sobre un botón
+        self.clicked = False
+
+        # Conectar los eventos mediante los nombres de los métodos
+        QMetaObject.connectSlotsByName(self)
+
+    #==============================================================================================================================================================================
+    # MÉTODOS DE LA CLASE
+    #==============================================================================================================================================================================
+
+    # Definición de click sobre un QPushButton
+    def click(self):
+        if self.clicked:
+            self.clicked = False
+            return True
+        else:
+            self.clicked = True
+            return False
+
+    # Acción al presionar el botón de continuar
+    def on_dpbutton0_pressed(self):
+        if self.click():
+            self.accept()
+
+###################################################################################################################################################################################
+## DECLARACION DEL POPUPS PARA OPERACIONES EXITOSAS
+###################################################################################################################################################################################
+
+class successPopUp(QDialog, popUp2):
     #==============================================================================================================================================================================
     # CONSTRUCTOR DE LA CLASE
     #==============================================================================================================================================================================
@@ -142,8 +191,11 @@ class successPopUp(QDialog, popUp1):
         if self.click():
             self.accept()
 
-# PopUp para autorizaciones de administrador
-class authorizationPopUp(QDialog, popUp2):
+###################################################################################################################################################################################
+## DECLARACION DEL POPUPS PARA AUTORIZACIONES DE ADMINISTRADOR
+###################################################################################################################################################################################
+
+class authorizationPopUp(QDialog, popUp3):
     #==============================================================================================================================================================================
     # CONSTRUCTOR DE LA CLASE
     #==============================================================================================================================================================================

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>errorPopUp</class>
+ <widget class="QDialog" name="errorPopUp">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>200</width>
+    <height>160</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Error</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/gui.qrc">
+    <normaloff>:/logo/logo</normaloff>:/logo/logo</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/*#########################################################
+##                        QDialog                                                                                                                     ##
+##########################################################*/
+
+#errorPopUp {
+	background: white;
+    min-width: 200px;
+}
+
+/***********************************
+* Botones
+***********************************/
+
+/*Estilo por defecto del  boton para continuar/aceptar*/
+#dpbutton0{
+    color: #FFFFFF;
+    border: 1px outline #BDBDBD;
+    border-radius: 2px;
+    background: #2196F3;
+    min-height: 30px;
+    min-width: 80px;
+    padding: 2px;
+}
+
+/*Estilo al pasar por encima y presionar el boton para continuar/aceptar*/
+#dpbutton0:hover, #dpbutton0:pressed{
+   background: #1976D2;
+}
+
+/***********************************
+* Labels
+***********************************/
+
+/*Configuración del titulo del dialog*/
+#dtitle0 {
+   color: #FFC107;  
+   font-family: Open Sans;
+   font-size: 12pt;
+   font-style: bold;
+   font-weight: 600;
+   text-transform: capitalize;
+   qproperty-alignment: 'AlignVCenter | AlignHCenter';
+}</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_3">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="1">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="../resources/gui.qrc">:/popUp/warningmark</pixmap>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="2">
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLabel" name="dtitle0">
+       <property name="font">
+        <font>
+         <family>Open Sans</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Error&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="dpbutton0">
+         <property name="font">
+          <font>
+           <family>Open Sans</family>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>CONTINUAR</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../resources/gui.qrc"/>
+ </resources>
+ <connections/>
+</ui>
