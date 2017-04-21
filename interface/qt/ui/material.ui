@@ -1404,7 +1404,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -1551,7 +1551,7 @@ QWidget:item:unchecked {
                       <string notr="true">background-color: transparent;</string>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Banco&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Transferencias&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -4856,6 +4856,11 @@ QWidget:item:unchecked {
                  <column>
                   <property name="text">
                    <string>Subtotal</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Eliminar</string>
                   </property>
                  </column>
                 </widget>

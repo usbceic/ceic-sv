@@ -58,7 +58,7 @@ from PyQt4.uic import loadUiType
 from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
 
 # Módulo con estructuras de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel
+from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -139,6 +139,7 @@ class guiManager(QMainWindow, form_class):
         self.newIndex = False               # Variable de control para saber si se está cambiando la el index de un comboBox
         self.indexMutex = False             # Semáforo especial para no actualizar dos veces al cambiar el index del comboBox de lotes
         self.lotMutex1 = False              # Semáforo para saber cuando cargar la info de un lote en los QlineEdit
+        self.selectedRowChanged = False     # Variable de control para saber si se cambio la fila seleccionada de un QTableWidget
         self.currentLot = "0"               # Variable de control para el comboBox de seleccion de lotes
         self.currentLots = {}               # Diccionario para lotes de un producto consultado actualmente
         self.tempImage = ""                 # Imagen seleccionada
@@ -330,6 +331,15 @@ class guiManager(QMainWindow, form_class):
             return True
         else:
             self.newIndex = True
+            return False
+
+    # Cambio de texto en un QLineEdit
+    def rowChanged(self):
+        if self.selectedRowChanged:
+            self.selectedRowChanged = False
+            return True
+        else:
+            self.selectedRowChanged = True
             return False
 
     # Cambiar página de un QStackedWidget
@@ -570,6 +580,18 @@ class guiManager(QMainWindow, form_class):
     # MÉTODOS ESPECIALES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+    #==============================================================================================================================================================================
+    # VISTA DE INVENTARIO
+    #==============================================================================================================================================================================
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     # Método para refrescar la vista del Inventario y elementos relacionados
     def refreshInventory(self):
         # Parametros para buscar con la función getProducts el nombre de los productos activos
@@ -622,6 +644,7 @@ class guiManager(QMainWindow, form_class):
         self.currentLots = {}
         self.clearCB(self.cbox5)
         self.resetProductImage(self.selectedItem1)
+        self.resetProductImage(self.selectedItem2)
 
         # Adición de campos extras
         if self.rbutton7.isChecked(): self.addProductInput()
@@ -792,6 +815,7 @@ class guiManager(QMainWindow, form_class):
 
                         # Refrescar toda la interfaz
                         self.refreshInventory()
+                        self.refreshNew10()
 
                         # Enfocar
                         self.lineE26.setFocus()
@@ -945,6 +969,10 @@ class guiManager(QMainWindow, form_class):
                         self.lineE29.setText(str(product.remaining_lots)) # Lotes
                         self.lineE30.setText(str(product.remaining))      # Disp. Total
 
+                else:
+                    self.clearLEs(self.productsRO1)
+                    self.resetProductImage(self.selectedItem1)
+
     # LineEdit para ingresar nombres de los productos
     def on_lineE33_textChanged(self):
         if self.textChanged():
@@ -973,6 +1001,10 @@ class guiManager(QMainWindow, form_class):
                         self.lineE38.setText(str(lot.remaining))     # Disponibilidad
 
                     self.lotMutex1 = True
+
+                else:
+                    self.clearLEs(self.lotsRO1)
+                    self.resetProductImage(self.selectedItem2)
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # COMBO BOX
@@ -1041,7 +1073,16 @@ class guiManager(QMainWindow, form_class):
             table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][1]))) # Precio
             table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][2]))) # Cantidad
             table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Subtotal
-            total += float(itemsList[i][3])                             # Sumar subtotal al total
+
+            # Añadir boton para eliminar la fila
+            removeButton = QPushButton()
+            removeButton.setIcon(QIcon(':/buttons/cross'))
+            removeButton.setStyleSheet("background: transparent; border: none;")
+            removeButton.clicked.connect(self.on_removeRow_clicked)
+            table.setCellWidget(i, 4, removeButton)
+
+            # Sumar subtotal al total
+            total += float(itemsList[i][3])
 
         self.lineE21.setText(str(total))                          # Actualizar el lineEdit del total
         self.elem_actual = 0                                      # Definir la fila que se seleccionará
@@ -1276,7 +1317,21 @@ class guiManager(QMainWindow, form_class):
                 self.setupTable(self.table11)                       # Reconfigurar la tabla de factura
                 self.clearLEs(self.selectedProductLE1)              # Limpiar los lineEdit de este apartado
                 self.clearSpinLine(self.spinLine0)                  # Setear en 0 el lineEdit del contador
-                # limpiar Imagen                                    # Cargar imagen por defecto
+
+    # Botones para eliminar listas de productos
+    def on_removeRow_clicked(self):
+        key = self.table11.selectedItems()[0].text()
+        del self.selectedProducts[key]
+
+        selectedList = []
+        for key, value in self.selectedProducts.items():
+            selectedList.append([key, value[0], value[1], value[2]])
+
+        self.selectedProductName = ""
+
+        # Refrescar interfaz
+        self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
+        self.setupTable(self.table11)                       # Reconfigurar la tabla de factura
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
@@ -1405,7 +1460,21 @@ class guiManager(QMainWindow, form_class):
             else:
                 self.clearLEs(self.selectedProductLE0)
                 self.clearSpinLine(self.spinLine0)
-                self.selectedItem0.setIcon(QIcon(':/buttons/cross'))
+                self.resetProductImage(self.selectedItem0)
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # TABLAS
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Cambio de selección en la factura
+    def on_table11_itemClicked(self, item):
+        if self.rowChanged():
+            if item.column() != 4:
+                items = self.table11.selectedItems()
+                self.lineE23.setText(items[0].text())
+                self.lineE24.setText(items[1].text())
+                self.spinLine0.setText(items[2].text())
+                self.lineE25.setText(items[3].text())
 
     #==============================================================================================================================================================================
     # VISTA DE PROVEEDORES
