@@ -44,7 +44,7 @@ from datetime import datetime
 from db_manager import dbManager
 
 # Módulo con las clases para los popUp
-from popUps import errorPopUp, successPopUp, authorizationPopUp
+from popUps import errorPopUp, warningPopUp, successPopUp, authorizationPopUp
 
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
@@ -484,15 +484,29 @@ class guiManager(QMainWindow, form_class):
 
      # Cambiar a la página de ventas
     def on_sales_pressed(self):
-        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
-            self.setPage(self.MainStacked, 1)
-            self.MainTitle.setText("Ventas")
+        if self.click():
+            if self.db.isOpenPeriod() and self.db.isOpenDay():
+                self.setPage(self.MainStacked, 1)
+                self.MainTitle.setText("Ventas")
+
+            elif not self.db.isOpenPeriod():
+                warningPopUp("Falta apertura de periodo", self).exec_()
+
+            else:
+                warningPopUp("Falta apertura de caja", self).exec_()
 
     # Cambiar a la página de inventario
     def on_inventory_pressed(self):
-        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
-            self.setPage(self.MainStacked, 2)
-            self.MainTitle.setText("Inventario")
+        if self.click():
+            if self.db.isOpenPeriod() and self.db.isOpenDay():
+                self.setPage(self.MainStacked, 2)
+                self.MainTitle.setText("Inventario")
+
+            elif not self.db.isOpenPeriod():
+                warningPopUp("Falta apertura de periodo", self).exec_()
+
+            else:
+                warningPopUp("Falta apertura de caja", self).exec_()
 
     # Cambiar a la página de consultas
     def on_querys_pressed(self):
@@ -514,21 +528,42 @@ class guiManager(QMainWindow, form_class):
 
     # Cambiar a la página de clientes
     def on_providers_pressed(self):
-        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
-            self.setPage(self.MainStacked, 6)
-            self.MainTitle.setText("Proveedores")
+        if self.click():
+            if self.db.isOpenPeriod() and self.db.isOpenDay():
+                self.setPage(self.MainStacked, 6)
+                self.MainTitle.setText("Proveedores")
+
+            elif not self.db.isOpenPeriod():
+                warningPopUp("Falta apertura de periodo", self).exec_()
+
+            else:
+                warningPopUp("Falta apertura de caja", self).exec_()
 
     # Cambiar a la página de clientes
     def on_clients_pressed(self):
-        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
-            self.setPage(self.MainStacked, 7)
-            self.MainTitle.setText("Clientes")
+        if self.click():
+            if self.db.isOpenPeriod() and self.db.isOpenDay():
+                self.setPage(self.MainStacked, 7)
+                self.MainTitle.setText("Clientes")
+
+            elif not self.db.isOpenPeriod():
+                warningPopUp("Falta apertura de periodo", self).exec_()
+
+            else:
+                warningPopUp("Falta apertura de caja", self).exec_()
 
     # Cambiar a la página de clientes
     def on_transfer_pressed(self):
-        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
-            self.setPage(self.MainStacked, 8)
-            self.MainTitle.setText("Recargas de saldo")
+        if self.click():
+            if self.db.isOpenPeriod() and self.db.isOpenDay():
+                self.setPage(self.MainStacked, 8)
+                self.MainTitle.setText("Recargas de saldo")
+
+            elif not self.db.isOpenPeriod():
+                warningPopUp("Falta apertura de periodo", self).exec_()
+
+            else:
+                warningPopUp("Falta apertura de caja", self).exec_()
 
     # Cambiar a la página de usuarios
     def on_users_pressed(self):
