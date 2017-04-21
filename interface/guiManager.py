@@ -344,7 +344,7 @@ class guiManager(QMainWindow, form_class):
 
     # Cambiar página de un QStackedWidget
     def setPage(self, stacked, index):
-        if self.click(): stacked.setCurrentIndex(index)
+        stacked.setCurrentIndex(index)
 
     # Cambiar página de un QStackedWidget
     def changePage(self, stacked, move = -1):
@@ -456,6 +456,7 @@ class guiManager(QMainWindow, form_class):
         self.refreshProviders()
         self.refreshTransfers()
         self.refreshConfigurations()
+        self.refreshBox()
 
         # Se establece la pagina de caja por defecto
         self.MainStacked.setCurrentIndex(0)
@@ -479,63 +480,75 @@ class guiManager(QMainWindow, form_class):
 
     # Cambiar a la página principal
     def on_home_pressed(self):
-        self.setPage(self.MainStacked, 0)
-        self.MainTitle.setText("Caja")
+        if self.click():
+            self.setPage(self.MainStacked, 0)
+            self.MainTitle.setText("Caja")
 
      # Cambiar a la página de ventas
     def on_sales_pressed(self):
-        self.setPage(self.MainStacked, 1)
-        self.MainTitle.setText("Ventas")
+        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+            self.setPage(self.MainStacked, 1)
+            self.MainTitle.setText("Ventas")
 
     # Cambiar a la página de inventario
     def on_inventory_pressed(self):
-        self.setPage(self.MainStacked, 2)
-        self.MainTitle.setText("Inventario")
+        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+            self.setPage(self.MainStacked, 2)
+            self.MainTitle.setText("Inventario")
 
     # Cambiar a la página de consultas
     def on_querys_pressed(self):
-        self.setPage(self.MainStacked, 3)
-        self.MainTitle.setText("Consultas")
+        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+            self.setPage(self.MainStacked, 3)
+            self.MainTitle.setText("Consultas")
 
     # Cambiar a la página de préstamos
     def on_loans_pressed(self):
-        self.setPage(self.MainStacked, 4)
-        self.MainTitle.setText("Préstamos")
+        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+            self.setPage(self.MainStacked, 4)
+            self.MainTitle.setText("Préstamos")
 
     # Cambiar a la página de libros
     def on_books_pressed(self):
-        self.setPage(self.MainStacked, 5)
-        self.MainTitle.setText("Libros")
+        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+            self.setPage(self.MainStacked, 5)
+            self.MainTitle.setText("Libros")
 
     # Cambiar a la página de clientes
     def on_providers_pressed(self):
-        self.setPage(self.MainStacked, 6)
-        self.MainTitle.setText("Proveedores")
+        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+            self.setPage(self.MainStacked, 6)
+            self.MainTitle.setText("Proveedores")
 
     # Cambiar a la página de clientes
     def on_clients_pressed(self):
-        self.setPage(self.MainStacked, 7)
-        self.MainTitle.setText("Clientes")
+        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+            self.setPage(self.MainStacked, 7)
+            self.MainTitle.setText("Clientes")
 
     # Cambiar a la página de clientes
     def on_transfer_pressed(self):
-        self.setPage(self.MainStacked, 8)
-        self.MainTitle.setText("Recargas de saldo")
+        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+            self.setPage(self.MainStacked, 8)
+            self.MainTitle.setText("Recargas de saldo")
 
     # Cambiar a la página de usuarios
     def on_users_pressed(self):
-        self.setPage(self.MainStacked, 9)
-        self.MainTitle.setText("Usuarios")
+        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+            self.setPage(self.MainStacked, 9)
+            self.MainTitle.setText("Usuarios")
 
     # Cambiar a la página de configuraciones
     def on_configure_pressed(self):
-        self.setPage(self.MainStacked, 10)
-        self.MainTitle.setText("Configuraciones")
+        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+            self.setPage(self.MainStacked, 10)
+            self.MainTitle.setText("Configuraciones")
 
     # Cambiar a la página de ayuda
     def on_help_pressed(self):
-        self.setPage(self.MainStacked, 11)
-        self.MainTitle.setText("Ayuda")
+        if self.click() and self.db.isOpenPeriod() and self.db.isOpenDay() and self.db.isOpenTurn():
+            self.setPage(self.MainStacked, 11)
+            self.MainTitle.setText("Ayuda")
 
     def on_arrow1_pressed(self): self.changePage(self.subStacked3)      # Cambiar la página del substaked3 hacia la derecha
     def on_arrow3_pressed(self): self.changePage(self.subStacked4)      # Cambiar la página del substaked4 hacia la derecha
@@ -574,15 +587,23 @@ class guiManager(QMainWindow, form_class):
     def on_arrow32_pressed(self): self.changePage(self.subStacked19, 1) # Cambiar la página del substaked18 hacia la izquierda
 
     #==============================================================================================================================================================================
-    # VISTA DE INVENTARIO
+    # VISTA DE CAJA
     #==============================================================================================================================================================================
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # MÉTODOS ESPECIALES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    # Método para actualizar caja
+    def refreshBox(self):
+        date = datetime.now().date()
+        cash, transfer = self.db.getBalance(date, date)
+        self.lineE1.setText(str(cash))
+        self.lineE2.setText(str(transfer))
+
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
     #==============================================================================================================================================================================
@@ -1054,6 +1075,7 @@ class guiManager(QMainWindow, form_class):
         # Refrescar el inventario
         self.refreshInventory()
         self.refreshClients()
+        self.refreshBox()
 
         # Enfocar
         self.lineE17.setFocus()
@@ -1684,6 +1706,7 @@ class guiManager(QMainWindow, form_class):
         self.clearTE(self.textE7)
 
         self.refreshClients()
+        self.refreshBox()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -2108,8 +2131,9 @@ class guiManager(QMainWindow, form_class):
     #==============================================================================================================================================================================
 
     def closeEvent(self,event):
+        event.ignore()      # Aceptar el evento y cerrar la ventana
         self.closed.emit()  # Emitir señal para que la ventana de inicio aparezca
-        event.accept()      # Aceptar el evento y cerrar la ventana
+        self.hide()
 
 ###################################################################################################################################################################################
 ## FIN :)

@@ -35,9 +35,6 @@ for current in path:
 ## MODÚLOS:
 ###################################################################################################################################################################################
 
-# Función exit del sistema para finalizar correctamente el programa
-from sys import exit
-
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
 
@@ -45,10 +42,10 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QCursor, QSplashScreen, QPixmap, QSystemTrayIcon, QIcon, QMenu, QAction
+from PyQt4.QtGui import QMainWindow, QApplication, QCursor, QSplashScreen, QPixmap, QIcon
 
 # Módulo con estructuras de Qt
-from PyQt4.QtCore import Qt, QMetaObject
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal
 
 # Manejador de la base de datos
 from db_manager import dbManager
@@ -58,6 +55,9 @@ from guiManager import guiManager
 
 # Manejador de correo electrónico
 from emailManager import emailManager
+
+# Manejador del icono de la barra de notificaciones
+from trayIcon import trayIcon
 
 # Módulo con las clases para los popUp
 from popUps import errorPopUp, successPopUp, authorizationPopUp
@@ -78,6 +78,9 @@ loginWindow = loadUiType(join(UIpath, MainUI))[0]
 ###################################################################################################################################################################################
 
 class sessionManager(QMainWindow, loginWindow):
+    sessionClosed = pyqtSignal() # Señal para saber si se cerró la ventana
+    sessionAlive  = pyqtSignal() # Señal para saber si se cerró la ventana
+
     #==============================================================================================================================================================================
     # CONSTRUCTOR DE LA CLASE
     #==============================================================================================================================================================================
@@ -115,10 +118,11 @@ class sessionManager(QMainWindow, loginWindow):
         # VARIABLES PARA FACILITAR EL USO DE VARIOS MÉTODOS DE LA CLASE
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        self.clicked = False    # Variable de control para los QPushButton
-        self.userDef = False    # Variable para saber si ya se definio un usuario para iniciar sesión
-        self.passDef = False    # Variable para saber si ya se definio una contraseña para iniciar sesión
-        self.guiExist = False   # Variable para saber si ya se creó la ventana principal previamente
+        self.clicked = False       # Variable de control para los QPushButton
+        self.userDef = False       # Variable para saber si ya se definio un usuario para iniciar sesión
+        self.passDef = False       # Variable para saber si ya se definio una contraseña para iniciar sesión
+        self.guiExist = False      # Variable para saber si ya se creó la ventana principal previamente
+        self.isOpenSession = False #
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # CARGAR CONFIGURACIONES INICIALES
@@ -197,11 +201,12 @@ class sessionManager(QMainWindow, loginWindow):
                 self.footer.setFocus()
                 if not self.guiExist:
                     self.mainWindow = guiManager(user, self.db, self)
+                    self.closeSession = self.mainWindow.userBn0
+                    self.closeSession.clicked.connect(self.closeSession_pressed)
+                    self.mainWindow.closed.connect(self.on_mainWindow_closed)
                     self.guiExist = True
                 else: self.mainWindow.changeUser(user)
-                self.closeSession = self.mainWindow.userBn0
-                self.closeSession.clicked.connect(self.closeSession_pressed)
-                self.mainWindow.closed.connect(self.show)
+                self.isOpenSession = True
                 self.mainWindow.show()
                 self.hide()
 
@@ -366,47 +371,20 @@ class sessionManager(QMainWindow, loginWindow):
 
     # Acciones a tomar cuando el usuario cierra la sesión
     def closeSession_pressed(self):
+        self.isOpenSession = False
         self.mainWindow.close()
         self.show()
 
     # Acciones a tomar cuando se cierra la ventana principal
     def on_mainWindow_closed(self):
-        self.show()
+        if self.isOpenSession: self.sessionAlive.emit()
+        else: self.sessionClosed.emit()
 
     # Acciones que tomar al intentar cerra la ventana de inicio
     def closeEvent(self, event):
-        #event.ignore()
-        #self.hide()
-        event.accept()
-
-###################################################################################################################################################################################
-## MANEJADOR DEL ICONO PARA LA BARRA DE NOTIFICACIONES:
-###################################################################################################################################################################################
-
-# Icono en la barra de notificaciones
-class trayIcon(QSystemTrayIcon):
-
-    # Constructor
-    def __init__(self, icon, parent=None):
-        QSystemTrayIcon.__init__(self, icon, parent)
-        self.parent = parent
-        self.menu = QMenu(self.parent)
-        self.setContextMenu(self.menu)
-
-        finish = QAction("Mostrar", self)
-        finish.triggered.connect(self.parent.show)
-        self.menu.addAction(finish)
-
-        # Opción para terminar el programa
-        kill = QAction("Salir", self)
-        kill.triggered.connect(self.killApp)
-        self.menu.addAction(kill)
-
-    # Función para terminar el programa
-    def killApp(self):
-        self.parent.hide()
-        self.parent.alive = False
-        exit(0)
+        event.ignore()
+        self.hide()
+        #event.accept()
 
 ###################################################################################################################################################################################
 ## FIN :)
