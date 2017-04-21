@@ -124,9 +124,9 @@ class guiManager(QMainWindow, form_class):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         super(guiManager, self).__init__(parent)  # Construcción de la instancia
-        self.setupUi(self)                      # Configuración de la plantilla
-        self.user = user                        # Asignación del usuario que ejecuta la sesión
-        self.db = database                      # Asignación del manejador de la base de datos
+        self.setupUi(self)                        # Configuración de la plantilla
+        self.user = user                          # Asignación del usuario que ejecuta la sesión
+        self.db = database                        # Asignación del manejador de la base de datos
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # VARIABLES PARA FACILITAR EL USO DE VARIOS MÉTODOS DE LA CLASE
@@ -2129,9 +2129,9 @@ class guiManager(QMainWindow, form_class):
     #==============================================================================================================================================================================
 
     def closeEvent(self,event):
-        event.ignore()      # Aceptar el evento y cerrar la ventana
-        self.closed.emit()  # Emitir señal para que la ventana de inicio aparezca
-        self.hide()
+        event.ignore()      # Ignorar el cierre de la ventana principal
+        self.closed.emit()  # Emitir señal para avisarle al sessionManager que se intento cerrar la ventana principal
+        self.hide()         # Ocultar ventana principal
 
 ###################################################################################################################################################################################
 ## FIN :)
