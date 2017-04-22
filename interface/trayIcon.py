@@ -76,10 +76,14 @@ class trayIcon(QSystemTrayIcon):
 
     # Método para terminar el programa
     def killApp(self):
-        if self.parent.guiExist:            # Si existe la ventana principal
-            self.parent.mainWindow.close()  # Cerrar la ventana principal
-        self.parent.close()                 # Cerrar la ventana de login
-        exit(0)                             # Salir del programa
+        if self.parent.guiExist:                          # Si existe la ventana principal
+            mainWindow = self.parent.mainWindow           # Apuntador hacia la ventana principal
+            if mainWindow.db.isOpenTurn():                # Si hay un turno abierto
+                mainWindow.db.closeTurn(mainWindow.user)  # Cerrar turno del usuario de la ventana principal
+            mainWindow.close()                            # Cerrar la ventana principal
+        self.parent.db.close()                            # Cerrar la sesión en la base de datos
+        self.parent.close()                               # Cerrar la ventana de login
+        exit(0)                                           # Salir del programa
 
 ###################################################################################################################################################################################
 ## FIN :)

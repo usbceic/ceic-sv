@@ -760,9 +760,11 @@ class guiManager(QMainWindow, form_class):
                         if self.db.incomeOperation(self.user, cash_balance = cash_balance, description = description):
                             successPopUp(parent = self).exec_()
 
+                        # Operación fallida
                         else:
                             errorPopUp("No se pudo realizar la operación", self).exec_()
 
+                        # Limpiar
                         self.clearLEs(self.cashLE2)
 
                     else:
@@ -776,9 +778,11 @@ class guiManager(QMainWindow, form_class):
                         if self.db.expenditureOperation(self.user, cash_balance = cash_balance, description = description):
                             successPopUp(parent = self).exec_()
 
+                        # Operación fallida
                         else:
                             errorPopUp("No se pudo realizar la operación", self).exec_()
 
+                        # Limpiar
                         self.clearLEs(self.cashLE3)
 
                     else:

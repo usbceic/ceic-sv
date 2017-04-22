@@ -70,9 +70,16 @@ class dbManager(object):
 
     """
     Método de destrucción de la clase
-     - Cierra la sesión con la base de datos
+     - Cierra la sesión en la base de datos
     """
     def __del__(self):
+        self.close()
+
+    """
+    Método para cerrar la sesión en la base de datos
+     - Cierra la sesión en la base de datos
+    """
+    def close(self):
         try:
             self.session.close()
             print("Se ha cerrado correctamente la base de datos")
