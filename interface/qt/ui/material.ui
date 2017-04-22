@@ -2564,7 +2564,7 @@ QWidget:item:unchecked {
                   <string notr="true"/>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>1</number>
                  </property>
                  <widget class="QWidget" name="page34">
                   <layout class="QGridLayout" name="gridLayout_104">

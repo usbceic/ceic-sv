@@ -53,7 +53,7 @@
 
 /*Configuración del titulo del dialog*/
 #dtitle0 {
-   color: #FFC107;  
+   color: #212121;  
    font-family: Open Sans;
    font-size: 12pt;
    font-style: bold;
