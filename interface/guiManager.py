@@ -183,6 +183,10 @@ class guiManager(QMainWindow, form_class):
         self.cashLE0 = [self.lineE2, self.lineE3, self.lineE5, self.lineE6]
         self.cashLE1 = [self.lineE2, self.lineE3, self.lineE5, self.lineE6, self.lineE15, self.lineE16]
 
+        # Apartado de movimientos
+        self.cashLE2 = [self.lineE8]
+        self.cashLE3 = [self.lineE9]
+
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE INVENTARIO
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -506,9 +510,11 @@ class guiManager(QMainWindow, form_class):
                 self.setPage(self.MainStacked, 1)
                 self.MainTitle.setText("Ventas")
 
+            # Si no hay periodo abierto
             elif not self.db.isOpenPeriod():
                 warningPopUp("Falta apertura de periodo", self).exec_()
 
+            # Si no hay día abierto
             else:
                 warningPopUp("Falta apertura de caja", self).exec_()
 
@@ -519,9 +525,11 @@ class guiManager(QMainWindow, form_class):
                 self.setPage(self.MainStacked, 2)
                 self.MainTitle.setText("Inventario")
 
+            # Si no hay periodo abierto
             elif not self.db.isOpenPeriod():
                 warningPopUp("Falta apertura de periodo", self).exec_()
 
+            # Si no hay día abierto
             else:
                 warningPopUp("Falta apertura de caja", self).exec_()
 
@@ -550,9 +558,11 @@ class guiManager(QMainWindow, form_class):
                 self.setPage(self.MainStacked, 6)
                 self.MainTitle.setText("Proveedores")
 
+            # Si no hay periodo abierto
             elif not self.db.isOpenPeriod():
                 warningPopUp("Falta apertura de periodo", self).exec_()
 
+            # Si no hay día abierto
             else:
                 warningPopUp("Falta apertura de caja", self).exec_()
 
@@ -563,9 +573,11 @@ class guiManager(QMainWindow, form_class):
                 self.setPage(self.MainStacked, 7)
                 self.MainTitle.setText("Clientes")
 
+            # Si no hay periodo abierto
             elif not self.db.isOpenPeriod():
                 warningPopUp("Falta apertura de periodo", self).exec_()
 
+            # Si no hay día abierto
             else:
                 warningPopUp("Falta apertura de caja", self).exec_()
 
@@ -576,9 +588,11 @@ class guiManager(QMainWindow, form_class):
                 self.setPage(self.MainStacked, 8)
                 self.MainTitle.setText("Recargas de saldo")
 
+            # Si no hay periodo abierto
             elif not self.db.isOpenPeriod():
                 warningPopUp("Falta apertura de periodo", self).exec_()
 
+            # Si no hay día abierto
             else:
                 warningPopUp("Falta apertura de caja", self).exec_()
 
@@ -600,41 +614,41 @@ class guiManager(QMainWindow, form_class):
             self.setPage(self.MainStacked, 11)
             self.MainTitle.setText("Ayuda")
 
-    def on_arrow1_pressed(self): self.changePage(self.subStacked3)      # Cambiar la página del substaked3 hacia la derecha
-    def on_arrow3_pressed(self): self.changePage(self.subStacked4)      # Cambiar la página del substaked4 hacia la derecha
-    def on_arrow5_pressed(self): self.changePage(self.subStacked5)      # Cambiar la página del substaked5 hacia la derecha
-    def on_arrow7_pressed(self): self.changePage(self.subStacked6)      # Cambiar la página del substaked6 hacia la derecha
-    def on_arrow9_pressed(self): self.changePage(self.subStacked7)      # Cambiar la página del substaked7 hacia la derecha
-    def on_arrow11_pressed(self): self.changePage(self.subStacked8)     # Cambiar la página del substaked8 hacia la derecha
-    def on_arrow13_pressed(self): self.changePage(self.subStacked9)     # Cambiar la página del substaked9 hacia la derecha
-    def on_arrow15_pressed(self): self.changePage(self.subStacked10)    # Cambiar la página del substaked10 hacia la derecha
-    def on_arrow17_pressed(self): self.changePage(self.subStacked11)    # Cambiar la página del substaked11 hacia la derecha
-    def on_arrow19_pressed(self): self.changePage(self.subStacked12)    # Cambiar la página del substaked12 hacia la derecha
-    def on_arrow21_pressed(self): self.changePage(self.subStacked13)    # Cambiar la página del substaked13 hacia la derecha
-    def on_arrow23_pressed(self): self.changePage(self.subStacked14)    # Cambiar la página del substaked14 hacia la derecha
-    def on_arrow25_pressed(self): self.changePage(self.subStacked15)    # Cambiar la página del substaked15 hacia la derecha
-    def on_arrow27_pressed(self): self.changePage(self.subStacked16)    # Cambiar la página del substaked16 hacia la derecha
-    def on_arrow29_pressed(self): self.changePage(self.subStacked17)    # Cambiar la página del substaked17 hacia la derecha
-    def on_arrow31_pressed(self): self.changePage(self.subStacked18)    # Cambiar la página del substaked18 hacia la derecha
-    def on_arrow33_pressed(self): self.changePage(self.subStacked19)    # Cambiar la página del substaked18 hacia la derecha
+    def on_arrow1_pressed(self): self.changePage(self.subStacked3)      # Cambiar la página del subStacked3 hacia la derecha
+    def on_arrow3_pressed(self): self.changePage(self.subStacked4)      # Cambiar la página del subStacked4 hacia la derecha
+    def on_arrow5_pressed(self): self.changePage(self.subStacked5)      # Cambiar la página del subStacked5 hacia la derecha
+    def on_arrow7_pressed(self): self.changePage(self.subStacked6)      # Cambiar la página del subStacked6 hacia la derecha
+    def on_arrow9_pressed(self): self.changePage(self.subStacked7)      # Cambiar la página del subStacked7 hacia la derecha
+    def on_arrow11_pressed(self): self.changePage(self.subStacked8)     # Cambiar la página del subStacked8 hacia la derecha
+    def on_arrow13_pressed(self): self.changePage(self.subStacked9)     # Cambiar la página del subStacked9 hacia la derecha
+    def on_arrow15_pressed(self): self.changePage(self.subStacked10)    # Cambiar la página del subStacked10 hacia la derecha
+    def on_arrow17_pressed(self): self.changePage(self.subStacked11)    # Cambiar la página del subStacked11 hacia la derecha
+    def on_arrow19_pressed(self): self.changePage(self.subStacked12)    # Cambiar la página del subStacked12 hacia la derecha
+    def on_arrow21_pressed(self): self.changePage(self.subStacked13)    # Cambiar la página del subStacked13 hacia la derecha
+    def on_arrow23_pressed(self): self.changePage(self.subStacked14)    # Cambiar la página del subStacked14 hacia la derecha
+    def on_arrow25_pressed(self): self.changePage(self.subStacked15)    # Cambiar la página del subStacked15 hacia la derecha
+    def on_arrow27_pressed(self): self.changePage(self.subStacked16)    # Cambiar la página del subStacked16 hacia la derecha
+    def on_arrow29_pressed(self): self.changePage(self.subStacked17)    # Cambiar la página del subStacked17 hacia la derecha
+    def on_arrow31_pressed(self): self.changePage(self.subStacked18)    # Cambiar la página del subStacked18 hacia la derecha
+    def on_arrow33_pressed(self): self.changePage(self.subStacked19)    # Cambiar la página del subStacked18 hacia la derecha
 
-    def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)   # Cambiar la página del substaked3 hacia la izquierda
-    def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)   # Cambiar la página del substaked4 hacia la izquierda
-    def on_arrow4_pressed(self): self.changePage(self.subStacked5, 1)   # Cambiar la página del substaked5 hacia la izquierda
-    def on_arrow6_pressed(self): self.changePage(self.subStacked6, 1)   # Cambiar la página del substaked6 hacia la izquierda
-    def on_arrow8_pressed(self): self.changePage(self.subStacked7, 1)   # Cambiar la página del substaked7 hacia la izquierda
-    def on_arrow10_pressed(self): self.changePage(self.subStacked8, 1)  # Cambiar la página del substaked8 hacia la izquierda
-    def on_arrow12_pressed(self): self.changePage(self.subStacked9, 1)  # Cambiar la página del substaked9 hacia la izquierda
-    def on_arrow14_pressed(self): self.changePage(self.subStacked10, 1) # Cambiar la página del substaked10 hacia la izquierda
-    def on_arrow16_pressed(self): self.changePage(self.subStacked11, 1) # Cambiar la página del substaked11 hacia la izquierda
-    def on_arrow18_pressed(self): self.changePage(self.subStacked12, 1) # Cambiar la página del substaked12 hacia la izquierda
-    def on_arrow20_pressed(self): self.changePage(self.subStacked13, 1) # Cambiar la página del substaked13 hacia la izquierda
-    def on_arrow22_pressed(self): self.changePage(self.subStacked14, 1) # Cambiar la página del substaked14 hacia la izquierda
-    def on_arrow24_pressed(self): self.changePage(self.subStacked15, 1) # Cambiar la página del substaked15 hacia la izquierda
-    def on_arrow26_pressed(self): self.changePage(self.subStacked16, 1) # Cambiar la página del substaked16 hacia la izquierda
-    def on_arrow28_pressed(self): self.changePage(self.subStacked17, 1) # Cambiar la página del substaked17 hacia la izquierda
-    def on_arrow30_pressed(self): self.changePage(self.subStacked18, 1) # Cambiar la página del substaked18 hacia la izquierda
-    def on_arrow32_pressed(self): self.changePage(self.subStacked19, 1) # Cambiar la página del substaked18 hacia la izquierda
+    def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)   # Cambiar la página del subStacked3 hacia la izquierda
+    def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)   # Cambiar la página del subStacked4 hacia la izquierda
+    def on_arrow4_pressed(self): self.changePage(self.subStacked5, 1)   # Cambiar la página del subStacked5 hacia la izquierda
+    def on_arrow6_pressed(self): self.changePage(self.subStacked6, 1)   # Cambiar la página del subStacked6 hacia la izquierda
+    def on_arrow8_pressed(self): self.changePage(self.subStacked7, 1)   # Cambiar la página del subStacked7 hacia la izquierda
+    def on_arrow10_pressed(self): self.changePage(self.subStacked8, 1)  # Cambiar la página del subStacked8 hacia la izquierda
+    def on_arrow12_pressed(self): self.changePage(self.subStacked9, 1)  # Cambiar la página del subStacked9 hacia la izquierda
+    def on_arrow14_pressed(self): self.changePage(self.subStacked10, 1) # Cambiar la página del subStacked10 hacia la izquierda
+    def on_arrow16_pressed(self): self.changePage(self.subStacked11, 1) # Cambiar la página del subStacked11 hacia la izquierda
+    def on_arrow18_pressed(self): self.changePage(self.subStacked12, 1) # Cambiar la página del subStacked12 hacia la izquierda
+    def on_arrow20_pressed(self): self.changePage(self.subStacked13, 1) # Cambiar la página del subStacked13 hacia la izquierda
+    def on_arrow22_pressed(self): self.changePage(self.subStacked14, 1) # Cambiar la página del subStacked14 hacia la izquierda
+    def on_arrow24_pressed(self): self.changePage(self.subStacked15, 1) # Cambiar la página del subStacked15 hacia la izquierda
+    def on_arrow26_pressed(self): self.changePage(self.subStacked16, 1) # Cambiar la página del subStacked16 hacia la izquierda
+    def on_arrow28_pressed(self): self.changePage(self.subStacked17, 1) # Cambiar la página del subStacked17 hacia la izquierda
+    def on_arrow30_pressed(self): self.changePage(self.subStacked18, 1) # Cambiar la página del subStacked18 hacia la izquierda
+    def on_arrow32_pressed(self): self.changePage(self.subStacked19, 1) # Cambiar la página del subStacked18 hacia la izquierda
 
     #==============================================================================================================================================================================
     # VISTA DE CAJA
@@ -720,6 +734,51 @@ class guiManager(QMainWindow, form_class):
 
             else:
                 warningPopUp("Debe cerrar caja primero", self).exec_()
+
+    # Radio button de ingresos
+    def on_rbutton0_pressed(self):
+        if self.click():
+            self.setPage(self.subStacked0, 0)
+            self.clearLEs(self.cashLE2)
+
+    # Radio button de egresos
+    def on_rbutton1_pressed(self):
+        if self.click():
+            self.setPage(self.subStacked0, 1)
+            self.clearLEs(self.cashLE3)
+
+    # Boton para registrar un movimiento
+    def on_pbutton1_pressed(self):
+        if self.click():
+            # Verificar que haya tanto un periodo como un día abierto
+            if self.db.isOpenDay() and self.db.isOpenPeriod():
+                # Modalidad para registrar ingresos
+                if self.rbutton0.isChecked():
+                    if self.lineE8.text() != "":
+                        cash_balance = float(self.lineE8.text())
+                        description  = self.cbox21.currentText()
+                        self.db.incomeOperation(self.user, cash_balance = cash_balance, description = description)
+
+                    else:
+                        errorPopUp("Debe especificar el monto del ingreso", self).exec_()
+
+                # Modalidad para registrar egresos
+                else:
+                    if self.lineE9.text() != "":
+                        cash_balance = float(self.lineE9.text())
+                        description  = self.cbox23.currentText()
+                        self.db.expenditureOperation(self.user, cash_balance = cash_balance, description = description)
+
+                    else:
+                        errorPopUp("Debe especificar el monto del egreso", self).exec_()
+
+            # Si no hay periodo abierto
+            elif not self.db.isOpenPeriod():
+                warningPopUp("Falta apertura de periodo", self).exec_()
+
+            # Si no hay día abierto
+            else:
+                warningPopUp("Falta apertura de caja", self).exec_()
 
     #==============================================================================================================================================================================
     # VISTA DE INVENTARIO

@@ -1984,6 +1984,47 @@ class dbManager(object):
             print("Razon:", e)
             return (True, False)
 
+    """
+    Método para realizar un movimiento del tipo 3 (Ingreso)
+     - Devuelve True si logra hacer el ingreso
+     - Devuelve False si NO logra hacer el ingreso
+    """
+    def incomeOperation(self, clerk, cash_balance = 0, transfer_balance = 0, description=""):
+        if cash_balance >= 0 and transfer_balance >= 0:
+            if cash_balance > 0 or transfer_balance > 0:
+                self.createEntry(clerk, 3, cash_balance, transfer_balance, description)
+                print("Se ha hecho el ingreso exitosamente")
+                return True
+
+            else:
+                print("La cantidad a ingresar debe ser mayor a cero")
+                return False
+
+        else:
+            print("No se puede ingresar una cantidad negativa")
+            return False
+
+    """
+    Método para realizar un movimiento del tipo 4 (Egreso)
+     - Devuelve True si logra hacer el egreso
+     - Devuelve False si NO logra hacer el egreso
+    """
+    def expenditureOperation(self, clerk, cash_balance = 0, transfer_balance = 0, description=""):
+        if cash_balance >= 0 and transfer_balance >= 0:
+            if cash_balance > 0 or transfer_balance > 0:
+                cash_balance, transfer_balance = -cash_balance, -transfer_balance
+                self.createEntry(clerk, 4, cash_balance, transfer_balance, description)
+                print("Se ha hecho el egreso exitosamente")
+                return True
+
+            else:
+                print("La cantidad a egresar debe ser mayor a cero")
+                return False
+
+        else:
+            print("No se puede egresar una cantidad negativa")
+            return False
+
 
     """
     Método para obtener todas las operaciones entre dos fechas (inclusivas)
