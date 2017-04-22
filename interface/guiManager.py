@@ -757,7 +757,13 @@ class guiManager(QMainWindow, form_class):
                     if self.lineE8.text() != "":
                         cash_balance = float(self.lineE8.text())
                         description  = self.cbox21.currentText()
-                        self.db.incomeOperation(self.user, cash_balance = cash_balance, description = description)
+                        if self.db.incomeOperation(self.user, cash_balance = cash_balance, description = description):
+                            successPopUp(parent = self).exec_()
+
+                        else:
+                            errorPopUp("No se pudo realizar la operación", self).exec_()
+
+                        self.clearLEs(self.cashLE2)
 
                     else:
                         errorPopUp("Debe especificar el monto del ingreso", self).exec_()
@@ -767,7 +773,13 @@ class guiManager(QMainWindow, form_class):
                     if self.lineE9.text() != "":
                         cash_balance = float(self.lineE9.text())
                         description  = self.cbox23.currentText()
-                        self.db.expenditureOperation(self.user, cash_balance = cash_balance, description = description)
+                        if self.db.expenditureOperation(self.user, cash_balance = cash_balance, description = description):
+                            successPopUp(parent = self).exec_()
+
+                        else:
+                            errorPopUp("No se pudo realizar la operación", self).exec_()
+
+                        self.clearLEs(self.cashLE3)
 
                     else:
                         errorPopUp("Debe especificar el monto del egreso", self).exec_()
