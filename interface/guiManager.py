@@ -127,6 +127,7 @@ class guiManager(QMainWindow, form_class):
         self.setupUi(self)                        # Configuración de la plantilla
         self.user = user                          # Asignación del usuario que ejecuta la sesión
         self.db = database                        # Asignación del manejador de la base de datos
+        self.db.startTurn(self.user)              # Abrir turno del usuario en la base de datos
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # VARIABLES PARA FACILITAR EL USO DE VARIOS MÉTODOS DE LA CLASE
@@ -173,6 +174,14 @@ class guiManager(QMainWindow, form_class):
         # Tablas
         self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
                         self.table8, self.table9, self.table10, self.table11]
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # LISTAS PARA LA VISTA DE CAJA
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        # Apartado de Caja
+        self.cashLE0 = [self.lineE2, self.lineE3, self.lineE5, self.lineE6]
+        self.cashLE1 = [self.lineE2, self.lineE3, self.lineE5, self.lineE6, self.lineE15, self.lineE16]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE INVENTARIO
@@ -250,12 +259,11 @@ class guiManager(QMainWindow, form_class):
         # SpinLines en la vista de ventas
         self.spinBox = [self.spinLine0]
 
-        self.popularItems = [self.popularItem0, self.popularItem1, self.popularItem2, self.popularItem3, self.popularItem4, self.popularItem5, self.popularItem6, self.popularItem7, self.popularItem8, self.popularItem9]
-
-        self.newItems = [self.newItem0, self.newItem1, self.newItem2, self.newItem3, self.newItem4, self.newItem5, self.newItem6, self.newItem7, self.newItem8, self.newItem9]
-
+        # Apartado de productos NUevos y Top 10
         self.popularTexts = [self.text44, self.text45, self.text46, self.text47, self.text48, self.text49, self.text50, self.text51, self.text52, self.text53]
-        self.newTexts = [self.text54, self.text55, self.text56, self.text57, self.text58, self.text59, self.text60, self.text61, self.text62, self.text63]
+        self.newTexts     = [self.text54, self.text55, self.text56, self.text57, self.text58, self.text59, self.text60, self.text61, self.text62, self.text63]
+        self.newItems     = [self.newItem0, self.newItem1, self.newItem2, self.newItem3, self.newItem4, self.newItem5, self.newItem6, self.newItem7, self.newItem8, self.newItem9]
+        self.popularItems = [self.popularItem0, self.popularItem1, self.popularItem2, self.popularItem3, self.popularItem4, self.popularItem5, self.popularItem6, self.popularItem7, self.popularItem8, self.popularItem9]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE CONFIGURACIONES
@@ -454,12 +462,13 @@ class guiManager(QMainWindow, form_class):
         self.refreshProviders()
         self.refreshTransfers()
         self.refreshConfigurations()
-        self.refreshBox()
+        self.refreshCash()
 
         # Se establece la pagina de caja por defecto
         self.MainStacked.setCurrentIndex(0)
         self.MainTitle.setText("Caja")
 
+    # Método para aplicar las configuraciones iniciales
     def generalSetup(self):
         # Centrar posición de la ventana
         self.center()
@@ -471,6 +480,14 @@ class guiManager(QMainWindow, form_class):
         self.setupSpinLines(self.spinBox)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
+
+    #==============================================================================================================================================================================
+    # BOTON PARA CERRAR SESIÓN
+    #==============================================================================================================================================================================
+
+    def on_userBn0_pressed(self):
+        if self.click():
+            self.db.closeTurn(self.user)
 
     #==============================================================================================================================================================================
     # CAMBIO DE PÁGINA DE LOS STACKED
@@ -627,17 +644,82 @@ class guiManager(QMainWindow, form_class):
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     # Método para actualizar caja
-    def refreshBox(self):
-        date = datetime.now().date()
-        cash, transfer = self.db.getBalance(date, date)
-        self.lineE1.setText(str(cash))
-        self.lineE2.setText(str(transfer))
+    def refreshCash(self):
+        if self.db.isOpenPeriod():
+            self.setPage(self.subStacked2, 1)                       # Cambiar a la página para ver y cerrar un periodo
+            period = self.db.getPeriodStartAndEnd()[0]              # Obtener información del inicio del periodo
+            name = period.description                               # Obtener nombre del periodo
+            startDate = period.recorded                             # Obtener fecha de inicio del periodo
+            cash, bank = self.db.getPeriodBalance(startDate)        # Obtener dinero en efectivo y en banco ganado durante el periodo
+            self.lineE10.setText(name)                              # Actualizar campo de nombre del periodo
+            self.lineE11.setText(str(startDate))                    # Actualizar campo de fecha de inicio
+            self.lineE13.setText(str(cash))                         # Actualizar campo de efectivo en periodo
+            self.lineE14.setText(str(bank))                         # Actualizar campo de banco en periodo
+
+            if self.db.isOpenDay():
+                self.setPage(self.subStacked1, 1)                   # Cambiar a la página para ver y cerrar un dia
+                day = self.db.getDayStartAndEnd()[0]                # Obtener información del inicio del día
+                name = day.description                              # Obtener nombre del día
+                startDate = day.recorded                            # Obtener fecha de inicio del día
+                cash, bank = self.db.getDayBalance(startDate)       # Obtener dinero en efectivo y en banco ganado en la fecha
+                self.lineE0.setText("Abierta")                      # Cambiar el campo de estado a Abierta
+                self.lineE2.setText(str(cash))                      # Actualizar campo de efectivo
+                self.lineE3.setText(str(bank))                      # Actualizar campo de banco
+
+            else:
+                self.lineE0.setText("Cerrada")                      # Cambiar el campo de estado a Cerrada
+                self.setPage(self.subStacked1, 0)                   # Cambiar a la página para abrir un día
+                self.clearLEs(self.cashLE0)                         # Limpiar los campos de caja
+
+        else:
+            self.setPage(self.subStacked2, 0)                       # Cambiar a la página para abrir un nuevo periodo
+            self.clearLEs(self.cashLE1)                             # Limpiar los campos de los apartados de periodo y caja
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    # Boton para abrir día
+    def on_pbutton3_pressed(self):
+        if self.click():
+            if self.db.isOpenPeriod() and self.lineE5.text() != "":
+                description, cash = self.cbox2.currentText(), float(self.lineE5.text())
+                self.db.startDay(self.user, cash, cash, description)
+                self.refreshCash()
 
+            elif not self.db.isOpenPeriod():
+                warningPopUp("Falta apertura de periodo", self).exec_()
+
+            else:
+                warningPopUp("Debe especificar el efectivo para aperturar", self).exec_()
+
+    # Boton para finalizar día
+    def on_pbutton4_pressed(self):
+        if self.click():
+            if self.lineE6.text() != "":
+                self.db.closeDay(self.user)
+                self.refreshCash()
+
+            else:
+                warningPopUp("Debe especificar el efectivo para cerrar", self).exec_()
+
+    # Boton para abrir periodo
+    def on_pbutton5_pressed(self):
+        if self.click():
+            if (self.lineE15.text() and self.lineE16.text()) != "":
+                description, cash = self.lineE15.text(), float(self.lineE16.text())
+                self.db.startPeriod(self.user, cash, cash, description)
+                self.refreshCash()
+
+    # Boton para finalizar periodo
+    def on_pbutton6_pressed(self):
+        if self.click():
+            if not self.db.isOpenDay():
+                self.db.closePeriod(self.user)
+                self.refreshCash()
+
+            else:
+                warningPopUp("Debe cerrar caja primero", self).exec_()
 
     #==============================================================================================================================================================================
     # VISTA DE INVENTARIO
@@ -1108,7 +1190,7 @@ class guiManager(QMainWindow, form_class):
         # Refrescar el inventario
         self.refreshInventory()
         self.refreshClients()
-        self.refreshBox()
+        self.refreshCash()
 
         # Enfocar
         self.lineE17.setFocus()
@@ -1739,7 +1821,7 @@ class guiManager(QMainWindow, form_class):
         self.clearTE(self.textE7)
 
         self.refreshClients()
-        self.refreshBox()
+        self.refreshCash()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -1955,6 +2037,7 @@ class guiManager(QMainWindow, form_class):
     # Método para cambiar el usuario que usa la intefáz
     def changeUser(self, user):
         self.user = user
+        self.db.startTurn(self.user)
         self.refresh()
 
     # Método para refrescar la vista de Configuraciones y componentes relacionados

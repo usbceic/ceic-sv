@@ -525,9 +525,9 @@ class Operation_log(this.Base):
     # Representación de una instancia de la clase
     def __repr__(self):
         kwargs = (str(self.operation_log_id), self.clerk, str(self.op_type), str(self.open_record), str(self.recorded), str(self.transfer_balance),
-            str(self.cash_balance), str(self.cash_total), str(self.total_money))
+            str(self.cash_balance), str(self.cash_total), str(self.total_money), self.description)
         template = "<Operation_log(operation_log_id='%s', clerk='%s', op_type='%s', open_record='%s', recorded='%s', transfer_balance=='%s', "
-        template += "cash_balance='%s', cash_total=='%s', total_money='%s')>"
+        template += "cash_balance='%s', cash_total=='%s', total_money='%s', description='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================

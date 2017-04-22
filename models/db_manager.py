@@ -1999,7 +1999,7 @@ class dbManager(object):
 
         lower_none = lower_date is None
         upper_none = upper_date is None
-        both_none =  lower_none and upper_none
+        both_none  = lower_none and upper_none
 
 
         if both_none:
@@ -2021,7 +2021,7 @@ class dbManager(object):
                 filters_service_reverse = and_(filters_service_reverse, Reverse_service_list.reverse_date>=lower_date)
                 filters_transfer = and_(filters_transfer, Transfer.transfer_date>=lower_date)
                 filters_log = and_(filters_log, Operation_log.recorded>=lower_date)
-            
+
             if not upper_none:
                 filters_cash_checkouts = and_(filters_cash_checkouts, Checkout.pay_date<=upper_date)
                 filters_product_reverse = and_(filters_product_reverse, Reverse_product_list.reverse_date<=upper_date)
@@ -2075,6 +2075,23 @@ class dbManager(object):
         transfer_balance += noneToZero(log.with_entities(func.sum(Operation_log.transfer_balance)).scalar())
         return (cash_balance, transfer_balance)
 
+    """
+    Método que devuelve el balance entre dos fechas inclusivas sumado al dinero inicial del periodo
+     - Devuelve Tupla donde le primer elemento es el balance de efectivo y el segundo elemento es el balance de transferencias
+    """
+    def getPeriodBalance(self, lower_date=None, upper_date=None):
+        period = self.getPeriodStartAndEnd()[0]
+        cash, bank = self.getBalance(period.recorded)
+        return period.cash_total+cash, period.transfer_balance+bank
+
+    """
+    Método que devuelve el balance entre dos fechas inclusivas sumado al dinero inicial del día
+     - Devuelve Tupla donde le primer elemento es el balance de efectivo y el segundo elemento es el balance de transferencias
+    """
+    def getDayBalance(self, lower_date=None, upper_date=None):
+        day = self.getDayStartAndEnd()[0]
+        cash, bank = self.getBalance(day.recorded)
+        return day.cash_total+cash, day.transfer_balance+bank
 
     """
     Método para cerrar turno
@@ -2255,7 +2272,7 @@ if __name__ == '__main__':
     m = dbManager("sistema_ventas", "hola", dropAll=True)
     m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
 
-    print(m.getBalance())
+    """print(m.getBalance())
 
     # Abrir turno antes de dia
     print("----------------------------------------------")
@@ -2330,7 +2347,7 @@ if __name__ == '__main__':
 
     print("----------------------------------------------")
     print(m.closePeriod("Hola", description="Prueba"))
-    print(m.isOpenPeriod())
+    print(m.isOpenPeriod())"""
 
 
 
@@ -2443,7 +2460,7 @@ if __name__ == '__main__':
     print(m.getClients(ci=43))
     print(m.getClients(firstname="kurt"))
     """
-    
+
     """
     print("\nPrueba de Cliente y Update\n")
     m.createClient(777, "David", "Grohl")
@@ -2464,7 +2481,7 @@ if __name__ == '__main__':
 
     print(m.getProducts(product_name=True, product_id=True, active=True))
     """
-    
+
 
     """Pruebas de los métodos para lotes"""
     """
@@ -2488,7 +2505,7 @@ if __name__ == '__main__':
 
     print(m.getBalance())
     """
-    
+
 
     """
     m.createService("ExtraLifes", 1)
