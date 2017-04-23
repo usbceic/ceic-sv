@@ -495,6 +495,36 @@ class Transfer(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
+# Tabla de Depósitos
+#==================================================================================================================================================================================
+class Deposit(this.Base):
+    # Nombre
+    __tablename__ = 'deposit'
+
+    # Atributos
+    deposit_id        = Column(GUID, primary_key=True, default=GUID.random_value)
+    ci                = Column(Integer, nullable=False)
+    clerk             = Column(String, nullable=False)
+    deposit_date      = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    amount            = Column(Numeric, nullable=False)
+
+    # Constraints
+    __table_args__ = (
+        # Verificaciones
+        CheckConstraint('amount > 0', name='exp_transfer_valid_amount'),
+
+        # Claves foraneas
+        ForeignKeyConstraint(['ci'], ['client.ci']),
+        ForeignKeyConstraint(['clerk'], ['users.username']),
+    )
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (str(self.deposit_id), str(self.ci), self.clerk, str(self.deposit_date), str(self.amount))
+        template = "<Deposit(deposit_id='%s', ci='%s', clerk='%s', deposit_date='%s', amount='%s')>"
+        return  template % kwargs
+
+#==================================================================================================================================================================================
 # Tabla de Registro de Operaciones de Caja
 #==================================================================================================================================================================================
 class Operation_log(this.Base):

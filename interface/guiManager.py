@@ -487,10 +487,11 @@ class guiManager(QMainWindow, form_class):
 
     # Método para abrir turno
     def openTurn(self, user):
-        if self.db.isOpenTurn():                            # Verificar si ya hay un turno abierto
-            clerk = self.db.getTurnStartAndEnd()[0].clerk   # Obtener usuario que dejo el turno abierto
-            self.db.closeTurn(clerk)                        # Cerrar el turno del usuario
-        self.db.startTurn(user)                             # Abrir turno del usuario en la base de datos
+        if self.db.isOpenDay() and self.db.isOpenPeriod():      # Verificar que haya un día y periodo abierto
+            if self.db.isOpenTurn():                            # Verificar si ya hay un turno abierto
+                clerk = self.db.getTurnStartAndEnd()[0].clerk   # Obtener usuario que dejo el turno abierto
+                self.db.closeTurn(clerk)                        # Cerrar el turno del usuario
+            self.db.startTurn(user)                             # Abrir turno del usuario en la base de datos
 
     #==============================================================================================================================================================================
     # BOTON PARA CERRAR SESIÓN
@@ -498,7 +499,8 @@ class guiManager(QMainWindow, form_class):
 
     def on_userBn0_pressed(self):
         if self.click():
-            self.db.closeTurn(self.user)
+            if self.db.isOpenTurn():
+                self.db.closeTurn(self.user)
 
     #==============================================================================================================================================================================
     # CAMBIO DE PÁGINA DE LOS STACKED
@@ -706,6 +708,7 @@ class guiManager(QMainWindow, form_class):
             if self.db.isOpenPeriod() and self.lineE5.text() != "":
                 description, cash = self.cbox2.currentText(), float(self.lineE5.text())
                 self.db.startDay(self.user, cash, cash, description)
+                self.db.startTurn(self.user)
                 self.refreshCash()
 
             elif not self.db.isOpenPeriod():
@@ -718,6 +721,7 @@ class guiManager(QMainWindow, form_class):
     def on_pbutton4_pressed(self):
         if self.click():
             if self.lineE6.text() != "":
+                self.db.closeTurn(self.user)
                 self.db.closeDay(self.user)
                 self.refreshCash()
 
@@ -1935,27 +1939,24 @@ class guiManager(QMainWindow, form_class):
                 ci = int(self.lineE47.text())
                 if self.db.existClient(ci):
                     pay_type = self.cbox7.currentText()
+
+                    # Modo de recarga con depósito
                     if pay_type == "Efectivo":
                         if self.lineE158.text() != "":
                             amount = float(self.lineE158.text())
-
-                            self.db.addToClientBalance(ci, amount)
-
+                            self.db.createDeposit(ci, self.user, amount)
                             self.refreshTransfers()
-
                             self.lineE47.setFocus()
 
+                    # Modo de recarga con transferencia
                     else:
                         if (self.lineE51.text() and self.lineE156.text() and self.lineE157.text() and self.textE7.toPlainText()) != "":
                             amount = float(self.lineE51.text())
                             bank = self.lineE156.text()
                             confirmation_code = self.lineE157.text()
                             description = self.textE7.toPlainText()
-
                             self.db.createTransfer(ci, self.user, amount, bank, confirmation_code, description)
-
                             self.refreshTransfers()
-
                             self.lineE47.setFocus()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2138,7 +2139,7 @@ class guiManager(QMainWindow, form_class):
     # Método para cambiar el usuario que usa la intefáz
     def changeUser(self, user):
         self.user = user
-        self.db.startTurn(self.user)
+        self.openTurn(self, user)
         self.refresh()
 
     # Método para refrescar la vista de Configuraciones y componentes relacionados

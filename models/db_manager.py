@@ -1503,11 +1503,11 @@ class dbManager(object):
     #==============================================================================================================================================================================
 
     """
-    Método para verificar que una lista de servicios existe
+    Método para verificar que una transferencia existe
      - Retorna True:
-        * Cuando la lista de servicios existe
+        * Cuando la transferencia existe
      - Retorna False:
-        * Cuando la lista de servicios NO existe
+        * Cuando la transferencia NO existe
     """
     def existTransfer(self, bank, confirmation_code):
         count = self.session.query(Transfer).filter_by(bank=bank, confirmation_code=confirmation_code).count()
@@ -1558,7 +1558,7 @@ class dbManager(object):
                 self.session.rollback()
                 print("No se pudo actualizar el saldo del cliente", e)
 
-    # Método para buscar Transferencias
+    # Método para buscar transferencias
     # Retorna queryset de las transferencias que cumplan el filtro
     def getTransfers(self, clerk = None, ci = None):
         if clerk is None  and ci is None: return self.session.query(Transfer).all()
@@ -1568,7 +1568,59 @@ class dbManager(object):
         if ci != None and self.existClient(ci): kwargs['ci'] = ci
         if not kwargs: return []
 
-        return self.session.query(Service_list).filter_by(**kwargs).all()
+        return self.session.query(Transfer).filter_by(**kwargs).all()
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE DEPÓSITOS:
+    #==============================================================================================================================================================================
+
+    """
+    Método para crear un depósito nuevo
+     - Retorna True:
+        * Cuando el depósito es creado satisfactoreamente
+     - Retorna False:
+        * Cuando no se puede crear
+    """
+    def createDeposit(self, ci, clerk, amount):
+        kwargs = {"ci" : ci, "clerk" : clerk, "amount" : amount}
+        self.session.add(Deposit(**kwargs))
+        try:
+            self.session.commit()
+            print("Se ha registrado correctamente el depósito")
+            self.afterInsertDeposit(ci, amount)
+            return True
+        except Exception as e:
+            print("Error desconocido al intentar registrar el depósito", e)
+            self.session.rollback()
+            return False
+
+    """
+    Pseudo-Trigger para registrar el monto de una transferencia en el balnce del cliente que transfirió
+     - No retorna nada
+    """
+    def afterInsertDeposit(self, ci, amount):
+        balance = self.session.query(Client.balance).filter_by(ci=ci).scalar()
+        for i in range(10):
+            self.session.query(Client).filter_by(ci=ci).update({"balance" : float(balance)+float(amount)})
+            try:
+                self.session.commit()
+                print("Se ha actualizado correctamente el saldo del cliente")
+                break
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo actualizar el saldo del cliente", e)
+
+    # Método para buscar Transferencias
+    # Retorna queryset de las transferencias que cumplan el filtro
+    def getDeposits(self, clerk = None, ci = None):
+        if clerk is None and ci is None: return self.session.query(Deposit).all()
+
+        kwargs = {}
+        if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
+        if ci != None and self.existClient(ci): kwargs['ci'] = ci
+        if not kwargs: return []
+
+        return self.session.query(Deposit).filter_by(**kwargs).all()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE REVERSE PRODUCT LIST:
@@ -2067,12 +2119,14 @@ class dbManager(object):
             product_reverse = self.session.query(Reverse_product_list).filter_by(cash=True)
             service_reverse = self.session.query(Reverse_service_list).filter_by(cash=True)
             transfers = self.session.query(Transfer)
+            deposits = self.session.query(Deposit)
             log = self.session.query(Operation_log)
         else:
             filters_cash_checkouts = and_()
             filters_product_reverse = and_()
             filters_service_reverse = and_()
             filters_transfer = and_()
+            filters_deposit = and_()
             filters_log = and_()
 
             if not lower_none:
@@ -2080,6 +2134,7 @@ class dbManager(object):
                 filters_product_reverse = and_(filters_product_reverse, Reverse_product_list.reverse_date>=lower_date)
                 filters_service_reverse = and_(filters_service_reverse, Reverse_service_list.reverse_date>=lower_date)
                 filters_transfer = and_(filters_transfer, Transfer.transfer_date>=lower_date)
+                filters_deposit = and_(filters_deposit, Deposit.deposit_date>=lower_date)
                 filters_log = and_(filters_log, Operation_log.recorded>=lower_date)
 
             if not upper_none:
@@ -2087,6 +2142,7 @@ class dbManager(object):
                 filters_product_reverse = and_(filters_product_reverse, Reverse_product_list.reverse_date<=upper_date)
                 filters_service_reverse = and_(filters_service_reverse, Reverse_service_list.reverse_date<=upper_date)
                 filters_transfer = and_(filters_transfer, Transfer.transfer_date<=upper_date)
+                filters_deposit = and_(filters_deposit, Deposit.deposit_date<=upper_date)
                 filters_log = and_(filters_log, Operation_log.recorded<=upper_date)
 
             filters_cash_checkouts = and_(filters_cash_checkouts, Checkout.with_balance==False)
@@ -2097,9 +2153,10 @@ class dbManager(object):
             product_reverse = self.session.query(Reverse_product_list).filter(*filters_product_reverse)
             service_reverse = self.session.query(Reverse_service_list).filter(*filters_service_reverse)
             transfers = self.session.query(Transfer).filter(*filters_transfer)
+            deposits = self.session.query(Deposit).filter(*filters_deposit)
             log = self.session.query(Operation_log).filter(*filters_log)
 
-        return (cash_checkouts, product_reverse, service_reverse, transfers, log)
+        return (cash_checkouts, product_reverse, service_reverse, transfers, deposits, log)
 
 
     """
@@ -2113,21 +2170,22 @@ class dbManager(object):
        * Todas las Operaciones en log
     """
     def getOperations(self, lower_date=None, upper_date=None):
-        cash_checkouts, product_reverse, service_reverse, transfers, log = self._getOperations(lower_date, upper_date)
-        return (cash_checkouts.all(), product_reverse.all(), service_reverse.all(), transfers.all(), log.all())
+        cash_checkouts, product_reverse, service_reverse, transfers, deposits, log = self._getOperations(lower_date, upper_date)
+        return (cash_checkouts.all(), product_reverse.all(), service_reverse.all(), transfers.all(), deposits.all(), log.all())
 
     """
     Método que devuelve el balance entre dos fechas inclusivas
      - Devuelve Tupla donde le primer elemento es el balance de efectivo y el segundo elemento es el balance de transferencias
     """
     def getBalance(self, lower_date=None, upper_date=None):
-        cash_checkouts, product_reverse, service_reverse, transfers, log = self._getOperations(lower_date=None, upper_date=None)
+        cash_checkouts, product_reverse, service_reverse, transfers, deposits, log = self._getOperations(lower_date=None, upper_date=None)
 
         cash_balance = 0
 
         cash_balance += noneToZero(cash_checkouts.with_entities(func.sum(Checkout.amount)).scalar())
         cash_balance -= noneToZero(product_reverse.with_entities(func.sum(Reverse_product_list.cash_amount)).scalar())
         cash_balance -= noneToZero(service_reverse.with_entities(func.sum(Reverse_service_list.cash_amount)).scalar())
+        cash_balance += noneToZero(deposits.with_entities(func.sum(Deposit.amount)).scalar())
         cash_balance += noneToZero(log.with_entities(func.sum(Operation_log.cash_balance)).scalar())
 
         transfer_balance = 0
