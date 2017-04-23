@@ -127,7 +127,7 @@ class guiManager(QMainWindow, form_class):
         self.setupUi(self)                        # Configuración de la plantilla
         self.user = user                          # Asignación del usuario que ejecuta la sesión
         self.db = database                        # Asignación del manejador de la base de datos
-        self.db.startTurn(self.user)              # Abrir turno del usuario en la base de datos
+        self.openTurn(self.user)                  # Realizar apertura de turno del usuario en la base de datos
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # VARIABLES PARA FACILITAR EL USO DE VARIOS MÉTODOS DE LA CLASE
@@ -484,6 +484,13 @@ class guiManager(QMainWindow, form_class):
         self.setupSpinLines(self.spinBox)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
+
+    # Método para abrir turno
+    def openTurn(self, user):
+        if self.db.isOpenTurn():                            # Verificar si ya hay un turno abierto
+            clerk = self.db.getTurnStartAndEnd()[0].clerk   # Obtener usuario que dejo el turno abierto
+            self.db.closeTurn(clerk)                        # Cerrar el turno del usuario
+        self.db.startTurn(user)                             # Abrir turno del usuario en la base de datos
 
     #==============================================================================================================================================================================
     # BOTON PARA CERRAR SESIÓN
