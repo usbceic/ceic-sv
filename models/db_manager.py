@@ -2304,10 +2304,10 @@ class dbManager(object):
     """
     def getLegalTender(self, amount=None, lower_bound=None, upper_bound=None):
         if amount is None and lower_bound is None and upper_bound is None:
-            return self.session.query(Legal_tender).all()
+            return self.session.query(Legal_tender).order_by(desc(Legal_tender.amount)).all()
 
         if amount is not None:
-            return self.session.query(Legal_tender).filter_by(amount=amount).all()
+            return self.session.query(Legal_tender).filter_by(amount=amount).order_by(desc(Legal_tender.amount)).all()
 
         filters = and_()
         if price_lower_bound is not None:
@@ -2316,7 +2316,7 @@ class dbManager(object):
         if price_upper_bound is not None:
             filters = and_(filters, Legal_tender.amount <= upper_bound)
 
-        return self.session.query(Legal_tender).filter(*filters).all()
+        return self.session.query(Legal_tender).filter(*filters).order_by(desc(Legal_tender.amount)).all()
 
     """
     Método para crea una Moneda / Billete en sistema
@@ -2370,7 +2370,7 @@ class dbManager(object):
     """
     Método para verificar la existencia de un libro.
         - Retorna True: Cuando el libro existe en el sistema.
-        - Retorna False: Cuando el libro NO existe en el sistema. 
+        - Retorna False: Cuando el libro NO existe en el sistema.
     """
     def existBook(self,book_id):
         count = self.session.query(Book).filter_by(product_id=book_id).count()
