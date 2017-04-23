@@ -1717,6 +1717,9 @@ class guiManager(QMainWindow, form_class):
                             # Setear variables y refrescar la interfaz
                             self.refreshSales()
 
+                        else:
+                            warningPopUp("Pago insuficiente", self).exec_()
+
                     else:
                         warningPopUp("El cliente no existe", self).exec_()
 
