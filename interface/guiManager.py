@@ -148,6 +148,7 @@ class guiManager(QMainWindow, form_class):
         self.dateFormat = "%d/%m/%Y"        # Formato de fecha
         self.top10 = []                     # Lista de productos en Top 10
         self.new10 = []                     # Lista de productos en Nuevos
+        self.legalTenders = []              # Lista para las denominaciones del sistema monetario
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # PREFERENCIAS DE USUARIO
@@ -476,9 +477,33 @@ class guiManager(QMainWindow, form_class):
         self.refreshConfigurations()
         self.refreshCash()
 
-        # Se establece la pagina de caja por defecto
-        self.MainStacked.setCurrentIndex(0)
-        self.MainTitle.setText("Caja")
+        # Si el usuario tiene rango mayor a Colaborador
+        if self.db.getUserPermissionMask(self.user) > 0:
+            # Se establece la pagina de caja por defecto
+            self.MainStacked.setCurrentIndex(0)
+            self.MainTitle.setText("Caja")
+
+        # Si el usuario es Colaborador
+        else:
+            # Si hay dia y periodo abierto:
+            if self.db.isOpenPeriod() and self.db.isOpenDay():
+                self.MainStacked.setCurrentIndex(1)
+                self.MainTitle.setText("Ventas")
+
+            # Si NO hay dia y periodo abierto:
+            else:
+                self.setPage(self.MainStacked, 4)
+                self.MainTitle.setText("Préstamos")
+
+        # Si el usuario tiene rango mayor a Vendedor
+        if self.db.getUserPermissionMask(self.user) > 1:
+            # Mostrar configuraciones del programa
+            self.groupBox6.show()
+
+        # Si el usuario es Colaborador o Vendedor
+        else:
+            # Ocultar configuraciones del programa
+            self.groupBox6.hide()
 
     # Método para aplicar las configuraciones iniciales
     def generalSetup(self):
@@ -517,12 +542,19 @@ class guiManager(QMainWindow, form_class):
     # Cambiar a la página principal
     def on_home_pressed(self):
         if self.click():
-            self.setPage(self.MainStacked, 0)
-            self.MainTitle.setText("Caja")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                self.setPage(self.MainStacked, 0)
+                self.MainTitle.setText("Caja")
+
+            # Si el usuario es Colaborador
+            else:
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
      # Cambiar a la página de ventas
     def on_sales_pressed(self):
         if self.click():
+            # Si hay dia y periodo abierto:
             if self.db.isOpenPeriod() and self.db.isOpenDay():
                 self.setPage(self.MainStacked, 1)
                 self.MainTitle.setText("Ventas")
@@ -538,23 +570,36 @@ class guiManager(QMainWindow, form_class):
     # Cambiar a la página de inventario
     def on_inventory_pressed(self):
         if self.click():
-            if self.db.isOpenPeriod() and self.db.isOpenDay():
-                self.setPage(self.MainStacked, 2)
-                self.MainTitle.setText("Inventario")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                # Si hay dia y periodo abierto:
+                if self.db.isOpenPeriod() and self.db.isOpenDay():
+                    self.setPage(self.MainStacked, 2)
+                    self.MainTitle.setText("Inventario")
 
-            # Si no hay periodo abierto
-            elif not self.db.isOpenPeriod():
-                warningPopUp("Falta apertura de periodo", self).exec_()
+                # Si no hay periodo abierto
+                elif not self.db.isOpenPeriod():
+                    warningPopUp("Falta apertura de periodo", self).exec_()
 
-            # Si no hay día abierto
+                # Si no hay día abierto
+                else:
+                    warningPopUp("Falta apertura de caja", self).exec_()
+
+            # Si el usuario es Colaborador
             else:
-                warningPopUp("Falta apertura de caja", self).exec_()
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de consultas
     def on_querys_pressed(self):
         if self.click():
-            self.setPage(self.MainStacked, 3)
-            self.MainTitle.setText("Consultas")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                self.setPage(self.MainStacked, 3)
+                self.MainTitle.setText("Consultas")
+
+            # Si el usuario es Colaborador
+            else:
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de préstamos
     def on_loans_pressed(self):
@@ -565,59 +610,92 @@ class guiManager(QMainWindow, form_class):
     # Cambiar a la página de libros
     def on_books_pressed(self):
         if self.click():
-            self.setPage(self.MainStacked, 5)
-            self.MainTitle.setText("Libros")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                self.setPage(self.MainStacked, 5)
+                self.MainTitle.setText("Libros")
+
+            # Si el usuario es Colaborador
+            else:
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de clientes
     def on_providers_pressed(self):
         if self.click():
-            if self.db.isOpenPeriod() and self.db.isOpenDay():
-                self.setPage(self.MainStacked, 6)
-                self.MainTitle.setText("Proveedores")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                # Si hay dia y periodo abierto:
+                if self.db.isOpenPeriod() and self.db.isOpenDay():
+                    self.setPage(self.MainStacked, 6)
+                    self.MainTitle.setText("Proveedores")
 
-            # Si no hay periodo abierto
-            elif not self.db.isOpenPeriod():
-                warningPopUp("Falta apertura de periodo", self).exec_()
+                # Si no hay periodo abierto
+                elif not self.db.isOpenPeriod():
+                    warningPopUp("Falta apertura de periodo", self).exec_()
 
-            # Si no hay día abierto
+                # Si no hay día abierto
+                else:
+                    warningPopUp("Falta apertura de caja", self).exec_()
+
+            # Si el usuario es Colaborador
             else:
-                warningPopUp("Falta apertura de caja", self).exec_()
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de clientes
     def on_clients_pressed(self):
         if self.click():
-            if self.db.isOpenPeriod() and self.db.isOpenDay():
-                self.setPage(self.MainStacked, 7)
-                self.MainTitle.setText("Clientes")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                # Si hay dia y periodo abierto:
+                if self.db.isOpenPeriod() and self.db.isOpenDay():
+                    self.setPage(self.MainStacked, 7)
+                    self.MainTitle.setText("Clientes")
 
-            # Si no hay periodo abierto
-            elif not self.db.isOpenPeriod():
-                warningPopUp("Falta apertura de periodo", self).exec_()
+                # Si no hay periodo abierto
+                elif not self.db.isOpenPeriod():
+                    warningPopUp("Falta apertura de periodo", self).exec_()
 
-            # Si no hay día abierto
+                # Si no hay día abierto
+                else:
+                    warningPopUp("Falta apertura de caja", self).exec_()
+
+            # Si el usuario es Colaborador
             else:
-                warningPopUp("Falta apertura de caja", self).exec_()
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de clientes
     def on_transfer_pressed(self):
         if self.click():
-            if self.db.isOpenPeriod() and self.db.isOpenDay():
-                self.setPage(self.MainStacked, 8)
-                self.MainTitle.setText("Recargas de saldo")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                # Si hay dia y periodo abierto:
+                if self.db.isOpenPeriod() and self.db.isOpenDay():
+                    self.setPage(self.MainStacked, 8)
+                    self.MainTitle.setText("Recargas de saldo")
 
-            # Si no hay periodo abierto
-            elif not self.db.isOpenPeriod():
-                warningPopUp("Falta apertura de periodo", self).exec_()
+                # Si no hay periodo abierto
+                elif not self.db.isOpenPeriod():
+                    warningPopUp("Falta apertura de periodo", self).exec_()
 
-            # Si no hay día abierto
+                # Si no hay día abierto
+                else:
+                    warningPopUp("Falta apertura de caja", self).exec_()
+
+            # Si el usuario es Colaborador
             else:
-                warningPopUp("Falta apertura de caja", self).exec_()
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de usuarios
     def on_users_pressed(self):
         if self.click():
-            self.setPage(self.MainStacked, 9)
-            self.MainTitle.setText("Usuarios")
+            # Si el usuario tiene rango mayor a Vendedor
+            if self.db.getUserPermissionMask(self.user) > 1:
+                self.setPage(self.MainStacked, 9)
+                self.MainTitle.setText("Usuarios")
+
+            # Si el usuario es Colaborador o Vendedor
+            else:
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de configuraciones
     def on_configure_pressed(self):
@@ -628,44 +706,45 @@ class guiManager(QMainWindow, form_class):
     # Cambiar a la página de ayuda
     def on_help_pressed(self):
         if self.click():
+            print(self.user)
             self.setPage(self.MainStacked, 11)
             self.MainTitle.setText("Ayuda")
 
-    def on_arrow1_pressed(self): self.changePage(self.subStacked3)      # Cambiar la página del subStacked3 hacia la derecha
-    def on_arrow3_pressed(self): self.changePage(self.subStacked4)      # Cambiar la página del subStacked4 hacia la derecha
-    def on_arrow5_pressed(self): self.changePage(self.subStacked5)      # Cambiar la página del subStacked5 hacia la derecha
-    def on_arrow7_pressed(self): self.changePage(self.subStacked6)      # Cambiar la página del subStacked6 hacia la derecha
-    def on_arrow9_pressed(self): self.changePage(self.subStacked7)      # Cambiar la página del subStacked7 hacia la derecha
-    def on_arrow11_pressed(self): self.changePage(self.subStacked8)     # Cambiar la página del subStacked8 hacia la derecha
-    def on_arrow13_pressed(self): self.changePage(self.subStacked9)     # Cambiar la página del subStacked9 hacia la derecha
-    def on_arrow15_pressed(self): self.changePage(self.subStacked10)    # Cambiar la página del subStacked10 hacia la derecha
-    def on_arrow17_pressed(self): self.changePage(self.subStacked11)    # Cambiar la página del subStacked11 hacia la derecha
-    def on_arrow19_pressed(self): self.changePage(self.subStacked12)    # Cambiar la página del subStacked12 hacia la derecha
-    def on_arrow21_pressed(self): self.changePage(self.subStacked13)    # Cambiar la página del subStacked13 hacia la derecha
-    def on_arrow23_pressed(self): self.changePage(self.subStacked14)    # Cambiar la página del subStacked14 hacia la derecha
-    def on_arrow25_pressed(self): self.changePage(self.subStacked15)    # Cambiar la página del subStacked15 hacia la derecha
-    def on_arrow27_pressed(self): self.changePage(self.subStacked16)    # Cambiar la página del subStacked16 hacia la derecha
-    def on_arrow29_pressed(self): self.changePage(self.subStacked17)    # Cambiar la página del subStacked17 hacia la derecha
-    def on_arrow31_pressed(self): self.changePage(self.subStacked18)    # Cambiar la página del subStacked18 hacia la derecha
-    def on_arrow33_pressed(self): self.changePage(self.subStacked19)    # Cambiar la página del subStacked18 hacia la derecha
+    def on_arrow1_pressed(self): self.changePage(self.subStacked3)       # Cambiar la página del subStacked3 hacia la derecha
+    def on_arrow3_pressed(self): self.changePage(self.subStacked4)       # Cambiar la página del subStacked4 hacia la derecha
+    def on_arrow5_pressed(self): self.changePage(self.subStacked5)       # Cambiar la página del subStacked5 hacia la derecha
+    def on_arrow7_pressed(self): self.changePage(self.subStacked6)       # Cambiar la página del subStacked6 hacia la derecha
+    def on_arrow9_pressed(self): self.changePage(self.subStacked7)       # Cambiar la página del subStacked7 hacia la derecha
+    def on_arrow11_pressed(self): self.changePage(self.subStacked8)      # Cambiar la página del subStacked8 hacia la derecha
+    def on_arrow13_pressed(self): self.changePage(self.subStacked9)      # Cambiar la página del subStacked9 hacia la derecha
+    def on_arrow15_pressed(self): self.changePage(self.subStacked10)     # Cambiar la página del subStacked10 hacia la derecha
+    def on_arrow17_pressed(self): self.changePage(self.subStacked11)     # Cambiar la página del subStacked11 hacia la derecha
+    def on_arrow19_pressed(self): self.changePage(self.subStacked12)     # Cambiar la página del subStacked12 hacia la derecha
+    def on_arrow21_pressed(self): self.changePage(self.subStacked13)     # Cambiar la página del subStacked13 hacia la derecha
+    def on_arrow23_pressed(self): self.changePage(self.subStacked14)     # Cambiar la página del subStacked14 hacia la derecha
+    def on_arrow25_pressed(self): self.changePage(self.subStacked15)     # Cambiar la página del subStacked15 hacia la derecha
+    def on_arrow27_pressed(self): self.changePage(self.subStacked16)     # Cambiar la página del subStacked16 hacia la derecha
+    def on_arrow29_pressed(self): self.changePage(self.subStacked17)     # Cambiar la página del subStacked17 hacia la derecha
+    def on_arrow31_pressed(self): self.changePage(self.subStacked18)     # Cambiar la página del subStacked18 hacia la derecha
+    def on_arrow33_pressed(self): self.changePage(self.subStacked19)     # Cambiar la página del subStacked18 hacia la derecha
 
-    def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)   # Cambiar la página del subStacked3 hacia la izquierda
-    def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)   # Cambiar la página del subStacked4 hacia la izquierda
-    def on_arrow4_pressed(self): self.changePage(self.subStacked5, 1)   # Cambiar la página del subStacked5 hacia la izquierda
-    def on_arrow6_pressed(self): self.changePage(self.subStacked6, 1)   # Cambiar la página del subStacked6 hacia la izquierda
-    def on_arrow8_pressed(self): self.changePage(self.subStacked7, 1)   # Cambiar la página del subStacked7 hacia la izquierda
-    def on_arrow10_pressed(self): self.changePage(self.subStacked8, 1)  # Cambiar la página del subStacked8 hacia la izquierda
-    def on_arrow12_pressed(self): self.changePage(self.subStacked9, 1)  # Cambiar la página del subStacked9 hacia la izquierda
-    def on_arrow14_pressed(self): self.changePage(self.subStacked10, 1) # Cambiar la página del subStacked10 hacia la izquierda
-    def on_arrow16_pressed(self): self.changePage(self.subStacked11, 1) # Cambiar la página del subStacked11 hacia la izquierda
-    def on_arrow18_pressed(self): self.changePage(self.subStacked12, 1) # Cambiar la página del subStacked12 hacia la izquierda
-    def on_arrow20_pressed(self): self.changePage(self.subStacked13, 1) # Cambiar la página del subStacked13 hacia la izquierda
-    def on_arrow22_pressed(self): self.changePage(self.subStacked14, 1) # Cambiar la página del subStacked14 hacia la izquierda
-    def on_arrow24_pressed(self): self.changePage(self.subStacked15, 1) # Cambiar la página del subStacked15 hacia la izquierda
-    def on_arrow26_pressed(self): self.changePage(self.subStacked16, 1) # Cambiar la página del subStacked16 hacia la izquierda
-    def on_arrow28_pressed(self): self.changePage(self.subStacked17, 1) # Cambiar la página del subStacked17 hacia la izquierda
-    def on_arrow30_pressed(self): self.changePage(self.subStacked18, 1) # Cambiar la página del subStacked18 hacia la izquierda
-    def on_arrow32_pressed(self): self.changePage(self.subStacked19, 1) # Cambiar la página del subStacked18 hacia la izquierda
+    def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)    # Cambiar la página del subStacked3 hacia la izquierda
+    def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)    # Cambiar la página del subStacked4 hacia la izquierda
+    def on_arrow4_pressed(self): self.changePage(self.subStacked5, 1)    # Cambiar la página del subStacked5 hacia la izquierda
+    def on_arrow6_pressed(self): self.changePage(self.subStacked6, 1)    # Cambiar la página del subStacked6 hacia la izquierda
+    def on_arrow8_pressed(self): self.changePage(self.subStacked7, 1)    # Cambiar la página del subStacked7 hacia la izquierda
+    def on_arrow10_pressed(self): self.changePage(self.subStacked8, 1)   # Cambiar la página del subStacked8 hacia la izquierda
+    def on_arrow12_pressed(self): self.changePage(self.subStacked9, 1)   # Cambiar la página del subStacked9 hacia la izquierda
+    def on_arrow14_pressed(self): self.changePage(self.subStacked10, 1)  # Cambiar la página del subStacked10 hacia la izquierda
+    def on_arrow16_pressed(self): self.changePage(self.subStacked11, 1)  # Cambiar la página del subStacked11 hacia la izquierda
+    def on_arrow18_pressed(self): self.changePage(self.subStacked12, 1)  # Cambiar la página del subStacked12 hacia la izquierda
+    def on_arrow20_pressed(self): self.changePage(self.subStacked13, 1)  # Cambiar la página del subStacked13 hacia la izquierda
+    def on_arrow22_pressed(self): self.changePage(self.subStacked14, 1)  # Cambiar la página del subStacked14 hacia la izquierda
+    def on_arrow24_pressed(self): self.changePage(self.subStacked15, 1)  # Cambiar la página del subStacked15 hacia la izquierda
+    def on_arrow26_pressed(self): self.changePage(self.subStacked16, 1)  # Cambiar la página del subStacked16 hacia la izquierda
+    def on_arrow28_pressed(self): self.changePage(self.subStacked17, 1)  # Cambiar la página del subStacked17 hacia la izquierda
+    def on_arrow30_pressed(self): self.changePage(self.subStacked18, 1)  # Cambiar la página del subStacked18 hacia la izquierda
+    def on_arrow32_pressed(self): self.changePage(self.subStacked19, 1)  # Cambiar la página del subStacked18 hacia la izquierda
 
     #==============================================================================================================================================================================
     # VISTA DE CAJA
@@ -2253,7 +2332,7 @@ class guiManager(QMainWindow, form_class):
     # Método para cambiar el usuario que usa la intefáz
     def changeUser(self, user):
         self.user = user
-        self.openTurn(self, user)
+        self.openTurn(self.user)
         self.refresh()
 
     # Método para refrescar el sistema monetario
