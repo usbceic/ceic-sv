@@ -1993,7 +1993,7 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             if self.lineE146.text() != "":
                 phone = self.lineE147.text()
-                if phone != "" and validatePhoneNumber(phone):
+                if (phone != "" and validatePhoneNumber(phone)) or phone == "":
                     kwargs = {
                         "provider_name"   : self.lineE146.text(),
                         "phone"           : phone,
