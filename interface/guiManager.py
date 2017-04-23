@@ -2111,7 +2111,7 @@ class guiManager(QMainWindow, form_class):
                             self.refreshProviders()          # Refrescar vista
                             self.lineE146.setFocus()         # Enfocar
                         else:
-                            errorPopUp("Formato incorrecto de email",self).exec_()
+                            errorPopUp("Formato incorrecto de correo",self).exec_()
 
                     else:
                         errorPopUp("Formato incorrecto para número telefónico",self).exec_()
