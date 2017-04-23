@@ -2410,10 +2410,10 @@ class dbManager(object):
         if (self.existBook(book_id)):
             return False
         kwargs = {
-            'book_id'   : book_id
-            'title'     : title
-            'edition'   : edition
-            'book_year' : book_year
+            'book_id'   : book_id,
+            'title'     : title,
+            'edition'   : edition,
+            'book_year' : book_year,
             'lang'      : lang
         }
         if isbn is not None:
