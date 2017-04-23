@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 echo "Bienvenido al instalador de CEIC Suite (Versión netinstall)"
 echo "Instalando dependencias..."
 sudo env DEBIAN_FRONTEND=noninteractive apt-get install python3-pip python3-pyqt4 postgresql-9.5 -y
