@@ -504,7 +504,7 @@ class dbManager(object):
             print("Se ha actualizado la información del proveedor " + name + " satisfactoriamente")
             return True
         except Exception as e:
-            print("Ha ocurrido un error desconocido al intentar actualizar la información del usuario " + oldName, e)
+            print("Ha ocurrido un error desconocido al intentar actualizar la información del proveedor " + oldName, e)
             self.session.rollback()
             return False
         return False
@@ -2380,6 +2380,111 @@ class dbManager(object):
             print("Error desconocido al intentar eliminar La Moneda / Billete de " + str(amount) + ":", e)
             self.session.rollback()
             return False
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE LIBROS:
+    #==============================================================================================================================================================================
+
+    """
+    Método para verificar la existencia de un libro.
+        - Retorna True: Cuando el libro existe en el sistema.
+        - Retorna False: Cuando el libro NO existe en el sistema. 
+    """
+    def existBook(self,book_id):
+        count = self.session.query(Book).filter_by(product_id=book_id).count()
+        if count == 0:
+            print("El libro asociado al ID " + str(book_id) + " NO existe")
+            return False
+        else:
+            print("El libro asociado al ID " + str(book_id) + " existe")
+            return True
+
+    """
+    Método para crear un libro
+     - Retorna True:
+        * Cuando el libro es creado satisfactoreamente.
+     - Retorna False:
+        * Cuando no se puede crear el libro o cuando el libro ya existe.
+    """
+    def createBook(self,book_id,title,edition,book_year,lang,isbn=None):
+        if (self.existBook(book_id)):
+            return False
+        kwargs = {
+            'book_id'   : book_id
+            'title'     : title
+            'edition'   : edition
+            'book_year' : book_year
+            'lang'      : lang
+        }
+        if isbn is not None:
+            kwargs['isbn'] = isbn
+
+        newBook = Book(**kwargs)
+        self.session.add(newBook)
+        try:
+            self.session.commit()
+            print("Se ha creado correctamente el libro " + title)
+            return True
+        except Exception as e:
+            print("Error al crear el libro " + title +":", e)
+            self.session.rollback()
+            return False
+
+
+    """
+    Método para actualizar la información de un libro
+        - Retorna True:
+            Cuando la información del libro es actualizada exitosamente
+        - Retorna False:
+            Cuando el libro no existe u ocurrió un error actualizando la información
+    """
+
+    def updateBookInfo(self,oldID,newID=None,title=None,isbn=None,edition=None,book_year=None,lang=None,quantity=None,quantity_lent=None):
+        kwargs = {}
+        if newID is not None:
+            kwargs['book_id'] = newID
+
+        if title is not None:
+            kwargs['title'] = title
+
+        if isbn is not None:
+            kwargs['isbn'] = isbn
+
+        if edition is not None:
+            kwargs['edition'] = edition
+
+        if book_year is not None:
+            kwargs['book_year'] = book_year
+
+        if lang is not None:
+            kwargs['lang'] = lang
+
+        if quantity is not None:
+            kwargs['quantity'] = quantity
+
+        if quantity_lent is not None:
+            kwargs['quantity_lent'] = quantity_lent
+
+
+        try:
+            self.session.query(Book).filter_by(book_id=oldID).update(kwargs)
+            self.session.commit()
+            if newID is not None:
+                ID = newID
+            else:
+                ID = oldID
+            print("Se ha actualizado la información del libro asociado al id " + ID + " satisfactoriamente")
+            return True
+        except Exception as e:
+            print("Ha ocurrido un error desconocido al intentar actualizar la información del libro asociado al id " + oldID, e)
+            self.session.rollback()
+            return False
+        return False
+
+
+
+
+
 
 ###################################################################################################################################################################################
 ## PRUEBAS:
