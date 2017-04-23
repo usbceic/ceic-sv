@@ -672,9 +672,9 @@ class dbManager(object):
      - Retorna el id correspondiente al producto de nombre especificado si este existe
      - Retorna None cuando no existe un producto con el nombre especificado
     """
-    def getProductID(self, product_name):
+    def getProductID(self, product_name, active = True):
         product_name = product_name.title().strip()
-        if self.existProduct(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name.title().strip()).all()[0][0]
+        if self.existProduct(product_name, active = active): return self.session.query(Product.product_id).filter_by(product_name=product_name).all()[0][0]
         else: return None
 
     """
@@ -747,16 +747,37 @@ class dbManager(object):
         product_name = product_name.title().strip()
 
         if self.existProduct(product_name):
+            self.session.query(Product).filter_by(product_name=product_name).update({"active" : False})
             try:
-                self.session.execute(update(Product).where(Product.product_name==product_name.title().strip()).values(active=False))
                 self.session.commit()
+                self.afterDeleteProduct(product_name)
                 print("Se ha desactivado el producto: " + product_name)
                 return True
+
             except Exception as e:
                 print("Ha ocurrido un error desconocido al intentar desactivar el producto: " + product_name, e)
                 self.session.rollback()
                 return False
         return False
+
+    """
+    Pseudo-Trigger para eliminar los lotes asociados al producto desactivado
+     - No retorna nada
+    """
+    def afterDeleteProduct(self, product_name):
+        product_name = product_name.title().strip()
+        product_id = self.getProductID(product_name, active = False)
+        lots = self.getLotsIDByProductID(product_id)
+        for lot_id in lots:
+            self.session.query(Lot).filter_by(lot_id=lot_id).update({"available" : False, "current" : False})
+            try:
+                self.session.commit()
+                print("Se ha eliminado el lote " + str(lot_id) + " del producto desactivado: " + product_name)
+
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo eliminar el lote " + str(lot_id) + " del producto desactivado: " + product_name)
+        self.afterUpdateLot(lots[0])
 
     """
     Método para restarle uno a la cantidad de lotes restantes de un producto
@@ -880,6 +901,9 @@ class dbManager(object):
         * Cuando NO se puede crear por alguna otra razón
     """
     def createLot(self, product_name, provider_name, received_by, cost, quantity, expiration_date=None):
+        product_name = product_name.title().strip()
+        provider_name = provider_name.title().strip()
+
         if self.existProvider(provider_name) and self.existProduct(product_name) and self.existUser(received_by):
             product_id = self.getProductID(product_name)
             kwargs = {
@@ -949,11 +973,15 @@ class dbManager(object):
             values = {}
             remainingTrigger = False
 
-            if product_name != None and self.existProduct(product_name):
-                values["product_id"] = self.getProductID(product_name)
+            if product_name != None:
+                product_name = product_name.title().strip()
+                if self.existProduct(product_name):
+                    values["product_id"] = self.getProductID(product_name)
 
-            if provider_id != None and self.existProvider(provider_id):
-                values["provider_id"] = provider_id
+            if provider_id != None:
+                provider_id = provider_id.title().strip()
+                if self.existProvider(provider_id):
+                    values["provider_id"] = provider_id
 
             if cost != None:
                 values["cost"] = cost
@@ -1506,6 +1534,8 @@ class dbManager(object):
         * Cuando no se puede crear
     """
     def createProductList(self, purchase_id, product_name, price, amount):
+        product_name = product_name.title().strip()
+
         if self.existPurchase(purchase_id) and self.existProduct(product_name):
             product_id = self.getProductID(product_name)
             kwargs = {"purchase_id" : purchase_id, "product_id" : product_id, "price" : price, "amount" : amount}
@@ -1578,8 +1608,10 @@ class dbManager(object):
         kwargs = {}
         if purchase_id is not None and self.existPurchase(purchase_id):
             kwargs['purchase_id'] = purchase_id
-        if product_name is not None and self.existProduct(product_name):
-            kwargs['product_id'] = self.getProductID(product_name)
+        if product_name is not None:
+            product_name = product_name.title().strip()
+            if self.existProduct(product_name):
+                kwargs['product_id'] = self.getProductID(product_name)
 
         # Diccionario Vacio
         if not kwargs:
