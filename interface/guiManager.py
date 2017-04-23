@@ -1384,27 +1384,28 @@ class guiManager(QMainWindow, form_class):
                 product_name = self.lineE33.text()
                 if self.db.existProduct(product_name):
                     self.selectedItem2.setIcon(QIcon(join(productPath, product_name)))
-                    product_id = self.db.getProductID(product_name)
-                    lotIDs = self.db.getLotsIDByProductID(product_id)
-                    self.currentLot = "0"
-                    self.currentLots = {}
-                    self.lotMutex1 = False
-                    for i in range(1, len(lotIDs)+1):
-                        self.cbox5.addItem(str(i))
-                        self.currentLots[str(i)] = lotIDs[i-1]
+                    if not self.rbutton9.isChecked():
+                        product_id = self.db.getProductID(product_name)
+                        lotIDs = self.db.getLotsIDByProductID(product_id)
+                        self.currentLot = "0"
+                        self.currentLots = {}
+                        self.lotMutex1 = False
+                        for i in range(1, len(lotIDs)+1):
+                            self.cbox5.addItem(str(i))
+                            self.currentLots[str(i)] = lotIDs[i-1]
 
-                    if len(lotIDs) > 0:
-                        self.currentLot = "1"
-                        lot_id = self.currentLots[self.currentLot]
-                        lot = self.db.getLots(lot_id=lot_id)[0]
+                        if len(lotIDs) > 0:
+                            self.currentLot = "1"
+                            lot_id = self.currentLots[self.currentLot]
+                            lot = self.db.getLots(lot_id=lot_id)[0]
 
-                        self.lineE34.setText(lot.provider_name)      # Proveedor
-                        self.lineE35.setText(str(lot.cost))          # Costo
-                        #self.dtE2.setText(str(lot.expiration_date)) # Caducidad
-                        self.lineE37.setText(str(lot.quantity))      # Cantidad
-                        self.lineE38.setText(str(lot.remaining))     # Disponibilidad
+                            self.lineE34.setText(lot.provider_id)        # Proveedor
+                            self.lineE35.setText(str(lot.cost))          # Costo
+                            #self.dtE2.setText(str(lot.expiration_date)) # Caducidad
+                            self.lineE37.setText(str(lot.quantity))      # Cantidad
+                            self.lineE38.setText(str(lot.remaining))     # Disponibilidad
 
-                    self.lotMutex1 = True
+                        self.lotMutex1 = True
 
                 else:
                     self.clearLEs(self.lotsRO1)
@@ -1422,7 +1423,7 @@ class guiManager(QMainWindow, form_class):
                 lot_id = self.currentLots[self.currentLot]
                 lot = self.db.getLots(lot_id=lot_id)[0]
 
-                self.lineE34.setText(lot.provider_name)      # Proveedor
+                self.lineE34.setText(lot.provider_id)        # Proveedor
                 self.lineE35.setText(str(lot.cost))          # Costo
                 #self.dtE2.setText(str(lot.expiration_date)) # Caducidad
                 self.lineE37.setText(str(lot.quantity))      # Cantidad
