@@ -187,6 +187,11 @@ class guiManager(QMainWindow, form_class):
         self.cashLE2 = [self.lineE8]
         self.cashLE3 = [self.lineE9]
 
+        # Calculadora
+        self.calc0 = [self.calcT0, self.calcT1, self.calcT2, self.calcT3, self.calcT4, self.calcT5, self.calcT6, self.calcT7, self.calcT8, self.calcT9, self.calcT10, self.calcT11, self.calcT12, self.calcT13, self.calcT14]
+
+        self.calc1 = [self.calcLE0, self.calcLE1, self.calcLE2, self.calcLE3, self.calcLE4, self.calcLE5, self.calcLE6, self.calcLE7, self.calcLE8, self.calcLE9, self.calcLE10, self.calcLE11, self.calcLE12, self.calcLE13, self.calcLE14]
+
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE INVENTARIO
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -701,6 +706,25 @@ class guiManager(QMainWindow, form_class):
             self.setPage(self.subStacked2, 0)               # Cambiar a la página para abrir un nuevo periodo
             self.clearLEs(self.cashLE1)                     # Limpiar los campos de los apartados de periodo y caja
 
+    # Método para configurar la calculadora
+    def updateCalc(self, legalTenders):
+        for i in range(len(self.calc0)):
+            if i < len(legalTenders):
+                self.calc0[i].setText(str(legalTenders[i]))
+                self.calc1[i].setReadOnly(False)
+
+            else:
+                self.calc0[i].setText("0")
+                self.calc1[i].setReadOnly(True)
+
+    # Método para realizar la suma en la calculadora
+    def executeCalc(self, legalTenders):
+        total = 0
+        for i in range(len(legalTenders)):
+            if self.calc1[i].text() != "":
+                total += float(self.calc1[i].text())*float(legalTenders[i])
+        self.lineE79.setText(str(total))
+
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -806,6 +830,85 @@ class guiManager(QMainWindow, form_class):
             # Si no hay día abierto
             else:
                 warningPopUp("Falta apertura de caja", self).exec_()
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # CAMPOS DE TEXTO
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Campo 0 de la calculadora
+    def on_calcLE0_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 1 de la calculadora
+    def on_calcLE1_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 2 de la calculadora
+    def on_calcLE2_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 3 de la calculadora
+    def on_calcLE3_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 4 de la calculadora
+    def on_calcLE4_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 5 de la calculadora
+    def on_calcLE5_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 6 de la calculadora
+    def on_calcLE6_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 7 de la calculadora
+    def on_calcLE7_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 8 de la calculadora
+    def on_calcLE8_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 9 de la calculadora
+    def on_calcLE9_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 10 de la calculadora
+    def on_calcLE10_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 11 de la calculadora
+    def on_calcLE11_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 12 de la calculadora
+    def on_calcLE12_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 13 de la calculadora
+    def on_calcLE13_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
+
+    # Campo 14 de la calculadora
+    def on_calcLE14_textChanged(self):
+        if self.textChanged():
+            self.executeCalc(self.legalTenders)
 
     #==============================================================================================================================================================================
     # VISTA DE INVENTARIO
@@ -2158,7 +2261,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.confLE1)
         self.legalTenders = self.loadLegalTenders()
         self.updateLegalTendersCB(self.legalTenders)
-        #self.updateCalc(self.legalTenders)
+        self.updateCalc(self.legalTenders)
 
     # Método para refrescar la vista de Configuraciones y componentes relacionados
     def refreshConfigurations(self):
