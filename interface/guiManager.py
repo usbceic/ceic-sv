@@ -1400,19 +1400,25 @@ class guiManager(QMainWindow, form_class):
                             cost      = float(cost)                        # Costo
                             quantity  = int(quantity)                      # Cantidad
                             remaining = int(remaining)                     # Disponibles
-                            lot_id    = self.currentLots[self.currentLot]  # Lote
 
-                            if self.db.updateLot(lot_id, product_name, provider_name, cost, quantity, remaining):
-                                successPopUp(parent = self).exec_()
+                            if quantity >= remaining:
+
+                                lot_id    = self.currentLots[self.currentLot]  # Lote
+
+                                if self.db.updateLot(lot_id, product_name, provider_name, cost, quantity, remaining):
+                                    successPopUp(parent = self).exec_()
+
+                                else:
+                                    errorPopUp(parent = self).exec_()
+
+                                # Refrescar toda la interfaz
+                                self.refreshInventory()
+
+                                # Enfocar
+                                self.lineE33.setFocus()
 
                             else:
-                                errorPopUp(parent = self).exec_()
-
-                            # Refrescar toda la interfaz
-                            self.refreshInventory()
-
-                            # Enfocar
-                            self.lineE33.setFocus()
+                                errorPopUp("La disponibilidad no puede ser mayor a la cantidad", self).exec_()
 
                         else:
                             errorPopUp("El proveedor no existe", self).exec_()
