@@ -47,7 +47,7 @@ from db_manager import dbManager
 from popUps import errorPopUp, warningPopUp, successPopUp, authorizationPopUp
 
 # Módulo con los validadores para campos de texto
-from validators import validatePhoneNumber
+from validators import validatePhoneNumber, validateEmail
 
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
@@ -2090,24 +2090,35 @@ class guiManager(QMainWindow, form_class):
     # Botón para crear un proveedor
     def on_pbutton20_pressed(self):
         if self.click():
-            if self.lineE146.text() != "":
-                phone = self.lineE147.text()
-                if (phone != "" and validatePhoneNumber(phone)) or phone == "":
-                    kwargs = {
-                        "provider_name"   : self.lineE146.text(),
-                        "phone"           : phone,
-                        "email"           : self.lineE148.text(),
-                        "description"     : self.textE1.toPlainText(),
-                        "pay_information" : self.textE2.toPlainText()
-                    }
-                    self.db.createProvider(**kwargs)
-                    successPopUp("Proveedor "+self.lineE146.text()+" creado exitosamente")
+            name = self.lineE146.text()
+            phone = self.lineE147.text()
+            email = self.lineE148.text()
+            if name != "":
+                if not (self.db.existProvider(name)):
+                    if (phone != "" and validatePhoneNumber(phone)) or phone == "":
+                        if (email != "" and validateEmail(email)) or email == "":
+                            kwargs = {
+                                "provider_name"   : name,
+                                "phone"           : phone,
+                                "email"           : email,
+                                "description"     : self.textE1.toPlainText(),
+                                "pay_information" : self.textE2.toPlainText()
+                            }
+                            self.db.createProvider(**kwargs)
+                            successPopUp("Proveedor "+self.lineE146.text()+" creado exitosamente")
+    
+                            self.clearLEs(self.providersLE0) # Limpiar formulario
+                            self.refreshProviders()          # Refrescar vista
+                            self.lineE146.setFocus()         # Enfocar
+                        else:
+                            errorPopUp("Formato incorrecto de email",self).exec_()
 
-                    self.clearLEs(self.providersLE0) # Limpiar formulario
-                    self.refreshProviders()          # Refrescar vista
-                    self.lineE146.setFocus()         # Enfocar
+                    else:
+                        errorPopUp("Formato incorrecto para número telefónico",self).exec_()
                 else:
-                    errorPopUp("Formato incorrecto para número telefónico",self).exec_()
+                    errorPopUp("El proveedor "+name+" ya existe",self).exec_()
+            else:
+                errorPopUp("Falta nombre de proveedor",self).exec_
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO

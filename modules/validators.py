@@ -24,7 +24,7 @@ import re
 ###################################################################################################################################################################################
 
 """
-Método para validad números telefonicos
+Método para validar números telefonicos
 	Retorna True:
 		* Si el string recibido es un número telefónico válido
 	Retorna False:
@@ -34,6 +34,20 @@ def validatePhoneNumber(phone):
 	start58 = "^(\(\+58\)|\+58)"
 	PhoneCode = "((4(1|2)(4|6))|412|2\d{2})"
 	pattern = re.compile("((" + (start58 + PhoneCode) + "|(^(0"+PhoneCode+")|\(0"+PhoneCode+"\))" + ")(\-?\d{3}\-?\d{4})$)")
+	if pattern.match(phone):
+		return True
+	else:
+		return False
+
+"""
+Método para validar correos electrónicos
+	Retorna True:
+		* Si el string recibido es un correo electrónico válido
+	Retorna False:
+		* Si el string recibido NO es un correo electrónico válido
+"""
+def validateEmail(phone):
+	pattern = re.compile("^[A-Za-z0-9][A-Za-z0-9\.\-_]*\@[A-Za-z0-9][A-Za-z0-9\.\-_]*\.\w+$")	
 	if pattern.match(phone):
 		return True
 	else:
