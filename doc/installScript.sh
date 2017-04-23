@@ -10,5 +10,6 @@ if [ ans -eq "n"] then
 	sudo -u postgres createuser -PE -s sistema_ventas
 	echo "Creando base de datos..."
 	sudo -u postgres createdb -O sistema_ventas -E UTF8 ceicsv
+fi
 echo "Iniciando CEIC suite..."
 python3 ../ceic_suite.py
