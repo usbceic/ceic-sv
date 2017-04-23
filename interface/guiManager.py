@@ -46,6 +46,9 @@ from db_manager import dbManager
 # Módulo con las clases para los popUp
 from popUps import errorPopUp, warningPopUp, successPopUp, authorizationPopUp
 
+# Módulo con los validadores para campos de texto
+from validators import validatePhoneNumber
+
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
 
@@ -58,8 +61,6 @@ from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
 # Módulo con estructuras de Qt
 from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton
 
-#Módulo con los validadores para campos de texto
-from validators import validatePhoneNumber
 ###################################################################################################################################################################################
 ## CONSTANTES:
 ###################################################################################################################################################################################
