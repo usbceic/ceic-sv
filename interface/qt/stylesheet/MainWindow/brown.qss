@@ -115,7 +115,7 @@
 }
 
 /*Configuración de los textos normales*/
-#title0, #title1, #title2, #title3, #title4, #title5, #title6, #title7, #title8, #title9, #title10, #title11, #title12, #title13, #title14, #title15, #title16, #title17, #title18, #title19, #title20, #title21, #title22, #title23, #title24, #title25, #title26, #title27, #title28, #title29, #title30, #title31, #title32, #title33, #title34, #title35, #title36, #title37, #title38, #title39, #title40, #title41, #title42, #title43, #title44, #title45, #title46, #title47, #title48, #title49, #title50, #title51, #title52, #title53 {
+#title0, #title1, #title2, #title3, #title4, #title5, #title6, #title7, #title8, #title9, #title10, #title11, #title12, #title13, #title14, #title15, #title16, #title17, #title18, #title19, #title20, #title21, #title22, #title23, #title24, #title25, #title26, #title27, #title28, #title29, #title30, #title31, #title32, #title33, #title34, #title35, #title36, #title37, #title38, #title39, #title40, #title41, #title42, #title43, #title44, #title45, #title46, #title47, #title48, #title49, #title50, #title51, #title52, #title53, #title54, #title55, #title56, #title57, #title58, #title59{
     color: #212121;
     border: 1px solid #BDBDBD;
     border-radius: 2px;
@@ -140,7 +140,7 @@
 ***********************************/
 
 /*Configurar el estilo de los groupBox*/
-#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26{
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26, #groupBox27{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -148,7 +148,7 @@
 }
 
 /*Configurar el estilo de los groupBox con subStacked*/
-#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25{
+#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25, #groupBox28, #groupBox29{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -476,13 +476,13 @@ QWidget:item:unchecked {
 ***********************************/
 
 /*Configuración general de las tablas*/
-#table0, #table1, #table2, #table3, #table4, #table5, #table6, #table7, #table8, #table9, #table10, #table11, #table12, #table13{
+#table0, #table1, #table2, #table3, #table4, #table5, #table6, #table7, #table8, #table9, #table10, #table11, #table12, #table13, #table14, #table15, #table16, #table17, #table18, #table19{
     color: #212121;
     background: #FFFFFF;
 }
 
 /*Estilo de los cabezales horizontales*/
-#table0 QHeaderView::section:horizontal, #table1 QHeaderView::section:horizontal, #table2 QHeaderView::section:horizontal, #table3 QHeaderView::section:horizontal, #table4 QHeaderView::section:horizontal, #table5 QHeaderView::section:horizontal, #table6 QHeaderView::section:horizontal, #table7 QHeaderView::section:horizontal, #table8 QHeaderView::section:horizontal, #table9 QHeaderView::section:horizontal, #table10 QHeaderView::section:horizontal, #table11 QHeaderView::section:horizontal, #table12 QHeaderView::section:horizontal, #table13 QHeaderView::section:horizontal{
+#table0 QHeaderView::section:horizontal, #table1 QHeaderView::section:horizontal, #table2 QHeaderView::section:horizontal, #table3 QHeaderView::section:horizontal, #table4 QHeaderView::section:horizontal, #table5 QHeaderView::section:horizontal, #table6 QHeaderView::section:horizontal, #table7 QHeaderView::section:horizontal, #table8 QHeaderView::section:horizontal, #table9 QHeaderView::section:horizontal, #table10 QHeaderView::section:horizontal, #table11 QHeaderView::section:horizontal, #table12 QHeaderView::section:horizontal, #table13 QHeaderView::section:horizontal, #table14 QHeaderView::section:horizontal, #table15 QHeaderView::section:horizontal, #table16 QHeaderView::section:horizontal, #table17 QHeaderView::section:horizontal, #table18 QHeaderView::section:horizontal, #table19 QHeaderView::section:horizontal{
     color: #757575;
     padding: 6px;
     border: 1px solid transparent;
@@ -491,7 +491,7 @@ QWidget:item:unchecked {
 }
 
 /*Estilo de los cabezales verticales*/
-#table0 QHeaderView::section:vertical, #table1 QHeaderView::section:vertical, #table2 QHeaderView::section:vertical, #table3 QHeaderView::section:vertical, #table4 QHeaderView::section:vertical, #table5 QHeaderView::section:vertical, #table6 QHeaderView::section:vertical, #table7 QHeaderView::section:vertical, #table8 QHeaderView::section:vertical, #table9 QHeaderView::section:vertical, #table10 QHeaderView::section:vertical, #table11 QHeaderView::section:vertical, #table12 QHeaderView::section:vertical, #table13 QHeaderView::section:vertical{
+#table0 QHeaderView::section:vertical, #table1 QHeaderView::section:vertical, #table2 QHeaderView::section:vertical, #table3 QHeaderView::section:vertical, #table4 QHeaderView::section:vertical, #table5 QHeaderView::section:vertical, #table6 QHeaderView::section:vertical, #table7 QHeaderView::section:vertical, #table8 QHeaderView::section:vertical, #table9 QHeaderView::section:vertical, #table10 QHeaderView::section:vertical, #table11 QHeaderView::section:vertical, #table12 QHeaderView::section:vertical, #table13 QHeaderView::section:vertical, #table14 QHeaderView::section:vertical, #table15 QHeaderView::section:vertical, #table16 QHeaderView::section:vertical, #table17 QHeaderView::section:vertical, #table18 QHeaderView::section:vertical, #table19 QHeaderView::section:vertical{
     padding: 2px;
     border: 1px solid #BDBDBD;
     border-top-color: transparent;
@@ -500,14 +500,14 @@ QWidget:item:unchecked {
 }
 
 /*Estilo del boton de la esquina superior izquierda de la tabla*/
-#table0 QTableCornerButton::section, #table1 QTableCornerButton::section, #table2 QTableCornerButton::section, #table3 QTableCornerButton::section, #table4 QTableCornerButton::section, #table5 QTableCornerButton::section, #table6 QTableCornerButton::section, #table7 QTableCornerButton::section, #table8 QTableCornerButton::section, #table9 QTableCornerButton::section, #table10 QTableCornerButton::section, #table11 QTableCornerButton::section, #table12 QTableCornerButton::section, #table13 QTableCornerButton::section{
+#table0 QTableCornerButton::section, #table1 QTableCornerButton::section, #table2 QTableCornerButton::section, #table3 QTableCornerButton::section, #table4 QTableCornerButton::section, #table5 QTableCornerButton::section, #table6 QTableCornerButton::section, #table7 QTableCornerButton::section, #table8 QTableCornerButton::section, #table9 QTableCornerButton::section, #table10 QTableCornerButton::section, #table11 QTableCornerButton::section, #table12 QTableCornerButton::section, #table13 QTableCornerButton::section,  #table14 QTableCornerButton::section, #table15 QTableCornerButton::section, #table16 QTableCornerButton::section, #table17 QTableCornerButton::section, #table18 QTableCornerButton::section, #table19 QTableCornerButton::section{
     background: #FFFFFF;
     border: 1px solid #BDBDBD;
     border-left-color: transparent;
 }
 
 /*Estilo de los items seleccionados*/
-#table0::item:selected, #table1::item:selected, #table2::item:selected, #table3::item:selected, #table4::item:selected, #table5::item:selected, #table6::item:selected, #table7::item:selected, #table8::item:selected, #table9::item:selected, #table10::item:selected, #table11::item:selected, #table12::item:selected, #table13::item:selected{
+#table0::item:selected, #table1::item:selected, #table2::item:selected, #table3::item:selected, #table4::item:selected, #table5::item:selected, #table6::item:selected, #table7::item:selected, #table8::item:selected, #table9::item:selected, #table10::item:selected, #table11::item:selected, #table12::item:selected, #table13::item:selected,  #table14::item:selected, #table15::item:selected, #table16::item:selected, #table17::item:selected, #table18::item:selected, #table19::item:selected{
     background: #D7CCC8;
     selection-color: #212121;
 }

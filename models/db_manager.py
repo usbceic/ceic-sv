@@ -1558,6 +1558,18 @@ class dbManager(object):
                 self.session.rollback()
                 print("No se pudo actualizar el saldo del cliente", e)
 
+    # Método para buscar Transferencias
+    # Retorna queryset de las transferencias que cumplan el filtro
+    def getTransfers(self, clerk = None, ci = None):
+        if clerk is None  and ci is None: return self.session.query(Transfer).all()
+
+        kwargs = {}
+        if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
+        if ci != None and self.existClient(ci): kwargs['ci'] = ci
+        if not kwargs: return []
+
+        return self.session.query(Service_list).filter_by(**kwargs).all()
+
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE REVERSE PRODUCT LIST:
     #==============================================================================================================================================================================

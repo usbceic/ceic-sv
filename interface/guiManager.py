@@ -173,7 +173,7 @@ class guiManager(QMainWindow, form_class):
 
         # Tablas
         self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
-                        self.table8, self.table9, self.table10, self.table11]
+                        self.table8, self.table9, self.table10, self.table11, self.table12, self.table13, self.table14]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE CAJA
@@ -442,8 +442,8 @@ class guiManager(QMainWindow, form_class):
         self.ReadOnlyLE(listaLE1, not(boolean))
 
     # Aplicar configuración general de redimiensionamiento a una tabla
-    def setupTable(self, table):
-        table.horizontalHeader().setResizeMode(0, QHeaderView.Stretch)
+    def setupTable(self, table, column = 0):
+        table.horizontalHeader().setResizeMode(column, QHeaderView.Stretch)
 
     # Aplicar configuración general de redimiensionamiento a una lista de tablas
     def setupTables(self, tables):
@@ -1718,7 +1718,7 @@ class guiManager(QMainWindow, form_class):
         # Refrescar tabla
         self.updateProvidersTable()
 
-    # Método para refrescar la tabla de factura en ventas
+    # Método para refrescar la tabla de proveedores
     def updateProvidersTable(self):
         table = self.table13
         providers = self.db.getAllProviders()
@@ -1800,7 +1800,7 @@ class guiManager(QMainWindow, form_class):
         self.updateClientsTable()
         self.updateClientsTable(True)
 
-    # Método para refrescar la tabla de factura en ventas
+    # Método para refrescar las tablas de clientes
     def updateClientsTable(self, debt = False):
         if debt:
             table = self.table6
@@ -1901,9 +1901,28 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.transfersLE2)
         self.clearLEs(self.transfersLE3)
         self.clearTE(self.textE7)
-
+        self.updateTranfersTable()
         self.refreshClients()
         self.refreshCash()
+
+    # Método para refrescar la tabla de transferencias
+    def updateTranfersTable(self):
+        table = self.table14
+        transfers = self.db.getTransfers()
+
+        self.clearTable(table)                                                         # Vaciar la tabla
+        table.setRowCount(len(transfers))                                              # Contador de filas
+        for i in range(len(transfers)):                                                # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(transfers[i].clerk)))             # Usuario
+            table.setItem(i, 1, QTableWidgetItem(str(transfers[i].ci)))                # Cliente
+            table.setItem(i, 2, QTableWidgetItem(str(transfers[i].amount)))            # Monto
+            table.setItem(i, 3, QTableWidgetItem(str(transfers[i].bank)))              # Banco
+            table.setItem(i, 4, QTableWidgetItem(str(transfers[i].confirmation_code))) # Código de confirmación
+
+        self.elem_actual = 0                                            # Definir la fila que se seleccionará
+        if len(transfers) > 0: table.selectRow(self.elem_actual)        # Seleccionar fila
+        table.resizeColumnsToContents()                                 # Redimensionar columnas segun el contenido
+        self.setupTable(table, 4)                                       # Reconfigurar tabla
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -2000,7 +2019,7 @@ class guiManager(QMainWindow, form_class):
         self.updateUsersTable(1) # Tabla de vendedores
         self.updateUsersTable(2) # Tabla de administradores
 
-    # Método para refrescar la tabla de factura en ventas
+    # Método para refrescar la tabla de usuarios
     def updateUsersTable(self, permission_mask):
         if permission_mask == 0: table = self.table10
         elif permission_mask == 1: table = self.table9

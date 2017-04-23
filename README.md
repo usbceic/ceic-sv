@@ -12,13 +12,14 @@ El proyecto aun está en fase beta.
 * A nivel de base de datos:
     - Todo el modelo está comentado y se tiene el esquema de la base digitalizado en extensiones ".svg" y ".png"
     - Todo el archivo de creación del modelo y comunicación entre el ORM (SQLAlchemy) y la base de datos como tal, están listos.
-    - Exceptuando el lo de operaciones para Caja, todos los métodos para insersión, actualización y eliminación de datos en la parte de ventas estan listos
+    - Todos los métodos para insersión, actualización y eliminación de datos en la parte de ventas estan listos
     - La mayoria de los triggers para la parte de ventas están listos
     - Para la parte de prestamos de libros, faltan todos los métodos para inserción, actualización y eliminacion de datos, así como los triggers pertinentes.
 
 * A nivel de interfaz:
     - Todo el código esta comentado
     - Todas las vistas de la ventana de inicio están listas, con sus debidas verificaciones y mensajes de alerta.
+    - La vista de caja esta completamente funcional con verfificaciones y mensajes de alerta.
     - La vista de ventas esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
     - La vista de inventario esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
     - La vista de proveedores esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
@@ -28,10 +29,9 @@ El proyecto aun está en fase beta.
     - La vista de configuraciones esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
     - La vista de ayuda esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
     - Falta conectar toda la vista para consultar estadísticas (Casi 100% seguro que quedará para el futuro).
-    - Falta conectar toda la vista de caja.
-    - Falta conectar el sistema de recuperacion de contraseñas por correo (siempre manda "El Juego" como contraseña).
     - Falta conectar la vista para prestamos de libros.
     - Falta conectar la vista de la biblioteca.
+    - Falta conectar paginación para las tablas.
     - Faltan pulir detalles y establecer atajos de teclado.
 
 * General:
