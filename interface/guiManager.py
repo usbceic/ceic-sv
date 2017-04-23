@@ -47,7 +47,7 @@ from db_manager import dbManager
 from popUps import errorPopUp, warningPopUp, successPopUp, authorizationPopUp
 
 # Módulo con los validadores para campos de texto
-from validators import validatePhoneNumber
+from validators import validatePhoneNumber, validateEmail
 
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
