@@ -13,8 +13,9 @@ El proyecto aun está en fase beta.
     - Todo el modelo está comentado y se tiene el esquema de la base digitalizado en extensiones ".svg" y ".png"
     - Todo el archivo de creación del modelo y comunicación entre el ORM (SQLAlchemy) y la base de datos como tal, están listos.
     - Todos los métodos para insersión, actualización y eliminación de datos en la parte de ventas estan listos
-    - La mayoria de los triggers para la parte de ventas están listos
+    - Creemos que los triggers para la parte de ventas estan listos xD
     - Para la parte de prestamos de libros, faltan todos los métodos para inserción, actualización y eliminacion de datos, así como los triggers pertinentes.
+
 
 * A nivel de interfaz:
     - Todo el código esta comentado
@@ -33,6 +34,7 @@ El proyecto aun está en fase beta.
     - Falta conectar la vista de la biblioteca.
     - Falta conectar paginación para las tablas.
     - Faltan pulir detalles y establecer atajos de teclado.
+
 
 * General:
     - Aun no se cuenta con un instalador pero se tiene un script para facilitar el proceso de instalación de las dependencias (solo para distribuciones basadas en Debian).
