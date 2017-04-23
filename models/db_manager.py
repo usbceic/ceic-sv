@@ -1797,7 +1797,7 @@ class dbManager(object):
      - Devuelve True si se logró con éxito
      - Devuelve False en caso contrario
     """
-    def startPeriod(self, clerk, starting_cash, starting_total, description=""):
+    def startPeriod(self, clerk, starting_cash = 0, starting_total = 0, description=""):
         last_period = self.getPeriodStartAndEnd()
 
         # Estamos en un periodo abierto o no existe otro periodo

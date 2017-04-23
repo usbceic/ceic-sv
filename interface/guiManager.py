@@ -181,7 +181,7 @@ class guiManager(QMainWindow, form_class):
 
         # Apartado de Caja
         self.cashLE0 = [self.lineE2, self.lineE3, self.lineE5, self.lineE6]
-        self.cashLE1 = [self.lineE2, self.lineE3, self.lineE5, self.lineE6, self.lineE15, self.lineE16]
+        self.cashLE1 = [self.lineE2, self.lineE3, self.lineE5, self.lineE6, self.lineE15]
 
         # Apartado de movimientos
         self.cashLE2 = [self.lineE8]
@@ -731,9 +731,9 @@ class guiManager(QMainWindow, form_class):
     # Boton para abrir periodo
     def on_pbutton5_pressed(self):
         if self.click():
-            if (self.lineE15.text() and self.lineE16.text()) != "":
-                description, cash = self.lineE15.text(), float(self.lineE16.text())
-                self.db.startPeriod(self.user, cash, cash, description)
+            if self.lineE15.text() != "":
+                description = self.lineE15.text()
+                self.db.startPeriod(self.user, description=description)
                 self.refreshCash()
 
     # Boton para finalizar periodo
