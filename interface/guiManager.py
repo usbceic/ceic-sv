@@ -2105,7 +2105,7 @@ class guiManager(QMainWindow, form_class):
                                 "pay_information" : self.textE2.toPlainText()
                             }
                             self.db.createProvider(**kwargs)
-                            successPopUp("Proveedor "+self.lineE146.text()+" creado exitosamente")
+                            successPopUp("Proveedor "+name+" creado exitosamente",self).exec_()
     
                             self.clearLEs(self.providersLE0) # Limpiar formulario
                             self.refreshProviders()          # Refrescar vista
