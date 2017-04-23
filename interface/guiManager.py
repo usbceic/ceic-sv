@@ -1229,23 +1229,39 @@ class guiManager(QMainWindow, form_class):
             if self.rbutton5.isChecked():
                 if self.lineE26.text() != "":
                     product_name = self.lineE26.text()
-                    if not self.db.existProduct(product_name):
+
+                    if self.lineE27.text() != "":
                         # Obtener información del nuevo producto
                         price = self.lineE27.text()
                         categoy = self.lineE28.text()
 
-                        # Agregar el producto a la BD
-                        self.db.createProduct(product_name, price, categoy)
+                        if not self.db.existProduct(product_name):
+                            # Agregar el producto a la BD
+                            if self.db.createProduct(product_name, price, categoy):
 
-                        if self.tempImage != "":
-                            copy2(self.tempImage, join(productPath, product_name))
+                                if self.tempImage != "":
+                                    copy2(self.tempImage, join(productPath, product_name))
 
-                        # Refrescar toda la interfaz
-                        self.refreshInventory()
-                        self.refreshNew10()
+                                successPopUp(parent = self).exec_()
 
-                        # Enfocar
-                        self.lineE26.setFocus()
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            # Refrescar toda la interfaz
+                            self.refreshInventory()
+                            self.refreshNew10()
+
+                            # Enfocar
+                            self.lineE26.setFocus()
+
+                        else:
+                            errorPopUp("El producto ya existe", self).exec_()
+
+                    else:
+                        warningPopUp("Debe especificar el precio del producto", self).exec_()
+
+                else:
+                    warningPopUp("Debe especificar el nombre del producto", self).exec_()
 
             # Modalidad para consultar productos
             elif self.rbutton6.isChecked():
@@ -1263,13 +1279,23 @@ class guiManager(QMainWindow, form_class):
 
                         if newName != "" and newPrice > 0:
                             # Actualizar información de producto
-                            self.db.updateProduct(product_name, newName, newPrice, newCategory)
+                            if self.db.updateProduct(product_name, newName, newPrice, newCategory):
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
 
                         # Refrescar toda la interfaz
                         self.refreshInventory()
 
                         # Enfocar
                         self.lineE26.setFocus()
+
+                    else:
+                        errorPopUp("El producto no existe", self).exec_()
+
+                else:
+                    warningPopUp("Debe especificar el nombre del producto", self).exec_()
 
             # Modalidad para eliminar productos
             elif self.rbutton8.isChecked():
@@ -1277,13 +1303,23 @@ class guiManager(QMainWindow, form_class):
                     product_name = self.lineE26.text()
                     if self.db.existProduct(product_name):
                         # Eliminar producto
-                        self.db.deleteProduct(product_name)
+                        if self.db.deleteProduct(product_name):
+                            successPopUp(parent = self).exec_()
+
+                        else:
+                            errorPopUp(parent = self).exec_()
 
                         # Refrescar toda la interfaz
                         self.refreshInventory()
 
                         # Enfocar
                         self.lineE26.setFocus()
+
+                    else:
+                        errorPopUp("El producto no existe", self).exec_()
+
+                else:
+                    warningPopUp("Debe especificar el nombre del producto", self).exec_()
 
     # Boton "Aceptar" en el apartado de lotes
     def on_pbutton13_pressed(self):
@@ -1302,21 +1338,38 @@ class guiManager(QMainWindow, form_class):
                 # Verificar completitud de los campos obligatorios
                 if (product_name and provider_name and cost and quantity) != "":
 
-                    kwargs = {
-                        "product_name"  : product_name,
-                        "provider_name" : provider_name,
-                        "received_by"   : self.user,
-                        "cost"          : int(cost),
-                        "quantity"      : quantity
-                    }
+                    if self.db.existProduct(product_name):
 
-                    #if expiration_date != "": kwargs["expiration_date"] = expiration_date
+                        if self.db.existProvider(provider_name):
 
-                    # Agregar el lote a la BD
-                    self.db.createLot(**kwargs)
+                            kwargs = {
+                                "product_name"  : product_name,
+                                "provider_name" : provider_name,
+                                "received_by"   : self.user,
+                                "cost"          : float(cost),
+                                "quantity"      : int(quantity)
+                            }
 
-                    self.refreshInventory()      # Refrescar toda la interfaz
-                    self.lineE33.setFocus()      # Enfocar
+                            #if expiration_date != "": kwargs["expiration_date"] = expiration_date
+
+                            # Agregar el lote a la BD
+                            if self.db.createLot(**kwargs):
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.refreshInventory()      # Refrescar toda la interfaz
+                            self.lineE33.setFocus()      # Enfocar
+
+                        else:
+                            errorPopUp("El proveedor no existe", self).exec_()
+
+                    else:
+                        errorPopUp("El producto no existe", self).exec_()
+
+                else:
+                    warningPopUp("Debe llenar todos los campos", self).exec_()
 
             # Modalidad para consultar lotes
             elif self.rbutton10.isChecked():
@@ -1325,42 +1378,81 @@ class guiManager(QMainWindow, form_class):
 
             # Modalidad para editar lotes
             elif self.rbutton11.isChecked():
-                if (self.lineE33.text() and self.lineE34.text()) != "":
-                    product_name = self.lineE33.text()        # Producto
-                    provider_name = self.lineE34.text()         # Proveedor
-                    if self.db.existProduct(product_name) and self.db.existProvider(provider_name):
 
-                        lot_id = self.currentLots[self.currentLot]                        # Lote
-                        cost = float(self.lineE35.text())                                 # Costo
-                        """if self.dtE2.text() != "None":
-                            expiration_date = datetime.strptime(self.dtE2.text(), self.dateFormat)  # Caducidad"""
-                        quantity = int(self.lineE37.text())                               # Cantidad
-                        remaining = int(self.lineE38.text())                              # Disponibles
+                product_name = self.lineE33.text()   # Producto
+                provider_name = self.lineE34.text()  # Proveedor
+                cost =  self.lineE35.text()          # Costo
+                quantity = self.lineE37.text()       # Cantidad
+                remaining = self.lineE38.text()      # Disponibles
 
-                        self.db.updateLot(lot_id, product_name, provider_name, cost, quantity, remaining)
+                """if self.dtE2.text() != "None":
+                    expiration_date = datetime.strptime(self.dtE2.text(), self.dateFormat)  # Caducidad"""
 
-                        # Refrescar toda la interfaz
-                        self.refreshInventory()
+                if (product_name and provider_name and cost and quantity and remaining) != "":
 
-                        # Enfocar
-                        self.lineE33.setFocus()
+                    if self.db.existProduct(product_name):
+
+                        if self.db.existProvider(provider_name):
+
+                            cost      = float(cost)                        # Costo
+                            quantity  = int(quantity)                      # Cantidad
+                            remaining = int(remaining)                     # Disponibles
+                            lot_id    = self.currentLots[self.currentLot]  # Lote
+
+                            if self.db.updateLot(lot_id, product_name, provider_name, cost, quantity, remaining):
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            # Refrescar toda la interfaz
+                            self.refreshInventory()
+
+                            # Enfocar
+                            self.lineE33.setFocus()
+
+                        else:
+                            errorPopUp("El proveedor no existe", self).exec_()
+
+                    else:
+                        errorPopUp("El producto no existe", self).exec_()
+
+                else:
+                    warningPopUp("Debe llenar todos los campos", self).exec_()
 
             # Modalidad para eliminar lotes
             elif self.rbutton12.isChecked():
-                if (self.lineE33.text() and self.lineE34.text()) != "":
-                    product_name = self.lineE33.text()        # Producto
-                    provider_name = self.lineE34.text()         # Proveedor
-                    if self.db.existProduct(product_name) and self.db.existProvider(provider_name):
+                product_name = self.lineE33.text()          # Producto
+                provider_name = self.lineE34.text()         # Proveedor
 
-                        lot_id = self.currentLots[self.currentLot]                        # Lote
+                if (product_name and provider_name) != "":
 
-                        self.db.deleteLot(lot_id)
+                    if self.db.existProduct(product_name):
 
-                        # Refrescar toda la interfaz
-                        self.refreshInventory()
+                        if self.db.existProvider(provider_name):
 
-                        # Enfocar
-                        self.lineE33.setFocus()
+                            lot_id = self.currentLots[self.currentLot]  # Lote
+
+                            if self.db.deleteLot(lot_id):
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            # Refrescar toda la interfaz
+                            self.refreshInventory()
+
+                            # Enfocar
+                            self.lineE33.setFocus()
+
+                        else:
+                            errorPopUp("El proveedor no existe", self).exec_()
+
+                    else:
+                        errorPopUp("El producto no existe", self).exec_()
+
+                else:
+                    warningPopUp("Debe llenar todos los campos", self).exec_()
 
     # Boton para ver/agregar imágen de un producto
     def on_selectedItem1_pressed(self):

@@ -234,7 +234,7 @@ class dbManager(object):
     """
     def checkPassword(self, username, password):
         if self.existUser(username):
-            hashedPass = self.session.query(User.password).filter_by(username=username).one()[0]
+            hashedPass = self.session.query(User.password).filter_by(username=username).all()[0][0]
             if bcrypt.verify(password, hashedPass):
                 print("Información de inicio de sesión válidada correctamente")
                 return True
@@ -389,7 +389,7 @@ class dbManager(object):
      - Retorna un queryset con la información básica de un usuario
     """
     def getUserInfo(self, username):
-        return self.session.query(User.firstname, User.lastname, User.email, User.profile, User.permission_mask, User.last_login).filter(User.username == username).one()
+        return self.session.query(User.firstname, User.lastname, User.email, User.profile, User.permission_mask, User.last_login).filter(User.username == username).all()[0]
 
     """
     Método para retornar usuarios segun un filtro especificado
@@ -430,6 +430,8 @@ class dbManager(object):
     retorna False si no existe
     '''
     def existProvider(self, provider_name):
+        provider_name = provider_name.title().strip()
+
         count = self.session.query(Provider).filter_by(provider_name=provider_name).count()
         if count == 0:
             print("El proveedor " + provider_name + " no existe")
@@ -445,6 +447,8 @@ class dbManager(object):
     Genera una excepcion cuando algo sale mal
     '''
     def createProvider(self, provider_name, pay_information = "", phone = "", email = "", description = ""):
+        provider_name = provider_name.title().strip()
+
         if (self.existProvider(provider_name)):
             return False
         kwargs = {'provider_name' : provider_name}
@@ -479,8 +483,11 @@ class dbManager(object):
     '''
 
     def updateProviderInfo(self,oldName,newName=None,phone=None,email=None,pay_information=None,description=None,active=None,creation_date=None):
+        oldName = oldName.title().strip()
+
         kwargs = {}
         if newName is not None:
+            newName = newName.title().strip()
             kwargs['provider_name'] = newName
 
         if phone is not None:
@@ -532,7 +539,7 @@ class dbManager(object):
         - Retorna la instancia de Proveedor correspondiente al nombre
     '''
     def getProvider(self, provider_name):
-        return self.session.query(Provider).filter_by(provider_name=provider_name).one()
+        return self.session.query(Provider).filter_by(provider_name=provider_name).all()[0]
 
     '''
     Método para obtener TODA la informacion de los proveedores existentes en la base de datos
@@ -662,7 +669,7 @@ class dbManager(object):
      - Retorna None cuando no existe un producto con el nombre especificado
     """
     def getProductID(self, product_name):
-        if self.existProduct(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name.title().strip()).one()[0]
+        if self.existProduct(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name.title().strip()).all()[0][0]
         else: return None
 
     """
@@ -897,8 +904,8 @@ class dbManager(object):
      - No retorna nada
     """
     def afterInsertLot(self, lot_id):
-        product_id, quantity = self.session.query(Lot.product_id, Lot.quantity).filter_by(lot_id=lot_id, available=True).one()
-        remaining, remaining_lots = self.session.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).one()
+        product_id, quantity = self.session.query(Lot.product_id, Lot.quantity).filter_by(lot_id=lot_id, available=True).all()[0]
+        remaining, remaining_lots = self.session.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).all()[0]
 
         values = {
             "remaining"      : remaining+quantity,
@@ -929,20 +936,35 @@ class dbManager(object):
         if self.existLot(lot_id):
             values = {}
             remainingTrigger = False
-            if product_name != None and self.existProduct(product_name): values["product_id"] = self.getProductID(product_name)
-            if provider_id != None and self.existProvider(provider_id): values["provider_id"] = provider_id
-            if cost != None: values["cost"] = cost
-            if quantity != None: values["quantity"] = quantity
+
+            if product_name != None and self.existProduct(product_name):
+                values["product_id"] = self.getProductID(product_name)
+
+            if provider_id != None and self.existProvider(provider_id):
+                values["provider_id"] = provider_id
+
+            if cost != None:
+                values["cost"] = cost
+
+            if quantity != None and quantity > 0:
+                values["quantity"] = quantity
+
             if remaining != None and remaining <= quantity:
                 values["remaining"] = remaining
                 if remaining <= 0: remainingTrigger = True
+
+            elif remaining == None and quantity > 0:
+                values["remaining"] = quantity
+
             if expiration_date != None: values["expiration_date"] = expiration_date
             try:
                 self.session.query(Lot).filter_by(lot_id=lot_id).update(values)
                 self.session.commit()
 
                 if remainingTrigger:
-                    self.afterUpdateLotRemaining(lot_id=lot_id)
+                    self.afterUpdateCurrentLotRemaining(lot_id=lot_id)
+
+                self.afterUpdateLot(lot_id)
 
                 print("Se ha actualizado la información del lote " + str(lot_id) + " satisfactoriamente")
                 return True
@@ -953,10 +975,31 @@ class dbManager(object):
         return False
 
     """
+    Pseudo-trigger para actualizar la informacion de un producto enlazado a un lote modificado
+     - No retorna nada
+    """
+    def afterUpdateLot(self, lot_id):
+        product_id = self.session.query(Lot.product_id).filter_by(lot_id=lot_id).scalar()
+        remaining = self.session.query(func.sum(Lot.remaining)).filter_by(product_id=product_id).scalar()
+        remaining_lots = self.session.query(Lot).filter_by(product_id=product_id, available=True).count()
+
+        values = {"remaining" : remaining, "remaining_lots" : remaining_lots}
+
+        self.session.query(Product).filter_by(product_id = product_id).update(values)
+
+        try:
+            self.session.commit()
+            print("Se ha actualizado el producto")
+
+        except Exception as e:
+            self.session.rollback()
+            print("No se pudo actualizar el producto")
+
+    """
     Pseudo-trigger para calcular el nuevo lote current de un producto luego de haber realizado un update del remaining del current
      - No retorna nada
     """
-    def afterUpdateLotRemaining(self, lot_id = None, product_id = None):
+    def afterUpdateCurrentLotRemaining(self, lot_id = None, product_id = None):
         if (lot_id or product_id) != None:
 
             if lot_id != None and product_id == None:
@@ -1007,7 +1050,7 @@ class dbManager(object):
 
                         try:
                             self.session.commit()
-                            self.afterUpdateLotRemaining(product_id=product_id)
+                            self.afterUpdateCurrentLotRemaining(product_id=product_id)
                             print("Actualizado lote en afterUpdate correctamente")
 
                         except Exception as e:
@@ -1062,6 +1105,7 @@ class dbManager(object):
             try:
                 self.session.execute(update(Lot).where(Lot.lot_id==lot_id).values(available=False))
                 self.session.commit()
+                self.afterDeleteLot(lot_id)
                 print("Se ha marcado el lote " + str(lot_id) + " como no disponible")
                 return True
             except Exception as e:
@@ -1075,8 +1119,8 @@ class dbManager(object):
      - No retorna nada
     """
     def afterDeleteLot(self, lot_id):
-        product_id, reaiming_in_lot = self.session.query(Lot.product_id, Lot.remaining).filter_by(lot_id=lot_id, available=True).one()
-        remaining, remaining_lots = self.session.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).one()
+        product_id, reaiming_in_lot = self.session.query(Lot.product_id, Lot.remaining).filter_by(lot_id=lot_id, available=True).all()[0]
+        remaining, remaining_lots = self.session.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).all()[0]
 
         values = {
             "remaining"      : remaining-remaining_in_lot,
@@ -1396,7 +1440,7 @@ class dbManager(object):
      - Retorna la cédula del cliente que realizo la compra especificada
     """
     def getPurchaseCI(self, purchase_id):
-        return self.session.query(Purchase.ci).filter_by(purchase_id=purchase_id).one()
+        return self.session.query(Purchase.ci).filter_by(purchase_id=purchase_id).all()[0]
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LISTAS DE PRODUCTOS:
@@ -1481,7 +1525,7 @@ class dbManager(object):
 
             try:
                 self.session.commit()
-                self.afterUpdateLotRemaining(product_id=product_id)
+                self.afterUpdateCurrentLotRemaining(product_id=product_id)
                 print("Se ha actualizado el lote correctamente")
                 break
 
@@ -2750,7 +2794,7 @@ if __name__ == '__main__':
         m.session.rollback()
 
     try:
-        b = m.session.query(Book).filter_by(title="Prueba", lang=l.lang_name).one()
+        b = m.session.query(Book).filter_by(title="Prueba", lang=l.lang_name).all()[0]
     except Exception as e:
         print("Excepcion de Libro:", e)
         import datetime
@@ -2765,7 +2809,7 @@ if __name__ == '__main__':
     except Exception as e:
         print("Excepcion de Materia:", e)
         m.session.rollback()
-        s = m.session.query(Subject).filter_by(subject_code="CI123").one()
+        s = m.session.query(Subject).filter_by(subject_code="CI123").all()[0]
 
     print("Soy b", b)
     s.books.append(b)
