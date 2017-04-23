@@ -2005,7 +2005,7 @@ class guiManager(QMainWindow, form_class):
                     self.refreshProviders()          # Refrescar vista
                     self.lineE146.setFocus()         # Enfocar
                 else:
-                    errorPopUp("Formato incorrecto para número telefónico",self)._exec()
+                    errorPopUp("Formato incorrecto para número telefónico",self).exec_()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
