@@ -1553,6 +1553,9 @@ class guiManager(QMainWindow, form_class):
             if count < self.selectedProductRemaining[self.selectedProductName]:
                 self.spinLine0.setText(str(count+1))
 
+            else:
+                warningPopUp("Límite de disponibilidad alcanzado", self).exec_()
+
     # Seleccionar un item de las listas Top 10 y Nuevo
     def selectPopularItem(self, n):
         if n < len(self.top10):
