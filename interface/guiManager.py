@@ -276,6 +276,9 @@ class guiManager(QMainWindow, form_class):
         # Apartado de cambio de contraseña
         self.confLE0 = [self.lineE153, self.lineE154, self.lineE155]
 
+        # Apartado de sistema monetario
+        self.confLE1 = [self.lineE88]
+
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # CARGAR CONFIGURACIONES INICIALES
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2116,6 +2119,18 @@ class guiManager(QMainWindow, form_class):
     def setStyle(self, name):
         self.setStyleSheet(getStyle(name))
 
+    # Método para cargar la información del sistema monetario
+    def loadLegalTenders(self):
+        legalTenders, query = [], self.db.getLegalTender()  # Obtener los billetes o monedas
+        for legalTender in query:                           # Para cada billete o moneda
+            legalTenders.append(str(legalTender.amount))    # Se agrega su denominacion a la lista
+        return legalTenders
+
+    # Método para actualizar el comboBox del sistema monetario
+    def updateLegalTendersCB(self, legalTenders):
+        self.cbox0.clear()                                 # Se limpia el comboBox
+        self.cbox0.addItems(legalTenders)                  # Se añade la lista al comboBox
+
     # Método para cargar la información del usuario
     def loadUserInfo(self):
         user = self.db.getUsers(self.user)[0]
@@ -2124,7 +2139,6 @@ class guiManager(QMainWindow, form_class):
         self.lineE83.setText(user.lastname)
         self.lineE84.setText(user.email)
         self.lineE85.setText(self.db.getRange(user.permission_mask))
-        #self.userBn0.setText(" ".join([user.firstname, user.lastname]))
 
     # Método para cargar las preferencias del usuario
     def loadUserPreferences(self):
@@ -2139,9 +2153,17 @@ class guiManager(QMainWindow, form_class):
         self.openTurn(self, user)
         self.refresh()
 
+    # Método para refrescar el sistema monetario
+    def refreshLegalTenders(self):
+        self.clearLEs(self.confLE1)
+        self.legalTenders = self.loadLegalTenders()
+        self.updateLegalTendersCB(self.legalTenders)
+        #self.updateCalc(self.legalTenders)
+
     # Método para refrescar la vista de Configuraciones y componentes relacionados
     def refreshConfigurations(self):
         self.refreshUsers()
+        self.refreshLegalTenders()
         self.clearLEs(self.confLE0)
         self.loadUserInfo()
         self.loadUserPreferences()
@@ -2304,6 +2326,48 @@ class guiManager(QMainWindow, form_class):
             # Tema
             else:
                 self.db.updateUserProfile(self.user, self.theme)
+
+    # Boton para cambiar al modo de agregar denominación
+    def on_rbutton2_pressed(self):
+        if self.click():
+            self.setPage(self.subStacked21, 0)
+            self.clearLEs(self.confLE1)
+
+    # Boton para cambiar al modo de eliminar denominación
+    def on_rbutton3_pressed(self):
+        if self.click():
+            self.setPage(self.subStacked21, 1)
+
+    # Boton para añadir o eliminar denominaciones en el sistema monetario
+    def on_pbutton28_pressed(self):
+        if self.click():
+            # Modalidad para añadir billetes o monedas
+            if self.rbutton2.isChecked():
+                if self.lineE88.text() != "":
+                    amount = float(self.lineE88.text())
+                    if not self.db.existLegalTender(amount):
+                        if self.db.createLegalTender(amount):
+                            successPopUp(parent = self).exec_()
+                            self.refreshLegalTenders()
+
+                        else:
+                            errorPopUp(parent = self).exec_()
+
+                    else:
+                        errorPopUp("Denominación previamente registrada", self).exec_()
+
+                else:
+                    warningPopUp("Debe especificar la denominación", self).exec_()
+
+            # Modalidad para eliminar billetes o monedas
+            else:
+                amount = float(self.cbox0.currentText())
+                if self.db.deleteLegalTender(amount):
+                    successPopUp(parent = self).exec_()
+                    self.refreshLegalTenders()
+
+                else:
+                    errorPopUp(parent = self).exec_()
 
     #==============================================================================================================================================================================
     # MANEJADOR DE EVENTOS DE TECLADO
