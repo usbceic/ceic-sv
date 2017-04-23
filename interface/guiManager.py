@@ -58,6 +58,8 @@ from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
 # Módulo con estructuras de Qt
 from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton
 
+#Módulo con los validadores para campos de texto
+from validators import validatePhoneNumber
 ###################################################################################################################################################################################
 ## CONSTANTES:
 ###################################################################################################################################################################################
@@ -2082,18 +2084,23 @@ class guiManager(QMainWindow, form_class):
     def on_pbutton20_pressed(self):
         if self.click():
             if self.lineE146.text() != "":
-                kwargs = {
-                    "provider_name"   : self.lineE146.text(),
-                    "phone"           : self.lineE147.text(),
-                    "email"           : self.lineE148.text(),
-                    "description"     : self.textE1.toPlainText(),
-                    "pay_information" : self.textE2.toPlainText()
-                }
-                self.db.createProvider(**kwargs)
+                phone = self.lineE147.text()
+                if (phone != "" and validatePhoneNumber(phone)) or phone == "":
+                    kwargs = {
+                        "provider_name"   : self.lineE146.text(),
+                        "phone"           : phone,
+                        "email"           : self.lineE148.text(),
+                        "description"     : self.textE1.toPlainText(),
+                        "pay_information" : self.textE2.toPlainText()
+                    }
+                    self.db.createProvider(**kwargs)
+                    successPopUp("Proveedor "+self.lineE146.text()+" creado exitosamente")
 
-                self.clearLEs(self.providersLE0) # Limpiar formulario
-                self.refreshProviders()          # Refrescar vista
-                self.lineE146.setFocus()         # Enfocar
+                    self.clearLEs(self.providersLE0) # Limpiar formulario
+                    self.refreshProviders()          # Refrescar vista
+                    self.lineE146.setFocus()         # Enfocar
+                else:
+                    errorPopUp("Formato incorrecto para número telefónico",self).exec_()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
