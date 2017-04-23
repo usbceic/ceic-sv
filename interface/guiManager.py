@@ -1990,18 +1990,22 @@ class guiManager(QMainWindow, form_class):
     def on_pbutton20_pressed(self):
         if self.click():
             if self.lineE146.text() != "":
-                kwargs = {
-                    "provider_name"   : self.lineE146.text(),
-                    "phone"           : self.lineE147.text(),
-                    "email"           : self.lineE148.text(),
-                    "description"     : self.textE1.toPlainText(),
-                    "pay_information" : self.textE2.toPlainText()
-                }
-                self.db.createProvider(**kwargs)
+                phone = self.lineE147.text()
+                if phone != "" and validatePhone(phone):
+                    kwargs = {
+                        "provider_name"   : self.lineE146.text(),
+                        "phone"           : phone,
+                        "email"           : self.lineE148.text(),
+                        "description"     : self.textE1.toPlainText(),
+                        "pay_information" : self.textE2.toPlainText()
+                    }
+                    self.db.createProvider(**kwargs)
 
-                self.clearLEs(self.providersLE0) # Limpiar formulario
-                self.refreshProviders()          # Refrescar vista
-                self.lineE146.setFocus()         # Enfocar
+                    self.clearLEs(self.providersLE0) # Limpiar formulario
+                    self.refreshProviders()          # Refrescar vista
+                    self.lineE146.setFocus()         # Enfocar
+                else:
+                    errorPopUp("Formato incorrecto para número telefónico",self)._exec()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
