@@ -135,12 +135,21 @@
     qproperty-alignment: 'AlignVCenter | AlignHCenter';
 }
 
+/*Configuración de los textos de la calculadora*/
+#calcT0, #calcT1, #calcT2, #calcT3, #calcT4, #calcT5, #calcT6, #calcT7, #calcT8, #calcT9, #calcT10, #calcT11, #calcT12, #calcT13, #calcT14 {
+    color: #757575;
+    background: transparent;
+    font-family: Open Sans;
+    font-size: 11pt;
+    qproperty-alignment: 'AlignVCenter | AlignHRight';
+}
+
 /***********************************
 * GroupBox
 ***********************************/
 
 /*Configurar el estilo de los groupBox*/
-#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26, #groupBox27{
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26, #groupBox27, #groupBox28{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -148,7 +157,7 @@
 }
 
 /*Configurar el estilo de los groupBox con subStacked*/
-#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25, #groupBox28, #groupBox29{
+#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25, #groupBox29{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -266,6 +275,11 @@
     background: #FFF9C4;
 }
 
+/*Configuración especial del boton de la calculadora*/
+#cancelpb24 {
+    min-height: 1.25em;
+}
+
 /***********************************
 * Otros Botones
 ***********************************/
@@ -329,6 +343,22 @@
 #lineE0[readOnly="false"], #lineE1[readOnly="false"], #lineE2[readOnly="false"], #lineE3[readOnly="false"], #lineE4[readOnly="false"], #lineE5[readOnly="false"], #lineE6[readOnly="false"], #lineE7[readOnly="false"], #lineE8[readOnly="false"], #lineE9[readOnly="false"], #lineE10[readOnly="false"], #lineE11[readOnly="false"], #lineE12[readOnly="false"], #lineE13[readOnly="false"], #lineE14[readOnly="false"], #lineE15[readOnly="false"], #lineE16[readOnly="false"], #lineE17[readOnly="false"], #lineE18[readOnly="false"], #lineE19[readOnly="false"], #lineE20[readOnly="false"], #lineE21[readOnly="false"], #lineE22[readOnly="false"], #lineE23[readOnly="false"], #lineE24[readOnly="false"], #lineE25[readOnly="false"], #lineE26[readOnly="false"], #lineE27[readOnly="false"], #lineE28[readOnly="false"], #lineE29[readOnly="false"], #lineE30[readOnly="false"], #lineE31[readOnly="false"], #lineE32[readOnly="false"], #lineE33[readOnly="false"], #lineE34[readOnly="false"], #lineE35[readOnly="false"], #lineE36[readOnly="false"], #lineE37[readOnly="false"], #lineE38[readOnly="false"], #lineE39[readOnly="false"], #lineE40[readOnly="false"], #lineE41[readOnly="false"], #lineE42[readOnly="false"], #lineE43[readOnly="false"], #lineE44[readOnly="false"], #lineE45[readOnly="false"], #lineE46[readOnly="false"], #lineE47[readOnly="false"], #lineE48[readOnly="false"], #lineE49[readOnly="false"], #lineE50[readOnly="false"], #lineE51[readOnly="false"], #lineE52[readOnly="false"], #lineE53[readOnly="false"], #lineE54[readOnly="false"], #lineE55[readOnly="false"], #lineE56[readOnly="false"], #lineE57[readOnly="false"], #lineE58[readOnly="false"], #lineE59[readOnly="false"], #lineE60[readOnly="false"], #lineE61[readOnly="false"], #lineE62[readOnly="false"], #lineE63[readOnly="false"], #lineE64[readOnly="false"], #lineE65[readOnly="false"], #lineE66[readOnly="false"], #lineE67[readOnly="false"], #lineE68[readOnly="false"], #lineE69[readOnly="false"], #lineE70[readOnly="false"], #lineE71[readOnly="false"], #lineE72[readOnly="false"], #lineE73[readOnly="false"], #lineE74[readOnly="false"], #lineE75[readOnly="false"], #lineE76[readOnly="false"], #lineE77[readOnly="false"], #lineE78[readOnly="false"], #lineE79[readOnly="false"], #lineE80[readOnly="false"], #lineE81[readOnly="false"], #lineE82[readOnly="false"], #lineE83[readOnly="false"], #lineE84[readOnly="false"], #lineE85[readOnly="false"], #lineE86[readOnly="false"], #lineE87[readOnly="false"], #lineE88[readOnly="false"], #lineE89[readOnly="false"], #lineE90[readOnly="false"], #lineE91[readOnly="false"], #lineE92[readOnly="false"], #lineE93[readOnly="false"], #lineE94[readOnly="false"], #lineE95[readOnly="false"], #lineE96[readOnly="false"], #lineE97[readOnly="false"], #lineE98[readOnly="false"], #lineE99[readOnly="false"], #lineE100[readOnly="false"], #lineE101[readOnly="false"], #lineE102[readOnly="false"], #lineE103[readOnly="false"], #lineE104[readOnly="false"], #lineE105[readOnly="false"], #lineE106[readOnly="false"], #lineE107[readOnly="false"], #lineE108[readOnly="false"], #lineE109[readOnly="false"], #lineE110[readOnly="false"], #lineE111[readOnly="false"], #lineE112[readOnly="false"], #lineE113[readOnly="false"], #lineE114[readOnly="false"], #lineE115[readOnly="false"], #lineE116[readOnly="false"], #lineE117[readOnly="false"], #lineE118[readOnly="false"], #lineE119[readOnly="false"], #lineE120[readOnly="false"], #lineE121[readOnly="false"], #lineE122[readOnly="false"], #lineE123[readOnly="false"], #lineE124[readOnly="false"], #lineE125[readOnly="false"], #lineE126[readOnly="false"], #lineE127[readOnly="false"], #lineE128[readOnly="false"], #lineE129[readOnly="false"], #lineE130[readOnly="false"], #lineE131[readOnly="false"], #lineE132[readOnly="false"], #lineE133[readOnly="false"], #lineE134[readOnly="false"], #lineE135[readOnly="false"], #lineE136[readOnly="false"], #lineE137[readOnly="false"], #lineE138[readOnly="false"], #lineE139[readOnly="false"], #lineE140[readOnly="false"], #lineE141[readOnly="false"], #lineE142[readOnly="false"], #lineE143[readOnly="false"], #lineE144[readOnly="false"], #lineE145[readOnly="false"], #lineE146[readOnly="false"], #lineE147[readOnly="false"], #lineE148[readOnly="false"], #lineE149[readOnly="false"], #lineE150[readOnly="false"], #lineE151[readOnly="false"], #lineE152[readOnly="false"], #lineE153[readOnly="false"], #lineE154[readOnly="false"], #lineE155[readOnly="false"], #lineE156[readOnly="false"], #lineE157[readOnly="false"], #lineE158[readOnly="false"], #lineE159[readOnly="false"]{
     border: 1px solid #BDBDBD;
     background: transparent;
+}
+
+/*Configuración del estilo de los lineEdit de la calculadora*/
+#calcLE0, #calcLE1, #calcLE2, #calcLE3, #calcLE4, #calcLE5, #calcLE6, #calcLE7, #calcLE8, #calcLE9, #calcLE10, #calcLE11, #calcLE12, #calcLE13, #calcLE14{
+    border: 1px solid #BDBDBD;
+    border-radius: 2px;
+    min-width: 2.5em;
+    max-width: 2.5em;
+    min-height: 1.25em;
+    padding: 1px;
+}
+
+/*Configuración del estilo de los lineEdit de la calculadora en modo de solo lectura*/
+#calcLE0[readOnly="true"], #calcLE1[readOnly="true"], #calcLE2[readOnly="true"], #calcLE3[readOnly="true"], #calcLE4[readOnly="true"], #calcLE5[readOnly="true"], #calcLE6[readOnly="true"], #calcLE7[readOnly="true"], #calcLE8[readOnly="true"], #calcLE9[readOnly="true"], #calcLE10[readOnly="true"], #calcLE11[readOnly="true"], #calcLE12[readOnly="true"], #calcLE13[readOnly="true"], #calcLE14[readOnly="true"]{
+    border: 1px solid silver;
+    background: #F5F5F5;
 }
 
 /***********************************

@@ -173,12 +173,21 @@
     qproperty-alignment: 'AlignVCenter | AlignHCenter';
 }
 
+/*Configuración de los textos de la calculadora*/
+#calcT0, #calcT1, #calcT2, #calcT3, #calcT4, #calcT5, #calcT6, #calcT7, #calcT8, #calcT9, #calcT10, #calcT11, #calcT12, #calcT13, #calcT14 {
+    color: #757575;
+    background: transparent;
+    font-family: Open Sans;
+    font-size: 11pt;
+    qproperty-alignment: 'AlignVCenter | AlignHRight';
+}
+
 /***********************************
 * GroupBox
 ***********************************/
 
 /*Configurar el estilo de los groupBox*/
-#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26, #groupBox27{
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26, #groupBox27, #groupBox28{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -186,7 +195,7 @@
 }
 
 /*Configurar el estilo de los groupBox con subStacked*/
-#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25, #groupBox28, #groupBox29{
+#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25, #groupBox29{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -304,6 +313,11 @@
     background: #BBDEFB;
 }
 
+/*Configuración especial del boton de la calculadora*/
+#cancelpb24 {
+    min-height: 1.25em;
+}
+
 /***********************************
 * Otros Botones
 ***********************************/
@@ -367,6 +381,22 @@
 #lineE0[readOnly=&quot;false&quot;], #lineE1[readOnly=&quot;false&quot;], #lineE2[readOnly=&quot;false&quot;], #lineE3[readOnly=&quot;false&quot;], #lineE4[readOnly=&quot;false&quot;], #lineE5[readOnly=&quot;false&quot;], #lineE6[readOnly=&quot;false&quot;], #lineE7[readOnly=&quot;false&quot;], #lineE8[readOnly=&quot;false&quot;], #lineE9[readOnly=&quot;false&quot;], #lineE10[readOnly=&quot;false&quot;], #lineE11[readOnly=&quot;false&quot;], #lineE12[readOnly=&quot;false&quot;], #lineE13[readOnly=&quot;false&quot;], #lineE14[readOnly=&quot;false&quot;], #lineE15[readOnly=&quot;false&quot;], #lineE16[readOnly=&quot;false&quot;], #lineE17[readOnly=&quot;false&quot;], #lineE18[readOnly=&quot;false&quot;], #lineE19[readOnly=&quot;false&quot;], #lineE20[readOnly=&quot;false&quot;], #lineE21[readOnly=&quot;false&quot;], #lineE22[readOnly=&quot;false&quot;], #lineE23[readOnly=&quot;false&quot;], #lineE24[readOnly=&quot;false&quot;], #lineE25[readOnly=&quot;false&quot;], #lineE26[readOnly=&quot;false&quot;], #lineE27[readOnly=&quot;false&quot;], #lineE28[readOnly=&quot;false&quot;], #lineE29[readOnly=&quot;false&quot;], #lineE30[readOnly=&quot;false&quot;], #lineE31[readOnly=&quot;false&quot;], #lineE32[readOnly=&quot;false&quot;], #lineE33[readOnly=&quot;false&quot;], #lineE34[readOnly=&quot;false&quot;], #lineE35[readOnly=&quot;false&quot;], #lineE36[readOnly=&quot;false&quot;], #lineE37[readOnly=&quot;false&quot;], #lineE38[readOnly=&quot;false&quot;], #lineE39[readOnly=&quot;false&quot;], #lineE40[readOnly=&quot;false&quot;], #lineE41[readOnly=&quot;false&quot;], #lineE42[readOnly=&quot;false&quot;], #lineE43[readOnly=&quot;false&quot;], #lineE44[readOnly=&quot;false&quot;], #lineE45[readOnly=&quot;false&quot;], #lineE46[readOnly=&quot;false&quot;], #lineE47[readOnly=&quot;false&quot;], #lineE48[readOnly=&quot;false&quot;], #lineE49[readOnly=&quot;false&quot;], #lineE50[readOnly=&quot;false&quot;], #lineE51[readOnly=&quot;false&quot;], #lineE52[readOnly=&quot;false&quot;], #lineE53[readOnly=&quot;false&quot;], #lineE54[readOnly=&quot;false&quot;], #lineE55[readOnly=&quot;false&quot;], #lineE56[readOnly=&quot;false&quot;], #lineE57[readOnly=&quot;false&quot;], #lineE58[readOnly=&quot;false&quot;], #lineE59[readOnly=&quot;false&quot;], #lineE60[readOnly=&quot;false&quot;], #lineE61[readOnly=&quot;false&quot;], #lineE62[readOnly=&quot;false&quot;], #lineE63[readOnly=&quot;false&quot;], #lineE64[readOnly=&quot;false&quot;], #lineE65[readOnly=&quot;false&quot;], #lineE66[readOnly=&quot;false&quot;], #lineE67[readOnly=&quot;false&quot;], #lineE68[readOnly=&quot;false&quot;], #lineE69[readOnly=&quot;false&quot;], #lineE70[readOnly=&quot;false&quot;], #lineE71[readOnly=&quot;false&quot;], #lineE72[readOnly=&quot;false&quot;], #lineE73[readOnly=&quot;false&quot;], #lineE74[readOnly=&quot;false&quot;], #lineE75[readOnly=&quot;false&quot;], #lineE76[readOnly=&quot;false&quot;], #lineE77[readOnly=&quot;false&quot;], #lineE78[readOnly=&quot;false&quot;], #lineE79[readOnly=&quot;false&quot;], #lineE80[readOnly=&quot;false&quot;], #lineE81[readOnly=&quot;false&quot;], #lineE82[readOnly=&quot;false&quot;], #lineE83[readOnly=&quot;false&quot;], #lineE84[readOnly=&quot;false&quot;], #lineE85[readOnly=&quot;false&quot;], #lineE86[readOnly=&quot;false&quot;], #lineE87[readOnly=&quot;false&quot;], #lineE88[readOnly=&quot;false&quot;], #lineE89[readOnly=&quot;false&quot;], #lineE90[readOnly=&quot;false&quot;], #lineE91[readOnly=&quot;false&quot;], #lineE92[readOnly=&quot;false&quot;], #lineE93[readOnly=&quot;false&quot;], #lineE94[readOnly=&quot;false&quot;], #lineE95[readOnly=&quot;false&quot;], #lineE96[readOnly=&quot;false&quot;], #lineE97[readOnly=&quot;false&quot;], #lineE98[readOnly=&quot;false&quot;], #lineE99[readOnly=&quot;false&quot;], #lineE100[readOnly=&quot;false&quot;], #lineE101[readOnly=&quot;false&quot;], #lineE102[readOnly=&quot;false&quot;], #lineE103[readOnly=&quot;false&quot;], #lineE104[readOnly=&quot;false&quot;], #lineE105[readOnly=&quot;false&quot;], #lineE106[readOnly=&quot;false&quot;], #lineE107[readOnly=&quot;false&quot;], #lineE108[readOnly=&quot;false&quot;], #lineE109[readOnly=&quot;false&quot;], #lineE110[readOnly=&quot;false&quot;], #lineE111[readOnly=&quot;false&quot;], #lineE112[readOnly=&quot;false&quot;], #lineE113[readOnly=&quot;false&quot;], #lineE114[readOnly=&quot;false&quot;], #lineE115[readOnly=&quot;false&quot;], #lineE116[readOnly=&quot;false&quot;], #lineE117[readOnly=&quot;false&quot;], #lineE118[readOnly=&quot;false&quot;], #lineE119[readOnly=&quot;false&quot;], #lineE120[readOnly=&quot;false&quot;], #lineE121[readOnly=&quot;false&quot;], #lineE122[readOnly=&quot;false&quot;], #lineE123[readOnly=&quot;false&quot;], #lineE124[readOnly=&quot;false&quot;], #lineE125[readOnly=&quot;false&quot;], #lineE126[readOnly=&quot;false&quot;], #lineE127[readOnly=&quot;false&quot;], #lineE128[readOnly=&quot;false&quot;], #lineE129[readOnly=&quot;false&quot;], #lineE130[readOnly=&quot;false&quot;], #lineE131[readOnly=&quot;false&quot;], #lineE132[readOnly=&quot;false&quot;], #lineE133[readOnly=&quot;false&quot;], #lineE134[readOnly=&quot;false&quot;], #lineE135[readOnly=&quot;false&quot;], #lineE136[readOnly=&quot;false&quot;], #lineE137[readOnly=&quot;false&quot;], #lineE138[readOnly=&quot;false&quot;], #lineE139[readOnly=&quot;false&quot;], #lineE140[readOnly=&quot;false&quot;], #lineE141[readOnly=&quot;false&quot;], #lineE142[readOnly=&quot;false&quot;], #lineE143[readOnly=&quot;false&quot;], #lineE144[readOnly=&quot;false&quot;], #lineE145[readOnly=&quot;false&quot;], #lineE146[readOnly=&quot;false&quot;], #lineE147[readOnly=&quot;false&quot;], #lineE148[readOnly=&quot;false&quot;], #lineE149[readOnly=&quot;false&quot;], #lineE150[readOnly=&quot;false&quot;], #lineE151[readOnly=&quot;false&quot;], #lineE152[readOnly=&quot;false&quot;], #lineE153[readOnly=&quot;false&quot;], #lineE154[readOnly=&quot;false&quot;], #lineE155[readOnly=&quot;false&quot;], #lineE156[readOnly=&quot;false&quot;], #lineE157[readOnly=&quot;false&quot;], #lineE158[readOnly=&quot;false&quot;], #lineE159[readOnly=&quot;false&quot;]{
     border: 1px solid #BDBDBD;
     background: transparent;
+}
+
+/*Configuración del estilo de los lineEdit de la calculadora*/
+#calcLE0, #calcLE1, #calcLE2, #calcLE3, #calcLE4, #calcLE5, #calcLE6, #calcLE7, #calcLE8, #calcLE9, #calcLE10, #calcLE11, #calcLE12, #calcLE13, #calcLE14{
+    border: 1px solid #BDBDBD;
+    border-radius: 2px;
+    min-width: 2.5em;
+    max-width: 2.5em;
+    min-height: 1.25em;
+    padding: 1px;
+}
+
+/*Configuración del estilo de los lineEdit de la calculadora en modo de solo lectura*/
+#calcLE0[readOnly=&quot;true&quot;], #calcLE1[readOnly=&quot;true&quot;], #calcLE2[readOnly=&quot;true&quot;], #calcLE3[readOnly=&quot;true&quot;], #calcLE4[readOnly=&quot;true&quot;], #calcLE5[readOnly=&quot;true&quot;], #calcLE6[readOnly=&quot;true&quot;], #calcLE7[readOnly=&quot;true&quot;], #calcLE8[readOnly=&quot;true&quot;], #calcLE9[readOnly=&quot;true&quot;], #calcLE10[readOnly=&quot;true&quot;], #calcLE11[readOnly=&quot;true&quot;], #calcLE12[readOnly=&quot;true&quot;], #calcLE13[readOnly=&quot;true&quot;], #calcLE14[readOnly=&quot;true&quot;]{
+    border: 1px solid silver;
+    background: #F5F5F5;
 }
 
 /***********************************
@@ -1404,15 +1434,15 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>10</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
             <property name="geometry">
              <rect>
-              <x>550</x>
-              <y>30</y>
-              <width>251</width>
+              <x>20</x>
+              <y>310</y>
+              <width>231</width>
               <height>231</height>
              </rect>
             </property>
@@ -2014,8 +2044,8 @@ QWidget:item:unchecked {
              <rect>
               <x>20</x>
               <y>30</y>
-              <width>241</width>
-              <height>281</height>
+              <width>231</width>
+              <height>261</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -2318,40 +2348,6 @@ QWidget:item:unchecked {
                            </item>
                           </widget>
                          </item>
-                         <item row="1" column="0">
-                          <widget class="QLabel" name="text6">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-color: transparent;</string>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Efectivo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="1">
-                          <widget class="QLineEdit" name="lineE5">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true"/>
-                           </property>
-                           <property name="text">
-                            <string/>
-                           </property>
-                           <property name="readOnly">
-                            <bool>false</bool>
-                           </property>
-                          </widget>
-                         </item>
                         </layout>
                        </item>
                        <item row="0" column="0">
@@ -2541,40 +2537,6 @@ QWidget:item:unchecked {
                            </item>
                           </widget>
                          </item>
-                         <item row="1" column="0">
-                          <widget class="QLabel" name="text8">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-color: transparent;</string>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Efectivo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="1">
-                          <widget class="QLineEdit" name="lineE6">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true"/>
-                           </property>
-                           <property name="text">
-                            <string/>
-                           </property>
-                           <property name="readOnly">
-                            <bool>false</bool>
-                           </property>
-                          </widget>
-                         </item>
                         </layout>
                        </item>
                        <item row="0" column="0">
@@ -2665,10 +2627,10 @@ QWidget:item:unchecked {
            <widget class="QStackedWidget" name="subStacked2">
             <property name="geometry">
              <rect>
-              <x>280</x>
+              <x>270</x>
               <y>30</y>
-              <width>251</width>
-              <height>231</height>
+              <width>231</width>
+              <height>241</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -3106,6 +3068,697 @@ QWidget:item:unchecked {
               </item>
              </layout>
             </widget>
+           </widget>
+           <widget class="QGroupBox" name="groupBox28">
+            <property name="geometry">
+             <rect>
+              <x>520</x>
+              <y>30</y>
+              <width>281</width>
+              <height>241</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="title">
+             <string/>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_81">
+             <item row="0" column="0">
+              <layout class="QVBoxLayout" name="verticalLayout_69">
+               <item>
+                <widget class="QLabel" name="title55">
+                 <property name="font">
+                  <font>
+                   <family>Open Sans</family>
+                   <pointsize>12</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculadora&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_361">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>4</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item row="2" column="0">
+              <layout class="QGridLayout" name="gridLayout_34">
+               <item row="0" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_3">
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_71">
+                   <item>
+                    <widget class="QLabel" name="calcT0">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;20.000&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT3">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;2.000&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT6">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;100&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT9">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT12">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_70">
+                   <item>
+                    <widget class="QLineEdit" name="calcLE0">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE3">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE6">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE9">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE12">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_75">
+                   <item>
+                    <widget class="QLabel" name="calcT2">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;5.000&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT5">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;500&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT8">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;20&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT11">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT14">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_74">
+                   <item>
+                    <widget class="QLineEdit" name="calcLE2">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE5">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE8">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE11">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE14">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="1">
+                <layout class="QHBoxLayout" name="horizontalLayout_4">
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_73">
+                   <item>
+                    <widget class="QLabel" name="calcT1">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;10.000&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT4">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1.000&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT7">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;50&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT10">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;5&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="calcT13">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;0&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_72">
+                   <item>
+                    <widget class="QLineEdit" name="calcLE1">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE4">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE7">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE10">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="calcLE13">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item row="3" column="0">
+              <widget class="Line" name="line_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <layout class="QGridLayout" name="gridLayout_117">
+               <item row="0" column="2">
+                <layout class="QFormLayout" name="clientLt6_17">
+                 <property name="fieldGrowthPolicy">
+                  <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="text188">
+                   <property name="font">
+                    <font>
+                     <family>Open Sans</family>
+                     <pointsize>11</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background-color: transparent;</string>
+                   </property>
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Total&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLineEdit" name="lineE79">
+                   <property name="font">
+                    <font>
+                     <family>Open Sans</family>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="1">
+                <spacer name="horizontalSpacer_58">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="0" column="0">
+                <widget class="QPushButton" name="cancelpb24">
+                 <property name="font">
+                  <font>
+                   <pointsize>11</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string>Limpiar</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
            </widget>
           </widget>
           <widget class="QWidget" name="mainPage1">
@@ -18822,7 +19475,7 @@ QWidget:item:unchecked {
                  <property name="currentIndex">
                   <number>0</number>
                  </property>
-                 <widget class="QWidget" name="page38_2">
+                 <widget class="QWidget" name="page38">
                   <layout class="QVBoxLayout" name="verticalLayout_55">
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_53">
@@ -19030,7 +19683,7 @@ QWidget:item:unchecked {
                    </item>
                   </layout>
                  </widget>
-                 <widget class="QWidget" name="page39_2">
+                 <widget class="QWidget" name="page39">
                   <layout class="QVBoxLayout" name="verticalLayout_57">
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_33">
@@ -19202,7 +19855,7 @@ QWidget:item:unchecked {
                    </item>
                   </layout>
                  </widget>
-                 <widget class="QWidget" name="page40_2">
+                 <widget class="QWidget" name="page40">
                   <layout class="QVBoxLayout" name="verticalLayout_56">
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_52">
@@ -19769,10 +20422,10 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox6">
             <property name="geometry">
              <rect>
-              <x>390</x>
-              <y>70</y>
-              <width>331</width>
-              <height>421</height>
+              <x>400</x>
+              <y>170</y>
+              <width>341</width>
+              <height>221</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -19818,7 +20471,7 @@ QWidget:item:unchecked {
                  <property name="currentIndex">
                   <number>0</number>
                  </property>
-                 <widget class="QWidget" name="page39_3">
+                 <widget class="QWidget" name="page39">
                   <layout class="QVBoxLayout" name="verticalLayout_59">
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_34">
@@ -19836,7 +20489,7 @@ QWidget:item:unchecked {
                         <string notr="true"/>
                        </property>
                        <property name="text">
-                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferencias&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sistema monetario&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                       </widget>
                      </item>
@@ -19854,270 +20507,16 @@ QWidget:item:unchecked {
                       </spacer>
                      </item>
                      <item>
-                      <layout class="QGridLayout" name="gridLayout_127">
-                       <item row="0" column="0">
-                        <spacer name="horizontalSpacer_158">
-                         <property name="orientation">
-                          <enum>Qt::Horizontal</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>40</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                       <item row="0" column="2">
-                        <spacer name="horizontalSpacer_159">
-                         <property name="orientation">
-                          <enum>Qt::Horizontal</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>40</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                       <item row="0" column="1">
-                        <layout class="QFormLayout" name="clientLt6_21">
-                         <property name="fieldGrowthPolicy">
-                          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-                         </property>
-                         <item row="0" column="0">
-                          <widget class="QLabel" name="text193">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-color: transparent;</string>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moneda&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="0" column="1">
-                          <widget class="QComboBox" name="cbox10">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                             <italic>false</italic>
-                            </font>
-                           </property>
-                           <property name="cursor">
-                            <cursorShape>ArrowCursor</cursorShape>
-                           </property>
-                           <property name="mouseTracking">
-                            <bool>true</bool>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true"/>
-                           </property>
-                           <property name="currentIndex">
-                            <number>0</number>
-                           </property>
-                           <property name="insertPolicy">
-                            <enum>QComboBox::InsertAlphabetically</enum>
-                           </property>
-                           <property name="sizeAdjustPolicy">
-                            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-                           </property>
-                           <property name="iconSize">
-                            <size>
-                             <width>0</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <property name="frame">
-                            <bool>true</bool>
-                           </property>
-                           <property name="modelColumn">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <property name="text">
-                             <string>VEF</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>EUR</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>USD</string>
-                            </property>
-                           </item>
-                          </widget>
-                         </item>
-                         <item row="1" column="0">
-                          <widget class="QLabel" name="text194">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-color: transparent;</string>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;R.I.F.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="1">
-                          <widget class="QLineEdit" name="lineE88">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true"/>
-                           </property>
-                           <property name="text">
-                            <string/>
-                           </property>
-                           <property name="readOnly">
-                            <bool>true</bool>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </item>
-                     <item>
-                      <widget class="Line" name="line_49">
+                      <widget class="Line" name="line_8">
                        <property name="orientation">
                         <enum>Qt::Horizontal</enum>
                        </property>
                       </widget>
                      </item>
                      <item>
-                      <layout class="QGridLayout" name="gridLayout_128">
-                       <item row="0" column="1">
-                        <layout class="QFormLayout" name="formLayout_5">
-                         <property name="fieldGrowthPolicy">
-                          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-                         </property>
-                         <item row="0" column="0">
-                          <widget class="QLabel" name="text195">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-color: transparent;</string>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;I.V.A.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="0" column="1">
-                          <widget class="QComboBox" name="cbox11">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                             <italic>false</italic>
-                            </font>
-                           </property>
-                           <property name="cursor">
-                            <cursorShape>ArrowCursor</cursorShape>
-                           </property>
-                           <property name="mouseTracking">
-                            <bool>true</bool>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true"/>
-                           </property>
-                           <property name="currentIndex">
-                            <number>0</number>
-                           </property>
-                           <property name="insertPolicy">
-                            <enum>QComboBox::InsertAlphabetically</enum>
-                           </property>
-                           <property name="sizeAdjustPolicy">
-                            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-                           </property>
-                           <property name="iconSize">
-                            <size>
-                             <width>0</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <property name="frame">
-                            <bool>true</bool>
-                           </property>
-                           <property name="modelColumn">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <property name="text">
-                             <string>No incluir</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>Incluir</string>
-                            </property>
-                           </item>
-                          </widget>
-                         </item>
-                         <item row="1" column="0">
-                          <widget class="QLabel" name="text196">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tasa (%)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="1">
-                          <widget class="QLineEdit" name="lineE89">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true"/>
-                           </property>
-                           <property name="text">
-                            <string/>
-                           </property>
-                           <property name="readOnly">
-                            <bool>true</bool>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                       <item row="0" column="2">
-                        <spacer name="horizontalSpacer_160">
+                      <layout class="QGridLayout" name="gridLayout_35">
+                       <item row="0" column="0">
+                        <spacer name="horizontalSpacer_38">
                          <property name="orientation">
                           <enum>Qt::Horizontal</enum>
                          </property>
@@ -20129,8 +20528,28 @@ QWidget:item:unchecked {
                          </property>
                         </spacer>
                        </item>
-                       <item row="0" column="0">
-                        <spacer name="horizontalSpacer_168">
+                       <item row="0" column="2">
+                        <widget class="QRadioButton" name="rbutton3">
+                         <property name="text">
+                          <string>Eliminar</string>
+                         </property>
+                         <property name="checked">
+                          <bool>false</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="1">
+                        <widget class="QRadioButton" name="rbutton2">
+                         <property name="text">
+                          <string>Añadir</string>
+                         </property>
+                         <property name="checked">
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="0" column="3">
+                        <spacer name="horizontalSpacer_48">
                          <property name="orientation">
                           <enum>Qt::Horizontal</enum>
                          </property>
@@ -20143,6 +20562,207 @@ QWidget:item:unchecked {
                         </spacer>
                        </item>
                       </layout>
+                     </item>
+                     <item>
+                      <widget class="Line" name="line_5">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QStackedWidget" name="subStacked21">
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="currentIndex">
+                        <number>0</number>
+                       </property>
+                       <widget class="QWidget" name="page34">
+                        <layout class="QGridLayout" name="gridLayout_113">
+                         <item row="1" column="0">
+                          <layout class="QGridLayout" name="gridLayout_127">
+                           <item row="0" column="0">
+                            <spacer name="horizontalSpacer_158">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>40</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                           <item row="0" column="2">
+                            <spacer name="horizontalSpacer_159">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>40</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                           <item row="0" column="1">
+                            <layout class="QFormLayout" name="clientLt6_21">
+                             <property name="fieldGrowthPolicy">
+                              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                             </property>
+                             <item row="0" column="0">
+                              <widget class="QLabel" name="text194">
+                               <property name="font">
+                                <font>
+                                 <family>Open Sans</family>
+                                 <pointsize>11</pointsize>
+                                </font>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: transparent;</string>
+                               </property>
+                               <property name="text">
+                                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Denominación&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="0" column="1">
+                              <widget class="QLineEdit" name="lineE88">
+                               <property name="font">
+                                <font>
+                                 <family>Open Sans</family>
+                                </font>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true"/>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="readOnly">
+                                <bool>true</bool>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                          </layout>
+                         </item>
+                        </layout>
+                       </widget>
+                       <widget class="QWidget" name="page33">
+                        <layout class="QGridLayout" name="gridLayout_118">
+                         <item row="0" column="0">
+                          <layout class="QGridLayout" name="gridLayout_123">
+                           <item row="0" column="1">
+                            <layout class="QFormLayout" name="clientLt6_24">
+                             <property name="fieldGrowthPolicy">
+                              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                             </property>
+                             <item row="0" column="0">
+                              <widget class="QLabel" name="text7_2">
+                               <property name="font">
+                                <font>
+                                 <family>Open Sans</family>
+                                 <pointsize>11</pointsize>
+                                </font>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">background-color: transparent;</string>
+                               </property>
+                               <property name="text">
+                                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Denominación&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item row="0" column="1">
+                              <widget class="QComboBox" name="cbox3_2">
+                               <property name="font">
+                                <font>
+                                 <family>Open Sans</family>
+                                </font>
+                               </property>
+                               <property name="cursor">
+                                <cursorShape>ArrowCursor</cursorShape>
+                               </property>
+                               <property name="focusPolicy">
+                                <enum>Qt::NoFocus</enum>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true"/>
+                               </property>
+                               <property name="currentIndex">
+                                <number>-1</number>
+                               </property>
+                               <property name="insertPolicy">
+                                <enum>QComboBox::InsertAlphabetically</enum>
+                               </property>
+                               <property name="sizeAdjustPolicy">
+                                <enum>QComboBox::AdjustToContents</enum>
+                               </property>
+                               <property name="iconSize">
+                                <size>
+                                 <width>0</width>
+                                 <height>0</height>
+                                </size>
+                               </property>
+                               <property name="frame">
+                                <bool>true</bool>
+                               </property>
+                               <property name="modelColumn">
+                                <number>0</number>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item row="0" column="0">
+                            <spacer name="horizontalSpacer_90">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>40</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                           <item row="0" column="2">
+                            <spacer name="horizontalSpacer_91">
+                             <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                             </property>
+                             <property name="sizeHint" stdset="0">
+                              <size>
+                               <width>40</width>
+                               <height>20</height>
+                              </size>
+                             </property>
+                            </spacer>
+                           </item>
+                          </layout>
+                         </item>
+                        </layout>
+                       </widget>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="verticalSpacer">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
                      </item>
                      <item>
                       <widget class="Line" name="line_52">
@@ -20152,399 +20772,8 @@ QWidget:item:unchecked {
                       </widget>
                      </item>
                      <item>
-                      <layout class="QGridLayout" name="gridLayout_132">
-                       <item row="0" column="0">
-                        <spacer name="horizontalSpacer_110">
-                         <property name="orientation">
-                          <enum>Qt::Horizontal</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>40</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                       <item row="0" column="2">
-                        <spacer name="horizontalSpacer_167">
-                         <property name="orientation">
-                          <enum>Qt::Horizontal</enum>
-                         </property>
-                         <property name="sizeHint" stdset="0">
-                          <size>
-                           <width>40</width>
-                           <height>20</height>
-                          </size>
-                         </property>
-                        </spacer>
-                       </item>
-                       <item row="0" column="1">
-                        <layout class="QFormLayout" name="formLayout">
-                         <item row="0" column="0">
-                          <widget class="QLabel" name="text197">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-color: transparent;</string>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deudas&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="0" column="1">
-                          <widget class="QComboBox" name="cbox12">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                             <italic>false</italic>
-                            </font>
-                           </property>
-                           <property name="cursor">
-                            <cursorShape>ArrowCursor</cursorShape>
-                           </property>
-                           <property name="mouseTracking">
-                            <bool>true</bool>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true"/>
-                           </property>
-                           <property name="currentIndex">
-                            <number>0</number>
-                           </property>
-                           <property name="insertPolicy">
-                            <enum>QComboBox::InsertAlphabetically</enum>
-                           </property>
-                           <property name="sizeAdjustPolicy">
-                            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-                           </property>
-                           <property name="iconSize">
-                            <size>
-                             <width>0</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <property name="frame">
-                            <bool>true</bool>
-                           </property>
-                           <property name="modelColumn">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <property name="text">
-                             <string>Permitir</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>No permitir</string>
-                            </property>
-                           </item>
-                          </widget>
-                         </item>
-                         <item row="1" column="0">
-                          <widget class="QLabel" name="text198">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Límite&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="1">
-                          <widget class="QComboBox" name="cbox13">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                             <italic>false</italic>
-                            </font>
-                           </property>
-                           <property name="cursor">
-                            <cursorShape>ArrowCursor</cursorShape>
-                           </property>
-                           <property name="mouseTracking">
-                            <bool>true</bool>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true"/>
-                           </property>
-                           <property name="currentIndex">
-                            <number>0</number>
-                           </property>
-                           <property name="insertPolicy">
-                            <enum>QComboBox::InsertAlphabetically</enum>
-                           </property>
-                           <property name="sizeAdjustPolicy">
-                            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-                           </property>
-                           <property name="iconSize">
-                            <size>
-                             <width>0</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <property name="frame">
-                            <bool>true</bool>
-                           </property>
-                           <property name="modelColumn">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <property name="text">
-                             <string>Sin limite</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>500</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>1000</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>1500</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>2000</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>3000</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>5000</string>
-                            </property>
-                           </item>
-                          </widget>
-                         </item>
-                         <item row="2" column="0">
-                          <widget class="QLabel" name="text199">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-color: transparent;</string>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Intereses&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="2" column="1">
-                          <widget class="QComboBox" name="cbox14">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                             <italic>false</italic>
-                            </font>
-                           </property>
-                           <property name="cursor">
-                            <cursorShape>ArrowCursor</cursorShape>
-                           </property>
-                           <property name="mouseTracking">
-                            <bool>true</bool>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true"/>
-                           </property>
-                           <property name="currentIndex">
-                            <number>0</number>
-                           </property>
-                           <property name="insertPolicy">
-                            <enum>QComboBox::InsertAlphabetically</enum>
-                           </property>
-                           <property name="sizeAdjustPolicy">
-                            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-                           </property>
-                           <property name="iconSize">
-                            <size>
-                             <width>0</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <property name="frame">
-                            <bool>true</bool>
-                           </property>
-                           <property name="modelColumn">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <property name="text">
-                             <string>Activados</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>Desactivados</string>
-                            </property>
-                           </item>
-                          </widget>
-                         </item>
-                         <item row="3" column="1">
-                          <widget class="QComboBox" name="cbox15">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                             <italic>false</italic>
-                            </font>
-                           </property>
-                           <property name="cursor">
-                            <cursorShape>ArrowCursor</cursorShape>
-                           </property>
-                           <property name="mouseTracking">
-                            <bool>true</bool>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true"/>
-                           </property>
-                           <property name="currentIndex">
-                            <number>0</number>
-                           </property>
-                           <property name="insertPolicy">
-                            <enum>QComboBox::InsertAlphabetically</enum>
-                           </property>
-                           <property name="sizeAdjustPolicy">
-                            <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-                           </property>
-                           <property name="iconSize">
-                            <size>
-                             <width>0</width>
-                             <height>0</height>
-                            </size>
-                           </property>
-                           <property name="frame">
-                            <bool>true</bool>
-                           </property>
-                           <property name="modelColumn">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <property name="text">
-                             <string>Diario</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>Semanal</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>Quincenal</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>Mensual</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>Trimestral</string>
-                            </property>
-                           </item>
-                           <item>
-                            <property name="text">
-                             <string>Anual</string>
-                            </property>
-                           </item>
-                          </widget>
-                         </item>
-                         <item row="4" column="1">
-                          <widget class="QLineEdit" name="lineE90">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true"/>
-                           </property>
-                           <property name="text">
-                            <string/>
-                           </property>
-                           <property name="readOnly">
-                            <bool>true</bool>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="4" column="0">
-                          <widget class="QLabel" name="text201">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tasa ($)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="0">
-                          <widget class="QLabel" name="text200">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tipo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </item>
-                     <item>
-                      <widget class="Line" name="line_31">
-                       <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
                       <layout class="QGridLayout" name="gridLayout_140">
-                       <item row="0" column="2">
+                       <item row="0" column="1">
                         <widget class="QPushButton" name="pbutton28">
                          <property name="font">
                           <font>
@@ -20563,7 +20792,7 @@ QWidget:item:unchecked {
                           <string notr="true"/>
                          </property>
                          <property name="text">
-                          <string>Guardar</string>
+                          <string>Agregar</string>
                          </property>
                         </widget>
                        </item>
@@ -20580,36 +20809,13 @@ QWidget:item:unchecked {
                          </property>
                         </spacer>
                        </item>
-                       <item row="0" column="1">
-                        <widget class="QPushButton" name="cancelpb21">
-                         <property name="font">
-                          <font>
-                           <pointsize>11</pointsize>
-                           <weight>75</weight>
-                           <bold>true</bold>
-                          </font>
-                         </property>
-                         <property name="cursor">
-                          <cursorShape>PointingHandCursor</cursorShape>
-                         </property>
-                         <property name="focusPolicy">
-                          <enum>Qt::NoFocus</enum>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true"/>
-                         </property>
-                         <property name="text">
-                          <string>Cancelar</string>
-                         </property>
-                        </widget>
-                       </item>
                       </layout>
                      </item>
                     </layout>
                    </item>
                   </layout>
                  </widget>
-                 <widget class="QWidget" name="page40_3">
+                 <widget class="QWidget" name="page40">
                   <layout class="QVBoxLayout" name="verticalLayout_61">
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_58">
@@ -20749,7 +20955,7 @@ p, li { white-space: pre-wrap; }
                    </item>
                   </layout>
                  </widget>
-                 <widget class="QWidget" name="page41_3">
+                 <widget class="QWidget" name="page41">
                   <layout class="QVBoxLayout" name="verticalLayout_62">
                    <item>
                     <layout class="QVBoxLayout" name="verticalLayout_60">

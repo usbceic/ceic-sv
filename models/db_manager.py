@@ -1884,7 +1884,7 @@ class dbManager(object):
      - Devuelve tupla (True, True) si se logró con éxito
      - Devuelve (False, False), (True, False) en caso contrario
     """
-    def startDay(self, clerk, starting_cash, starting_total, description=""):
+    def startDay(self, clerk, starting_cash = 0, starting_total = 0, description=""):
         is_open_period = self.isOpenPeriod()
 
         if not is_open_period:
@@ -2031,7 +2031,7 @@ class dbManager(object):
      - Devuelve tupla (True, True) si se logró con éxito
      - Devuelve (False, False), (True, False) en caso contrario
     """
-    def createEntry(self, clerk, op_type, transfer_balance, cash_balance, description=""):
+    def createEntry(self, clerk, op_type, cash_balance, transfer_balance, description=""):
 
         if 0 <= op_type and op_type <= 2:
             print("Las operaciones 0..2 estan reservadas")
@@ -2192,24 +2192,6 @@ class dbManager(object):
         transfer_balance += noneToZero(transfers.with_entities(func.sum(Transfer.amount)).scalar())
         transfer_balance += noneToZero(log.with_entities(func.sum(Operation_log.transfer_balance)).scalar())
         return (cash_balance, transfer_balance)
-
-    """
-    Método que devuelve el balance entre dos fechas inclusivas sumado al dinero inicial del periodo
-     - Devuelve Tupla donde le primer elemento es el balance de efectivo y el segundo elemento es el balance de transferencias
-    """
-    def getPeriodBalance(self, lower_date=None, upper_date=None):
-        period = self.getPeriodStartAndEnd()[0]
-        cash, bank = self.getBalance(period.recorded)
-        return period.cash_total+cash, period.transfer_balance+bank
-
-    """
-    Método que devuelve el balance entre dos fechas inclusivas sumado al dinero inicial del día
-     - Devuelve Tupla donde le primer elemento es el balance de efectivo y el segundo elemento es el balance de transferencias
-    """
-    def getDayBalance(self, lower_date=None, upper_date=None):
-        day = self.getDayStartAndEnd()[0]
-        cash, bank = self.getBalance(day.recorded)
-        return day.cash_total+cash, day.transfer_balance+bank
 
     """
     Método para cerrar turno
