@@ -744,7 +744,7 @@ class dbManager(object):
      - Retorna True:
         * Cuando logra restarle uno a la cantidad de lotes restantes
      - Retorna False:
-        * Cuando no pudo restarle uno a la cantidad de lotes restantes por alguna otra razón
+        * Cuando NO pudo restarle uno a la cantidad de lotes restantes por alguna otra razón
     """
     def substractToRemainingLots(self, product_id):
         remaining_lots = self.session.query(Product.remaining_lots).filter_by(product_id=product_id).scalar()
@@ -752,6 +752,7 @@ class dbManager(object):
 
         try:
             self.session.commit()
+            self.afterUpdateRemainingLots(product_id)
             print("Actualizado lotes restantes del producto " + str(product_id))
             return True
 
@@ -759,6 +760,27 @@ class dbManager(object):
             self.session.rollback()
             print("Ha ocurrido un error desconocido al intentar actualizar los lotes restantes del producto " + str(product_id), e)
             return False
+
+    """
+    Método para actualizar la disponibilidad de un producto
+     - Retorna True:
+        * Cuando logra actualizar la disponibilidad
+     - Retorna False:
+        * Cuando NO pudo actualizar la disponibilidad por alguna otra razón
+    """
+    def afterUpdateRemainingLots(self, product_id):
+        remaining_lots = self.session.query(Product.remaining_lots).filter_by(product_id=product_id).scalar()
+        if remaining_lots == 0:
+            self.session.query(Product).filter_by(product_id=product_id).update({"available" : False})
+            try:
+                self.session.commit()
+                print("Actualizada disponibilidad del producto " + str(product_id))
+                return True
+
+            except Exception as e:
+                self.session.rollback()
+                print("Ha ocurrido un error desconocido al intentar actualizar la disponibilidad del producto " + str(product_id), e)
+                return False
 
     """
     Método para obtener los 10 productos más vendidos
@@ -977,8 +999,10 @@ class dbManager(object):
                     self.substractToRemainingLots(product_id)
 
                     if self.hasAvailableLot(product_id):
-                        lot_id, lot_remaining = self.session.query(Lot.lot_id, Lot.remaining).filter_by(product_id=product_id, available=True).one()
+                        print("entre")
+                        lot_id, lot_remaining = self.session.query(Lot.lot_id, Lot.remaining).filter_by(product_id=product_id, available=True).all()[0]
                         values = {"current" : True, "remaining" : lot_remaining + remaining}
+                        print(remaining)
                         self.session.query(Lot).filter_by(lot_id=lot_id).update(values)
 
                         try:
