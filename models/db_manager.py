@@ -608,7 +608,9 @@ class dbManager(object):
         * Cuando el producto NO existe
     """
     def existProduct(self, product_name, available = None, active = True):
-        values = {"product_name" : product_name.title().strip()}
+        product_name = product_name.title().strip()
+
+        values = {"product_name" : product_name}
         if available != None: values["available"] = available
         if active != None: values["active"] = active
 
@@ -631,8 +633,10 @@ class dbManager(object):
         * Cuando no se puede crear
     """
     def createProduct(self, product_name, price, category=""):
+        product_name = product_name.title().strip()
+
         if not self.existProduct(product_name, active = None):
-            self.session.add(Product(product_name=product_name.title().strip(), price=price, category=category))
+            self.session.add(Product(product_name=product_name, price=price, category=category))
             try:
                 self.session.commit()
                 print("Se ha creado correctamente el producto: " + product_name)
@@ -669,6 +673,7 @@ class dbManager(object):
      - Retorna None cuando no existe un producto con el nombre especificado
     """
     def getProductID(self, product_name):
+        product_name = product_name.title().strip()
         if self.existProduct(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name.title().strip()).all()[0][0]
         else: return None
 
@@ -677,6 +682,7 @@ class dbManager(object):
      - Retorna un queryset con lós resultados de la búsqueda
     """
     def getProductsNames(self, product_name, acitve=True):
+        product_name = product_name.title().strip()
         return self.session.query(Product.product_name).filter_by(active=active).all()
 
     """
@@ -707,14 +713,18 @@ class dbManager(object):
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
     def updateProduct(self, product_name, new_product_name=None, price=None, category=None, active = None):
+        product_name = product_name.title().strip()
+
         if self.existProduct(product_name, active = None):
             values = {}
-            if new_product_name != None: values["product_name"] = new_product_name.title().strip()
+            if new_product_name != None:
+                new_product_name = new_product_name.title().strip()
+                values["product_name"] = new_product_name.title().strip()
             if price != None: values["price"] = price
             if category != None: values["category"] = category
             if active != None: values["active"] = active
             try:
-                self.session.query(Product).filter_by(product_name=product_name.title().strip()).update(values)
+                self.session.query(Product).filter_by(product_name=product_name).update(values)
                 self.session.commit()
                 print("Se ha actualizado la información del producto " + product_name + " satisfactoriamente")
                 return True
@@ -734,6 +744,8 @@ class dbManager(object):
         * Cuando no se puede eliminar (desactivar) por alguna razón
     """
     def deleteProduct(self, product_name):
+        product_name = product_name.title().strip()
+
         if self.existProduct(product_name):
             try:
                 self.session.execute(update(Product).where(Product.product_name==product_name.title().strip()).values(active=False))
