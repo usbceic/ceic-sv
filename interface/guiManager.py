@@ -58,6 +58,8 @@ from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
 # Módulo con estructuras de Qt
 from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton
 
+#Módulo con los validadores para campos de texto
+from validators import validatePhoneNumber
 ###################################################################################################################################################################################
 ## CONSTANTES:
 ###################################################################################################################################################################################
@@ -1991,7 +1993,7 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             if self.lineE146.text() != "":
                 phone = self.lineE147.text()
-                if phone != "" and validatePhone(phone):
+                if phone != "" and validatePhoneNumber(phone):
                     kwargs = {
                         "provider_name"   : self.lineE146.text(),
                         "phone"           : phone,
