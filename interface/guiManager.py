@@ -597,7 +597,7 @@ class guiManager(QMainWindow, form_class):
     def on_inventory_pressed(self):
         if self.click():
             # Si el usuario tiene rango mayor a Colaborador
-            if self.db.getUserPermissionMask(self.user) > 0:
+            if self.db.getUserPermissionMask(self.user) > 1:
                 # Si hay dia y periodo abierto:
                 if self.db.isOpenPeriod() and self.db.isOpenDay():
                     self.setPage(self.MainStacked, 2)
@@ -649,7 +649,7 @@ class guiManager(QMainWindow, form_class):
     def on_providers_pressed(self):
         if self.click():
             # Si el usuario tiene rango mayor a Colaborador
-            if self.db.getUserPermissionMask(self.user) > 0:
+            if self.db.getUserPermissionMask(self.user) > 1:
                 # Si hay dia y periodo abierto:
                 if self.db.isOpenPeriod() and self.db.isOpenDay():
                     self.setPage(self.MainStacked, 6)

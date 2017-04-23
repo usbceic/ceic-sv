@@ -992,10 +992,14 @@ class dbManager(object):
     """
     def afterUpdateLot(self, lot_id):
         product_id = self.session.query(Lot.product_id).filter_by(lot_id=lot_id).scalar()
-        remaining = self.session.query(func.sum(Lot.remaining)).filter_by(product_id=product_id).scalar()
+        remaining = self.session.query(func.sum(Lot.remaining)).filter_by(product_id=product_id, available=True).scalar()
         remaining_lots = self.session.query(Lot).filter_by(product_id=product_id, available=True).count()
 
+        if remaining == None: remaining = 0
+
         values = {"remaining" : remaining, "remaining_lots" : remaining_lots}
+
+        if remaining == 0 and remaining_lots == 0: values["available"] = False
 
         self.session.query(Product).filter_by(product_id = product_id).update(values)
 
@@ -1114,16 +1118,36 @@ class dbManager(object):
     """
     def deleteLot(self, lot_id):
         if self.existLot(lot_id):
-            try:
-                self.session.execute(update(Lot).where(Lot.lot_id==lot_id).values(available=False))
-                self.session.commit()
-                self.afterDeleteLot(lot_id)
-                print("Se ha marcado el lote " + str(lot_id) + " como no disponible")
-                return True
-            except Exception as e:
-                print("Ha ocurrido un error desconocido al intentar marcar el lote " + str(lot_id) + " como no disponible", e)
-                self.session.rollback()
-                return False
+            current = self.session.query(Lot.current).filter_by(lot_id=lot_id).all()[0][0]
+
+            if not current:
+                self.session.query(Lot).filter_by(lot_id=lot_id).update({"available" : False})
+
+                try:
+                    self.session.commit()
+                    self.afterUpdateLot(lot_id)
+                    print("Se ha marcado el lote " + str(lot_id) + " como no disponible")
+                    return True
+
+                except Exception as e:
+                    print("Ha ocurrido un error desconocido al intentar marcar el lote " + str(lot_id) + " como no disponible", e)
+                    self.session.rollback()
+                    return False
+
+            else:
+                self.session.query(Lot).filter_by(lot_id=lot_id).update({"remaining" : 0})
+                try:
+                    self.session.commit()
+                    self.afterUpdateCurrentLotRemaining(lot_id=lot_id)
+                    self.afterUpdateLot(lot_id)
+                    print("Se ha marcado el lote " + str(lot_id) + " como no disponible")
+                    return True
+
+                except Exception as e:
+                    print("Ha ocurrido un error desconocido al intentar marcar el lote " + str(lot_id) + " como no disponible", e)
+                    self.session.rollback()
+                    return False
+
         return False
 
     """
