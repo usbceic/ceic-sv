@@ -193,6 +193,9 @@ class guiManager(QMainWindow, form_class):
 
         self.calc1 = [self.calcLE0, self.calcLE1, self.calcLE2, self.calcLE3, self.calcLE4, self.calcLE5, self.calcLE6, self.calcLE7, self.calcLE8, self.calcLE9, self.calcLE10, self.calcLE11, self.calcLE12, self.calcLE13, self.calcLE14]
 
+        # LineEdits para solo números
+        self.cashON = [self.lineE8, self.lineE9]
+
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE INVENTARIO
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -211,6 +214,11 @@ class guiManager(QMainWindow, form_class):
 
         # Tablas de productos
         self.productTables = [self.table1, self.table2, self.table3]
+
+        # LineEdits para solo números
+        self.productsON0 = [self.lineE27]
+        self.productsON1 = [self.lineE28]
+        self.lotsON = [self.lineE35, self.lineE37, self.lineE38]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE PROVEEDORES
@@ -241,6 +249,9 @@ class guiManager(QMainWindow, form_class):
         self.transfersLE1 = [self.lineE48, self.lineE49, self.lineE50]
         self.transfersLE2 = [self.lineE51, self.lineE156, self.lineE157]
         self.transfersLE3 = [self.lineE158]
+
+        # LineEdits para solo números
+        self.transfersON = [self.lineE51, self.lineE158]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE USUARIOS
@@ -284,6 +295,9 @@ class guiManager(QMainWindow, form_class):
 
         # Apartado de sistema monetario
         self.confLE1 = [self.lineE88]
+
+        # LineEdits para solo números
+        self.confON = [self.lineE88]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # CARGAR CONFIGURACIONES INICIALES
@@ -382,9 +396,13 @@ class guiManager(QMainWindow, form_class):
             if numValidator: lineE.setValidator(QIntValidator(0, 100000000))
             lineE.setCompleter(LEcompleter)
 
+    # Método para configurar campos para solo ingresar números
+    def setOnlyNumbers(self, listON):
+        for item in listON: item.setValidator(QIntValidator(0, 9999999))
+
     # Método para configurar un spinLine
     def setupSpinLines(self, listSL):
-        for spinL in listSL: spinL.setValidator(QIntValidator(0, 9999999))
+        for spinL in listSL: spinL.setValidator(QIntValidator(0, 0))
 
     # Método para setear en 0 una lista spinLine
     def clearSpinLines(self, listSL):
@@ -514,6 +532,11 @@ class guiManager(QMainWindow, form_class):
         self.setSize()
 
         # Configurar los spin box
+        self.setOnlyNumbers(self.productsON0)
+        self.setOnlyNumbers(self.lotsON)
+        self.setOnlyNumbers(self.confON)
+        self.setOnlyNumbers(self.transfersON)
+        self.setOnlyNumbers(self.cashON)
         self.setupSpinLines(self.spinBox)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
@@ -1515,18 +1538,20 @@ class guiManager(QMainWindow, form_class):
 
     # Restar al spinBox
     def substractToSalesSpinBox(self):
-        count = int(self.spinLine0.text())
+        if self.spinLine0.text() != "":  count = int(self.spinLine0.text())
+        else: count = 0
+
         if count > 0:
             self.spinLine0.setText(str(count-1))
-            self.lineE25.setText(str(((count-1)*float(self.lineE24.text()))))
 
     # Sumar al spinBox
     def addToSalesSpinBox(self):
-        count = int(self.spinLine0.text())
+        if self.spinLine0.text() != "":  count = int(self.spinLine0.text())
+        else: count = 0
+
         if self.selectedProductName in self.selectedProductRemaining:
             if count < self.selectedProductRemaining[self.selectedProductName]:
                 self.spinLine0.setText(str(count+1))
-                self.lineE25.setText(str(((count+1)*float(self.lineE24.text()))))
 
     # Seleccionar un item de las listas Top 10 y Nuevo
     def selectPopularItem(self, n):
@@ -1749,7 +1774,7 @@ class guiManager(QMainWindow, form_class):
             if self.lineE17.text() != "":
                 ci = int(self.lineE17.text())
                 if self.db.existClient(ci):
-                    client = self.db.getClients(ci)[0]                            # Obtener cliente
+                    client = self.db.getClients(ci)[0]                           # Obtener cliente
                     self.lineE18.setText(client.firstname)                       # Establecer Nombre
                     self.lineE19.setText(client.lastname)                        # Establecer Apellido
                     self.lineE20.setText(str(client.balance))                    # Establecer Saldo
@@ -1860,13 +1885,27 @@ class guiManager(QMainWindow, form_class):
 
                 if product_name not in self.selectedProducts:
                     self.selectedProductRemaining[product_name] = product.remaining
+                    self.spinLine0.setValidator(QIntValidator(0, product.remaining))
 
                 self.selectedItem0.setIcon(QIcon(join(productPath, product_name)))
 
             else:
                 self.clearLEs(self.selectedProductLE0)
                 self.clearSpinLine(self.spinLine0)
+                self.setupSpinLines(self.spinBox)
                 self.resetProductImage(self.selectedItem0)
+
+    # LineEdit para ingresar nombres de los productos
+    def on_spinLine0_textChanged(self):
+        if self.textChanged():
+            product_name = self.lineE23.text()
+            if self.db.existProduct(product_name):
+                if self.spinLine0.text() != "":
+                    count = int(self.spinLine0.text())
+                    self.lineE25.setText(str(((count)*float(self.lineE24.text()))))
+
+                else:
+                    self.spinLine0.setText("0")
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # TABLAS
