@@ -234,7 +234,7 @@ class dbManager(object):
     """
     def checkPassword(self, username, password):
         if self.existUser(username):
-            hashedPass = self.session.query(User.password).filter_by(username=username).one()[0]
+            hashedPass = self.session.query(User.password).filter_by(username=username).all()[0][0]
             if bcrypt.verify(password, hashedPass):
                 print("Información de inicio de sesión válidada correctamente")
                 return True
@@ -389,7 +389,7 @@ class dbManager(object):
      - Retorna un queryset con la información básica de un usuario
     """
     def getUserInfo(self, username):
-        return self.session.query(User.firstname, User.lastname, User.email, User.profile, User.permission_mask, User.last_login).filter(User.username == username).one()
+        return self.session.query(User.firstname, User.lastname, User.email, User.profile, User.permission_mask, User.last_login).filter(User.username == username).all()[0]
 
     """
     Método para retornar usuarios segun un filtro especificado
@@ -413,6 +413,13 @@ class dbManager(object):
         permission_mask = self.session.query(User.permission_mask).filter_by(username=username).scalar()
         return self.getRange(permission_mask)
 
+        """
+    Método para retornar el rango de un usuario especificado
+     - Retorna el rango del usuario especificado
+    """
+    def getUserPermissionMask(self, username):
+        return self.session.query(User.permission_mask).filter_by(username=username).scalar()
+
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PROVEEDORES:
     #==============================================================================================================================================================================
@@ -423,6 +430,8 @@ class dbManager(object):
     retorna False si no existe
     '''
     def existProvider(self, provider_name):
+        provider_name = provider_name.title().strip()
+
         count = self.session.query(Provider).filter_by(provider_name=provider_name).count()
         if count == 0:
             print("El proveedor " + provider_name + " no existe")
@@ -438,6 +447,8 @@ class dbManager(object):
     Genera una excepcion cuando algo sale mal
     '''
     def createProvider(self, provider_name, pay_information = "", phone = "", email = "", description = ""):
+        provider_name = provider_name.title().strip()
+
         if (self.existProvider(provider_name)):
             return False
         kwargs = {'provider_name' : provider_name}
@@ -472,8 +483,11 @@ class dbManager(object):
     '''
 
     def updateProviderInfo(self,oldName,newName=None,phone=None,email=None,pay_information=None,description=None,active=None,creation_date=None):
+        oldName = oldName.title().strip()
+
         kwargs = {}
         if newName is not None:
+            newName = newName.title().strip()
             kwargs['provider_name'] = newName
 
         if phone is not None:
@@ -525,7 +539,7 @@ class dbManager(object):
         - Retorna la instancia de Proveedor correspondiente al nombre
     '''
     def getProvider(self, provider_name):
-        return self.session.query(Provider).filter_by(provider_name=provider_name).one()
+        return self.session.query(Provider).filter_by(provider_name=provider_name).all()[0]
 
     '''
     Método para obtener TODA la informacion de los proveedores existentes en la base de datos
@@ -594,7 +608,9 @@ class dbManager(object):
         * Cuando el producto NO existe
     """
     def existProduct(self, product_name, available = None, active = True):
-        values = {"product_name" : product_name.title().strip()}
+        product_name = product_name.title().strip()
+
+        values = {"product_name" : product_name}
         if available != None: values["available"] = available
         if active != None: values["active"] = active
 
@@ -617,8 +633,10 @@ class dbManager(object):
         * Cuando no se puede crear
     """
     def createProduct(self, product_name, price, category=""):
+        product_name = product_name.title().strip()
+
         if not self.existProduct(product_name, active = None):
-            self.session.add(Product(product_name=product_name.title().strip(), price=price, category=category))
+            self.session.add(Product(product_name=product_name, price=price, category=category))
             try:
                 self.session.commit()
                 print("Se ha creado correctamente el producto: " + product_name)
@@ -654,8 +672,9 @@ class dbManager(object):
      - Retorna el id correspondiente al producto de nombre especificado si este existe
      - Retorna None cuando no existe un producto con el nombre especificado
     """
-    def getProductID(self, product_name):
-        if self.existProduct(product_name): return self.session.query(Product.product_id).filter_by(product_name=product_name.title().strip()).one()[0]
+    def getProductID(self, product_name, active = True):
+        product_name = product_name.title().strip()
+        if self.existProduct(product_name, active = active): return self.session.query(Product.product_id).filter_by(product_name=product_name).all()[0][0]
         else: return None
 
     """
@@ -663,6 +682,7 @@ class dbManager(object):
      - Retorna un queryset con lós resultados de la búsqueda
     """
     def getProductsNames(self, product_name, acitve=True):
+        product_name = product_name.title().strip()
         return self.session.query(Product.product_name).filter_by(active=active).all()
 
     """
@@ -693,14 +713,18 @@ class dbManager(object):
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
     def updateProduct(self, product_name, new_product_name=None, price=None, category=None, active = None):
+        product_name = product_name.title().strip()
+
         if self.existProduct(product_name, active = None):
             values = {}
-            if new_product_name != None: values["product_name"] = new_product_name.title().strip()
+            if new_product_name != None:
+                new_product_name = new_product_name.title().strip()
+                values["product_name"] = new_product_name.title().strip()
             if price != None: values["price"] = price
             if category != None: values["category"] = category
             if active != None: values["active"] = active
             try:
-                self.session.query(Product).filter_by(product_name=product_name.title().strip()).update(values)
+                self.session.query(Product).filter_by(product_name=product_name).update(values)
                 self.session.commit()
                 print("Se ha actualizado la información del producto " + product_name + " satisfactoriamente")
                 return True
@@ -720,17 +744,83 @@ class dbManager(object):
         * Cuando no se puede eliminar (desactivar) por alguna razón
     """
     def deleteProduct(self, product_name):
+        product_name = product_name.title().strip()
+
         if self.existProduct(product_name):
+            self.session.query(Product).filter_by(product_name=product_name).update({"active" : False})
             try:
-                self.session.execute(update(Product).where(Product.product_name==product_name.title().strip()).values(active=False))
                 self.session.commit()
+                self.afterDeleteProduct(product_name)
                 print("Se ha desactivado el producto: " + product_name)
                 return True
+
             except Exception as e:
                 print("Ha ocurrido un error desconocido al intentar desactivar el producto: " + product_name, e)
                 self.session.rollback()
                 return False
         return False
+
+    """
+    Pseudo-Trigger para eliminar los lotes asociados al producto desactivado
+     - No retorna nada
+    """
+    def afterDeleteProduct(self, product_name):
+        product_name = product_name.title().strip()
+        product_id = self.getProductID(product_name, active = False)
+        lots = self.getLotsIDByProductID(product_id)
+        for lot_id in lots:
+            self.session.query(Lot).filter_by(lot_id=lot_id).update({"available" : False, "current" : False})
+            try:
+                self.session.commit()
+                print("Se ha eliminado el lote " + str(lot_id) + " del producto desactivado: " + product_name)
+
+            except Exception as e:
+                self.session.rollback()
+                print("No se pudo eliminar el lote " + str(lot_id) + " del producto desactivado: " + product_name)
+        self.afterUpdateLot(lots[0])
+
+    """
+    Método para restarle uno a la cantidad de lotes restantes de un producto
+     - Retorna True:
+        * Cuando logra restarle uno a la cantidad de lotes restantes
+     - Retorna False:
+        * Cuando NO pudo restarle uno a la cantidad de lotes restantes por alguna otra razón
+    """
+    def substractToRemainingLots(self, product_id):
+        remaining_lots = self.session.query(Product.remaining_lots).filter_by(product_id=product_id).scalar()
+        self.session.query(Product).filter_by(product_id=product_id).update({"remaining_lots" : remaining_lots-1})
+
+        try:
+            self.session.commit()
+            self.afterUpdateRemainingLots(product_id)
+            print("Actualizado lotes restantes del producto " + str(product_id))
+            return True
+
+        except Exception as e:
+            self.session.rollback()
+            print("Ha ocurrido un error desconocido al intentar actualizar los lotes restantes del producto " + str(product_id), e)
+            return False
+
+    """
+    Método para actualizar la disponibilidad de un producto
+     - Retorna True:
+        * Cuando logra actualizar la disponibilidad
+     - Retorna False:
+        * Cuando NO pudo actualizar la disponibilidad por alguna otra razón
+    """
+    def afterUpdateRemainingLots(self, product_id):
+        remaining_lots = self.session.query(Product.remaining_lots).filter_by(product_id=product_id).scalar()
+        if remaining_lots == 0:
+            self.session.query(Product).filter_by(product_id=product_id).update({"available" : False})
+            try:
+                self.session.commit()
+                print("Actualizada disponibilidad del producto " + str(product_id))
+                return True
+
+            except Exception as e:
+                self.session.rollback()
+                print("Ha ocurrido un error desconocido al intentar actualizar la disponibilidad del producto " + str(product_id), e)
+                return False
 
     """
     Método para obtener los 10 productos más vendidos
@@ -762,10 +852,42 @@ class dbManager(object):
     def existLot(self, lot_id, available=True):
         count = self.session.query(Lot).filter_by(lot_id=lot_id, available=available).count()
         if count == 0:
-            print("El lote " + lot_id + " NO existe")
+            print("El lote " + str(lot_id) + " NO existe")
             return False
         else:
-            print("El lote " + lot_id + " existe")
+            print("El lote " + str(lot_id) + " existe")
+            return True
+
+    """
+    Método para verificar que un producto tine lotes disponibles
+     - Retorna True:
+        * Cuando el producto tiene lotes disponibles
+     - Retorna False:
+        * Cuando el producto NO tiene lotes disponibles
+    """
+    def hasAvailableLot(self, product_id):
+        count = self.session.query(Lot).filter_by(product_id=product_id, available=True).count()
+        if count == 0:
+            print("El producto " + str(product_id) + " NO tiene lotes disponibles")
+            return False
+        else:
+            print("El producto " + str(product_id) + " tiene lotes disponibles")
+            return True
+
+    """
+    Método para verificar que un producto tine lotes en current
+     - Retorna True:
+        * Cuando el producto tiene lotes en current
+     - Retorna False:
+        * Cuando el producto NO tiene lotes en current
+    """
+    def hasCurrentLot(self, product_id):
+        count = self.session.query(Lot).filter_by(product_id=product_id, current=True).count()
+        if count == 0:
+            print("El producto " + str(product_id) + " NO tiene lotes en current")
+            return False
+        else:
+            print("El producto " + str(product_id) + " tiene lotes en current")
             return True
 
     """
@@ -779,6 +901,9 @@ class dbManager(object):
         * Cuando NO se puede crear por alguna otra razón
     """
     def createLot(self, product_name, provider_name, received_by, cost, quantity, expiration_date=None):
+        product_name = product_name.title().strip()
+        provider_name = provider_name.title().strip()
+
         if self.existProvider(provider_name) and self.existProduct(product_name) and self.existUser(received_by):
             product_id = self.getProductID(product_name)
             kwargs = {
@@ -794,8 +919,7 @@ class dbManager(object):
                 kwargs["perishable"] = True
                 kwargs["expiration_date"] = expiration_date
 
-            count = self.session.query(Lot).filter_by(product_id=product_id, current=True).count()
-            if count == 0: kwargs["current"] = True
+            if not self.hasCurrentLot(product_id): kwargs["current"] = True
 
             newLot = Lot(**kwargs)
             self.session.add(newLot)
@@ -816,8 +940,8 @@ class dbManager(object):
      - No retorna nada
     """
     def afterInsertLot(self, lot_id):
-        product_id, quantity = self.session.query(Lot.product_id, Lot.quantity).filter_by(lot_id=lot_id, available=True).one()
-        remaining, remaining_lots = self.session.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).one()
+        product_id, quantity = self.session.query(Lot.product_id, Lot.quantity).filter_by(lot_id=lot_id, available=True).all()[0]
+        remaining, remaining_lots = self.session.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).all()[0]
 
         values = {
             "remaining"      : remaining+quantity,
@@ -847,22 +971,141 @@ class dbManager(object):
     def updateLot(self, lot_id, product_name=None, provider_id=None, cost=None, quantity=None, remaining=None, expiration_date=None):
         if self.existLot(lot_id):
             values = {}
-            if product_name != None and self.existProduct(product_name): values["product_id"] = self.getProductID(product_name)
-            if provider_id != None and self.existProvider(provider_id): values["provider_id"] = provider_id
-            if cost != None: values["cost"] = cost
-            if quantity != None: values["quantity"] = quantity
-            if remaining != None and remaining <= quantity: values["remaining"] = remaining
+            remainingTrigger = False
+
+            if product_name != None:
+                product_name = product_name.title().strip()
+                if self.existProduct(product_name):
+                    values["product_id"] = self.getProductID(product_name)
+
+            if provider_id != None:
+                provider_id = provider_id.title().strip()
+                if self.existProvider(provider_id):
+                    values["provider_id"] = provider_id
+
+            if cost != None:
+                values["cost"] = cost
+
+            if quantity != None and quantity > 0:
+                values["quantity"] = quantity
+
+            if remaining != None and remaining <= quantity:
+                values["remaining"] = remaining
+                if remaining <= 0: remainingTrigger = True
+
+            elif remaining == None and quantity > 0:
+                values["remaining"] = quantity
+
             if expiration_date != None: values["expiration_date"] = expiration_date
             try:
                 self.session.query(Lot).filter_by(lot_id=lot_id).update(values)
                 self.session.commit()
-                print("Se ha actualizado la información del lote " + lot_id + " satisfactoriamente")
+
+                if remainingTrigger:
+                    self.afterUpdateCurrentLotRemaining(lot_id=lot_id)
+
+                self.afterUpdateLot(lot_id)
+
+                print("Se ha actualizado la información del lote " + str(lot_id) + " satisfactoriamente")
                 return True
             except Exception as e:
-                print("Ha ocurrido un error desconocido al intentar actualizar la información del lote " + lot_id, e)
+                print("Ha ocurrido un error desconocido al intentar actualizar la información del lote " + str(lot_id), e)
                 self.session.rollback()
                 return False
         return False
+
+    """
+    Pseudo-trigger para actualizar la informacion de un producto enlazado a un lote modificado
+     - No retorna nada
+    """
+    def afterUpdateLot(self, lot_id):
+        product_id = self.session.query(Lot.product_id).filter_by(lot_id=lot_id).scalar()
+        remaining = self.session.query(func.sum(Lot.remaining)).filter_by(product_id=product_id, available=True).scalar()
+        remaining_lots = self.session.query(Lot).filter_by(product_id=product_id, available=True).count()
+
+        if remaining == None: remaining = 0
+
+        values = {"remaining" : remaining, "remaining_lots" : remaining_lots}
+
+        if remaining == 0 and remaining_lots == 0: values["available"] = False
+
+        self.session.query(Product).filter_by(product_id = product_id).update(values)
+
+        try:
+            self.session.commit()
+            print("Se ha actualizado el producto")
+
+        except Exception as e:
+            self.session.rollback()
+            print("No se pudo actualizar el producto")
+
+    """
+    Pseudo-trigger para calcular el nuevo lote current de un producto luego de haber realizado un update del remaining del current
+     - No retorna nada
+    """
+    def afterUpdateCurrentLotRemaining(self, lot_id = None, product_id = None):
+        if (lot_id or product_id) != None:
+
+            if lot_id != None and product_id == None:
+                product_id = self.session.query(Lot.product_id).filter_by(lot_id=lot_id).scalar()
+
+            values = {"available" : False, "current" : False}
+            remaining = self.session.query(Lot.remaining).filter_by(product_id=product_id, current=True).scalar()
+            if remaining == 0:
+                self.session.query(Lot).filter_by(product_id=product_id, current=True).update(values)
+
+                try:
+                    self.session.commit()
+
+                    self.substractToRemainingLots(product_id)
+
+                    if self.hasAvailableLot(product_id):
+                        lot_id = self.session.query(Lot.lot_id).filter_by(product_id=product_id, available=True).scalar()
+                        self.session.query(Lot).filter_by(lot_id=lot_id).update({"current" : True})
+                        try:
+                            self.session.commit()
+                            print("Actualizado lote en afterUpdate correctamente")
+
+                        except Exception as e:
+                            self.session.rollback()
+                            print("Ha ocurrido un error desconocido al intentar actualizar la información del lote " + str(lot_id), e)
+
+                    print("Actualizado lote en afterUpdate correctamente")
+
+                except Exception as e:
+                    self.session.rollback()
+                    print("Ha ocurrido un error desconocido al intentar actualizar la información del lote", e)
+
+            elif remaining < 0:
+                values["remaining"] = 0
+                self.session.query(Lot).filter_by(product_id=product_id, current=True).update(values)
+
+                try:
+                    self.session.commit()
+
+                    self.substractToRemainingLots(product_id)
+
+                    if self.hasAvailableLot(product_id):
+                        print("entre")
+                        lot_id, lot_remaining = self.session.query(Lot.lot_id, Lot.remaining).filter_by(product_id=product_id, available=True).all()[0]
+                        values = {"current" : True, "remaining" : lot_remaining + remaining}
+                        print(remaining)
+                        self.session.query(Lot).filter_by(lot_id=lot_id).update(values)
+
+                        try:
+                            self.session.commit()
+                            self.afterUpdateCurrentLotRemaining(product_id=product_id)
+                            print("Actualizado lote en afterUpdate correctamente")
+
+                        except Exception as e:
+                            self.session.rollback()
+                            print("Ha ocurrido un error desconocido al intentar actualizar la información del lote " + str(lot_id), e)
+
+                    print("Actualizado lote en afterUpdate correctamente")
+
+                except Exception as e:
+                    self.session.rollback()
+                    print("Ha ocurrido un error desconocido al intentar actualizar la información del lote", e)
 
     """
     Método para retornar los lotes asociados a un producto
@@ -874,11 +1117,11 @@ class dbManager(object):
             "available"  : available
         }
 
-        query = self.session.query(Lot.lot_id).filter_by(**values).all()
+        query = self.session.query(Lot.lot_id).filter_by(**values).order_by(desc(Lot.adquisition_date)).all()
         lotIDs = []
         for ID in query:
             lotIDs.append(str(ID[0]))
-        return sorted(lotIDs)
+        return lotIDs
 
     """
     Método para retornar los lotes asociados a un filtro
@@ -903,15 +1146,36 @@ class dbManager(object):
     """
     def deleteLot(self, lot_id):
         if self.existLot(lot_id):
-            try:
-                self.session.execute(update(Lot).where(Lot.lot_id==lot_id).values(available=False))
-                self.session.commit()
-                print("Se ha marcado el lote " + lot_id + " como no disponible")
-                return True
-            except Exception as e:
-                print("Ha ocurrido un error desconocido al intentar marcar el lote " + lot_id + " como no disponible", e)
-                self.session.rollback()
-                return False
+            current = self.session.query(Lot.current).filter_by(lot_id=lot_id).all()[0][0]
+
+            if not current:
+                self.session.query(Lot).filter_by(lot_id=lot_id).update({"available" : False})
+
+                try:
+                    self.session.commit()
+                    self.afterUpdateLot(lot_id)
+                    print("Se ha marcado el lote " + str(lot_id) + " como no disponible")
+                    return True
+
+                except Exception as e:
+                    print("Ha ocurrido un error desconocido al intentar marcar el lote " + str(lot_id) + " como no disponible", e)
+                    self.session.rollback()
+                    return False
+
+            else:
+                self.session.query(Lot).filter_by(lot_id=lot_id).update({"remaining" : 0})
+                try:
+                    self.session.commit()
+                    self.afterUpdateCurrentLotRemaining(lot_id=lot_id)
+                    self.afterUpdateLot(lot_id)
+                    print("Se ha marcado el lote " + str(lot_id) + " como no disponible")
+                    return True
+
+                except Exception as e:
+                    print("Ha ocurrido un error desconocido al intentar marcar el lote " + str(lot_id) + " como no disponible", e)
+                    self.session.rollback()
+                    return False
+
         return False
 
     """
@@ -919,8 +1183,8 @@ class dbManager(object):
      - No retorna nada
     """
     def afterDeleteLot(self, lot_id):
-        product_id, reaiming_in_lot = self.session.query(Lot.product_id, Lot.remaining).filter_by(lot_id=lot_id, available=True).one()
-        remaining, remaining_lots = self.session.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).one()
+        product_id, reaiming_in_lot = self.session.query(Lot.product_id, Lot.remaining).filter_by(lot_id=lot_id, available=True).all()[0]
+        remaining, remaining_lots = self.session.query(Product.remaining, Product.remaining_lots).filter_by(product_id=product_id).all()[0]
 
         values = {
             "remaining"      : remaining-remaining_in_lot,
@@ -1205,10 +1469,10 @@ class dbManager(object):
     def existPurchase(self, purchase_id, payed = False):
         count = self.session.query(Purchase).filter_by(purchase_id=purchase_id, payed=payed).count()
         if count == 0:
-            print("La compra " + purchase_id + " NO existe")
+            print("La compra " + str(purchase_id) + " NO existe")
             return False
         else:
-            print("La compra " + purchase_id + " existe")
+            print("La compra " + str(purchase_id) + " existe")
             return True
 
     """
@@ -1240,7 +1504,7 @@ class dbManager(object):
      - Retorna la cédula del cliente que realizo la compra especificada
     """
     def getPurchaseCI(self, purchase_id):
-        return self.session.query(Purchase.ci).filter_by(purchase_id=purchase_id).one()
+        return self.session.query(Purchase.ci).filter_by(purchase_id=purchase_id).all()[0]
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LISTAS DE PRODUCTOS:
@@ -1270,6 +1534,8 @@ class dbManager(object):
         * Cuando no se puede crear
     """
     def createProductList(self, purchase_id, product_name, price, amount):
+        product_name = product_name.title().strip()
+
         if self.existPurchase(purchase_id) and self.existProduct(product_name):
             product_id = self.getProductID(product_name)
             kwargs = {"purchase_id" : purchase_id, "product_id" : product_id, "price" : price, "amount" : amount}
@@ -1322,15 +1588,16 @@ class dbManager(object):
         remaining = self.session.query(Lot.remaining).filter_by(product_id=product_id, current=True).scalar()
         for i in range(10):
             self.session.query(Lot).filter_by(product_id=product_id, current=True).update({"remaining" : remaining-amount})
+
             try:
                 self.session.commit()
+                self.afterUpdateCurrentLotRemaining(product_id=product_id)
                 print("Se ha actualizado el lote correctamente")
-                # Falta afterUpdateLotRemaining -- IMPORTANTE!
                 break
 
             except Exception as e:
                 self.session.rollback()
-                print("No se pudo actualizar el lote")
+                print("No se pudo actualizar el lote", e)
 
     # Método para buscar ProductList.
     # Retorna queryset de los ProductList que cumplan el filtro
@@ -1341,8 +1608,10 @@ class dbManager(object):
         kwargs = {}
         if purchase_id is not None and self.existPurchase(purchase_id):
             kwargs['purchase_id'] = purchase_id
-        if product_name is not None and self.existProduct(product_name):
-            kwargs['product_id'] = self.getProductID(product_name)
+        if product_name is not None:
+            product_name = product_name.title().strip()
+            if self.existProduct(product_name):
+                kwargs['product_id'] = self.getProductID(product_name)
 
         # Diccionario Vacio
         if not kwargs:
@@ -2593,7 +2862,7 @@ if __name__ == '__main__':
         m.session.rollback()
 
     try:
-        b = m.session.query(Book).filter_by(title="Prueba", lang=l.lang_name).one()
+        b = m.session.query(Book).filter_by(title="Prueba", lang=l.lang_name).all()[0]
     except Exception as e:
         print("Excepcion de Libro:", e)
         import datetime
@@ -2608,7 +2877,7 @@ if __name__ == '__main__':
     except Exception as e:
         print("Excepcion de Materia:", e)
         m.session.rollback()
-        s = m.session.query(Subject).filter_by(subject_code="CI123").one()
+        s = m.session.query(Subject).filter_by(subject_code="CI123").all()[0]
 
     print("Soy b", b)
     s.books.append(b)

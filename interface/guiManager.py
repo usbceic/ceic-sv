@@ -46,6 +46,12 @@ from db_manager import dbManager
 # Módulo con las clases para los popUp
 from popUps import errorPopUp, warningPopUp, successPopUp, authorizationPopUp
 
+# Módulo con los validadores para campos de texto
+from validators import validatePhoneNumber, validateEmail
+
+# Módulo con los validadores para campos de texto
+from app_utilities import getStyle, naturalFormat
+
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
 
@@ -53,10 +59,10 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QRegExp
 
 # Módulo con estructuras de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton
+from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton, QRegExpValidator
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -98,17 +104,6 @@ form_class = loadUiType(join(UIpath, MainUI))[0]
 A = True
 
 ###################################################################################################################################################################################
-## PROCEDIMIENTOS:
-###################################################################################################################################################################################
-
-# Devuelve un string con el stylesheet especificado por el parametro name
-def getStyle(name):
-    file = open(join(stylePath, name), "r")
-    style = file.read()
-    file.close()
-    return style
-
-###################################################################################################################################################################################
 ## MANEJADOR DE LA INTERFAZ GRÁFICA DE LA VENTANA PRINCIPAL:
 ###################################################################################################################################################################################
 
@@ -133,21 +128,22 @@ class guiManager(QMainWindow, form_class):
         # VARIABLES PARA FACILITAR EL USO DE VARIOS MÉTODOS DE LA CLASE
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        self.clicked = False                # Variable de control para saber si un QPushbutton es presionado
-        self.writing = False                # Variable de control para saber si el texto de un QLineEdit ha cambiado
-        self.newIndex = False               # Variable de control para saber si se está cambiando la el index de un comboBox
-        self.indexMutex = False             # Semáforo especial para no actualizar dos veces al cambiar el index del comboBox de lotes
-        self.lotMutex1 = False              # Semáforo para saber cuando cargar la info de un lote en los QlineEdit
-        self.selectedRowChanged = False     # Variable de control para saber si se cambio la fila seleccionada de un QTableWidget
-        self.currentLot = "0"               # Variable de control para el comboBox de seleccion de lotes
-        self.currentLots = {}               # Diccionario para lotes de un producto consultado actualmente
-        self.tempImage = ""                 # Imagen seleccionada
-        self.selectedProductRemaining = {}  # Diccionario de cotas superiores para el spinBox de ventas
-        self.selectedProductName = ""       # Nombre del producto seleccionado actualmente en la vista de ventas
-        self.selectedProducts = {}          # Diccionario de productos en la factura en la vista de ventas
-        self.dateFormat = "%d/%m/%Y"        # Formato de fecha
-        self.top10 = []                     # Lista de productos en Top 10
-        self.new10 = []                     # Lista de productos en Nuevos
+        self.clicked = False                 # Variable de control para saber si un QPushbutton es presionado
+        self.writing = False                 # Variable de control para saber si el texto de un QLineEdit ha cambiado
+        self.newIndex = False                # Variable de control para saber si se está cambiando la el index de un comboBox
+        self.indexMutex = False              # Semáforo especial para no actualizar dos veces al cambiar el index del comboBox de lotes
+        self.lotMutex1 = False               # Semáforo para saber cuando cargar la info de un lote en los QlineEdit
+        self.selectedRowChanged = False      # Variable de control para saber si se cambio la fila seleccionada de un QTableWidget
+        self.currentLot = "0"                # Variable de control para el comboBox de seleccion de lotes
+        self.currentLots = {}                # Diccionario para lotes de un producto consultado actualmente
+        self.tempImage = ""                  # Imagen seleccionada
+        self.selectedProductRemaining = {}   # Diccionario de cotas superiores para el spinBox de ventas
+        self.selectedProductName = ""        # Nombre del producto seleccionado actualmente en la vista de ventas
+        self.selectedProducts = {}           # Diccionario de productos en la factura en la vista de ventas
+        self.dtFormat = "%d/%m/%y  %H:%M"    # Formato de fecha
+        self.top10 = []                      # Lista de productos en Top 10
+        self.new10 = []                      # Lista de productos en Nuevos
+        self.legalTenders = []               # Lista para las denominaciones del sistema monetario
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # PREFERENCIAS DE USUARIO
@@ -192,6 +188,9 @@ class guiManager(QMainWindow, form_class):
 
         self.calc1 = [self.calcLE0, self.calcLE1, self.calcLE2, self.calcLE3, self.calcLE4, self.calcLE5, self.calcLE6, self.calcLE7, self.calcLE8, self.calcLE9, self.calcLE10, self.calcLE11, self.calcLE12, self.calcLE13, self.calcLE14]
 
+        # LineEdits para solo números
+        self.cashON = [self.lineE8, self.lineE9]
+
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE INVENTARIO
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -210,6 +209,11 @@ class guiManager(QMainWindow, form_class):
 
         # Tablas de productos
         self.productTables = [self.table1, self.table2, self.table3]
+
+        # LineEdits para solo números
+        self.productsON0 = [self.lineE27]
+        self.productsON1 = [self.lineE28]
+        self.lotsON = [self.lineE35, self.lineE37, self.lineE38]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE PROVEEDORES
@@ -240,6 +244,9 @@ class guiManager(QMainWindow, form_class):
         self.transfersLE1 = [self.lineE48, self.lineE49, self.lineE50]
         self.transfersLE2 = [self.lineE51, self.lineE156, self.lineE157]
         self.transfersLE3 = [self.lineE158]
+
+        # LineEdits para solo números
+        self.transfersON = [self.lineE51, self.lineE158]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE USUARIOS
@@ -283,6 +290,9 @@ class guiManager(QMainWindow, form_class):
 
         # Apartado de sistema monetario
         self.confLE1 = [self.lineE88]
+
+        # LineEdits para solo números
+        self.confON = [self.lineE88]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # CARGAR CONFIGURACIONES INICIALES
@@ -381,9 +391,18 @@ class guiManager(QMainWindow, form_class):
             if numValidator: lineE.setValidator(QIntValidator(0, 100000000))
             lineE.setCompleter(LEcompleter)
 
+    # Método para configurar campos para ingresar cualquier cosa
+    def setAnyCharacter(self, listAC):
+        validator = QRegExpValidator(QRegExp('.*'))
+        for item in listAC: item.setValidator(validator)
+
+    # Método para configurar campos para solo ingresar números
+    def setOnlyNumbers(self, listON):
+        for item in listON: item.setValidator(QIntValidator(0, 999999999))
+
     # Método para configurar un spinLine
     def setupSpinLines(self, listSL):
-        for spinL in listSL: spinL.setValidator(QIntValidator(0, 9999999))
+        for spinL in listSL: spinL.setValidator(QIntValidator(0, 0))
 
     # Método para setear en 0 una lista spinLine
     def clearSpinLines(self, listSL):
@@ -476,9 +495,33 @@ class guiManager(QMainWindow, form_class):
         self.refreshConfigurations()
         self.refreshCash()
 
-        # Se establece la pagina de caja por defecto
-        self.MainStacked.setCurrentIndex(0)
-        self.MainTitle.setText("Caja")
+        # Si el usuario tiene rango mayor a Colaborador
+        if self.db.getUserPermissionMask(self.user) > 0:
+            # Se establece la pagina de caja por defecto
+            self.MainStacked.setCurrentIndex(0)
+            self.MainTitle.setText("Caja")
+
+        # Si el usuario es Colaborador
+        else:
+            # Si hay dia y periodo abierto:
+            if self.db.isOpenPeriod() and self.db.isOpenDay():
+                self.MainStacked.setCurrentIndex(1)
+                self.MainTitle.setText("Ventas")
+
+            # Si NO hay dia y periodo abierto:
+            else:
+                self.setPage(self.MainStacked, 4)
+                self.MainTitle.setText("Préstamos")
+
+        # Si el usuario tiene rango mayor a Vendedor
+        if self.db.getUserPermissionMask(self.user) > 1:
+            # Mostrar configuraciones del programa
+            self.groupBox6.show()
+
+        # Si el usuario es Colaborador o Vendedor
+        else:
+            # Ocultar configuraciones del programa
+            self.groupBox6.hide()
 
     # Método para aplicar las configuraciones iniciales
     def generalSetup(self):
@@ -489,6 +532,18 @@ class guiManager(QMainWindow, form_class):
         self.setSize()
 
         # Configurar los spin box
+        if not self.rbutton7.isChecked():
+            self.setOnlyNumbers(self.productsON0)
+            self.setAnyCharacter(self.productsON1)
+
+        else:
+            self.setOnlyNumbers(self.productsON1)
+            self.setAnyCharacter(self.productsON0)
+
+        self.setOnlyNumbers(self.lotsON)
+        self.setOnlyNumbers(self.confON)
+        self.setOnlyNumbers(self.transfersON)
+        self.setOnlyNumbers(self.cashON)
         self.setupSpinLines(self.spinBox)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
@@ -517,12 +572,19 @@ class guiManager(QMainWindow, form_class):
     # Cambiar a la página principal
     def on_home_pressed(self):
         if self.click():
-            self.setPage(self.MainStacked, 0)
-            self.MainTitle.setText("Caja")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                self.setPage(self.MainStacked, 0)
+                self.MainTitle.setText("Caja")
+
+            # Si el usuario es Colaborador
+            else:
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
      # Cambiar a la página de ventas
     def on_sales_pressed(self):
         if self.click():
+            # Si hay dia y periodo abierto:
             if self.db.isOpenPeriod() and self.db.isOpenDay():
                 self.setPage(self.MainStacked, 1)
                 self.MainTitle.setText("Ventas")
@@ -538,23 +600,36 @@ class guiManager(QMainWindow, form_class):
     # Cambiar a la página de inventario
     def on_inventory_pressed(self):
         if self.click():
-            if self.db.isOpenPeriod() and self.db.isOpenDay():
-                self.setPage(self.MainStacked, 2)
-                self.MainTitle.setText("Inventario")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 1:
+                # Si hay dia y periodo abierto:
+                if self.db.isOpenPeriod() and self.db.isOpenDay():
+                    self.setPage(self.MainStacked, 2)
+                    self.MainTitle.setText("Inventario")
 
-            # Si no hay periodo abierto
-            elif not self.db.isOpenPeriod():
-                warningPopUp("Falta apertura de periodo", self).exec_()
+                # Si no hay periodo abierto
+                elif not self.db.isOpenPeriod():
+                    warningPopUp("Falta apertura de periodo", self).exec_()
 
-            # Si no hay día abierto
+                # Si no hay día abierto
+                else:
+                    warningPopUp("Falta apertura de caja", self).exec_()
+
+            # Si el usuario es Colaborador
             else:
-                warningPopUp("Falta apertura de caja", self).exec_()
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de consultas
     def on_querys_pressed(self):
         if self.click():
-            self.setPage(self.MainStacked, 3)
-            self.MainTitle.setText("Consultas")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                self.setPage(self.MainStacked, 3)
+                self.MainTitle.setText("Consultas")
+
+            # Si el usuario es Colaborador
+            else:
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de préstamos
     def on_loans_pressed(self):
@@ -565,59 +640,92 @@ class guiManager(QMainWindow, form_class):
     # Cambiar a la página de libros
     def on_books_pressed(self):
         if self.click():
-            self.setPage(self.MainStacked, 5)
-            self.MainTitle.setText("Libros")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                self.setPage(self.MainStacked, 5)
+                self.MainTitle.setText("Libros")
+
+            # Si el usuario es Colaborador
+            else:
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de clientes
     def on_providers_pressed(self):
         if self.click():
-            if self.db.isOpenPeriod() and self.db.isOpenDay():
-                self.setPage(self.MainStacked, 6)
-                self.MainTitle.setText("Proveedores")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 1:
+                # Si hay dia y periodo abierto:
+                if self.db.isOpenPeriod() and self.db.isOpenDay():
+                    self.setPage(self.MainStacked, 6)
+                    self.MainTitle.setText("Proveedores")
 
-            # Si no hay periodo abierto
-            elif not self.db.isOpenPeriod():
-                warningPopUp("Falta apertura de periodo", self).exec_()
+                # Si no hay periodo abierto
+                elif not self.db.isOpenPeriod():
+                    warningPopUp("Falta apertura de periodo", self).exec_()
 
-            # Si no hay día abierto
+                # Si no hay día abierto
+                else:
+                    warningPopUp("Falta apertura de caja", self).exec_()
+
+            # Si el usuario es Colaborador
             else:
-                warningPopUp("Falta apertura de caja", self).exec_()
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de clientes
     def on_clients_pressed(self):
         if self.click():
-            if self.db.isOpenPeriod() and self.db.isOpenDay():
-                self.setPage(self.MainStacked, 7)
-                self.MainTitle.setText("Clientes")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                # Si hay dia y periodo abierto:
+                if self.db.isOpenPeriod() and self.db.isOpenDay():
+                    self.setPage(self.MainStacked, 7)
+                    self.MainTitle.setText("Clientes")
 
-            # Si no hay periodo abierto
-            elif not self.db.isOpenPeriod():
-                warningPopUp("Falta apertura de periodo", self).exec_()
+                # Si no hay periodo abierto
+                elif not self.db.isOpenPeriod():
+                    warningPopUp("Falta apertura de periodo", self).exec_()
 
-            # Si no hay día abierto
+                # Si no hay día abierto
+                else:
+                    warningPopUp("Falta apertura de caja", self).exec_()
+
+            # Si el usuario es Colaborador
             else:
-                warningPopUp("Falta apertura de caja", self).exec_()
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de clientes
     def on_transfer_pressed(self):
         if self.click():
-            if self.db.isOpenPeriod() and self.db.isOpenDay():
-                self.setPage(self.MainStacked, 8)
-                self.MainTitle.setText("Recargas de saldo")
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 0:
+                # Si hay dia y periodo abierto:
+                if self.db.isOpenPeriod() and self.db.isOpenDay():
+                    self.setPage(self.MainStacked, 8)
+                    self.MainTitle.setText("Recargas de saldo")
 
-            # Si no hay periodo abierto
-            elif not self.db.isOpenPeriod():
-                warningPopUp("Falta apertura de periodo", self).exec_()
+                # Si no hay periodo abierto
+                elif not self.db.isOpenPeriod():
+                    warningPopUp("Falta apertura de periodo", self).exec_()
 
-            # Si no hay día abierto
+                # Si no hay día abierto
+                else:
+                    warningPopUp("Falta apertura de caja", self).exec_()
+
+            # Si el usuario es Colaborador
             else:
-                warningPopUp("Falta apertura de caja", self).exec_()
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de usuarios
     def on_users_pressed(self):
         if self.click():
-            self.setPage(self.MainStacked, 9)
-            self.MainTitle.setText("Usuarios")
+            # Si el usuario tiene rango mayor a Vendedor
+            if self.db.getUserPermissionMask(self.user) > 1:
+                self.setPage(self.MainStacked, 9)
+                self.MainTitle.setText("Usuarios")
+
+            # Si el usuario es Colaborador o Vendedor
+            else:
+                warningPopUp("No tiene permisos de acceso a esta vista", self).exec_()
 
     # Cambiar a la página de configuraciones
     def on_configure_pressed(self):
@@ -628,44 +736,45 @@ class guiManager(QMainWindow, form_class):
     # Cambiar a la página de ayuda
     def on_help_pressed(self):
         if self.click():
+            print(self.user)
             self.setPage(self.MainStacked, 11)
             self.MainTitle.setText("Ayuda")
 
-    def on_arrow1_pressed(self): self.changePage(self.subStacked3)      # Cambiar la página del subStacked3 hacia la derecha
-    def on_arrow3_pressed(self): self.changePage(self.subStacked4)      # Cambiar la página del subStacked4 hacia la derecha
-    def on_arrow5_pressed(self): self.changePage(self.subStacked5)      # Cambiar la página del subStacked5 hacia la derecha
-    def on_arrow7_pressed(self): self.changePage(self.subStacked6)      # Cambiar la página del subStacked6 hacia la derecha
-    def on_arrow9_pressed(self): self.changePage(self.subStacked7)      # Cambiar la página del subStacked7 hacia la derecha
-    def on_arrow11_pressed(self): self.changePage(self.subStacked8)     # Cambiar la página del subStacked8 hacia la derecha
-    def on_arrow13_pressed(self): self.changePage(self.subStacked9)     # Cambiar la página del subStacked9 hacia la derecha
-    def on_arrow15_pressed(self): self.changePage(self.subStacked10)    # Cambiar la página del subStacked10 hacia la derecha
-    def on_arrow17_pressed(self): self.changePage(self.subStacked11)    # Cambiar la página del subStacked11 hacia la derecha
-    def on_arrow19_pressed(self): self.changePage(self.subStacked12)    # Cambiar la página del subStacked12 hacia la derecha
-    def on_arrow21_pressed(self): self.changePage(self.subStacked13)    # Cambiar la página del subStacked13 hacia la derecha
-    def on_arrow23_pressed(self): self.changePage(self.subStacked14)    # Cambiar la página del subStacked14 hacia la derecha
-    def on_arrow25_pressed(self): self.changePage(self.subStacked15)    # Cambiar la página del subStacked15 hacia la derecha
-    def on_arrow27_pressed(self): self.changePage(self.subStacked16)    # Cambiar la página del subStacked16 hacia la derecha
-    def on_arrow29_pressed(self): self.changePage(self.subStacked17)    # Cambiar la página del subStacked17 hacia la derecha
-    def on_arrow31_pressed(self): self.changePage(self.subStacked18)    # Cambiar la página del subStacked18 hacia la derecha
-    def on_arrow33_pressed(self): self.changePage(self.subStacked19)    # Cambiar la página del subStacked18 hacia la derecha
+    def on_arrow1_pressed(self): self.changePage(self.subStacked3)       # Cambiar la página del subStacked3 hacia la derecha
+    def on_arrow3_pressed(self): self.changePage(self.subStacked4)       # Cambiar la página del subStacked4 hacia la derecha
+    def on_arrow5_pressed(self): self.changePage(self.subStacked5)       # Cambiar la página del subStacked5 hacia la derecha
+    def on_arrow7_pressed(self): self.changePage(self.subStacked6)       # Cambiar la página del subStacked6 hacia la derecha
+    def on_arrow9_pressed(self): self.changePage(self.subStacked7)       # Cambiar la página del subStacked7 hacia la derecha
+    def on_arrow11_pressed(self): self.changePage(self.subStacked8)      # Cambiar la página del subStacked8 hacia la derecha
+    def on_arrow13_pressed(self): self.changePage(self.subStacked9)      # Cambiar la página del subStacked9 hacia la derecha
+    def on_arrow15_pressed(self): self.changePage(self.subStacked10)     # Cambiar la página del subStacked10 hacia la derecha
+    def on_arrow17_pressed(self): self.changePage(self.subStacked11)     # Cambiar la página del subStacked11 hacia la derecha
+    def on_arrow19_pressed(self): self.changePage(self.subStacked12)     # Cambiar la página del subStacked12 hacia la derecha
+    def on_arrow21_pressed(self): self.changePage(self.subStacked13)     # Cambiar la página del subStacked13 hacia la derecha
+    def on_arrow23_pressed(self): self.changePage(self.subStacked14)     # Cambiar la página del subStacked14 hacia la derecha
+    def on_arrow25_pressed(self): self.changePage(self.subStacked15)     # Cambiar la página del subStacked15 hacia la derecha
+    def on_arrow27_pressed(self): self.changePage(self.subStacked16)     # Cambiar la página del subStacked16 hacia la derecha
+    def on_arrow29_pressed(self): self.changePage(self.subStacked17)     # Cambiar la página del subStacked17 hacia la derecha
+    def on_arrow31_pressed(self): self.changePage(self.subStacked18)     # Cambiar la página del subStacked18 hacia la derecha
+    def on_arrow33_pressed(self): self.changePage(self.subStacked19)     # Cambiar la página del subStacked18 hacia la derecha
 
-    def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)   # Cambiar la página del subStacked3 hacia la izquierda
-    def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)   # Cambiar la página del subStacked4 hacia la izquierda
-    def on_arrow4_pressed(self): self.changePage(self.subStacked5, 1)   # Cambiar la página del subStacked5 hacia la izquierda
-    def on_arrow6_pressed(self): self.changePage(self.subStacked6, 1)   # Cambiar la página del subStacked6 hacia la izquierda
-    def on_arrow8_pressed(self): self.changePage(self.subStacked7, 1)   # Cambiar la página del subStacked7 hacia la izquierda
-    def on_arrow10_pressed(self): self.changePage(self.subStacked8, 1)  # Cambiar la página del subStacked8 hacia la izquierda
-    def on_arrow12_pressed(self): self.changePage(self.subStacked9, 1)  # Cambiar la página del subStacked9 hacia la izquierda
-    def on_arrow14_pressed(self): self.changePage(self.subStacked10, 1) # Cambiar la página del subStacked10 hacia la izquierda
-    def on_arrow16_pressed(self): self.changePage(self.subStacked11, 1) # Cambiar la página del subStacked11 hacia la izquierda
-    def on_arrow18_pressed(self): self.changePage(self.subStacked12, 1) # Cambiar la página del subStacked12 hacia la izquierda
-    def on_arrow20_pressed(self): self.changePage(self.subStacked13, 1) # Cambiar la página del subStacked13 hacia la izquierda
-    def on_arrow22_pressed(self): self.changePage(self.subStacked14, 1) # Cambiar la página del subStacked14 hacia la izquierda
-    def on_arrow24_pressed(self): self.changePage(self.subStacked15, 1) # Cambiar la página del subStacked15 hacia la izquierda
-    def on_arrow26_pressed(self): self.changePage(self.subStacked16, 1) # Cambiar la página del subStacked16 hacia la izquierda
-    def on_arrow28_pressed(self): self.changePage(self.subStacked17, 1) # Cambiar la página del subStacked17 hacia la izquierda
-    def on_arrow30_pressed(self): self.changePage(self.subStacked18, 1) # Cambiar la página del subStacked18 hacia la izquierda
-    def on_arrow32_pressed(self): self.changePage(self.subStacked19, 1) # Cambiar la página del subStacked18 hacia la izquierda
+    def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)    # Cambiar la página del subStacked3 hacia la izquierda
+    def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)    # Cambiar la página del subStacked4 hacia la izquierda
+    def on_arrow4_pressed(self): self.changePage(self.subStacked5, 1)    # Cambiar la página del subStacked5 hacia la izquierda
+    def on_arrow6_pressed(self): self.changePage(self.subStacked6, 1)    # Cambiar la página del subStacked6 hacia la izquierda
+    def on_arrow8_pressed(self): self.changePage(self.subStacked7, 1)    # Cambiar la página del subStacked7 hacia la izquierda
+    def on_arrow10_pressed(self): self.changePage(self.subStacked8, 1)   # Cambiar la página del subStacked8 hacia la izquierda
+    def on_arrow12_pressed(self): self.changePage(self.subStacked9, 1)   # Cambiar la página del subStacked9 hacia la izquierda
+    def on_arrow14_pressed(self): self.changePage(self.subStacked10, 1)  # Cambiar la página del subStacked10 hacia la izquierda
+    def on_arrow16_pressed(self): self.changePage(self.subStacked11, 1)  # Cambiar la página del subStacked11 hacia la izquierda
+    def on_arrow18_pressed(self): self.changePage(self.subStacked12, 1)  # Cambiar la página del subStacked12 hacia la izquierda
+    def on_arrow20_pressed(self): self.changePage(self.subStacked13, 1)  # Cambiar la página del subStacked13 hacia la izquierda
+    def on_arrow22_pressed(self): self.changePage(self.subStacked14, 1)  # Cambiar la página del subStacked14 hacia la izquierda
+    def on_arrow24_pressed(self): self.changePage(self.subStacked15, 1)  # Cambiar la página del subStacked15 hacia la izquierda
+    def on_arrow26_pressed(self): self.changePage(self.subStacked16, 1)  # Cambiar la página del subStacked16 hacia la izquierda
+    def on_arrow28_pressed(self): self.changePage(self.subStacked17, 1)  # Cambiar la página del subStacked17 hacia la izquierda
+    def on_arrow30_pressed(self): self.changePage(self.subStacked18, 1)  # Cambiar la página del subStacked18 hacia la izquierda
+    def on_arrow32_pressed(self): self.changePage(self.subStacked19, 1)  # Cambiar la página del subStacked18 hacia la izquierda
 
     #==============================================================================================================================================================================
     # VISTA DE CAJA
@@ -683,7 +792,7 @@ class guiManager(QMainWindow, form_class):
             startDate = period.recorded                     # Obtener fecha de inicio del periodo
             cash, bank = self.db.getBalance(startDate)      # Obtener dinero en efectivo y en banco ganado durante el periodo
             self.lineE10.setText(name)                      # Actualizar campo de nombre del periodo
-            self.lineE11.setText(str(startDate))            # Actualizar campo de fecha de inicio
+            self.lineE11.setText(startDate.strftime(self.dtFormat))            # Actualizar campo de fecha de inicio
             self.lineE13.setText(str(cash))                 # Actualizar campo de efectivo en periodo
             self.lineE14.setText(str(bank))                 # Actualizar campo de banco en periodo
 
@@ -710,12 +819,15 @@ class guiManager(QMainWindow, form_class):
     def updateCalc(self, legalTenders):
         for i in range(len(self.calc0)):
             if i < len(legalTenders):
-                self.calc0[i].setText(str(legalTenders[i]))
+                self.calc0[i].setText(naturalFormat(legalTenders[i]))
                 self.calc1[i].setReadOnly(False)
 
             else:
                 self.calc0[i].setText("0")
                 self.calc1[i].setReadOnly(True)
+
+        self.setOnlyNumbers(self.calc1)
+        self.setStyle(self.theme)
 
     # Método para realizar la suma en la calculadora
     def executeCalc(self, legalTenders):
@@ -723,7 +835,7 @@ class guiManager(QMainWindow, form_class):
         for i in range(len(legalTenders)):
             if self.calc1[i].text() != "":
                 total += float(self.calc1[i].text())*float(legalTenders[i])
-        self.lineE79.setText(str(total))
+        self.lineE79.setText(naturalFormat(total))
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -1057,6 +1169,8 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
             self.text64.setText("Nombre")
             self.resetProductImage(self.selectedItem1)
+            self.setOnlyNumbers(self.productsON0)
+            self.setAnyCharacter(self.productsON1)
 
     # Radio button para consultar productos
     def on_rbutton6_pressed(self):
@@ -1066,6 +1180,8 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1)
             self.text64.setText("Buscar")
             self.resetProductImage(self.selectedItem1)
+            self.setOnlyNumbers(self.productsON0)
+            self.setAnyCharacter(self.productsON1)
 
     # Radio button para editar productos
     def on_rbutton7_pressed(self):
@@ -1074,6 +1190,8 @@ class guiManager(QMainWindow, form_class):
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO3)
             self.resetProductImage(self.selectedItem1)
+            self.setOnlyNumbers(self.productsON1)
+            self.setAnyCharacter(self.productsON0)
 
     # Radio button para eliminar productos
     def on_rbutton8_pressed(self):
@@ -1083,6 +1201,8 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1)
             self.text64.setText("Nombre")
             self.resetProductImage(self.selectedItem1)
+            self.setOnlyNumbers(self.productsON0)
+            self.setAnyCharacter(self.productsON1)
 
     # Radio button para agregar nuevos lotes
     def on_rbutton9_pressed(self):
@@ -1127,23 +1247,39 @@ class guiManager(QMainWindow, form_class):
             if self.rbutton5.isChecked():
                 if self.lineE26.text() != "":
                     product_name = self.lineE26.text()
-                    if not self.db.existProduct(product_name):
+
+                    if self.lineE27.text() != "":
                         # Obtener información del nuevo producto
                         price = self.lineE27.text()
                         categoy = self.lineE28.text()
 
-                        # Agregar el producto a la BD
-                        self.db.createProduct(product_name, price, categoy)
+                        if not self.db.existProduct(product_name):
+                            # Agregar el producto a la BD
+                            if self.db.createProduct(product_name, price, categoy):
 
-                        if self.tempImage != "":
-                            copy2(self.tempImage, join(productPath, product_name))
+                                if self.tempImage != "":
+                                    copy2(self.tempImage, join(productPath, product_name))
 
-                        # Refrescar toda la interfaz
-                        self.refreshInventory()
-                        self.refreshNew10()
+                                successPopUp(parent = self).exec_()
 
-                        # Enfocar
-                        self.lineE26.setFocus()
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            # Refrescar toda la interfaz
+                            self.refreshInventory()
+                            self.refreshNew10()
+
+                            # Enfocar
+                            self.lineE26.setFocus()
+
+                        else:
+                            errorPopUp("El producto ya existe", self).exec_()
+
+                    else:
+                        warningPopUp("Debe especificar el precio del producto", self).exec_()
+
+                else:
+                    warningPopUp("Debe especificar el nombre del producto", self).exec_()
 
             # Modalidad para consultar productos
             elif self.rbutton6.isChecked():
@@ -1161,13 +1297,23 @@ class guiManager(QMainWindow, form_class):
 
                         if newName != "" and newPrice > 0:
                             # Actualizar información de producto
-                            self.db.updateProduct(product_name, newName, newPrice, newCategory)
+                            if self.db.updateProduct(product_name, newName, newPrice, newCategory):
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
 
                         # Refrescar toda la interfaz
                         self.refreshInventory()
 
                         # Enfocar
                         self.lineE26.setFocus()
+
+                    else:
+                        errorPopUp("El producto no existe", self).exec_()
+
+                else:
+                    warningPopUp("Debe especificar el nombre del producto", self).exec_()
 
             # Modalidad para eliminar productos
             elif self.rbutton8.isChecked():
@@ -1175,13 +1321,23 @@ class guiManager(QMainWindow, form_class):
                     product_name = self.lineE26.text()
                     if self.db.existProduct(product_name):
                         # Eliminar producto
-                        self.db.deleteProduct(product_name)
+                        if self.db.deleteProduct(product_name):
+                            successPopUp(parent = self).exec_()
+
+                        else:
+                            errorPopUp(parent = self).exec_()
 
                         # Refrescar toda la interfaz
                         self.refreshInventory()
 
                         # Enfocar
                         self.lineE26.setFocus()
+
+                    else:
+                        errorPopUp("El producto no existe", self).exec_()
+
+                else:
+                    warningPopUp("Debe especificar el nombre del producto", self).exec_()
 
     # Boton "Aceptar" en el apartado de lotes
     def on_pbutton13_pressed(self):
@@ -1200,21 +1356,38 @@ class guiManager(QMainWindow, form_class):
                 # Verificar completitud de los campos obligatorios
                 if (product_name and provider_name and cost and quantity) != "":
 
-                    kwargs = {
-                        "product_name"  : product_name,
-                        "provider_name" : provider_name,
-                        "received_by"   : self.user,
-                        "cost"          : int(cost),
-                        "quantity"      : quantity
-                    }
+                    if self.db.existProduct(product_name):
 
-                    #if expiration_date != "": kwargs["expiration_date"] = expiration_date
+                        if self.db.existProvider(provider_name):
 
-                    # Agregar el lote a la BD
-                    self.db.createLot(**kwargs)
+                            kwargs = {
+                                "product_name"  : product_name,
+                                "provider_name" : provider_name,
+                                "received_by"   : self.user,
+                                "cost"          : float(cost),
+                                "quantity"      : int(quantity)
+                            }
 
-                    self.refreshInventory()      # Refrescar toda la interfaz
-                    self.lineE33.setFocus()      # Enfocar
+                            #if expiration_date != "": kwargs["expiration_date"] = expiration_date
+
+                            # Agregar el lote a la BD
+                            if self.db.createLot(**kwargs):
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.refreshInventory()      # Refrescar toda la interfaz
+                            self.lineE33.setFocus()      # Enfocar
+
+                        else:
+                            errorPopUp("El proveedor no existe", self).exec_()
+
+                    else:
+                        errorPopUp("El producto no existe", self).exec_()
+
+                else:
+                    warningPopUp("Debe llenar todos los campos", self).exec_()
 
             # Modalidad para consultar lotes
             elif self.rbutton10.isChecked():
@@ -1223,42 +1396,87 @@ class guiManager(QMainWindow, form_class):
 
             # Modalidad para editar lotes
             elif self.rbutton11.isChecked():
-                if (self.lineE33.text() and self.lineE34.text()) != "":
-                    product_name = self.lineE33.text()        # Producto
-                    provider_name = self.lineE34.text()         # Proveedor
-                    if self.db.existProduct(product_name) and self.db.existProvider(provider_name):
 
-                        lot_id = self.currentLots[self.currentLot]                        # Lote
-                        cost = float(self.lineE35.text())                                 # Costo
-                        """if self.dtE2.text() != "None":
-                            expiration_date = datetime.strptime(self.dtE2.text(), self.dateFormat)  # Caducidad"""
-                        quantity = int(self.lineE37.text())                               # Cantidad
-                        remaining = int(self.lineE38.text())                              # Disponibles
+                product_name = self.lineE33.text()   # Producto
+                provider_name = self.lineE34.text()  # Proveedor
+                cost =  self.lineE35.text()          # Costo
+                quantity = self.lineE37.text()       # Cantidad
+                remaining = self.lineE38.text()      # Disponibles
 
-                        self.db.updateLot(lot_id, product_name, provider_name, cost, quantity, remaining)
+                """if self.dtE2.text() != "None":
+                    expiration_date = datetime.strptime(self.dtE2.text(), self.dateFormat)  # Caducidad"""
 
-                        # Refrescar toda la interfaz
-                        self.refreshInventory()
+                if (product_name and provider_name and cost and quantity and remaining) != "":
 
-                        # Enfocar
-                        self.lineE33.setFocus()
+                    if self.db.existProduct(product_name):
+
+                        if self.db.existProvider(provider_name):
+
+                            cost      = float(cost)                        # Costo
+                            quantity  = int(quantity)                      # Cantidad
+                            remaining = int(remaining)                     # Disponibles
+
+                            if quantity >= remaining:
+
+                                lot_id    = self.currentLots[self.currentLot]  # Lote
+
+                                if self.db.updateLot(lot_id, product_name, provider_name, cost, quantity, remaining):
+                                    successPopUp(parent = self).exec_()
+
+                                else:
+                                    errorPopUp(parent = self).exec_()
+
+                                # Refrescar toda la interfaz
+                                self.refreshInventory()
+
+                                # Enfocar
+                                self.lineE33.setFocus()
+
+                            else:
+                                errorPopUp("La disponibilidad no puede ser mayor a la cantidad", self).exec_()
+
+                        else:
+                            errorPopUp("El proveedor no existe", self).exec_()
+
+                    else:
+                        errorPopUp("El producto no existe", self).exec_()
+
+                else:
+                    warningPopUp("Debe llenar todos los campos", self).exec_()
 
             # Modalidad para eliminar lotes
             elif self.rbutton12.isChecked():
-                if (self.lineE33.text() and self.lineE34.text()) != "":
-                    product_name = self.lineE33.text()        # Producto
-                    provider_name = self.lineE34.text()         # Proveedor
-                    if self.db.existProduct(product_name) and self.db.existProvider(provider_name):
+                product_name = self.lineE33.text()          # Producto
+                provider_name = self.lineE34.text()         # Proveedor
 
-                        lot_id = self.currentLots[self.currentLot]                        # Lote
+                if (product_name and provider_name) != "":
 
-                        self.db.deleteLot(lot_id)
+                    if self.db.existProduct(product_name):
 
-                        # Refrescar toda la interfaz
-                        self.refreshInventory()
+                        if self.db.existProvider(provider_name):
 
-                        # Enfocar
-                        self.lineE33.setFocus()
+                            lot_id = self.currentLots[self.currentLot]  # Lote
+
+                            if self.db.deleteLot(lot_id):
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            # Refrescar toda la interfaz
+                            self.refreshInventory()
+
+                            # Enfocar
+                            self.lineE33.setFocus()
+
+                        else:
+                            errorPopUp("El proveedor no existe", self).exec_()
+
+                    else:
+                        errorPopUp("El producto no existe", self).exec_()
+
+                else:
+                    warningPopUp("Debe llenar todos los campos", self).exec_()
 
     # Boton para ver/agregar imágen de un producto
     def on_selectedItem1_pressed(self):
@@ -1305,27 +1523,28 @@ class guiManager(QMainWindow, form_class):
                 product_name = self.lineE33.text()
                 if self.db.existProduct(product_name):
                     self.selectedItem2.setIcon(QIcon(join(productPath, product_name)))
-                    product_id = self.db.getProductID(product_name)
-                    lotIDs = self.db.getLotsIDByProductID(product_id)
-                    self.currentLot = "0"
-                    self.currentLots = {}
-                    self.lotMutex1 = False
-                    for i in range(1, len(lotIDs)+1):
-                        self.cbox5.addItem(str(i))
-                        self.currentLots[str(i)] = lotIDs[i-1]
+                    if not self.rbutton9.isChecked():
+                        product_id = self.db.getProductID(product_name)
+                        lotIDs = self.db.getLotsIDByProductID(product_id)
+                        self.currentLot = "0"
+                        self.currentLots = {}
+                        self.lotMutex1 = False
+                        for i in range(1, len(lotIDs)+1):
+                            self.cbox5.addItem(str(i))
+                            self.currentLots[str(i)] = lotIDs[i-1]
 
-                    if len(lotIDs) > 0:
-                        self.currentLot = "1"
-                        lot_id = self.currentLots[self.currentLot]
-                        lot = self.db.getLots(lot_id=lot_id)[0]
+                        if len(lotIDs) > 0:
+                            self.currentLot = "1"
+                            lot_id = self.currentLots[self.currentLot]
+                            lot = self.db.getLots(lot_id=lot_id)[0]
 
-                        self.lineE34.setText(lot.provider_name)      # Proveedor
-                        self.lineE35.setText(str(lot.cost))          # Costo
-                        #self.dtE2.setText(str(lot.expiration_date)) # Caducidad
-                        self.lineE37.setText(str(lot.quantity))      # Cantidad
-                        self.lineE38.setText(str(lot.remaining))     # Disponibilidad
+                            self.lineE34.setText(lot.provider_id)        # Proveedor
+                            self.lineE35.setText(str(lot.cost))          # Costo
+                            #self.dtE2.setText(str(lot.expiration_date)) # Caducidad
+                            self.lineE37.setText(str(lot.quantity))      # Cantidad
+                            self.lineE38.setText(str(lot.remaining))     # Disponibilidad
 
-                    self.lotMutex1 = True
+                        self.lotMutex1 = True
 
                 else:
                     self.clearLEs(self.lotsRO1)
@@ -1343,7 +1562,7 @@ class guiManager(QMainWindow, form_class):
                 lot_id = self.currentLots[self.currentLot]
                 lot = self.db.getLots(lot_id=lot_id)[0]
 
-                self.lineE34.setText(lot.provider_name)      # Proveedor
+                self.lineE34.setText(lot.provider_id)        # Proveedor
                 self.lineE35.setText(str(lot.cost))          # Costo
                 #self.dtE2.setText(str(lot.expiration_date)) # Caducidad
                 self.lineE37.setText(str(lot.quantity))      # Cantidad
@@ -1435,18 +1654,23 @@ class guiManager(QMainWindow, form_class):
 
     # Restar al spinBox
     def substractToSalesSpinBox(self):
-        count = int(self.spinLine0.text())
+        if self.spinLine0.text() != "":  count = int(self.spinLine0.text())
+        else: count = 0
+
         if count > 0:
             self.spinLine0.setText(str(count-1))
-            self.lineE25.setText(str(((count-1)*float(self.lineE24.text()))))
 
     # Sumar al spinBox
     def addToSalesSpinBox(self):
-        count = int(self.spinLine0.text())
+        if self.spinLine0.text() != "":  count = int(self.spinLine0.text())
+        else: count = 0
+
         if self.selectedProductName in self.selectedProductRemaining:
             if count < self.selectedProductRemaining[self.selectedProductName]:
                 self.spinLine0.setText(str(count+1))
-                self.lineE25.setText(str(((count+1)*float(self.lineE24.text()))))
+
+            else:
+                warningPopUp("Límite de disponibilidad alcanzado", self).exec_()
 
     # Seleccionar un item de las listas Top 10 y Nuevo
     def selectPopularItem(self, n):
@@ -1585,28 +1809,44 @@ class guiManager(QMainWindow, form_class):
     # Botón para efectuar venta
     def on_pbutton7_pressed(self):
         if self.click():
-            if (self.lineE17.text() and self.lineE21.text()) != "":
-                ci = int(self.lineE17.text())
-                if  self.db.existClient(ci):
-                    total = float(self.lineE21.text())
-                    efectivo = 0
-                    saldo = 0
+            if self.lineE17.text() != "":
+                if self.lineE21.text() != "":
+                    ci = int(self.lineE17.text())
+                    if  self.db.existClient(ci):
+                        total = float(self.lineE21.text())
+                        efectivo = 0
+                        saldo = 0
 
-                    if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
-                    if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+                        if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                        if self.lineE152.text() != "": saldo = float(self.lineE152.text())
 
-                    if efectivo + saldo >= total:
+                        if efectivo + saldo >= total:
 
-                        purchase_id = self.db.createPurchase(ci, self.user)
+                            try:
+                                purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
+                                for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
+                                    self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
+                                if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
+                                if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
+                                successPopUp(parent = self).exec_()                                         # Venta exitosa
 
-                        for key, val in self.selectedProducts.items():
-                            self.db.createProductList(purchase_id, key, float(val[0]), int(val[1]))
+                            except:
+                                errorPopUp(parent = self).exec_()                                           # Venta fallida
 
-                        if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)
-                        if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)
+                            # Setear variables y refrescar la interfaz
+                            self.refreshSales()
 
-                        # Setear variables y refrescar la interfaz
-                        self.refreshSales()
+                        else:
+                            warningPopUp("Pago insuficiente", self).exec_()
+
+                    else:
+                        warningPopUp("El cliente no existe", self).exec_()
+
+                else:
+                    warningPopUp("No se han agregado productos", self).exec_()
+
+            else:
+                 warningPopUp("Debe especificar un cliente", self).exec_()
 
     # Botón para agregar lista de producto
     def on_pbutton9_pressed(self):
@@ -1669,7 +1909,7 @@ class guiManager(QMainWindow, form_class):
             if self.lineE17.text() != "":
                 ci = int(self.lineE17.text())
                 if self.db.existClient(ci):
-                    client = self.db.getClients(ci)[0]                            # Obtener cliente
+                    client = self.db.getClients(ci)[0]                           # Obtener cliente
                     self.lineE18.setText(client.firstname)                       # Establecer Nombre
                     self.lineE19.setText(client.lastname)                        # Establecer Apellido
                     self.lineE20.setText(str(client.balance))                    # Establecer Saldo
@@ -1780,13 +2020,28 @@ class guiManager(QMainWindow, form_class):
 
                 if product_name not in self.selectedProducts:
                     self.selectedProductRemaining[product_name] = product.remaining
+                    self.spinLine0.setValidator(QIntValidator(0, product.remaining))
 
                 self.selectedItem0.setIcon(QIcon(join(productPath, product_name)))
 
             else:
                 self.clearLEs(self.selectedProductLE0)
                 self.clearSpinLine(self.spinLine0)
+                self.setupSpinLines(self.spinBox)
                 self.resetProductImage(self.selectedItem0)
+
+    # LineEdit para ingresar nombres de los productos
+    def on_spinLine0_textChanged(self):
+        if self.textChanged():
+            product_name = self.lineE23.text()
+            if product_name != "":
+                if self.db.existProduct(product_name):
+                    if self.spinLine0.text() != "":
+                        count = int(self.spinLine0.text())
+                        self.lineE25.setText(str(((count)*float(self.lineE24.text()))))
+
+                    else:
+                        self.spinLine0.setText("0")
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # TABLAS
@@ -1851,19 +2106,81 @@ class guiManager(QMainWindow, form_class):
     # Botón para crear un proveedor
     def on_pbutton20_pressed(self):
         if self.click():
-            if self.lineE146.text() != "":
-                kwargs = {
-                    "provider_name"   : self.lineE146.text(),
-                    "phone"           : self.lineE147.text(),
-                    "email"           : self.lineE148.text(),
-                    "description"     : self.textE1.toPlainText(),
-                    "pay_information" : self.textE2.toPlainText()
-                }
-                self.db.createProvider(**kwargs)
+            name = self.lineE146.text()
+            phone = self.lineE147.text()
+            email = self.lineE148.text()
+            if name != "":
+                if not (self.db.existProvider(name)):
+                    if (phone != "" and validatePhoneNumber(phone)) or phone == "":
+                        if (email != "" and validateEmail(email)) or email == "":
+                            kwargs = {
+                                "provider_name"   : name,
+                                "phone"           : phone,
+                                "email"           : email,
+                                "description"     : self.textE1.toPlainText(),
+                                "pay_information" : self.textE2.toPlainText()
+                            }
+                            self.db.createProvider(**kwargs)
+                            successPopUp("Proveedor "+name+" creado exitosamente",self).exec_()
 
-                self.clearLEs(self.providersLE0) # Limpiar formulario
-                self.refreshProviders()          # Refrescar vista
-                self.lineE146.setFocus()         # Enfocar
+                            self.clearLEs(self.providersLE0) # Limpiar formulario
+                            self.refreshProviders()          # Refrescar vista
+                            self.lineE146.setFocus()         # Enfocar
+                        else:
+                            errorPopUp("Formato incorrecto de correo",self).exec_()
+
+                    else:
+                        errorPopUp("Formato incorrecto para número telefónico",self).exec_()
+                else:
+                    errorPopUp("El proveedor "+name+" ya existe",self).exec_()
+            else:
+                errorPopUp("Falta nombre de proveedor",self).exec_()
+
+    #Botón para cancelar en registrar proveedor
+    def on_cancelpb22_pressed(self):
+        self.clearLEs(self.providersLE0)
+        self.clearTEs(self.providersTE0)
+        self.lineE146.setFocus()
+
+    #Boton para editar proveedor
+    def on_pbutton22_pressed(self):
+        if self.click():
+            name = self.lineE149.text()
+            phone = self.lineE150.text()
+            email = self.lineE151.text()
+            if name != "":
+                if self.db.existProvider(name):
+                    if (phone != "" and validatePhoneNumber(phone)) or phone == "":
+                        if (email != "" and validateEmail(email)) or email == "":
+                            kwargs = {
+                                "oldName"         : name,
+                                "phone"           : phone,
+                                "email"           : email,
+                                "description"     : self.textE3.toPlainText(),
+                                "pay_information" : self.textE4.toPlainText()
+                            }
+                            self.db.updateProviderInfo(**kwargs)
+                            successPopUp("Proveedor "+name+" actualizado exitosamente",self).exec_()
+
+                            self.clearLEs(self.providersLE1) # Limpiar formulario
+                            self.refreshProviders()          # Refrescar vista
+                            self.lineE149.setFocus()         # Enfocar
+                        else:
+                            errorPopUp("Formato incorrecto de correo",self).exec_()
+
+                    else:
+                        errorPopUp("Formato incorrecto para número telefónico",self).exec_()
+                else:
+                    errorPopUp("El proveedor "+name+" no existe",self).exec_()
+            else:
+                errorPopUp("Falta nombre de proveedor",self).exec_()
+
+    #Botón cancelar de editar proveedor
+    def on_cancelpb23_pressed(self):
+        self.clearLEs(self.providersLE1)
+        self.clearTEs(self.providersTE1)
+        self.lineE149.setFocus()
+
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
@@ -1938,39 +2255,80 @@ class guiManager(QMainWindow, form_class):
     # Botón para crear un cliente
     def on_pbutton17_pressed(self):
         if self.click():
-            if self.lineE52.text() != "" and self.lineE53.text() != "" and self.lineE54.text() != "":
+            if self.lineE52.text() != "":
                 ci = int(self.lineE52.text())
                 if not self.db.existClient(ci):
-                    kwargs = {
-                        "ci"        : ci,
-                        "firstname" : self.lineE53.text(),
-                        "lastname"  : self.lineE54.text(),
-                        "phone"     : self.lineE55.text(),
-                        "email"     : self.lineE56.text()
-                    }
+                    if self.lineE53.text() != "":
+                        if self.lineE54.text() != "":
 
-                    self.db.createClient(**kwargs) # Crear cliente
-                    self.clearLEs(self.clientsLE0) # Limpiar formulario
-                    self.refreshClients()          # Refrescar vista
-                    self.lineE52.setFocus()        # Enfocar
+                            kwargs = {
+                                "ci"        : ci,
+                                "firstname" : self.lineE53.text(),
+                                "lastname"  : self.lineE54.text(),
+                                "phone"     : self.lineE55.text(),
+                                "email"     : self.lineE56.text()
+                            }
+
+                            if self.db.createClient(**kwargs): # Crear cliente
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.clearLEs(self.clientsLE0) # Limpiar formulario
+                            self.refreshClients()          # Refrescar vista
+                            self.lineE52.setFocus()        # Enfocar
+
+                        else:
+                            warningPopUp("Apellido no específicado", self).exec_()
+
+                    else:
+                        warningPopUp("Nombre no específicado", self).exec_()
+
+                else:
+                    errorPopUp("Número de cédula previamente registrado", self).exec_()
+
+            else:
+                warningPopUp("Número de cédula no específicado", self).exec_()
 
     # Botón para editar un cliente
     def on_pbutton19_pressed(self):
         if self.click():
-            if self.lineE57.text() != "" and self.lineE58.text() != "" and self.lineE59.text() != "":
-                ci = int(self.lineE52.text())
-                if not self.db.existClient(ci):
-                    kwargs = {
-                        "firstname" : self.lineE58.text(),
-                        "lastname"  : self.lineE59.text(),
-                        "phone"     : self.lineE60.text(),
-                        "email"     : self.lineE61.text()
-                    }
+            if self.lineE57.text() != "":
+                ci = int(self.lineE57.text())
+                if self.db.existClient(ci):
+                    if self.lineE58.text() != "":
+                        if self.lineE59.text() != "":
 
-                    self.db.updateClient(**kwargs) # Crear cliente
-                    self.clearLEs(self.clientsLE1) # Limpiar formulario
-                    self.refreshClients()          # Refrescar vista
-                    self.lineE57.setFocus()        # Enfocar
+                            kwargs = {
+                                "ciOriginal" : ci,
+                                "firstname"  : self.lineE58.text(),
+                                "lastname"   : self.lineE59.text(),
+                                "phone"      : self.lineE60.text(),
+                                "email"      : self.lineE61.text()
+                            }
+
+                            if self.db.updateClient(**kwargs):      # Crear cliente
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.clearLEs(self.clientsLE1) # Limpiar formulario
+                            self.refreshClients()          # Refrescar vista
+                            self.lineE57.setFocus()        # Enfocar
+
+                        else:
+                            warningPopUp("Apellido no específicado", self).exec_()
+
+                    else:
+                        warningPopUp("Nombre no específicado", self).exec_()
+
+                else:
+                    errorPopUp("Número de cédula no registrado", self).exec_()
+
+            else:
+                warningPopUp("Número de cédula no específicado", self).exec_()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
@@ -2150,22 +2508,49 @@ class guiManager(QMainWindow, form_class):
     # Botón para crear un usuario
     def on_pbutton21_pressed(self):
         if self.click():
-            if (self.lineE69.text() and self.lineE70.text() and self.lineE71.text() and self.lineE72.text() and self.lineE73.text()) != "":
+            if self.lineE69.text() != "":
                 username = self.lineE69.text()
                 if not self.db.existUser(username):
+                    if self.lineE70.text() != "":
+                        if self.lineE71.text() != "":
+                            if self.lineE72.text() != "":
+                                if self.lineE73.text() != "":
 
-                    kwargs = {
-                        "username"        : username,
-                        "firstname"       : self.lineE70.text(),
-                        "lastname"        : self.lineE71.text(),
-                        "email"           : self.lineE72.text(),
-                        "password"        : self.lineE73.text(),
-                        "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
-                    }
+                                    kwargs = {
+                                        "username"        : username,
+                                        "firstname"       : self.lineE70.text(),
+                                        "lastname"        : self.lineE71.text(),
+                                        "email"           : self.lineE72.text(),
+                                        "password"        : self.lineE73.text(),
+                                        "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
+                                    }
 
-                    self.db.createUser(**kwargs) # Crear cliente
-                    self.refreshUsers()          # Refrescar vista
-                    self.lineE69.setFocus()      # Enfocar
+                                    if self.db.createUser(**kwargs):        # Crear usuario
+                                        successPopUp(parent = self).exec_()
+
+                                    else:
+                                        errorPopUp(parent = self).exec_()
+
+                                    self.refreshUsers()          # Refrescar vista
+                                    self.lineE69.setFocus()      # Enfocar
+
+                                else:
+                                    warningPopUp("Clave no específicada", self).exec_()
+
+                            else:
+                                warningPopUp("Correo no específicado", self).exec_()
+
+                        else:
+                            warningPopUp("Apellido no específicado", self).exec_()
+
+                    else:
+                        warningPopUp("Nombre no específicado", self).exec_()
+
+                else:
+                    errorPopUp("UserID previamente registrado", self).exec_()
+
+            else:
+                warningPopUp("UserID no específicado", self).exec_()
 
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
@@ -2179,9 +2564,21 @@ class guiManager(QMainWindow, form_class):
                         "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
                     }
 
-                    self.db.updateUserRange(**kwargs) # Actualizar cliente
+                    if self.db.updateUserRange(**kwargs):    # Actualizar cliente
+                        successPopUp(parent = self).exec_()
+
+                    else:
+                        errorPopUp(parent = self).exec_()
+
                     self.refreshUsers()               # Refrescar vista
                     self.lineE75.setFocus()           # Enfocar
+
+                else:
+                    errorPopUp("UserID no registrado", self).exec_()
+
+            else:
+                warningPopUp("UserID no específicado", self).exec_()
+
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
@@ -2220,19 +2617,20 @@ class guiManager(QMainWindow, form_class):
 
     # Cambiar el tema de la interfáz
     def setStyle(self, name):
-        self.setStyleSheet(getStyle(name))
+        self.setStyleSheet(getStyle(join(stylePath, name)))
 
     # Método para cargar la información del sistema monetario
     def loadLegalTenders(self):
-        legalTenders, query = [], self.db.getLegalTender()  # Obtener los billetes o monedas
-        for legalTender in query:                           # Para cada billete o moneda
-            legalTenders.append(str(legalTender.amount))    # Se agrega su denominacion a la lista
+        legalTenders, query = [], self.db.getLegalTender()     # Obtener los billetes o monedas
+        for legalTender in query:                              # Para cada billete o moneda
+            legalTenders.append(legalTender.amount)            # Se agrega su denominacion a la lista
         return legalTenders
 
     # Método para actualizar el comboBox del sistema monetario
     def updateLegalTendersCB(self, legalTenders):
         self.cbox0.clear()                                 # Se limpia el comboBox
-        self.cbox0.addItems(legalTenders)                  # Se añade la lista al comboBox
+        for i in legalTenders:                             # Por cada denominacion
+            self.cbox0.addItem(naturalFormat(i))              # Se añade la denominacion formateada
 
     # Método para cargar la información del usuario
     def loadUserInfo(self):
@@ -2253,7 +2651,7 @@ class guiManager(QMainWindow, form_class):
     # Método para cambiar el usuario que usa la intefáz
     def changeUser(self, user):
         self.user = user
-        self.openTurn(self, user)
+        self.openTurn(self.user)
         self.refresh()
 
     # Método para refrescar el sistema monetario
@@ -2411,24 +2809,65 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             # Perfil
             if self.subStacked18.currentIndex() == 0:
-                if (self.lineE82.text() and self.lineE83.text() and self.lineE84.text()) != "":
-                    self.db.updateUserInfo(self.user, self.lineE82.text(), self.lineE83.text(), self.lineE84.text())
-                    self.refreshUsers()
+                if self.lineE82.text() != "":
+                    if self.lineE83.text() != "":
+                        if self.lineE84.text() != "":
+                            if self.db.updateUserInfo(self.user, self.lineE82.text(), self.lineE83.text(), self.lineE84.text()):
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.refreshUsers()
+
+                        else:
+                            warningPopUp("Correo no específicado", self).exec_()
+
+                    else:
+                        warningPopUp("Apellido no específicado", self).exec_()
+
+                else:
+                    warningPopUp("Nombre no específicado", self).exec_()
 
             # Contraseña
             elif self.subStacked18.currentIndex() == 1:
                 if self.lineE153.text() != "":
                     password = self.lineE153.text()
                     if self.db.checkPassword(self.user, password):
-                        if (self.lineE154.text() and self.lineE155.text()) != "":
-                            if self.lineE154.text() == self.lineE155.text():
-                                newPassword = self.lineE154.text()
-                                self.db.changePassword(self.user, password, newPassword)
-                                self.clearLEs(self.confLE0)
+                        if self.lineE154.text() != "":
+                            if self.lineE155.text() != "":
+                                if self.lineE154.text() == self.lineE155.text():
+                                    newPassword = self.lineE154.text()
+                                    if self.db.changePassword(self.user, password, newPassword):
+                                        successPopUp(parent = self).exec_()
+
+                                    else:
+                                        errorPopUp(parent = self).exec_()
+
+                                    self.clearLEs(self.confLE0)
+
+                                else:
+                                    errorPopUp("La clave nueva no coincide con su confirmación", self).exec_()
+
+                            else:
+                                warningPopUp("Debe confirmar la clave nueva", self).exec_()
+
+                        else:
+                            warningPopUp("Clave nueva no específicada", self).exec_()
+
+                    else:
+                        errorPopUp("La clave actual no coincide con la registrada", self).exec_()
+
+                else:
+                    warningPopUp("Clave actual no específicado", self).exec_()
 
             # Tema
             else:
-                self.db.updateUserProfile(self.user, self.theme)
+                if self.db.updateUserProfile(self.user, self.theme):
+                    successPopUp(parent = self).exec_()
+
+                else:
+                    errorPopUp(parent = self).exec_()
 
     # Boton para cambiar al modo de agregar denominación
     def on_rbutton2_pressed(self):
@@ -2451,10 +2890,11 @@ class guiManager(QMainWindow, form_class):
                     if not self.db.existLegalTender(amount):
                         if self.db.createLegalTender(amount):
                             successPopUp(parent = self).exec_()
-                            self.refreshLegalTenders()
 
                         else:
                             errorPopUp(parent = self).exec_()
+
+                        self.refreshLegalTenders()
 
                     else:
                         errorPopUp("Denominación previamente registrada", self).exec_()
@@ -2464,13 +2904,14 @@ class guiManager(QMainWindow, form_class):
 
             # Modalidad para eliminar billetes o monedas
             else:
-                amount = float(self.cbox0.currentText())
+                amount = self.legalTenders[self.cbox0.currentIndex()]
                 if self.db.deleteLegalTender(amount):
                     successPopUp(parent = self).exec_()
-                    self.refreshLegalTenders()
 
                 else:
                     errorPopUp(parent = self).exec_()
+
+                self.refreshLegalTenders()
 
     #==============================================================================================================================================================================
     # MANEJADOR DE EVENTOS DE TECLADO
