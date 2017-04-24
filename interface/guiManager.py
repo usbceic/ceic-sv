@@ -2255,39 +2255,77 @@ class guiManager(QMainWindow, form_class):
     # Botón para crear un cliente
     def on_pbutton17_pressed(self):
         if self.click():
-            if self.lineE52.text() != "" and self.lineE53.text() != "" and self.lineE54.text() != "":
-                ci = int(self.lineE52.text())
-                if not self.db.existClient(ci):
-                    kwargs = {
-                        "ci"        : ci,
-                        "firstname" : self.lineE53.text(),
-                        "lastname"  : self.lineE54.text(),
-                        "phone"     : self.lineE55.text(),
-                        "email"     : self.lineE56.text()
-                    }
+            if self.lineE52.text() != "":
+                if self.lineE53.text() != "":
+                    if self.lineE54.text() != "":
+                        ci = int(self.lineE52.text())
+                        if not self.db.existClient(ci):
+                            kwargs = {
+                                "ci"        : ci,
+                                "firstname" : self.lineE53.text(),
+                                "lastname"  : self.lineE54.text(),
+                                "phone"     : self.lineE55.text(),
+                                "email"     : self.lineE56.text()
+                            }
 
-                    self.db.createClient(**kwargs) # Crear cliente
-                    self.clearLEs(self.clientsLE0) # Limpiar formulario
-                    self.refreshClients()          # Refrescar vista
-                    self.lineE52.setFocus()        # Enfocar
+                            if self.db.createClient(**kwargs): # Crear cliente
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.clearLEs(self.clientsLE0) # Limpiar formulario
+                            self.refreshClients()          # Refrescar vista
+                            self.lineE52.setFocus()        # Enfocar
+
+                        else:
+                            errorPopUp("Número de cédula no registrado", self).exec_()
+
+                    else:
+                        warningPopUp("Apellido no específicado", self).exec_()
+
+                else:
+                    warningPopUp("Nombre no específicado", self).exec_()
+
+            else:
+                warningPopUp("Número de cédula no específicado", self).exec_()
 
     # Botón para editar un cliente
     def on_pbutton19_pressed(self):
         if self.click():
-            if self.lineE57.text() != "" and self.lineE58.text() != "" and self.lineE59.text() != "":
-                ci = int(self.lineE52.text())
-                if not self.db.existClient(ci):
-                    kwargs = {
-                        "firstname" : self.lineE58.text(),
-                        "lastname"  : self.lineE59.text(),
-                        "phone"     : self.lineE60.text(),
-                        "email"     : self.lineE61.text()
-                    }
+            if self.lineE57.text() != "":
+                if self.lineE58.text() != "":
+                    if self.lineE59.text() != "":
+                        ci = int(self.lineE52.text())
+                        if not self.db.existClient(ci):
+                            kwargs = {
+                                "firstname" : self.lineE58.text(),
+                                "lastname"  : self.lineE59.text(),
+                                "phone"     : self.lineE60.text(),
+                                "email"     : self.lineE61.text()
+                            }
 
-                    self.db.updateClient(**kwargs) # Crear cliente
-                    self.clearLEs(self.clientsLE1) # Limpiar formulario
-                    self.refreshClients()          # Refrescar vista
-                    self.lineE57.setFocus()        # Enfocar
+                            if self.db.updateClient(**kwargs):      # Crear cliente
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.clearLEs(self.clientsLE1) # Limpiar formulario
+                            self.refreshClients()          # Refrescar vista
+                            self.lineE57.setFocus()        # Enfocar
+
+                        else:
+                            errorPopUp("Número de cédula no registrado", self).exec_()
+
+                    else:
+                        warningPopUp("Apellido no específicado", self).exec_()
+
+                else:
+                    warningPopUp("Nombre no específicado", self).exec_()
+
+            else:
+                warningPopUp("Número de cédula no específicado", self).exec_()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
