@@ -2156,7 +2156,53 @@ class guiManager(QMainWindow, form_class):
                 else:
                     errorPopUp("El proveedor "+name+" ya existe",self).exec_()
             else:
-                errorPopUp("Falta nombre de proveedor",self).exec_
+                errorPopUp("Falta nombre de proveedor",self).exec_()
+
+    #Botón para cancelar en registrar proveedor
+    def on_cancelpb22_pressed(self):
+        self.clearLEs(self.providersLE0)
+        self.clearTEs(self.providersTE0)
+        self.lineE146.setFocus()
+
+    #Boton para editar proveedor
+    def on_pbutton22_pressed(self):
+        if self.click():
+            name = self.lineE149.text()
+            phone = self.lineE150.text()
+            email = self.lineE151.text()
+            if name != "":
+                if self.db.existProvider(name):
+                    if (phone != "" and validatePhoneNumber(phone)) or phone == "":
+                        if (email != "" and validateEmail(email)) or email == "":
+                            kwargs = {
+                                "oldName"         : name,
+                                "phone"           : phone,
+                                "email"           : email,
+                                "description"     : self.textE3.toPlainText(),
+                                "pay_information" : self.textE4.toPlainText()
+                            }
+                            self.db.updateProviderInfo(**kwargs)
+                            successPopUp("Proveedor "+name+" actualizado exitosamente",self).exec_()
+    
+                            self.clearLEs(self.providersLE1) # Limpiar formulario
+                            self.refreshProviders()          # Refrescar vista
+                            self.lineE149.setFocus()         # Enfocar
+                        else:
+                            errorPopUp("Formato incorrecto de correo",self).exec_()
+
+                    else:
+                        errorPopUp("Formato incorrecto para número telefónico",self).exec_()
+                else:
+                    errorPopUp("El proveedor "+name+" no existe",self).exec_()
+            else:
+                errorPopUp("Falta nombre de proveedor",self).exec_()
+
+    #Botón cancelar de editar proveedor
+    def on_cancelpb23_pressed(self):
+        self.clearLEs(self.providersLE1)
+        self.clearTEs(self.providersTE1)
+        self.lineE149.setFocus()
+
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
