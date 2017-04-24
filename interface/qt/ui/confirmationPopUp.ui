@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>warningPopUp</class>
- <widget class="QDialog" name="warningPopUp">
+ <class>confirmationPopUp</class>
+ <widget class="QDialog" name="confirmationPopUp">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>200</width>
-    <height>160</height>
+    <width>237</width>
+    <height>193</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Warning</string>
+   <string>Confirmation</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/gui.qrc">
@@ -47,12 +47,32 @@
    background: #1976D2;
 }
 
+/*Estilo por defecto del  boton para cancelar*/
+#dpbutton1{
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    min-height: 2em;
+    min-width: 5.5em;
+    padding: 2px;
+    color: #2196F3;
+    font-weight: bold;
+    font-size: 11pt;
+    text-transform: uppercase;
+}
+
+/*Estilo al pasar por encima y presionar el boton para cancelar*/
+#dpbutton1:hover, #dpbutton1:pressed{
+    color: #1976D2;
+    background: #BBDEFB;
+}
+
 /***********************************
 * Labels
 ***********************************/
 
 /*Configuración del titulo del dialog*/
-#dtitle0 {
+#dtitle0, #dtitle1 {
    color: #212121;  
    font-family: Open Sans;
    font-size: 12pt;
@@ -67,19 +87,6 @@
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="1">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string/>
-         </property>
-         <property name="pixmap">
-          <pixmap resource="../resources/gui.qrc">:/popUp/warningmark</pixmap>
-         </property>
-         <property name="scaledContents">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
         <spacer name="horizontalSpacer_3">
          <property name="orientation">
@@ -92,6 +99,19 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="../resources/gui.qrc">:/popUp/confirmationmark</pixmap>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item row="0" column="2">
         <spacer name="horizontalSpacer_4">
@@ -109,6 +129,27 @@
       </layout>
      </item>
      <item>
+      <widget class="QLabel" name="dtitle1">
+       <property name="font">
+        <font>
+         <family>Open Sans</family>
+         <pointsize>12</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;¿Está seguro de querer continuar?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLabel" name="dtitle0">
        <property name="font">
         <font>
@@ -122,7 +163,7 @@
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Error&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -138,7 +179,20 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="1">
+       <item row="0" column="0">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="2">
         <widget class="QPushButton" name="dpbutton0">
          <property name="font">
           <font>
@@ -156,18 +210,22 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="dpbutton1">
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
-        </spacer>
+         <property name="text">
+          <string>CANCELAR</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
