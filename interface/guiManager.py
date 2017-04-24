@@ -2809,24 +2809,65 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             # Perfil
             if self.subStacked18.currentIndex() == 0:
-                if (self.lineE82.text() and self.lineE83.text() and self.lineE84.text()) != "":
-                    self.db.updateUserInfo(self.user, self.lineE82.text(), self.lineE83.text(), self.lineE84.text())
-                    self.refreshUsers()
+                if self.lineE82.text() != "":
+                    if self.lineE83.text() != "":
+                        if self.lineE84.text() != "":
+                            if self.db.updateUserInfo(self.user, self.lineE82.text(), self.lineE83.text(), self.lineE84.text()):
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.refreshUsers()
+
+                        else:
+                            warningPopUp("Correo no específicado", self).exec_()
+
+                    else:
+                        warningPopUp("Apellido no específicado", self).exec_()
+
+                else:
+                    warningPopUp("Nombre no específicado", self).exec_()
 
             # Contraseña
             elif self.subStacked18.currentIndex() == 1:
                 if self.lineE153.text() != "":
                     password = self.lineE153.text()
                     if self.db.checkPassword(self.user, password):
-                        if (self.lineE154.text() and self.lineE155.text()) != "":
-                            if self.lineE154.text() == self.lineE155.text():
-                                newPassword = self.lineE154.text()
-                                self.db.changePassword(self.user, password, newPassword)
-                                self.clearLEs(self.confLE0)
+                        if self.lineE154.text() != "":
+                            if self.lineE155.text() != "":
+                                if self.lineE154.text() == self.lineE155.text():
+                                    newPassword = self.lineE154.text()
+                                    if self.db.changePassword(self.user, password, newPassword):
+                                        successPopUp(parent = self).exec_()
+
+                                    else:
+                                        errorPopUp(parent = self).exec_()
+
+                                    self.clearLEs(self.confLE0)
+
+                                else:
+                                    errorPopUp("La clave nueva no coincide con su confirmación", self).exec_()
+
+                            else:
+                                warningPopUp("Debe confirmar la clave nueva", self).exec_()
+
+                        else:
+                            warningPopUp("Clave nueva no específicada", self).exec_()
+
+                    else:
+                        errorPopUp("La clave actual no coincide con la registrada", self).exec_()
+
+                else:
+                    warningPopUp("Clave actual no específicado", self).exec_()
 
             # Tema
             else:
-                self.db.updateUserProfile(self.user, self.theme)
+                if self.db.updateUserProfile(self.user, self.theme):
+                    successPopUp(parent = self).exec_()
+
+                else:
+                    errorPopUp(parent = self).exec_()
 
     # Boton para cambiar al modo de agregar denominación
     def on_rbutton2_pressed(self):
@@ -2849,10 +2890,11 @@ class guiManager(QMainWindow, form_class):
                     if not self.db.existLegalTender(amount):
                         if self.db.createLegalTender(amount):
                             successPopUp(parent = self).exec_()
-                            self.refreshLegalTenders()
 
                         else:
                             errorPopUp(parent = self).exec_()
+
+                        self.refreshLegalTenders()
 
                     else:
                         errorPopUp("Denominación previamente registrada", self).exec_()
@@ -2865,10 +2907,11 @@ class guiManager(QMainWindow, form_class):
                 amount = self.legalTenders[self.cbox0.currentIndex()]
                 if self.db.deleteLegalTender(amount):
                     successPopUp(parent = self).exec_()
-                    self.refreshLegalTenders()
 
                 else:
                     errorPopUp(parent = self).exec_()
+
+                self.refreshLegalTenders()
 
     #==============================================================================================================================================================================
     # MANEJADOR DE EVENTOS DE TECLADO
