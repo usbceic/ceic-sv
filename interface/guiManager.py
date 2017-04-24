@@ -388,8 +388,9 @@ class guiManager(QMainWindow, form_class):
         LEcompleter.setModel(LEmodel)
         LEcompleter.setCompletionMode(QCompleter.PopupCompletion)
         LEcompleter.setCaseSensitivity(Qt.CaseInsensitive)
+        validator = QRegExpValidator(QRegExp('[1-9][0-9]*'))
         for lineE in listLE:
-            if numValidator: lineE.setValidator(QIntValidator(0, 99999999))
+            if numValidator: lineE.setValidator(validator)
             lineE.setCompleter(LEcompleter)
 
     # Método para configurar campos para ingresar cualquier cosa
@@ -398,7 +399,13 @@ class guiManager(QMainWindow, form_class):
         for item in listAC: item.setValidator(validator)
 
     # Método para configurar campos para solo ingresar números
-    def setOnlyNumbers(self, listON):
+    def setOnlyInteger(self, listON):
+        validator = QRegExpValidator(QRegExp('[1-9][0-9]*'))
+        for item in listON: item.setValidator(QIntValidator(0, 9999999))
+
+    # Método para configurar campos para solo ingresar números
+    def setOnlyFloat(self, listON):
+        validator = QRegExpValidator(QRegExp('([1-9][0-9]*|0)(\.[0-9]+)?|.[0-9]*[1-9]'))
         for item in listON: item.setValidator(QIntValidator(0, 9999999))
 
     # Método para configurar un spinLine
@@ -534,17 +541,17 @@ class guiManager(QMainWindow, form_class):
 
         # Configurar los spin box
         if not self.rbutton7.isChecked():
-            self.setOnlyNumbers(self.productsON0)
+            self.setOnlyInteger(self.productsON0)
             self.setAnyCharacter(self.productsON1)
 
         else:
-            self.setOnlyNumbers(self.productsON1)
+            self.setOnlyInteger(self.productsON1)
             self.setAnyCharacter(self.productsON0)
 
-        self.setOnlyNumbers(self.lotsON)
-        self.setOnlyNumbers(self.confON)
-        self.setOnlyNumbers(self.transfersON)
-        self.setOnlyNumbers(self.cashON)
+        self.setOnlyInteger(self.lotsON)
+        self.setOnlyInteger(self.confON)
+        self.setOnlyInteger(self.transfersON)
+        self.setOnlyInteger(self.cashON)
         self.setupSpinLines(self.spinBox)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
@@ -809,7 +816,7 @@ class guiManager(QMainWindow, form_class):
                 self.calc0[i].setText("0")
                 self.calc1[i].setReadOnly(True)
 
-        self.setOnlyNumbers(self.calc1)
+        self.setOnlyInteger(self.calc1)
         self.setStyle(self.theme)
 
     # Método para realizar la suma en la calculadora
@@ -1157,7 +1164,7 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
             self.text64.setText("Nombre")
             self.resetProductImage(self.selectedItem1)
-            self.setOnlyNumbers(self.productsON0)
+            self.setOnlyInteger(self.productsON0)
             self.setAnyCharacter(self.productsON1)
 
     # Radio button para consultar productos
@@ -1168,7 +1175,7 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1)
             self.text64.setText("Buscar")
             self.resetProductImage(self.selectedItem1)
-            self.setOnlyNumbers(self.productsON0)
+            self.setOnlyInteger(self.productsON0)
             self.setAnyCharacter(self.productsON1)
 
     # Radio button para editar productos
@@ -1178,7 +1185,7 @@ class guiManager(QMainWindow, form_class):
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO3)
             self.resetProductImage(self.selectedItem1)
-            self.setOnlyNumbers(self.productsON1)
+            self.setOnlyInteger(self.productsON1)
             self.setAnyCharacter(self.productsON0)
 
     # Radio button para eliminar productos
@@ -1189,7 +1196,7 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1)
             self.text64.setText("Nombre")
             self.resetProductImage(self.selectedItem1)
-            self.setOnlyNumbers(self.productsON0)
+            self.setOnlyInteger(self.productsON0)
             self.setAnyCharacter(self.productsON1)
 
     # Radio button para agregar nuevos lotes
