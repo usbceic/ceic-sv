@@ -5,7 +5,7 @@ sudo env DEBIAN_FRONTEND=noninteractive apt-get install python3-pip python3-pyqt
 sudo env DEBIAN_FRONTEND=noninteractive python3 -m pip install -r requirements
 echo "¿Tiene la base de datos configurada previamente?[y/n]"
 read ans
-if [ ans -eq "n" ] 
+if [ ans == "n" ] 
 then
 	echo "Creando rol para la base de datos..."
 	sudo -u postgres createuser -PE -s sistema_ventas
