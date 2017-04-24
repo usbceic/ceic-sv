@@ -111,6 +111,20 @@ def getStyle(name):
     file.close()
     return style
 
+
+def coinFormat(amount, extension = None):
+    tmp = str(amount).split(".")
+    integer, decimal = tmp[0], tmp[1]
+
+    for i in range(len(integer)-3, 0, -3):
+        integer = integer[:i] + "." + integer[i:]
+
+    legalTender = integer
+    if decimal != "0": legalTender += ("," + decimal)
+    if extension != None: legalTender += extension
+
+    return legalTender
+
 ###################################################################################################################################################################################
 ## MANEJADOR DE LA INTERFAZ GRÁFICA DE LA VENTANA PRINCIPAL:
 ###################################################################################################################################################################################
@@ -136,22 +150,22 @@ class guiManager(QMainWindow, form_class):
         # VARIABLES PARA FACILITAR EL USO DE VARIOS MÉTODOS DE LA CLASE
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        self.clicked = False                # Variable de control para saber si un QPushbutton es presionado
-        self.writing = False                # Variable de control para saber si el texto de un QLineEdit ha cambiado
-        self.newIndex = False               # Variable de control para saber si se está cambiando la el index de un comboBox
-        self.indexMutex = False             # Semáforo especial para no actualizar dos veces al cambiar el index del comboBox de lotes
-        self.lotMutex1 = False              # Semáforo para saber cuando cargar la info de un lote en los QlineEdit
-        self.selectedRowChanged = False     # Variable de control para saber si se cambio la fila seleccionada de un QTableWidget
-        self.currentLot = "0"               # Variable de control para el comboBox de seleccion de lotes
-        self.currentLots = {}               # Diccionario para lotes de un producto consultado actualmente
-        self.tempImage = ""                 # Imagen seleccionada
-        self.selectedProductRemaining = {}  # Diccionario de cotas superiores para el spinBox de ventas
-        self.selectedProductName = ""       # Nombre del producto seleccionado actualmente en la vista de ventas
-        self.selectedProducts = {}          # Diccionario de productos en la factura en la vista de ventas
-        self.dateFormat = "%d/%m/%Y"        # Formato de fecha
-        self.top10 = []                     # Lista de productos en Top 10
-        self.new10 = []                     # Lista de productos en Nuevos
-        self.legalTenders = []              # Lista para las denominaciones del sistema monetario
+        self.clicked = False                 # Variable de control para saber si un QPushbutton es presionado
+        self.writing = False                 # Variable de control para saber si el texto de un QLineEdit ha cambiado
+        self.newIndex = False                # Variable de control para saber si se está cambiando la el index de un comboBox
+        self.indexMutex = False              # Semáforo especial para no actualizar dos veces al cambiar el index del comboBox de lotes
+        self.lotMutex1 = False               # Semáforo para saber cuando cargar la info de un lote en los QlineEdit
+        self.selectedRowChanged = False      # Variable de control para saber si se cambio la fila seleccionada de un QTableWidget
+        self.currentLot = "0"                # Variable de control para el comboBox de seleccion de lotes
+        self.currentLots = {}                # Diccionario para lotes de un producto consultado actualmente
+        self.tempImage = ""                  # Imagen seleccionada
+        self.selectedProductRemaining = {}   # Diccionario de cotas superiores para el spinBox de ventas
+        self.selectedProductName = ""        # Nombre del producto seleccionado actualmente en la vista de ventas
+        self.selectedProducts = {}           # Diccionario de productos en la factura en la vista de ventas
+        self.dtFormat = "%d/%m/%y  %H:%M"    # Formato de fecha
+        self.top10 = []                      # Lista de productos en Top 10
+        self.new10 = []                      # Lista de productos en Nuevos
+        self.legalTenders = []               # Lista para las denominaciones del sistema monetario
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # PREFERENCIAS DE USUARIO
@@ -406,7 +420,7 @@ class guiManager(QMainWindow, form_class):
 
     # Método para configurar campos para solo ingresar números
     def setOnlyNumbers(self, listON):
-        for item in listON: item.setValidator(QIntValidator(0, 9999999))
+        for item in listON: item.setValidator(QIntValidator(0, 999999999))
 
     # Método para configurar un spinLine
     def setupSpinLines(self, listSL):
@@ -800,7 +814,7 @@ class guiManager(QMainWindow, form_class):
             startDate = period.recorded                     # Obtener fecha de inicio del periodo
             cash, bank = self.db.getBalance(startDate)      # Obtener dinero en efectivo y en banco ganado durante el periodo
             self.lineE10.setText(name)                      # Actualizar campo de nombre del periodo
-            self.lineE11.setText(str(startDate))            # Actualizar campo de fecha de inicio
+            self.lineE11.setText(startDate.strftime(self.dtFormat))            # Actualizar campo de fecha de inicio
             self.lineE13.setText(str(cash))                 # Actualizar campo de efectivo en periodo
             self.lineE14.setText(str(bank))                 # Actualizar campo de banco en periodo
 
@@ -827,7 +841,7 @@ class guiManager(QMainWindow, form_class):
     def updateCalc(self, legalTenders):
         for i in range(len(self.calc0)):
             if i < len(legalTenders):
-                self.calc0[i].setText(str(legalTenders[i]))
+                self.calc0[i].setText(coinFormat(legalTenders[i]))
                 self.calc1[i].setReadOnly(False)
 
             else:
@@ -843,7 +857,7 @@ class guiManager(QMainWindow, form_class):
         for i in range(len(legalTenders)):
             if self.calc1[i].text() != "":
                 total += float(self.calc1[i].text())*float(legalTenders[i])
-        self.lineE79.setText(str(total))
+        self.lineE79.setText(coinFormat(total))
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -2503,15 +2517,16 @@ class guiManager(QMainWindow, form_class):
 
     # Método para cargar la información del sistema monetario
     def loadLegalTenders(self):
-        legalTenders, query = [], self.db.getLegalTender()  # Obtener los billetes o monedas
-        for legalTender in query:                           # Para cada billete o moneda
-            legalTenders.append(str(legalTender.amount))    # Se agrega su denominacion a la lista
+        legalTenders, query = [], self.db.getLegalTender()     # Obtener los billetes o monedas
+        for legalTender in query:                              # Para cada billete o moneda
+            legalTenders.append(legalTender.amount)            # Se agrega su denominacion a la lista
         return legalTenders
 
     # Método para actualizar el comboBox del sistema monetario
     def updateLegalTendersCB(self, legalTenders):
         self.cbox0.clear()                                 # Se limpia el comboBox
-        self.cbox0.addItems(legalTenders)                  # Se añade la lista al comboBox
+        for i in legalTenders:                             # Por cada denominacion
+            self.cbox0.addItem(coinFormat(i))              # Se añade la denominacion formateada
 
     # Método para cargar la información del usuario
     def loadUserInfo(self):
@@ -2743,7 +2758,7 @@ class guiManager(QMainWindow, form_class):
 
             # Modalidad para eliminar billetes o monedas
             else:
-                amount = float(self.cbox0.currentText())
+                amount = self.legalTenders[self.cbox0.currentIndex()]
                 if self.db.deleteLegalTender(amount):
                     successPopUp(parent = self).exec_()
                     self.refreshLegalTenders()
