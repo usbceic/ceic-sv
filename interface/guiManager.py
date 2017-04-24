@@ -45,7 +45,7 @@ from datetime import datetime
 from db_manager import dbManager
 
 # Módulo con las clases para los popUp
-from popUps import errorPopUp, warningPopUp, successPopUp, authorizationPopUp
+from popUps import errorPopUp, warningPopUp, successPopUp, confirmationPopUp, authorizationPopUp
 
 # Módulo con los validadores para campos de texto
 from validators import validatePhoneNumber, validateEmail, validateName
@@ -1836,20 +1836,25 @@ class guiManager(QMainWindow, form_class):
                             if client.debt_permission and client.balance < total - efectivo:
                                 deuda = total - efectivo - saldo
 
-                                try:
-                                    purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
-                                    for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
-                                        self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
-                                    if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
-                                    if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
-                                    self.db.createCheckout(purchase_id, deuda, True)                            # Crear pago con deuda
-                                    successPopUp(parent = self).exec_()                                         # Venta exitosa
+                                message = "Se le cargará una deuda de " + naturalFormat(deuda) + " al cliente"
+                                popUp = confirmationPopUp(message, self)
 
-                                except:
-                                    errorPopUp(parent = self).exec_()                                           # Venta fallida
+                                if popUp.exec_():
+                                    if popUp.getValue():
+                                        try:
+                                            purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
+                                            for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
+                                                self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
+                                            if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
+                                            if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
+                                            self.db.createCheckout(purchase_id, deuda, True)                            # Crear pago con deuda
+                                            successPopUp(parent = self).exec_()                                         # Venta exitosa
 
-                                # Setear variables y refrescar la interfaz
-                                self.refreshSales()
+                                        except:
+                                            errorPopUp(parent = self).exec_()                                           # Venta fallida
+
+                                        # Setear variables y refrescar la interfaz
+                                        self.refreshSales()
 
                             else:
                                 warningPopUp("Pago insuficiente", self).exec_()
