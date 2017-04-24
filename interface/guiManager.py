@@ -2151,7 +2151,7 @@ class guiManager(QMainWindow, form_class):
             phone = self.lineE150.text()
             email = self.lineE151.text()
             if name != "":
-                if not (self.db.existProvider(name)):
+                if self.db.existProvider(name):
                     if (phone != "" and validatePhoneNumber(phone)) or phone == "":
                         if (email != "" and validateEmail(email)) or email == "":
                             kwargs = {
@@ -2173,7 +2173,7 @@ class guiManager(QMainWindow, form_class):
                     else:
                         errorPopUp("Formato incorrecto para número telefónico",self).exec_()
                 else:
-                    errorPopUp("El proveedor "+name+" ya existe",self).exec_()
+                    errorPopUp("El proveedor "+name+" no existe",self).exec_()
             else:
                 errorPopUp("Falta nombre de proveedor",self).exec_()
 
