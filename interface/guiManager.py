@@ -2403,6 +2403,7 @@ class guiManager(QMainWindow, form_class):
         self.clearTE(self.textE7)
         self.updateTranfersTable()
         self.refreshClients()
+        self.refreshSales()
         self.refreshCash()
 
     # Método para refrescar la tabla de transferencias
