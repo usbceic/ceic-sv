@@ -190,7 +190,7 @@ class guiManager(QMainWindow, form_class):
         self.calc1 = [self.calcLE0, self.calcLE1, self.calcLE2, self.calcLE3, self.calcLE4, self.calcLE5, self.calcLE6, self.calcLE7, self.calcLE8, self.calcLE9, self.calcLE10, self.calcLE11, self.calcLE12, self.calcLE13, self.calcLE14]
 
         # LineEdits para solo números
-        self.cashON = [self.lineE8, self.lineE9]
+        self.cashOF = [self.lineE8, self.lineE9]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE INVENTARIO
@@ -214,7 +214,8 @@ class guiManager(QMainWindow, form_class):
         # LineEdits para solo números
         self.productsON0 = [self.lineE27]
         self.productsON1 = [self.lineE28]
-        self.lotsON = [self.lineE35, self.lineE37, self.lineE38]
+        self.lotsOI = [self.lineE37, self.lineE38]
+        self.lotsOF = [self.lineE35]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE PROVEEDORES
@@ -247,7 +248,7 @@ class guiManager(QMainWindow, form_class):
         self.transfersLE3 = [self.lineE158]
 
         # LineEdits para solo números
-        self.transfersON = [self.lineE51, self.lineE158]
+        self.transfersOF = [self.lineE51, self.lineE158]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE USUARIOS
@@ -401,12 +402,12 @@ class guiManager(QMainWindow, form_class):
     # Método para configurar campos para solo ingresar números
     def setOnlyInteger(self, listON):
         validator = QRegExpValidator(QRegExp('[1-9][0-9]*'))
-        for item in listON: item.setValidator(QIntValidator(0, 9999999))
+        for item in listON: item.setValidator(validator)
 
     # Método para configurar campos para solo ingresar números
     def setOnlyFloat(self, listON):
-        validator = QRegExpValidator(QRegExp('([1-9][0-9]*|0)(\.[0-9]+)?|.[0-9]*[1-9]'))
-        for item in listON: item.setValidator(QIntValidator(0, 9999999))
+        validator = QRegExpValidator(QRegExp('^(([1-9][0-9]*|0)(\.[0-9]{,3})?|\.[0-9]{,2}[1-9])$'))
+        for item in listON: item.setValidator(validator)
 
     # Método para configurar un spinLine
     def setupSpinLines(self, listSL):
@@ -548,10 +549,11 @@ class guiManager(QMainWindow, form_class):
             self.setOnlyInteger(self.productsON1)
             self.setAnyCharacter(self.productsON0)
 
-        self.setOnlyInteger(self.lotsON)
-        self.setOnlyInteger(self.confON)
-        self.setOnlyInteger(self.transfersON)
-        self.setOnlyInteger(self.cashON)
+        self.setOnlyInteger(self.lotsOI)
+        self.setOnlyFloat(self.lotsOF)
+        self.setOnlyFloat(self.confON)
+        self.setOnlyFloat(self.transfersOF)
+        self.setOnlyFloat(self.cashOF)
         self.setupSpinLines(self.spinBox)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
