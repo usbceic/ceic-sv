@@ -1665,20 +1665,22 @@ class guiManager(QMainWindow, form_class):
         if n < len(self.top10):
             product_name = self.top10[n].product_name
             if self.lineE23.text() != product_name:
-                self.lineE23.setText(product_name)
                 self.clearSpinLines(self.spinBox)
+                self.lineE23.setText(product_name)
 
-            self.addToSalesSpinBox()
+            else:
+                self.addToSalesSpinBox()
 
     # Seleccionar un item de las listas Top 10 y Nuevo
     def selectNewItem(self, n):
         if n < len(self.new10):
             product_name = self.new10[n].product_name
             if self.lineE23.text() != product_name:
-                self.lineE23.setText(product_name)
                 self.clearSpinLines(self.spinBox)
+                self.lineE23.setText(product_name)
 
-            self.addToSalesSpinBox()
+            else:
+                self.addToSalesSpinBox()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -1887,6 +1889,20 @@ class guiManager(QMainWindow, form_class):
         self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
         self.setupTable(self.table11)                       # Reconfigurar la tabla de factura
 
+    # Boton para cancelar una compra
+    def on_cancelpb0_pressed(self):
+        if self.click():
+            self.refreshSales()
+
+    # Boton para descartar una seleccion de producto
+    def on_cancelpb1_pressed(self):
+        if self.click():
+            self.selectedProductName = ""
+            self.clearLEs(self.selectedProductLE1)
+            self.clearSpinLine(self.spinLine0)
+            self.setupSpinLines(self.spinBox)
+            self.resetProductImage(self.selectedItem0)
+
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2006,13 +2022,28 @@ class guiManager(QMainWindow, form_class):
                 self.lineE24.setText(str(product.price))
                 self.selectedProductName = product_name
 
-                if product_name not in self.selectedProducts:
-                    self.selectedProductRemaining[product_name] = product.remaining
-                    self.spinLine0.setValidator(QIntValidator(0, product.remaining))
+                if product_name in self.selectedProducts:
+                    # Actualizar cantidad
+                    self.spinLine0.setText(self.table11.selectedItems()[2].text())
 
+                    # Eliminar producto de la factura
+                    del self.selectedProducts[product_name]
+
+                    # Recalcular elementos en la factura
+                    selectedList = []
+                    for key, value in self.selectedProducts.items():
+                        selectedList.append([key, value[0], value[1], value[2]])
+
+                    # Refrescar factura
+                    self.updateInvoiceTable(self.table11, selectedList)
+                    self.setupTable(self.table11)
+
+                self.selectedProductRemaining[product_name] = product.remaining
+                self.spinLine0.setValidator(QIntValidator(0, product.remaining))
                 self.selectedItem0.setIcon(QIcon(join(productPath, product_name)))
 
             else:
+                self.selectedProductName = ""
                 self.clearLEs(self.selectedProductLE0)
                 self.clearSpinLine(self.spinLine0)
                 self.setupSpinLines(self.spinBox)
@@ -2039,11 +2070,11 @@ class guiManager(QMainWindow, form_class):
     def on_table11_itemClicked(self, item):
         if self.rowChanged():
             if item.column() != 4:
+                # Cargar información
                 items = self.table11.selectedItems()
+
+                # Actualizar los campos
                 self.lineE23.setText(items[0].text())
-                self.lineE24.setText(items[1].text())
-                self.spinLine0.setText(items[2].text())
-                self.lineE25.setText(items[3].text())
 
     #==============================================================================================================================================================================
     # VISTA DE PROVEEDORES
