@@ -11,19 +11,20 @@
 ###################################################################################################################################################################################
 
 # Carlos Serrada, cserradag96@gmail.com
+# Pablo Betancourt, pablodbc30@gmail.com
 
 ###################################################################################################################################################################################
 ## PATH:
 ###################################################################################################################################################################################
 
-from sys import path                        # Importación del path del sistema
-from os.path import join, split, basename   # Importación de funciones para unir y separar paths con el formato del sistema
+from sys import path                         # Importación del path del sistema
+from os.path import join, dirname, basename  # Importación de funciones para manipular paths con el formato del sistema
 
 # Para cada path en el path del sistema para la aplicación
 for current in path:
     if basename(current) == "interface":
-        path.append(join(split(current)[0], "modules"))                          # Agregar la carpeta modules al path
-        path.append(join(split(current)[0], "models"))                           # Agregar la carpeta models al path
+        path.append(join(dirname(current), "modules"))                           # Agregar la carpeta modules al path
+        path.append(join(dirname(current), "models"))                            # Agregar la carpeta models al path
         UIpath = join(join(current, "qt"), "ui")                                 # Declara imagen para la plantilla UI
         stylePath = join(join(join(current, "qt"), "stylesheet"), "MainWindow")  # Declarar path para los qss
         splashPath = join(join(current, "qt"), "images")                         # Declarar path para la imagen splash
@@ -388,7 +389,7 @@ class guiManager(QMainWindow, form_class):
         LEcompleter.setCompletionMode(QCompleter.PopupCompletion)
         LEcompleter.setCaseSensitivity(Qt.CaseInsensitive)
         for lineE in listLE:
-            if numValidator: lineE.setValidator(QIntValidator(0, 100000000))
+            if numValidator: lineE.setValidator(QIntValidator(0, 99999999))
             lineE.setCompleter(LEcompleter)
 
     # Método para configurar campos para ingresar cualquier cosa
@@ -398,7 +399,7 @@ class guiManager(QMainWindow, form_class):
 
     # Método para configurar campos para solo ingresar números
     def setOnlyNumbers(self, listON):
-        for item in listON: item.setValidator(QIntValidator(0, 999999999))
+        for item in listON: item.setValidator(QIntValidator(0, 9999999))
 
     # Método para configurar un spinLine
     def setupSpinLines(self, listSL):
@@ -811,7 +812,7 @@ class guiManager(QMainWindow, form_class):
 
     # Método para realizar la suma en la calculadora
     def executeCalc(self, legalTenders):
-        total = 0
+        total = 0.0
         for i in range(len(legalTenders)):
             if self.calc1[i].text() != "":
                 total += float(self.calc1[i].text())*float(legalTenders[i])
@@ -2868,13 +2869,17 @@ class guiManager(QMainWindow, form_class):
                 if self.lineE88.text() != "":
                     amount = float(self.lineE88.text())
                     if not self.db.existLegalTender(amount):
-                        if self.db.createLegalTender(amount):
-                            successPopUp(parent = self).exec_()
+                        if len(self.legalTenders) < 15:
+                            if self.db.createLegalTender(amount):
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.refreshLegalTenders()
 
                         else:
-                            errorPopUp(parent = self).exec_()
-
-                        self.refreshLegalTenders()
+                            errorPopUp("Límite de denominaciones alcanzado", self).exec_()
 
                     else:
                         errorPopUp("Denominación previamente registrada", self).exec_()

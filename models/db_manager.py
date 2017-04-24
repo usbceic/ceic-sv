@@ -18,13 +18,13 @@
 ## PATH:
 ###################################################################################################################################################################################
 
-from sys import path                        # Importación del path del sistema
-from os.path import join, split, basename   # Importación de funciones para unir y separar paths con el formato del sistema
+from sys import path                          # Importación del path del sistema
+from os.path import join, dirname, basename   # Importación de funciones para unir y separar paths con el formato del sistema
 
 # Para cada path en el path del sistema para la aplicación
 for current in path:
     if basename(current) == "models":
-        path.append(join(split(current)[0], "modules"))  # Agregar la carpeta modules al path
+        path.append(join(dirname(current), "modules"))  # Agregar la carpeta modules al path
         break
 
 ###################################################################################################################################################################################
@@ -37,19 +37,7 @@ from db_backup import *
 from sqlalchemy import func, distinct, update, event, and_, or_, desc
 from passlib.hash import bcrypt
 from str_random import str_random
-
-###################################################################################################################################################################################
-## DECLARACIÓN DEL Ayudantes:
-###################################################################################################################################################################################
-
-"""
-Método que devuelve 0 si el objeto pasado es none, caso contrario devuelve el objeto
-"""
-def noneToZero(thing):
-    if thing is None:
-        return 0
-    else:
-        return thing
+from app_utilities import noneToZero
 
 ###################################################################################################################################################################################
 ## DECLARACIÓN DEL MANEJADOR:

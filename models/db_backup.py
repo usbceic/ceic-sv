@@ -11,9 +11,7 @@
 ## AUTORES:
 ###################################################################################################################################################################################
 
-# Carlos Serrada, cserradag96@gmail.com
 # Christian Oliveros, 01christianol01@gmail.com
-# Pablo Betancourt, pablodbc30@gmail.com
 
 ###################################################################################################################################################################################
 ## DEPENDENCIAS:
@@ -32,6 +30,9 @@ import shutil
 import inspect
 import datetime
 
+###################################################################################################################################################################################
+## DECLARACIÓN DE LOS MÉTODOS PARA EL BACKUP:
+###################################################################################################################################################################################
 
 def isModelClass(thing):
     if not inspect.isclass(thing):
@@ -115,7 +116,7 @@ class DBBackup(object):
 
     """
     Método para hacer backup a toda la base de datos
-    Devuelve True si logro hacer backup. 
+    Devuelve True si logro hacer backup.
     En caso de encontrar que el ultimo backup esta corrupto, devuelve False
     """
     def backup(self):
@@ -148,7 +149,7 @@ class DBBackup(object):
 
             if not found:
                 print('Error de Formato con los Archivos de Backup Viejo')
-                return False 
+                return False
             print("Hora del Backup Antiguo:", backup_date)
             os.rename(backup_dir, os.path.join(backup_old_dir, backup_date))
             print("Backup Antiguo Movido a Carpeta de Backups Antiguos")
@@ -167,7 +168,7 @@ class DBBackup(object):
             print("\tGuardada  Tabla:", table_name)
         print("Fin de Guardando Tablas")
         print("Backup Completado")
-        return True 
+        return True
 
     """
     Método para hacer restore a toda la db.
@@ -253,6 +254,7 @@ class DBBackup(object):
             print("\tError borrando backup")
             print("\tRazon:", e)
             return False
-        
 
-
+###################################################################################################################################################################################
+## FIN :)
+###################################################################################################################################################################################

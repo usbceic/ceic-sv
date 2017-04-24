@@ -19,7 +19,7 @@
 ###################################################################################################################################################################################
 
 from sys import path                        # Importación del path del sistema
-from os.path import join, split, basename   # Importación de funciones para unir y separar paths con el formato del sistema
+from os.path import join, basename          # Importación de funciones para manipular paths con el formato del sistema
 
 # Para cada path en el path del sistema para la aplicación
 for current in path:

@@ -17,14 +17,14 @@
 ## PATH:
 ###################################################################################################################################################################################
 
-from sys import path                        # Importación del path del sistema
-from os.path import join, split, basename   # Importación de funciones para unir y separar paths con el formato del sistema
+from sys import path                            # Importación del path del sistema
+from os.path import join, dirname, basename     # Importación de funciones para manipular paths con el formato del sistema
 
 # Para cada path en el path del sistema para la aplicación
 for current in path:
     if basename(current) == "interface":
-        path.append(join(split(current)[0], "modules"))                          # Agregar la carpeta modules al path
-        path.append(join(split(current)[0], "models"))                           # Agregar la carpeta models al path
+        path.append(join(dirname(current), "modules"))                           # Agregar la carpeta modules al path
+        path.append(join(dirname(current), "models"))                            # Agregar la carpeta models al path
         UIpath = join(join(current, "qt"), "ui")                                 # Declara imagen para la plantilla UI
         stylePath = join(join(join(current, "qt"), "stylesheet"), "LoginWindow") # Declarar path para los qss
         splashPath = join(join(current, "qt"), "images")                         # Declarar path para la imagen splash
