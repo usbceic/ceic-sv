@@ -1935,20 +1935,22 @@ class guiManager(QMainWindow, form_class):
                 cota1 = total
                 cota2 = total
 
-                if self.lineE22.text() != "":
-                    efectivo = float(self.lineE22.text())
-                    cota1 = total - efectivo
+                if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                else: efectivo = 0
 
-                    if self.lineE17.text() != "":
-                        ci = int(self.lineE17.text())
-                        if self.db.existClient(ci):
-                            balance = self.db.getClients(ci)[0].balance
+                efectivo = float(self.lineE22.text())
+                cota1 = total - efectivo
 
-                            if balance < cota1:
-                                cota1 = balance
+                if self.lineE17.text() != "":
+                    ci = int(self.lineE17.text())
+                    if self.db.existClient(ci):
+                        balance = self.db.getClients(ci)[0].balance
 
-                        else: cota1 = 0
+                        if balance < cota1:
+                            cota1 = balance
+
                     else: cota1 = 0
+                else: cota1 = 0
 
                 self.lineE152.setValidator(QIntValidator(0, cota1))
                 if self.lineE152.text() != "":
@@ -1957,9 +1959,10 @@ class guiManager(QMainWindow, form_class):
                     if saldo > cota1:
                         self.lineE152.setText(str(cota1))
 
-                if self.lineE152.text() != "":
-                    saldo = float(self.lineE152.text())
-                    cota2 = total - saldo
+                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+                else: saldo = 0
+
+                cota2 = total - saldo
 
                 self.lineE22.setValidator(QIntValidator(0, cota2))
                 if self.lineE22.text() != "":
@@ -1978,20 +1981,21 @@ class guiManager(QMainWindow, form_class):
             if self.lineE21.text() != "":
                 total = float(self.lineE21.text())
                 cota = total
-                if self.lineE22.text() != "":
-                    efectivo = float(self.lineE22.text())
-                    cota = total - efectivo
 
-                    if self.lineE17.text() != "":
-                        ci = int(self.lineE17.text())
-                        if self.db.existClient(ci):
-                            balance = self.db.getClients(ci)[0].balance
+                if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                else: efectivo = 0
 
-                            if balance < cota:
-                                cota = balance
+                cota = total - efectivo
+                if self.lineE17.text() != "":
+                    ci = int(self.lineE17.text())
+                    if self.db.existClient(ci):
+                        balance = self.db.getClients(ci)[0].balance
 
-                        else: cota = 0
+                        if balance < cota:
+                            cota = balance
+
                     else: cota = 0
+                else: cota = 0
 
                 self.lineE152.setValidator(QIntValidator(0, cota))
                 if self.lineE152.text() != "":
@@ -2006,9 +2010,10 @@ class guiManager(QMainWindow, form_class):
             if self.lineE21.text() != "":
                 total = float(self.lineE21.text())
                 cota = total
-                if self.lineE152.text() != "":
-                    saldo = float(self.lineE152.text())
-                    cota = total - saldo
+                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+                else: saldo = 0
+
+                cota = total - saldo
 
                 self.lineE22.setValidator(QIntValidator(0, cota))
                 if self.lineE22.text() != "":
