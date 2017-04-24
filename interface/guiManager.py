@@ -49,6 +49,9 @@ from popUps import errorPopUp, warningPopUp, successPopUp, authorizationPopUp
 # Módulo con los validadores para campos de texto
 from validators import validatePhoneNumber, validateEmail
 
+# Módulo con los validadores para campos de texto
+from app_utilities import getStyle, naturalFormat
+
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
 
@@ -99,31 +102,6 @@ form_class = loadUiType(join(UIpath, MainUI))[0]
 
 # Constante de primer inicio
 A = True
-
-###################################################################################################################################################################################
-## PROCEDIMIENTOS:
-###################################################################################################################################################################################
-
-# Devuelve un string con el stylesheet especificado por el parametro name
-def getStyle(name):
-    file = open(join(stylePath, name), "r")
-    style = file.read()
-    file.close()
-    return style
-
-
-def coinFormat(amount, extension = None):
-    tmp = str(amount).split(".")
-    integer, decimal = tmp[0], tmp[1]
-
-    for i in range(len(integer)-3, 0, -3):
-        integer = integer[:i] + "." + integer[i:]
-
-    legalTender = integer
-    if decimal != "0": legalTender += ("," + decimal)
-    if extension != None: legalTender += extension
-
-    return legalTender
 
 ###################################################################################################################################################################################
 ## MANEJADOR DE LA INTERFAZ GRÁFICA DE LA VENTANA PRINCIPAL:
@@ -841,7 +819,7 @@ class guiManager(QMainWindow, form_class):
     def updateCalc(self, legalTenders):
         for i in range(len(self.calc0)):
             if i < len(legalTenders):
-                self.calc0[i].setText(coinFormat(legalTenders[i]))
+                self.calc0[i].setText(naturalFormat(legalTenders[i]))
                 self.calc1[i].setReadOnly(False)
 
             else:
@@ -857,7 +835,7 @@ class guiManager(QMainWindow, form_class):
         for i in range(len(legalTenders)):
             if self.calc1[i].text() != "":
                 total += float(self.calc1[i].text())*float(legalTenders[i])
-        self.lineE79.setText(coinFormat(total))
+        self.lineE79.setText(naturalFormat(total))
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -2183,7 +2161,7 @@ class guiManager(QMainWindow, form_class):
                             }
                             self.db.updateProviderInfo(**kwargs)
                             successPopUp("Proveedor "+name+" actualizado exitosamente",self).exec_()
-    
+
                             self.clearLEs(self.providersLE1) # Limpiar formulario
                             self.refreshProviders()          # Refrescar vista
                             self.lineE149.setFocus()         # Enfocar
@@ -2559,7 +2537,7 @@ class guiManager(QMainWindow, form_class):
 
     # Cambiar el tema de la interfáz
     def setStyle(self, name):
-        self.setStyleSheet(getStyle(name))
+        self.setStyleSheet(getStyle(join(stylePath, name)))
 
     # Método para cargar la información del sistema monetario
     def loadLegalTenders(self):
@@ -2572,7 +2550,7 @@ class guiManager(QMainWindow, form_class):
     def updateLegalTendersCB(self, legalTenders):
         self.cbox0.clear()                                 # Se limpia el comboBox
         for i in legalTenders:                             # Por cada denominacion
-            self.cbox0.addItem(coinFormat(i))              # Se añade la denominacion formateada
+            self.cbox0.addItem(naturalFormat(i))              # Se añade la denominacion formateada
 
     # Método para cargar la información del usuario
     def loadUserInfo(self):
