@@ -155,7 +155,7 @@ class DBBackup(object):
 
         os.makedirs(backup_dir)
 
-        cur_time = str(datetime.datetime.now())
+        cur_time = str(datetime.datetime.now()).replace(':','-')
         print("Hora Actual:", cur_time)
         print("Guardando Tablas:")
         for table_name, table in self.models_classes.items():
