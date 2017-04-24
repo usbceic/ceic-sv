@@ -2690,12 +2690,6 @@ class guiManager(QMainWindow, form_class):
                         "username"        : username,
                         "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
                     }
-                    kwargs = {
-                        "username"        : username,
-                        "firstname"       : firstname,
-                        "lastname"        : lastname,
-                        "email"           : email
-                    }
                     flag = True
                 else:
                     errorPopUp("El usuario "+username+" no existe",self).exec_()
