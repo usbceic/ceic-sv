@@ -2645,7 +2645,7 @@ class guiManager(QMainWindow, form_class):
                                     "lastname"        : lastname,
                                     "email"           : email,
                                     "password"        : password,
-                                    "permission_mask" : self.db.getPermissionMask(self.cobox8.currentText())
+                                    "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
                                 }
                                 flag = True
 
