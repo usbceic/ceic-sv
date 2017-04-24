@@ -61,6 +61,10 @@ from trayIcon import trayIcon
 # Módulo con las clases para los popUp
 from popUps import errorPopUp, successPopUp, authorizationPopUp
 
+# Módulo con los validadores para campos de texto
+from validators import validatePhoneNumber, validateEmail, validateName
+
+
 ###################################################################################################################################################################################
 ## CONSTANTES:
 ###################################################################################################################################################################################
