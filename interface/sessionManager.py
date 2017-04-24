@@ -302,25 +302,39 @@ class sessionManager(QMainWindow, loginWindow):
     def on_button6_pressed(self):
         if self.click():
             flag = False
-            if (self.lineEd2.text() and self.lineEd3.text() and self.lineEd4.text() and self.lineEd5.text() and self.lineEd6.text()) != "":
-                if self.lineEd7.text() == self.lineEd6.text():
-                    username = self.lineEd2.text()
-                    if not self.db.existUser(username):
 
-                        kwargs = {
-                            "username"        : username,
-                            "firstname"       : self.lineEd3.text(),
-                            "lastname"        : self.lineEd4.text(),
-                            "email"           : self.lineEd5.text(),
-                            "password"        : self.lineEd6.text(),
-                            "permission_mask" : self.db.getPermissionMask(self.cobox0.currentText())
-                        }
-                        flag = True
+            username   = self.lineEd2.text()
+            firstname  = self.lineEd3.text()
+            lastname   = self.lineEd4.text()
+            email      = self.lineEd5.text()
+            password   = self.lineEd6.text()
+            rePassword = self.lineEd7.text()
+            if (username and firstname and lastname and email and password) != "":
+                if validateName(firstname):
+                    if validateName(lastname):
+                        if(validateEmail(email)):
+                            if password == rePassword:
+                                if not self.db.existUser(username):
+                                    kwargs = {
+                                        "username"        : username,
+                                        "firstname"       : firstname,
+                                        "lastname"        : lastname,
+                                        "email"           : email,
+                                        "password"        : password,
+                                        "permission_mask" : self.db.getPermissionMask(self.cobox0.currentText())
+                                    }
+                                    flag = True
 
+                                else:
+                                    errorPopUp("El usuario "+username+" ya existe",self).exec_()
+                            else:
+                                errorPopUp("Las contraseñas no coinciden",self).exec_()
+                        else:
+                            errorPopUp("Formato incorrecto de correo",self).exec_()
                     else:
-                        errorPopUp("El usuario "+username+" ya existe",self).exec_()
+                        errorPopUp("Formato incorrecto para apellido",self).exec_()
                 else:
-                    errorPopUp("Las contraseñas no coinciden",self).exec_()
+                    errorPopUp("Formato incorrecto para nombre",self).exec_()
             else:
                 errorPopUp("Faltan datos",self).exec_()
             if flag:
