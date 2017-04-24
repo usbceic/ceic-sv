@@ -48,7 +48,7 @@ from db_manager import dbManager
 from popUps import errorPopUp, warningPopUp, successPopUp, authorizationPopUp
 
 # Módulo con los validadores para campos de texto
-from validators import validatePhoneNumber, validateEmail
+from validators import validatePhoneNumber, validateEmail, validateName
 
 # Módulo con los validadores para campos de texto
 from app_utilities import getStyle, naturalFormat
