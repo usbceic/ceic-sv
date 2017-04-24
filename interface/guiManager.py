@@ -2627,49 +2627,56 @@ class guiManager(QMainWindow, form_class):
     # Botón para crear un usuario
     def on_pbutton21_pressed(self):
         if self.click():
-            if self.lineE69.text() != "":
-                username = self.lineE69.text()
-                if not self.db.existUser(username):
-                    if self.lineE70.text() != "":
-                        if self.lineE71.text() != "":
-                            if self.lineE72.text() != "":
-                                if self.lineE73.text() != "":
+            flag = False
 
-                                    kwargs = {
-                                        "username"        : username,
-                                        "firstname"       : self.lineE70.text(),
-                                        "lastname"        : self.lineE71.text(),
-                                        "email"           : self.lineE72.text(),
-                                        "password"        : self.lineE73.text(),
-                                        "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
-                                    }
-
-                                    if self.db.createUser(**kwargs):        # Crear usuario
-                                        successPopUp(parent = self).exec_()
-
-                                    else:
-                                        errorPopUp(parent = self).exec_()
-
-                                    self.refreshUsers()          # Refrescar vista
-                                    self.lineE69.setFocus()      # Enfocar
-
-                                else:
-                                    warningPopUp("Clave no específicada", self).exec_()
+            username   = self.lineE69.text()
+            firstname  = self.lineE70.text()
+            lastname   = self.lineE71.text()
+            email      = self.lineE72.text()
+            password   = self.lineE73.text()
+            if (username and firstname and lastname and email and password) != "":
+                if validateName(firstname):
+                    if validateName(lastname):
+                        if(validateEmail(email)):
+                            if not self.db.existUser(username):
+                                kwargs = {
+                                    "username"        : username,
+                                    "firstname"       : firstname,
+                                    "lastname"        : lastname,
+                                    "email"           : email,
+                                    "password"        : password,
+                                    "permission_mask" : self.db.getPermissionMask(self.cobox8.currentText())
+                                }
+                                flag = True
 
                             else:
-                                warningPopUp("Correo no específicado", self).exec_()
-
+                                errorPopUp("El usuario "+username+" ya existe",self).exec_()
                         else:
-                            warningPopUp("Apellido no específicado", self).exec_()
-
+                            errorPopUp("Formato incorrecto de correo",self).exec_()
                     else:
-                        warningPopUp("Nombre no específicado", self).exec_()
-
+                        errorPopUp("Formato incorrecto para apellido",self).exec_()
                 else:
-                    errorPopUp("UserID previamente registrado", self).exec_()
-
+                    errorPopUp("Formato incorrecto para nombre",self).exec_()
             else:
-                warningPopUp("UserID no específicado", self).exec_()
+                errorPopUp("Faltan datos",self).exec_()
+            if flag:
+                popUp = authorizationPopUp(parent=self)
+                if popUp.exec_():
+                    adminUsername, adminPassword = popUp.getValues()
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
+                            if self.db.createUser(**kwargs):        # Crear usuario
+                                successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.refreshUsers()          # Refrescar vista
+                            self.lineE69.setFocus()      # Enfocar
+                        else:
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                    else:
+                        errorPopUp("Datos incorrectos", self).exec_()
 
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
