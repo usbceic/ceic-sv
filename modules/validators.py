@@ -46,9 +46,23 @@ Método para validar correos electrónicos
 	Retorna False:
 		* Si el string recibido NO es un correo electrónico válido
 """
-def validateEmail(phone):
+def validateEmail(email):
 	pattern = re.compile("^[A-Za-z0-9][A-Za-z0-9\.\-_]*\@[A-Za-z0-9][A-Za-z0-9\.\-_]*\.\w+$")	
-	if pattern.match(phone):
+	if pattern.match(email):
+		return True
+	else:
+		return False
+
+"""
+Método para validar nombres de personas (incluye nombres compuestos)
+	Retorna True:
+		* Si el string recibido es un nombre de persona válido
+	Retorna False:
+		* Si el string recibido NO es un nombre de persona válido
+"""
+def validateName(name):
+	pattern = re.compile("^\w+((-|\ )\w+)*$")	
+	if pattern.match(name):
 		return True
 	else:
 		return False
