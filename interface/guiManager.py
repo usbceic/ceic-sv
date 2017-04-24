@@ -2683,36 +2683,24 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             flag = False
             username   = self.lineE75.text()
-            firstname  = self.lineE76.text()
-            lastname   = self.lineE77.text()
-            email      = self.lineE78.text()
-            if (username and firstname and lastname and email) != "":
-                if validateName(firstname):
-                    if validateName(lastname):
-                        if(validateEmail(email)):
-                            if self.db.existUser(username):
+            if username != "":
+                if self.db.existUser(username):
 
-                                newRangeInfo = {
-                                    "username"        : username,
-                                    "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
-                                }
-                                kwargs = {
-                                    "username"        : username,
-                                    "firstname"       : firstname,
-                                    "lastname"        : lastname,
-                                    "email"           : email
-                                }
-                                flag = True
-                            else:
-                                errorPopUp("El usuario "+username+" ya existe",self).exec_()
-                        else:
-                            errorPopUp("Formato incorrecto de correo",self).exec_()
-                    else:
-                        errorPopUp("Formato incorrecto para apellido",self).exec_()
+                    newRangeInfo = {
+                        "username"        : username,
+                        "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
+                    }
+                    kwargs = {
+                        "username"        : username,
+                        "firstname"       : firstname,
+                        "lastname"        : lastname,
+                        "email"           : email
+                    }
+                    flag = True
                 else:
-                    errorPopUp("Formato incorrecto para nombre",self).exec_()
+                    errorPopUp("El usuario "+username+" no existe",self).exec_()
             else:
-                errorPopUp("Faltan datos", self).exec_()
+                errorPopUp("Falta nombre de usuario", self).exec_()
 
             if flag:
                 popUp = authorizationPopUp(parent=self)
@@ -2721,7 +2709,7 @@ class guiManager(QMainWindow, form_class):
                     if self.db.checkPassword(adminUsername, adminPassword):
                         userRange = self.db.getUserRange(adminUsername)
                         if userRange == "Administrador" or userRange == "Dios":
-                            if self.db.updateUserRange(**newRangeInfo) and self.db.updateUserInfo(**kwargs):    # Actualizar cliente
+                            if self.db.updateUserRange(**newRangeInfo):    # Actualizar cliente
                                 successPopUp(parent = self).exec_()
 
                             else:
