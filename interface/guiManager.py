@@ -2681,29 +2681,58 @@ class guiManager(QMainWindow, form_class):
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
         if self.click():
-            if self.lineE75.text() != "":
-                username = self.lineE75.text()
-                if self.db.existUser(username):
+            flag = False
+            username   = self.lineE75.text()
+            firstname  = self.lineE76.text()
+            lastname   = self.lineE77.text()
+            email      = self.lineE78.text()
+            if (username and firstname and lastname and email) != "":
+                if validateName(firstname):
+                    if validateName(lastname):
+                        if(validateEmail(email)):
+                            if self.db.existUser(username):
 
-                    kwargs = {
-                        "username"        : username,
-                        "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
-                    }
-
-                    if self.db.updateUserRange(**kwargs):    # Actualizar cliente
-                        successPopUp(parent = self).exec_()
-
+                                newRangeInfo = {
+                                    "username"        : username,
+                                    "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
+                                }
+                                kwargs = {
+                                    "username"        : username,
+                                    "firstname"       : firstname,
+                                    "lastname"        : lastname,
+                                    "email"           : email
+                                }
+                                flag = True
+                            else:
+                                errorPopUp("El usuario "+username+" ya existe",self).exec_()
+                        else:
+                            errorPopUp("Formato incorrecto de correo",self).exec_()
                     else:
-                        errorPopUp(parent = self).exec_()
-
-                    self.refreshUsers()               # Refrescar vista
-                    self.lineE75.setFocus()           # Enfocar
-
+                        errorPopUp("Formato incorrecto para apellido",self).exec_()
                 else:
-                    errorPopUp("UserID no registrado", self).exec_()
-
+                    errorPopUp("Formato incorrecto para nombre",self).exec_()
             else:
-                warningPopUp("UserID no específicado", self).exec_()
+                errorPopUp("Faltan datos", self).exec_()
+
+            if flag:
+                popUp = authorizationPopUp(parent=self)
+                if popUp.exec_():
+                    adminUsername, adminPassword = popUp.getValues()
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
+                            if self.db.updateUserRange(**newRangeInfo) and self.db.updateUserInfo(**kwargs):    # Actualizar cliente
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.refreshUsers()               # Refrescar vista
+                            self.lineE75.setFocus()           # Enfocar
+                        else:
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                    else:
+                        errorPopUp("Datos incorrectos", self).exec_()
 
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
