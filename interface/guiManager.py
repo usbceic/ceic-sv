@@ -2144,6 +2144,12 @@ class guiManager(QMainWindow, form_class):
             else:
                 errorPopUp("Falta nombre de proveedor",self).exec_()
 
+    #Botón para cancelar en registrar proveedor
+    def on_cancelpb22_pressed(self):
+        self.clearLEs(self.providersLE0)
+        self.clearTEs(self.providersTE0)
+        self.lineE146.setFocus()
+
     #Boton para editar proveedor
     def on_pbutton22_pressed(self):
         if self.click():
@@ -2158,15 +2164,15 @@ class guiManager(QMainWindow, form_class):
                                 "oldName"         : name,
                                 "phone"           : phone,
                                 "email"           : email,
-                                "description"     : self.textE1.toPlainText(),
-                                "pay_information" : self.textE2.toPlainText()
+                                "description"     : self.textE3.toPlainText(),
+                                "pay_information" : self.textE4.toPlainText()
                             }
                             self.db.updateProviderInfo(**kwargs)
                             successPopUp("Proveedor "+name+" actualizado exitosamente",self).exec_()
     
-                            self.clearLEs(self.providersLE0) # Limpiar formulario
+                            self.clearLEs(self.providersLE1) # Limpiar formulario
                             self.refreshProviders()          # Refrescar vista
-                            self.lineE146.setFocus()         # Enfocar
+                            self.lineE149.setFocus()         # Enfocar
                         else:
                             errorPopUp("Formato incorrecto de correo",self).exec_()
 
@@ -2177,6 +2183,11 @@ class guiManager(QMainWindow, form_class):
             else:
                 errorPopUp("Falta nombre de proveedor",self).exec_()
 
+    #Botón cancelar de editar proveedor
+    def on_cancelpb23_pressed(self):
+        self.clearLEs(self.providersLE1)
+        self.clearTEs(self.providersTE1)
+        self.lineE149.setFocus()
 
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
