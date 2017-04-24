@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Autorización</string>
+   <string>Authorization</string>
   </property>
   <property name="styleSheet">
    <string notr="true">/*#########################################################
