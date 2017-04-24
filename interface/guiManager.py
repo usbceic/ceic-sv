@@ -2686,29 +2686,46 @@ class guiManager(QMainWindow, form_class):
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
         if self.click():
-            if self.lineE75.text() != "":
-                username = self.lineE75.text()
+            flag = False
+            username   = self.lineE75.text()
+            if username != "":
                 if self.db.existUser(username):
 
-                    kwargs = {
+                    newRangeInfo = {
                         "username"        : username,
                         "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
                     }
-
-                    if self.db.updateUserRange(**kwargs):    # Actualizar cliente
-                        successPopUp(parent = self).exec_()
-
-                    else:
-                        errorPopUp(parent = self).exec_()
-
-                    self.refreshUsers()               # Refrescar vista
-                    self.lineE75.setFocus()           # Enfocar
-
+                    kwargs = {
+                        "username"        : username,
+                        "firstname"       : firstname,
+                        "lastname"        : lastname,
+                        "email"           : email
+                    }
+                    flag = True
                 else:
-                    errorPopUp("UserID no registrado", self).exec_()
-
+                    errorPopUp("El usuario "+username+" no existe",self).exec_()
             else:
-                warningPopUp("UserID no específicado", self).exec_()
+                errorPopUp("Falta nombre de usuario", self).exec_()
+
+            if flag:
+                popUp = authorizationPopUp(parent=self)
+                if popUp.exec_():
+                    adminUsername, adminPassword = popUp.getValues()
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
+                            if self.db.updateUserRange(**newRangeInfo):    # Actualizar cliente
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.refreshUsers()               # Refrescar vista
+                            self.lineE75.setFocus()           # Enfocar
+                        else:
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                    else:
+                        errorPopUp("Datos incorrectos", self).exec_()
 
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
