@@ -149,7 +149,7 @@
 ***********************************/
 
 /*Configurar el estilo de los groupBox*/
-#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26, #groupBox27, #groupBox28{
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26, #groupBox27, #groupBox28, #groupBox29{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -157,7 +157,7 @@
 }
 
 /*Configurar el estilo de los groupBox con subStacked*/
-#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25, #groupBox29{
+#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;

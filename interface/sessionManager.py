@@ -383,7 +383,6 @@ class sessionManager(QMainWindow, loginWindow):
     def closeEvent(self, event):
         event.ignore()
         self.hide()
-        #event.accept()
 
 ###################################################################################################################################################################################
 ## FIN :)

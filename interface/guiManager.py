@@ -767,34 +767,36 @@ class guiManager(QMainWindow, form_class):
     # Método para actualizar caja
     def refreshCash(self):
         if self.db.isOpenPeriod():
-            self.setPage(self.subStacked2, 1)               # Cambiar a la página para ver y cerrar un periodo
-            period = self.db.getPeriodStartAndEnd()[0]      # Obtener información del inicio del periodo
-            name = period.description                       # Obtener nombre del periodo
-            startDate = period.recorded                     # Obtener fecha de inicio del periodo
-            cash, bank = self.db.getBalance(startDate)      # Obtener dinero en efectivo y en banco ganado durante el periodo
-            self.lineE10.setText(name)                      # Actualizar campo de nombre del periodo
-            self.lineE11.setText(startDate.strftime(self.dtFormat))            # Actualizar campo de fecha de inicio
-            self.lineE13.setText(str(cash))                 # Actualizar campo de efectivo en periodo
-            self.lineE14.setText(str(bank))                 # Actualizar campo de banco en periodo
+            self.setPage(self.subStacked2, 1)                           # Cambiar a la página para ver y cerrar un periodo
+            period = self.db.getPeriodStartAndEnd()[0]                  # Obtener información del inicio del periodo
+            name = period.description                                   # Obtener nombre del periodo
+            startDate = period.recorded                                 # Obtener fecha de inicio del periodo
+            cash, bank = self.db.getBalance(startDate)                  # Obtener dinero en efectivo y en banco ganado durante el periodo
+            self.lineE10.setText(name)                                  # Actualizar campo de nombre del periodo
+            self.lineE11.setText(startDate.strftime(self.dtFormat))     # Actualizar campo de fecha de inicio
+            self.lineE13.setText(str(cash))                             # Actualizar campo de efectivo en periodo
+            self.lineE14.setText(str(bank))                             # Actualizar campo de banco en periodo
 
             if self.db.isOpenDay():
-                self.setPage(self.subStacked1, 1)           # Cambiar a la página para ver y cerrar un dia
-                day = self.db.getDayStartAndEnd()[0]        # Obtener información del inicio del día
-                name = day.description                      # Obtener nombre del día
-                startDate = day.recorded                    # Obtener fecha de inicio del día
-                dayBank = self.db.getBalance(startDate)[1]  # Obtener dinero en efectivo y en banco ganado en la fecha
-                self.lineE0.setText("Abierta")              # Cambiar el campo de estado a Abierta
-                self.lineE2.setText(str(cash))              # Actualizar campo de efectivo
-                self.lineE3.setText(str(dayBank))           # Actualizar campo de banco
+                self.setPage(self.subStacked1, 1)                       # Cambiar a la página para ver y cerrar un dia
+                day = self.db.getDayStartAndEnd()[0]                    # Obtener información del inicio del día
+                name = day.description                                  # Obtener nombre del día
+                startDate = day.recorded                                # Obtener fecha de inicio del día
+                dayBank = self.db.getBalance(startDate)[1]              # Obtener dinero en efectivo y en banco ganado en la fecha
+                self.lineE0.setText("Abierta")                          # Cambiar el campo de estado a Abierta
+                self.lineE2.setText(str(cash))                          # Actualizar campo de efectivo
+                self.lineE3.setText(str(dayBank))                       # Actualizar campo de banco
 
             else:
-                self.lineE0.setText("Cerrada")              # Cambiar el campo de estado a Cerrada
-                self.setPage(self.subStacked1, 0)           # Cambiar a la página para abrir un día
-                self.clearLEs(self.cashLE0)                 # Limpiar los campos de caja
+                self.lineE0.setText("Cerrada")                          # Cambiar el campo de estado a Cerrada
+                self.setPage(self.subStacked1, 0)                       # Cambiar a la página para abrir un día
+                self.clearLEs(self.cashLE0)                             # Limpiar los campos de caja
 
         else:
-            self.setPage(self.subStacked2, 0)               # Cambiar a la página para abrir un nuevo periodo
-            self.clearLEs(self.cashLE1)                     # Limpiar los campos de los apartados de periodo y caja
+            self.setPage(self.subStacked2, 0)                           # Cambiar a la página para abrir un nuevo periodo
+            self.clearLEs(self.cashLE1)                                 # Limpiar los campos de los apartados de periodo y caja
+
+        self.clearLEs(self.calc1)                                       # Limpiar calculadora
 
     # Método para configurar la calculadora
     def updateCalc(self, legalTenders):
@@ -821,6 +823,11 @@ class guiManager(QMainWindow, form_class):
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Boton para limpiar calculadora
+    def on_cancelpb24_pressed(self):
+        if self.click():
+            self.clearLEs(self.calc1)
 
     # Boton para abrir día
     def on_pbutton3_pressed(self):
@@ -2939,9 +2946,8 @@ class guiManager(QMainWindow, form_class):
     #==============================================================================================================================================================================
 
     def closeEvent(self,event):
-        event.ignore()      # Ignorar el cierre de la ventana principal
         self.closed.emit()  # Emitir señal para avisarle al sessionManager que se intento cerrar la ventana principal
-        self.hide()         # Ocultar ventana principal
+        event.accept()      # Aceptar el cierre de la ventana principal
 
 ###################################################################################################################################################################################
 ## FIN :)

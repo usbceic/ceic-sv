@@ -187,7 +187,7 @@
 ***********************************/
 
 /*Configurar el estilo de los groupBox*/
-#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26, #groupBox27, #groupBox28{
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26, #groupBox27, #groupBox28, #groupBox29{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -195,7 +195,7 @@
 }
 
 /*Configurar el estilo de los groupBox con subStacked*/
-#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25, #groupBox29{
+#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -3757,6 +3757,224 @@ QWidget:item:unchecked {
                 </widget>
                </item>
               </layout>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QGroupBox" name="groupBox29">
+            <property name="geometry">
+             <rect>
+              <x>270</x>
+              <y>290</y>
+              <width>531</width>
+              <height>311</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="title">
+             <string/>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_82">
+             <item row="1" column="0">
+              <widget class="QTableWidget" name="table15">
+               <property name="styleSheet">
+                <string notr="true">QTableWidget::item:selected{
+	selection-color: black;
+}</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Sunken</enum>
+               </property>
+               <property name="midLineWidth">
+                <number>1</number>
+               </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="dragEnabled">
+                <bool>false</bool>
+               </property>
+               <property name="dragDropOverwriteMode">
+                <bool>false</bool>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="textElideMode">
+                <enum>Qt::ElideMiddle</enum>
+               </property>
+               <property name="showGrid">
+                <bool>true</bool>
+               </property>
+               <property name="gridStyle">
+                <enum>Qt::SolidLine</enum>
+               </property>
+               <property name="sortingEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="cornerButtonEnabled">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderCascadingSectionResizes">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderDefaultSectionSize">
+                <number>100</number>
+               </attribute>
+               <attribute name="horizontalHeaderMinimumSectionSize">
+                <number>25</number>
+               </attribute>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderStretchLastSection">
+                <bool>false</bool>
+               </attribute>
+               <column>
+                <property name="text">
+                 <string>Tipo</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <layout class="QGridLayout" name="gridLayout_124">
+               <item row="0" column="1">
+                <layout class="QGridLayout" name="gridLayout_126">
+                 <item row="0" column="1">
+                  <widget class="QPushButton" name="arrow43_2">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../resources/gui.qrc">
+                     <normaloff>:/arrows/prev_arrow</normaloff>:/arrows/prev_arrow</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QPushButton" name="arrow44_2">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../resources/gui.qrc">
+                     <normaloff>:/arrows/next_arrow</normaloff>:/arrows/next_arrow</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="arrow42_2">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../resources/gui.qrc">
+                     <normaloff>:/arrows/top_arrow</normaloff>:/arrows/top_arrow</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3">
+                  <widget class="QPushButton" name="arrow45_2">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../resources/gui.qrc">
+                     <normaloff>:/arrows/end_arrow</normaloff>:/arrows/end_arrow</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="0">
+                <spacer name="horizontalSpacer_122">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="0" column="2">
+                <spacer name="horizontalSpacer_128">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="title56">
+               <property name="font">
+                <font>
+                 <family>Open Sans</family>
+                 <pointsize>12</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Operaciones recientes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>

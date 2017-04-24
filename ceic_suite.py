@@ -42,6 +42,7 @@ from PyQt4.QtCore import QTimer
 # Método de inicialización de CEIC Suite
 def initCS():
     loginApp = QApplication(argv)
+    loginApp.setQuitOnLastWindowClosed(False)
     loginWindow = sessionManager()
     loginWindow.splash.show()
     QTimer.singleShot(5000, lambda: loginWindow.splash.hide())
