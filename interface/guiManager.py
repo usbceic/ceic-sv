@@ -56,10 +56,10 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QRegExp
 
 # Módulo con estructuras de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton
+from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton, QRegExpValidator
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -399,6 +399,11 @@ class guiManager(QMainWindow, form_class):
             if numValidator: lineE.setValidator(QIntValidator(0, 100000000))
             lineE.setCompleter(LEcompleter)
 
+    # Método para configurar campos para ingresar cualquier cosa
+    def setAnyCharacter(self, listAC):
+        validator = QRegExpValidator(QRegExp('.*'))
+        for item in listAC: item.setValidator(validator)
+
     # Método para configurar campos para solo ingresar números
     def setOnlyNumbers(self, listON):
         for item in listON: item.setValidator(QIntValidator(0, 9999999))
@@ -535,7 +540,14 @@ class guiManager(QMainWindow, form_class):
         self.setSize()
 
         # Configurar los spin box
-        self.setOnlyNumbers(self.productsON0)
+        if not self.rbutton7.isChecked():
+            self.setOnlyNumbers(self.productsON0)
+            self.setAnyCharacter(self.productsON1)
+
+        else:
+            self.setOnlyNumbers(self.productsON1)
+            self.setAnyCharacter(self.productsON0)
+
         self.setOnlyNumbers(self.lotsON)
         self.setOnlyNumbers(self.confON)
         self.setOnlyNumbers(self.transfersON)
@@ -821,6 +833,9 @@ class guiManager(QMainWindow, form_class):
             else:
                 self.calc0[i].setText("0")
                 self.calc1[i].setReadOnly(True)
+
+        self.setOnlyNumbers(self.calc1)
+        self.setStyle(self.theme)
 
     # Método para realizar la suma en la calculadora
     def executeCalc(self, legalTenders):
@@ -1162,6 +1177,8 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
             self.text64.setText("Nombre")
             self.resetProductImage(self.selectedItem1)
+            self.setOnlyNumbers(self.productsON0)
+            self.setAnyCharacter(self.productsON1)
 
     # Radio button para consultar productos
     def on_rbutton6_pressed(self):
@@ -1171,6 +1188,8 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1)
             self.text64.setText("Buscar")
             self.resetProductImage(self.selectedItem1)
+            self.setOnlyNumbers(self.productsON0)
+            self.setAnyCharacter(self.productsON1)
 
     # Radio button para editar productos
     def on_rbutton7_pressed(self):
@@ -1179,6 +1198,8 @@ class guiManager(QMainWindow, form_class):
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO3)
             self.resetProductImage(self.selectedItem1)
+            self.setOnlyNumbers(self.productsON1)
+            self.setAnyCharacter(self.productsON0)
 
     # Radio button para eliminar productos
     def on_rbutton8_pressed(self):
@@ -1188,6 +1209,8 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1)
             self.text64.setText("Nombre")
             self.resetProductImage(self.selectedItem1)
+            self.setOnlyNumbers(self.productsON0)
+            self.setAnyCharacter(self.productsON1)
 
     # Radio button para agregar nuevos lotes
     def on_rbutton9_pressed(self):
@@ -2019,13 +2042,14 @@ class guiManager(QMainWindow, form_class):
     def on_spinLine0_textChanged(self):
         if self.textChanged():
             product_name = self.lineE23.text()
-            if self.db.existProduct(product_name):
-                if self.spinLine0.text() != "":
-                    count = int(self.spinLine0.text())
-                    self.lineE25.setText(str(((count)*float(self.lineE24.text()))))
+            if product_name != "":
+                if self.db.existProduct(product_name):
+                    if self.spinLine0.text() != "":
+                        count = int(self.spinLine0.text())
+                        self.lineE25.setText(str(((count)*float(self.lineE24.text()))))
 
-                else:
-                    self.spinLine0.setText("0")
+                    else:
+                        self.spinLine0.setText("0")
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # TABLAS
@@ -2106,7 +2130,7 @@ class guiManager(QMainWindow, form_class):
                             }
                             self.db.createProvider(**kwargs)
                             successPopUp("Proveedor "+name+" creado exitosamente",self).exec_()
-    
+
                             self.clearLEs(self.providersLE0) # Limpiar formulario
                             self.refreshProviders()          # Refrescar vista
                             self.lineE146.setFocus()         # Enfocar
