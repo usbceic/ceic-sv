@@ -2256,10 +2256,11 @@ class guiManager(QMainWindow, form_class):
     def on_pbutton17_pressed(self):
         if self.click():
             if self.lineE52.text() != "":
-                if self.lineE53.text() != "":
-                    if self.lineE54.text() != "":
-                        ci = int(self.lineE52.text())
-                        if not self.db.existClient(ci):
+                ci = int(self.lineE52.text())
+                if not self.db.existClient(ci):
+                    if self.lineE53.text() != "":
+                        if self.lineE54.text() != "":
+
                             kwargs = {
                                 "ci"        : ci,
                                 "firstname" : self.lineE53.text(),
@@ -2279,13 +2280,13 @@ class guiManager(QMainWindow, form_class):
                             self.lineE52.setFocus()        # Enfocar
 
                         else:
-                            errorPopUp("Número de cédula no registrado", self).exec_()
+                            warningPopUp("Apellido no específicado", self).exec_()
 
                     else:
-                        warningPopUp("Apellido no específicado", self).exec_()
+                        warningPopUp("Nombre no específicado", self).exec_()
 
                 else:
-                    warningPopUp("Nombre no específicado", self).exec_()
+                    errorPopUp("Número de cédula previamente registrado", self).exec_()
 
             else:
                 warningPopUp("Número de cédula no específicado", self).exec_()
@@ -2294,15 +2295,17 @@ class guiManager(QMainWindow, form_class):
     def on_pbutton19_pressed(self):
         if self.click():
             if self.lineE57.text() != "":
-                if self.lineE58.text() != "":
-                    if self.lineE59.text() != "":
-                        ci = int(self.lineE52.text())
-                        if not self.db.existClient(ci):
+                ci = int(self.lineE57.text())
+                if self.db.existClient(ci):
+                    if self.lineE58.text() != "":
+                        if self.lineE59.text() != "":
+
                             kwargs = {
-                                "firstname" : self.lineE58.text(),
-                                "lastname"  : self.lineE59.text(),
-                                "phone"     : self.lineE60.text(),
-                                "email"     : self.lineE61.text()
+                                "ciOriginal" : ci,
+                                "firstname"  : self.lineE58.text(),
+                                "lastname"   : self.lineE59.text(),
+                                "phone"      : self.lineE60.text(),
+                                "email"      : self.lineE61.text()
                             }
 
                             if self.db.updateClient(**kwargs):      # Crear cliente
@@ -2316,13 +2319,13 @@ class guiManager(QMainWindow, form_class):
                             self.lineE57.setFocus()        # Enfocar
 
                         else:
-                            errorPopUp("Número de cédula no registrado", self).exec_()
+                            warningPopUp("Apellido no específicado", self).exec_()
 
                     else:
-                        warningPopUp("Apellido no específicado", self).exec_()
+                        warningPopUp("Nombre no específicado", self).exec_()
 
                 else:
-                    warningPopUp("Nombre no específicado", self).exec_()
+                    errorPopUp("Número de cédula no registrado", self).exec_()
 
             else:
                 warningPopUp("Número de cédula no específicado", self).exec_()
@@ -2505,22 +2508,49 @@ class guiManager(QMainWindow, form_class):
     # Botón para crear un usuario
     def on_pbutton21_pressed(self):
         if self.click():
-            if (self.lineE69.text() and self.lineE70.text() and self.lineE71.text() and self.lineE72.text() and self.lineE73.text()) != "":
+            if self.lineE69.text() != "":
                 username = self.lineE69.text()
                 if not self.db.existUser(username):
+                    if self.lineE70.text() != "":
+                        if self.lineE71.text() != "":
+                            if self.lineE72.text() != "":
+                                if self.lineE73.text() != "":
 
-                    kwargs = {
-                        "username"        : username,
-                        "firstname"       : self.lineE70.text(),
-                        "lastname"        : self.lineE71.text(),
-                        "email"           : self.lineE72.text(),
-                        "password"        : self.lineE73.text(),
-                        "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
-                    }
+                                    kwargs = {
+                                        "username"        : username,
+                                        "firstname"       : self.lineE70.text(),
+                                        "lastname"        : self.lineE71.text(),
+                                        "email"           : self.lineE72.text(),
+                                        "password"        : self.lineE73.text(),
+                                        "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
+                                    }
 
-                    self.db.createUser(**kwargs) # Crear cliente
-                    self.refreshUsers()          # Refrescar vista
-                    self.lineE69.setFocus()      # Enfocar
+                                    if self.db.createUser(**kwargs):        # Crear usuario
+                                        successPopUp(parent = self).exec_()
+
+                                    else:
+                                        errorPopUp(parent = self).exec_()
+
+                                    self.refreshUsers()          # Refrescar vista
+                                    self.lineE69.setFocus()      # Enfocar
+
+                                else:
+                                    warningPopUp("Clave no específicada", self).exec_()
+
+                            else:
+                                warningPopUp("Correo no específicado", self).exec_()
+
+                        else:
+                            warningPopUp("Apellido no específicado", self).exec_()
+
+                    else:
+                        warningPopUp("Nombre no específicado", self).exec_()
+
+                else:
+                    errorPopUp("UserID previamente registrado", self).exec_()
+
+            else:
+                warningPopUp("UserID no específicado", self).exec_()
 
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
@@ -2534,9 +2564,21 @@ class guiManager(QMainWindow, form_class):
                         "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
                     }
 
-                    self.db.updateUserRange(**kwargs) # Actualizar cliente
+                    if self.db.updateUserRange(**kwargs):    # Actualizar cliente
+                        successPopUp(parent = self).exec_()
+
+                    else:
+                        errorPopUp(parent = self).exec_()
+
                     self.refreshUsers()               # Refrescar vista
                     self.lineE75.setFocus()           # Enfocar
+
+                else:
+                    errorPopUp("UserID no registrado", self).exec_()
+
+            else:
+                warningPopUp("UserID no específicado", self).exec_()
+
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
