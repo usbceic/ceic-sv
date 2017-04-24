@@ -32,10 +32,8 @@ path.append(join(getcwd(), "modules"))
 
 from sys import argv, exit
 from sessionManager import sessionManager
-from guiManager import guiManager
-from db_manager import dbManager
 from PyQt4.QtGui import QApplication
-from PyQt4.QtCore import Qt, QTimer
+from PyQt4.QtCore import QTimer
 
 ###################################################################################################################################################################################
 ## FUNCIONES:
@@ -50,22 +48,13 @@ def initCS():
     QTimer.singleShot(5500, lambda: loginWindow.show())
     return exit(loginApp.exec_())
 
-# Método de inicialización de la ventana principal (SOLO PARA PRUEBAS)
-def initMW(dataBase):
-    MainWindowApp = QApplication(argv)
-    MainWindow = guiManager(user, dataBase)
-    MainWindow.show()
-    return exit(MainWindowApp.exec_())
-
 ###################################################################################################################################################################################
 ## PROGRAMA PRINCIPAL:
 ###################################################################################################################################################################################
 
 if __name__ == '__main__':
 
-    ceic_suite  = initCS()                              # Iniciar CEIC Suite
-    #data_base   = dbManager("sistema_ventas", "hola")   # Crear manejador para la base de datos
-    #main_window = initMW(data_base)                     # Desplegar la ventana principal
+    ceic_suite  = initCS()  # Iniciar CEIC Suite
 
 ###################################################################################################################################################################################
 ## FIN :)
