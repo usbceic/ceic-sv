@@ -48,7 +48,7 @@ from db_manager import dbManager
 from popUps import errorPopUp, warningPopUp, successPopUp, authorizationPopUp
 
 # Módulo con los validadores para campos de texto
-from validators import validatePhoneNumber, validateEmail
+from validators import validatePhoneNumber, validateEmail, validateName
 
 # Módulo con los validadores para campos de texto
 from app_utilities import getStyle, naturalFormat
@@ -267,8 +267,8 @@ class guiManager(QMainWindow, form_class):
         self.selectedProductLE1 = [self.lineE23, self.lineE24, self.lineE25]
 
         # Apartado de cliente en ventas
-        self.salesClientLE0 = [self.lineE18, self.lineE19, self.lineE20]
-        self.salesClientLE1 = [self.lineE17, self.lineE18, self.lineE19, self.lineE20]
+        self.salesClientLE0 = [self.lineE18, self.lineE19, self.lineE20, self.lineE152]
+        self.salesClientLE1 = [self.lineE17, self.lineE18, self.lineE19, self.lineE20, self.lineE152]
 
         # Apartado de pago en la vista de ventas
         self.salesCheckoutLE = [self.lineE21, self.lineE22, self.lineE152]
@@ -1831,7 +1831,28 @@ class guiManager(QMainWindow, form_class):
                             self.refreshSales()
 
                         else:
-                            warningPopUp("Pago insuficiente", self).exec_()
+
+                            client = self.db.getClients(ci)[0]
+                            if client.debt_permission and client.balance < total - efectivo:
+                                deuda = total - efectivo - saldo
+
+                                try:
+                                    purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
+                                    for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
+                                        self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
+                                    if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
+                                    if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
+                                    self.db.createCheckout(purchase_id, deuda, True)                            # Crear pago con deuda
+                                    successPopUp(parent = self).exec_()                                         # Venta exitosa
+
+                                except:
+                                    errorPopUp(parent = self).exec_()                                           # Venta fallida
+
+                                # Setear variables y refrescar la interfaz
+                                self.refreshSales()
+
+                            else:
+                                warningPopUp("Pago insuficiente", self).exec_()
 
                     else:
                         warningPopUp("El cliente no existe", self).exec_()
@@ -1921,11 +1942,35 @@ class guiManager(QMainWindow, form_class):
                     self.lineE18.setText(client.firstname)                       # Establecer Nombre
                     self.lineE19.setText(client.lastname)                        # Establecer Apellido
                     self.lineE20.setText(str(client.balance))                    # Establecer Saldo
-                    self.lineE152.setValidator(QIntValidator(0, client.balance)) # Establecer limite de saldo para pagar
+
+                    if self.lineE21.text() != "":
+                        total = float(self.lineE21.text())
+                        cota = total
+
+                        if self.lineE22.text() != "":
+                            efectivo = float(self.lineE22.text())
+
+                        else:
+                            efectivo = 0
+
+                        cota = total - efectivo
+                        balance = client.balance
+
+                        if balance < cota:
+                            cota = balance
+
+                        self.lineE152.setValidator(QIntValidator(0, cota))
+                        if self.lineE152.text() != "":
+                            saldo = float(self.lineE152.text())
+                            if saldo > cota:
+                                self.lineE152.setText(str(cota))
 
                 else:
                     self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
                     self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
+            else:
+                self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
+                self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
 
     # LineEdit para ingresar el total a pagar
     def on_lineE21_textChanged(self):
@@ -1938,7 +1983,6 @@ class guiManager(QMainWindow, form_class):
                 if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
                 else: efectivo = 0
 
-                efectivo = float(self.lineE22.text())
                 cota1 = total - efectivo
 
                 if self.lineE17.text() != "":
@@ -1946,9 +1990,11 @@ class guiManager(QMainWindow, form_class):
                     if self.db.existClient(ci):
                         balance = self.db.getClients(ci)[0].balance
 
-                        if balance < cota1:
-                            cota1 = balance
+                        if balance >= 0:
+                            if balance < cota1:
+                                cota1 = balance
 
+                        else: cota1 = 0
                     else: cota1 = 0
                 else: cota1 = 0
 
@@ -2216,7 +2262,6 @@ class guiManager(QMainWindow, form_class):
         self.clearTEs(self.providersTE1)
         self.lineE149.setFocus()
 
-
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2255,6 +2300,9 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.clientsLE0)
         self.clearLEs(self.clientsLE1)
 
+        # Setear los comboBox
+        self.resetClientsCBs()
+
         # Refrescar tabla
         self.updateClientsTable()
         self.updateClientsTable(True)
@@ -2283,6 +2331,21 @@ class guiManager(QMainWindow, form_class):
         table.resizeColumnsToContents()                                 # Redimensionar columnas segun el contenido
         self.setupTable(table)                                          # Reconfigurar tabla
 
+    # Método para reestablecer los comboBox en registrar y editar
+    def resetClientsCBs(self):
+        self.cbox10.clear()
+        self.cbox11.clear()
+        self.cbox12.clear()
+        self.cbox13.clear()
+
+        allow = ["Permitir", "No permitir"]
+        disallow = ["No permitir", "Permitir"]
+
+        self.cbox10.addItems(disallow)
+        self.cbox11.addItems(allow)
+        self.cbox12.addItems(disallow)
+        self.cbox13.addItems(disallow)
+
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2296,12 +2359,17 @@ class guiManager(QMainWindow, form_class):
                     if self.lineE53.text() != "":
                         if self.lineE54.text() != "":
 
+                            debt = (self.cbox10.currentText() == "Permitir")
+                            book = (self.cbox11.currentText() == "Permitir")
+
                             kwargs = {
-                                "ci"        : ci,
-                                "firstname" : self.lineE53.text(),
-                                "lastname"  : self.lineE54.text(),
-                                "phone"     : self.lineE55.text(),
-                                "email"     : self.lineE56.text()
+                                "ci"              : ci,
+                                "firstname"       : self.lineE53.text(),
+                                "lastname"        : self.lineE54.text(),
+                                "phone"           : self.lineE55.text(),
+                                "email"           : self.lineE56.text(),
+                                "debt_permission" : debt,
+                                "book_permission" : book
                             }
 
                             if self.db.createClient(**kwargs): # Crear cliente
@@ -2335,12 +2403,17 @@ class guiManager(QMainWindow, form_class):
                     if self.lineE58.text() != "":
                         if self.lineE59.text() != "":
 
+                            debt = (self.cbox12.currentText() == "Permitir")
+                            book = (self.cbox13.currentText() == "Permitir")
+
                             kwargs = {
                                 "ciOriginal" : ci,
                                 "firstname"  : self.lineE58.text(),
                                 "lastname"   : self.lineE59.text(),
                                 "phone"      : self.lineE60.text(),
-                                "email"      : self.lineE61.text()
+                                "email"      : self.lineE61.text(),
+                                "debt_permission" : debt,
+                                "book_permission" : book
                             }
 
                             if self.db.updateClient(**kwargs):      # Crear cliente
@@ -2381,6 +2454,18 @@ class guiManager(QMainWindow, form_class):
                     self.lineE60.setText(client.phone)
                     self.lineE61.setText(client.email)
 
+                    self.cbox12.clear()
+                    self.cbox13.clear()
+
+                    allow = ["Permitir", "No permitir"]
+                    disallow = ["No permitir", "Permitir"]
+
+                    if client.debt_permission: self.cbox12.addItems(allow)
+                    else: self.cbox12.addItems(disallow)
+
+                    if client.book_permission: self.cbox13.addItems(allow)
+                    else: self.cbox13.addItems(disallow)
+
                 else:
                     self.clearLEs(self.clientsLE2)
 
@@ -2402,9 +2487,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.transfersLE3)
         self.clearTE(self.textE7)
         self.updateTranfersTable()
-        self.refreshClients()
         self.refreshSales()
-        self.refreshCash()
 
     # Método para refrescar la tabla de transferencias
     def updateTranfersTable(self):
@@ -2544,76 +2627,112 @@ class guiManager(QMainWindow, form_class):
     # Botón para crear un usuario
     def on_pbutton21_pressed(self):
         if self.click():
-            if self.lineE69.text() != "":
-                username = self.lineE69.text()
-                if not self.db.existUser(username):
-                    if self.lineE70.text() != "":
-                        if self.lineE71.text() != "":
-                            if self.lineE72.text() != "":
-                                if self.lineE73.text() != "":
+            flag = False
 
-                                    kwargs = {
-                                        "username"        : username,
-                                        "firstname"       : self.lineE70.text(),
-                                        "lastname"        : self.lineE71.text(),
-                                        "email"           : self.lineE72.text(),
-                                        "password"        : self.lineE73.text(),
-                                        "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
-                                    }
-
-                                    if self.db.createUser(**kwargs):        # Crear usuario
-                                        successPopUp(parent = self).exec_()
-
-                                    else:
-                                        errorPopUp(parent = self).exec_()
-
-                                    self.refreshUsers()          # Refrescar vista
-                                    self.lineE69.setFocus()      # Enfocar
-
-                                else:
-                                    warningPopUp("Clave no específicada", self).exec_()
+            username   = self.lineE69.text()
+            firstname  = self.lineE70.text()
+            lastname   = self.lineE71.text()
+            email      = self.lineE72.text()
+            password   = self.lineE73.text()
+            if (username and firstname and lastname and email and password) != "":
+                if validateName(firstname):
+                    if validateName(lastname):
+                        if(validateEmail(email)):
+                            if not self.db.existUser(username):
+                                kwargs = {
+                                    "username"        : username,
+                                    "firstname"       : firstname,
+                                    "lastname"        : lastname,
+                                    "email"           : email,
+                                    "password"        : password,
+                                    "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
+                                }
+                                flag = True
 
                             else:
-                                warningPopUp("Correo no específicado", self).exec_()
-
+                                errorPopUp("El usuario "+username+" ya existe",self).exec_()
                         else:
-                            warningPopUp("Apellido no específicado", self).exec_()
-
+                            errorPopUp("Formato incorrecto de correo",self).exec_()
                     else:
-                        warningPopUp("Nombre no específicado", self).exec_()
-
+                        errorPopUp("Formato incorrecto para apellido",self).exec_()
                 else:
-                    errorPopUp("UserID previamente registrado", self).exec_()
-
+                    errorPopUp("Formato incorrecto para nombre",self).exec_()
             else:
-                warningPopUp("UserID no específicado", self).exec_()
+                errorPopUp("Faltan datos",self).exec_()
+            if flag:
+                popUp = authorizationPopUp(parent=self)
+                if popUp.exec_():
+                    adminUsername, adminPassword = popUp.getValues()
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
+                            if self.db.createUser(**kwargs):        # Crear usuario
+                                successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.refreshUsers()          # Refrescar vista
+                            self.lineE69.setFocus()      # Enfocar
+                        else:
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                    else:
+                        errorPopUp("Datos incorrectos", self).exec_()
 
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
         if self.click():
-            if self.lineE75.text() != "":
-                username = self.lineE75.text()
-                if self.db.existUser(username):
+            flag = False
+            username   = self.lineE75.text()
+            firstname  = self.lineE76.text()
+            lastname   = self.lineE77.text()
+            email      = self.lineE78.text()
+            if (username and firstname and lastname and email) != "":
+                if validateName(firstname):
+                    if validateName(lastname):
+                        if(validateEmail(email)):
+                            if self.db.existUser(username):
 
-                    kwargs = {
-                        "username"        : username,
-                        "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
-                    }
-
-                    if self.db.updateUserRange(**kwargs):    # Actualizar cliente
-                        successPopUp(parent = self).exec_()
-
+                                newRangeInfo = {
+                                    "username"        : username,
+                                    "permission_mask" : self.db.getPermissionMask(self.cbox9.currentText())
+                                }
+                                kwargs = {
+                                    "username"        : username,
+                                    "firstname"       : firstname,
+                                    "lastname"        : lastname,
+                                    "email"           : email
+                                }
+                                flag = True
+                            else:
+                                errorPopUp("El usuario "+username+" ya existe",self).exec_()
+                        else:
+                            errorPopUp("Formato incorrecto de correo",self).exec_()
                     else:
-                        errorPopUp(parent = self).exec_()
-
-                    self.refreshUsers()               # Refrescar vista
-                    self.lineE75.setFocus()           # Enfocar
-
+                        errorPopUp("Formato incorrecto para apellido",self).exec_()
                 else:
-                    errorPopUp("UserID no registrado", self).exec_()
-
+                    errorPopUp("Formato incorrecto para nombre",self).exec_()
             else:
-                warningPopUp("UserID no específicado", self).exec_()
+                errorPopUp("Faltan datos", self).exec_()
+
+            if flag:
+                popUp = authorizationPopUp(parent=self)
+                if popUp.exec_():
+                    adminUsername, adminPassword = popUp.getValues()
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
+                            if self.db.updateUserRange(**newRangeInfo) and self.db.updateUserInfo(**kwargs):    # Actualizar cliente
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.refreshUsers()               # Refrescar vista
+                            self.lineE75.setFocus()           # Enfocar
+                        else:
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                    else:
+                        errorPopUp("Datos incorrectos", self).exec_()
 
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1434,7 +1434,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -15979,7 +15979,7 @@ QWidget:item:unchecked {
            <widget class="QGroupBox" name="groupBox13">
             <property name="geometry">
              <rect>
-              <x>300</x>
+              <x>320</x>
               <y>50</y>
               <width>471</width>
               <height>461</height>
@@ -16440,8 +16440,8 @@ QWidget:item:unchecked {
              <rect>
               <x>20</x>
               <y>150</y>
-              <width>261</width>
-              <height>281</height>
+              <width>281</width>
+              <height>311</height>
              </rect>
             </property>
             <property name="title">
@@ -16696,6 +16696,126 @@ QWidget:item:unchecked {
                            </property>
                           </widget>
                          </item>
+                         <item row="5" column="0">
+                          <widget class="QLabel" name="text190">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deudas&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="5" column="1">
+                          <widget class="QComboBox" name="cbox10">
+                           <property name="cursor">
+                            <cursorShape>ArrowCursor</cursorShape>
+                           </property>
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="currentIndex">
+                            <number>0</number>
+                           </property>
+                           <property name="insertPolicy">
+                            <enum>QComboBox::InsertAlphabetically</enum>
+                           </property>
+                           <property name="sizeAdjustPolicy">
+                            <enum>QComboBox::AdjustToContents</enum>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>0</width>
+                             <height>0</height>
+                            </size>
+                           </property>
+                           <property name="frame">
+                            <bool>true</bool>
+                           </property>
+                           <property name="modelColumn">
+                            <number>0</number>
+                           </property>
+                           <item>
+                            <property name="text">
+                             <string>No permitir</string>
+                            </property>
+                           </item>
+                           <item>
+                            <property name="text">
+                             <string>Permitir</string>
+                            </property>
+                           </item>
+                          </widget>
+                         </item>
+                         <item row="6" column="1">
+                          <widget class="QComboBox" name="cbox11">
+                           <property name="cursor">
+                            <cursorShape>ArrowCursor</cursorShape>
+                           </property>
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="currentIndex">
+                            <number>0</number>
+                           </property>
+                           <property name="insertPolicy">
+                            <enum>QComboBox::InsertAlphabetically</enum>
+                           </property>
+                           <property name="sizeAdjustPolicy">
+                            <enum>QComboBox::AdjustToContents</enum>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>0</width>
+                             <height>0</height>
+                            </size>
+                           </property>
+                           <property name="frame">
+                            <bool>true</bool>
+                           </property>
+                           <property name="modelColumn">
+                            <number>0</number>
+                           </property>
+                           <item>
+                            <property name="text">
+                             <string>No permitir</string>
+                            </property>
+                           </item>
+                           <item>
+                            <property name="text">
+                             <string>Permitir</string>
+                            </property>
+                           </item>
+                          </widget>
+                         </item>
+                         <item row="6" column="0">
+                          <widget class="QLabel" name="text192">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Préstamos&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
                         </layout>
                        </item>
                        <item row="0" column="0">
@@ -16884,6 +17004,24 @@ QWidget:item:unchecked {
                            </property>
                           </widget>
                          </item>
+                         <item row="0" column="1">
+                          <widget class="QLineEdit" name="lineE57">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
                          <item row="1" column="0">
                           <widget class="QLabel" name="text160">
                            <property name="font">
@@ -16897,54 +17035,6 @@ QWidget:item:unchecked {
                            </property>
                            <property name="text">
                             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nombre&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="2" column="0">
-                          <widget class="QLabel" name="text161">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-color: transparent;</string>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apellido&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="0">
-                          <widget class="QLabel" name="text162">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-color: transparent;</string>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="4" column="0">
-                          <widget class="QLabel" name="text163">
-                           <property name="font">
-                            <font>
-                             <family>Open Sans</family>
-                             <pointsize>11</pointsize>
-                            </font>
-                           </property>
-                           <property name="styleSheet">
-                            <string notr="true">background-color: transparent;</string>
-                           </property>
-                           <property name="text">
-                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -16966,6 +17056,22 @@ QWidget:item:unchecked {
                            </property>
                           </widget>
                          </item>
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="text161">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Apellido&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
                          <item row="2" column="1">
                           <widget class="QLineEdit" name="lineE59">
                            <property name="font">
@@ -16981,6 +17087,22 @@ QWidget:item:unchecked {
                            </property>
                            <property name="readOnly">
                             <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="0">
+                          <widget class="QLabel" name="text162">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Teléfono&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -17002,6 +17124,22 @@ QWidget:item:unchecked {
                            </property>
                           </widget>
                          </item>
+                         <item row="4" column="0">
+                          <widget class="QLabel" name="text163">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Correo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
                          <item row="4" column="1">
                           <widget class="QLineEdit" name="lineE61">
                            <property name="font">
@@ -17020,22 +17158,124 @@ QWidget:item:unchecked {
                            </property>
                           </widget>
                          </item>
-                         <item row="0" column="1">
-                          <widget class="QLineEdit" name="lineE57">
+                         <item row="5" column="0">
+                          <widget class="QLabel" name="text193">
                            <property name="font">
                             <font>
                              <family>Open Sans</family>
+                             <pointsize>11</pointsize>
                             </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deudas&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="6" column="0">
+                          <widget class="QLabel" name="text195">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Préstamos&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="5" column="1">
+                          <widget class="QComboBox" name="cbox12">
+                           <property name="cursor">
+                            <cursorShape>ArrowCursor</cursorShape>
+                           </property>
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
                            </property>
                            <property name="styleSheet">
                             <string notr="true"/>
                            </property>
-                           <property name="text">
-                            <string/>
+                           <property name="currentIndex">
+                            <number>0</number>
                            </property>
-                           <property name="readOnly">
-                            <bool>false</bool>
+                           <property name="insertPolicy">
+                            <enum>QComboBox::InsertAlphabetically</enum>
                            </property>
+                           <property name="sizeAdjustPolicy">
+                            <enum>QComboBox::AdjustToContents</enum>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>0</width>
+                             <height>0</height>
+                            </size>
+                           </property>
+                           <property name="frame">
+                            <bool>true</bool>
+                           </property>
+                           <property name="modelColumn">
+                            <number>0</number>
+                           </property>
+                           <item>
+                            <property name="text">
+                             <string>No permitir</string>
+                            </property>
+                           </item>
+                           <item>
+                            <property name="text">
+                             <string>Permitir</string>
+                            </property>
+                           </item>
+                          </widget>
+                         </item>
+                         <item row="6" column="1">
+                          <widget class="QComboBox" name="cbox13">
+                           <property name="cursor">
+                            <cursorShape>ArrowCursor</cursorShape>
+                           </property>
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="currentIndex">
+                            <number>0</number>
+                           </property>
+                           <property name="insertPolicy">
+                            <enum>QComboBox::InsertAlphabetically</enum>
+                           </property>
+                           <property name="sizeAdjustPolicy">
+                            <enum>QComboBox::AdjustToContents</enum>
+                           </property>
+                           <property name="iconSize">
+                            <size>
+                             <width>0</width>
+                             <height>0</height>
+                            </size>
+                           </property>
+                           <property name="frame">
+                            <bool>true</bool>
+                           </property>
+                           <property name="modelColumn">
+                            <number>0</number>
+                           </property>
+                           <item>
+                            <property name="text">
+                             <string>No permitir</string>
+                            </property>
+                           </item>
+                           <item>
+                            <property name="text">
+                             <string>Permitir</string>
+                            </property>
+                           </item>
                           </widget>
                          </item>
                         </layout>

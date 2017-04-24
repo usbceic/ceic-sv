@@ -32,7 +32,7 @@ Método para validar números telefonicos
 """
 def validatePhoneNumber(phone):
 	start58 = "^(\(\+58\)|\+58)"
-	PhoneCode = "((4(1|2)(4|6))|412|2\d{2})"
+	PhoneCode = "((4|2)\d{2})"
 	pattern = re.compile("((" + (start58 + PhoneCode) + "|(^(0"+PhoneCode+")|\(0"+PhoneCode+"\))" + ")(\-?\d{3}\-?\d{4})$)")
 	if pattern.match(phone):
 		return True
