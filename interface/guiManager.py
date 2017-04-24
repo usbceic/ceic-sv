@@ -2118,7 +2118,42 @@ class guiManager(QMainWindow, form_class):
                 else:
                     errorPopUp("El proveedor "+name+" ya existe",self).exec_()
             else:
-                errorPopUp("Falta nombre de proveedor",self).exec_
+                errorPopUp("Falta nombre de proveedor",self).exec_()
+
+    #Boton para editar proveedor
+    def on_pbutton22_pressed(self):
+        if self.click():
+            name = self.lineE149.text()
+            phone = self.lineE150.text()
+            email = self.lineE151.text()
+            if name != "":
+                if not (self.db.existProvider(name)):
+                    if (phone != "" and validatePhoneNumber(phone)) or phone == "":
+                        if (email != "" and validateEmail(email)) or email == "":
+                            kwargs = {
+                                "oldName"         : name,
+                                "phone"           : phone,
+                                "email"           : email,
+                                "description"     : self.textE1.toPlainText(),
+                                "pay_information" : self.textE2.toPlainText()
+                            }
+                            self.db.updateProviderInfo(**kwargs)
+                            successPopUp("Proveedor "+name+" actualizado exitosamente",self).exec_()
+    
+                            self.clearLEs(self.providersLE0) # Limpiar formulario
+                            self.refreshProviders()          # Refrescar vista
+                            self.lineE146.setFocus()         # Enfocar
+                        else:
+                            errorPopUp("Formato incorrecto de correo",self).exec_()
+
+                    else:
+                        errorPopUp("Formato incorrecto para número telefónico",self).exec_()
+                else:
+                    errorPopUp("El proveedor "+name+" ya existe",self).exec_()
+            else:
+                errorPopUp("Falta nombre de proveedor",self).exec_()
+
+
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
