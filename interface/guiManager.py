@@ -654,18 +654,8 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             # Si el usuario tiene rango mayor a Colaborador
             if self.db.getUserPermissionMask(self.user) > 1:
-                # Si hay dia y periodo abierto:
-                if self.db.isOpenPeriod() and self.db.isOpenDay():
-                    self.setPage(self.MainStacked, 6)
-                    self.MainTitle.setText("Proveedores")
-
-                # Si no hay periodo abierto
-                elif not self.db.isOpenPeriod():
-                    warningPopUp("Falta apertura de periodo", self).exec_()
-
-                # Si no hay día abierto
-                else:
-                    warningPopUp("Falta apertura de caja", self).exec_()
+                self.setPage(self.MainStacked, 6)
+                self.MainTitle.setText("Proveedores")
 
             # Si el usuario es Colaborador
             else:
@@ -676,18 +666,8 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             # Si el usuario tiene rango mayor a Colaborador
             if self.db.getUserPermissionMask(self.user) > 0:
-                # Si hay dia y periodo abierto:
-                if self.db.isOpenPeriod() and self.db.isOpenDay():
-                    self.setPage(self.MainStacked, 7)
-                    self.MainTitle.setText("Clientes")
-
-                # Si no hay periodo abierto
-                elif not self.db.isOpenPeriod():
-                    warningPopUp("Falta apertura de periodo", self).exec_()
-
-                # Si no hay día abierto
-                else:
-                    warningPopUp("Falta apertura de caja", self).exec_()
+                self.setPage(self.MainStacked, 7)
+                self.MainTitle.setText("Clientes")
 
             # Si el usuario es Colaborador
             else:
