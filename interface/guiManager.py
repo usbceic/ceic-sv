@@ -2492,7 +2492,7 @@ class guiManager(QMainWindow, form_class):
                                         "debt_permission" : debt,
                                         "book_permission" : book
                                     }
-                                    flag = True
+                                    flag = debt
                                 else:
                                     errorPopUp("Formato de correo no válido",self).exec_()
 
@@ -2515,22 +2515,34 @@ class guiManager(QMainWindow, form_class):
                 popUp = authorizationPopUp(parent=self)
                 if popUp.exec_():
                     adminUsername, adminPassword = popUp.getValues()
-                    if self.db.checkPassword(adminUsername, adminPassword):
-                        userRange = self.db.getUserRange(adminUsername)
-                        if userRange == "Administrador" or userRange == "Dios":
-                            if self.db.createClient(**kwargs): # Crear cliente
-                                successPopUp(parent = self).exec_()
+                    if (adminUsername and adminPassword) != None: 
+                        if self.db.checkPassword(adminUsername, adminPassword):
+                            userRange = self.db.getUserRange(adminUsername)
+                            if userRange == "Administrador" or userRange == "Dios":
+                                if self.db.createClient(**kwargs): # Crear cliente
+                                    successPopUp(parent = self).exec_()
 
+                                else:
+                                    errorPopUp(parent = self).exec_()
+
+                                self.clearLEs(self.clientsLE0) # Limpiar formulario
+                                self.refreshClients()          # Refrescar vista
+                                self.lineE52.setFocus()        # Enfocar
                             else:
-                                errorPopUp(parent = self).exec_()
-
-                            self.clearLEs(self.clientsLE0) # Limpiar formulario
-                            self.refreshClients()          # Refrescar vista
-                            self.lineE52.setFocus()        # Enfocar
+                                errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                         else:
-                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
-                    else:
-                        errorPopUp("Datos incorrectos", self).exec_()
+                            errorPopUp("Datos incorrectos", self).exec_()
+            else:
+                if self.db.createClient(**kwargs): # Crear cliente
+                    successPopUp(parent = self).exec_()
+
+                else:
+                    errorPopUp(parent = self).exec_()
+
+                self.clearLEs(self.clientsLE0) # Limpiar formulario
+                self.refreshClients()          # Refrescar vista
+                self.lineE52.setFocus()        # Enfocar
+
 
     #Botón para cancelar creación de cliente
     def on_cancelpb16_pressed(self):
@@ -2572,7 +2584,7 @@ class guiManager(QMainWindow, form_class):
                                         "debt_permission" : debt,
                                         "book_permission" : book
                                     }
-                                    flag = True
+                                    flag = debt
 
                                 else:
                                     errorPopUp("Formato de correo no válido",self).exec_()
@@ -2596,22 +2608,33 @@ class guiManager(QMainWindow, form_class):
                 popUp = authorizationPopUp(parent=self)
                 if popUp.exec_():
                     adminUsername, adminPassword = popUp.getValues()
-                    if self.db.checkPassword(adminUsername, adminPassword):
-                        userRange = self.db.getUserRange(adminUsername)
-                        if userRange == "Administrador" or userRange == "Dios":
-                            if self.db.updateClient(**kwargs):      # Crear cliente
-                                successPopUp(parent = self).exec_()
+                    if (adminUsername and adminPassword) != None:
+                        if self.db.checkPassword(adminUsername, adminPassword):
+                            userRange = self.db.getUserRange(adminUsername)
+                            if userRange == "Administrador" or userRange == "Dios":
+                                if self.db.updateClient(**kwargs):      # Crear cliente
+                                    successPopUp(parent = self).exec_()
 
+                                else:
+                                    errorPopUp(parent = self).exec_()
+
+                                self.clearLEs(self.clientsLE1) # Limpiar formulario
+                                self.refreshClients()          # Refrescar vista
+                                self.lineE57.setFocus()        # Enfocar
                             else:
-                                errorPopUp(parent = self).exec_()
-
-                            self.clearLEs(self.clientsLE1) # Limpiar formulario
-                            self.refreshClients()          # Refrescar vista
-                            self.lineE57.setFocus()        # Enfocar
+                                errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                         else:
-                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
-                    else:
-                        errorPopUp("Datos incorrectos", self).exec_()
+                            errorPopUp("Datos incorrectos", self).exec_()
+            else:
+                if self.db.updateClient(**kwargs):      # Crear cliente
+                    successPopUp(parent = self).exec_()
+
+                else:
+                    errorPopUp(parent = self).exec_()
+
+                self.clearLEs(self.clientsLE1) # Limpiar formulario
+                self.refreshClients()          # Refrescar vista
+                self.lineE57.setFocus()        # Enfocar
 
     #Botón para cancelar creación de cliente
     def on_cancelpb17_pressed(self):
@@ -2870,20 +2893,21 @@ class guiManager(QMainWindow, form_class):
                 popUp = authorizationPopUp(parent=self)
                 if popUp.exec_():
                     adminUsername, adminPassword = popUp.getValues()
-                    if self.db.checkPassword(adminUsername, adminPassword):
-                        userRange = self.db.getUserRange(adminUsername)
-                        if userRange == "Administrador" or userRange == "Dios":
-                            if self.db.createUser(**kwargs):        # Crear usuario
-                                successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
-                            else:
-                                errorPopUp(parent = self).exec_()
+                    if (adminUsername and adminPassword) != None:
+                        if self.db.checkPassword(adminUsername, adminPassword):
+                            userRange = self.db.getUserRange(adminUsername)
+                            if userRange == "Administrador" or userRange == "Dios":
+                                if self.db.createUser(**kwargs):        # Crear usuario
+                                    successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
+                                else:
+                                    errorPopUp(parent = self).exec_()
 
-                            self.refreshUsers()          # Refrescar vista
-                            self.lineE69.setFocus()      # Enfocar
+                                self.refreshUsers()          # Refrescar vista
+                                self.lineE69.setFocus()      # Enfocar
+                            else:
+                                errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                         else:
-                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
-                    else:
-                        errorPopUp("Datos incorrectos", self).exec_()
+                            errorPopUp("Datos incorrectos", self).exec_()
 
     #Botón para cancelar creación de usuario
     def on_cancelpb18_pressed(self):
@@ -2914,21 +2938,22 @@ class guiManager(QMainWindow, form_class):
                 popUp = authorizationPopUp(parent=self)
                 if popUp.exec_():
                     adminUsername, adminPassword = popUp.getValues()
-                    if self.db.checkPassword(adminUsername, adminPassword):
-                        userRange = self.db.getUserRange(adminUsername)
-                        if userRange == "Administrador" or userRange == "Dios":
-                            if self.db.updateUserRange(**newRangeInfo):    # Actualizar usuario
-                                successPopUp(parent = self).exec_()
+                    if (adminUsername and adminPassword) != None:
+                        if self.db.checkPassword(adminUsername, adminPassword):
+                            userRange = self.db.getUserRange(adminUsername)
+                            if userRange == "Administrador" or userRange == "Dios":
+                                if self.db.updateUserRange(**newRangeInfo):    # Actualizar usuario
+                                    successPopUp(parent = self).exec_()
 
+                                else:
+                                    errorPopUp(parent = self).exec_()
+
+                                self.refreshUsers()               # Refrescar vista
+                                self.lineE75.setFocus()           # Enfocar
                             else:
-                                errorPopUp(parent = self).exec_()
-
-                            self.refreshUsers()               # Refrescar vista
-                            self.lineE75.setFocus()           # Enfocar
+                                errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                         else:
-                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
-                    else:
-                        errorPopUp("Datos incorrectos", self).exec_()
+                            errorPopUp("Datos incorrectos", self).exec_()
 
     #Botón para cancelar edición de usuario
     def on_cancelpb18_pressed(self):
