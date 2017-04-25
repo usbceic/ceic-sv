@@ -2467,7 +2467,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.clientsLE0)
         self.clearLEs(self.clientsLE1)
         self.clearLEs(self.clientsLE2)
-        self.setFocus(self.lineE52)
+        self.lineE52.setFocus()
 
 
     # Botón para editar un cliente
@@ -2548,7 +2548,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.clientsLE0)
         self.clearLEs(self.clientsLE1)
         self.clearLEs(self.clientsLE2)
-        self.setFocus(self.lineE57)
+        self.lineE57.setFocus()
 
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2667,7 +2667,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.transfersLE1)
         self.clearLEs(self.transfersLE2)
         self.clearLEs(self.transfersLE3)
-        self.setFocus(self.lineE47)
+        self.lineE47.setFocus()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
@@ -2813,7 +2813,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.usersLE0)
         self.clearLEs(self.usersLE1)
         self.clearLEs(self.usersLE2)
-        self.setFocus(self.lineE69)
+        self.lineE69.setFocus()
 
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
@@ -2858,7 +2858,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.usersLE0)
         self.clearLEs(self.usersLE1)
         self.clearLEs(self.usersLE2)
-        self.setFocus(self.lineE75)
+        self.lineE75.setFocus()
 
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
