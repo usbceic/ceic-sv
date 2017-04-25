@@ -1211,6 +1211,7 @@ class guiManager(QMainWindow, form_class):
     # Radio button para agregar nuevos lotes
     def on_rbutton9_pressed(self):
         if self.click():
+            self.lotMutex1 = False
             self.clearCB(self.cbox5)
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO2, False, self.lotsRO3)
@@ -1220,6 +1221,7 @@ class guiManager(QMainWindow, form_class):
     # Radio button para consultar lotes
     def on_rbutton10_pressed(self):
         if self.click():
+            self.lotMutex1 = False
             self.clearCB(self.cbox5)
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
@@ -1229,6 +1231,7 @@ class guiManager(QMainWindow, form_class):
     # Radio button para editar lotes
     def on_rbutton11_pressed(self):
         if self.click():
+            self.lotMutex1 = False
             self.clearCB(self.cbox5)
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO0, False)
@@ -1238,6 +1241,7 @@ class guiManager(QMainWindow, form_class):
     # Radio button para eliminar lotes
     def on_rbutton12_pressed(self):
         if self.click():
+            self.lotMutex1 = False
             self.clearCB(self.cbox5)
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
