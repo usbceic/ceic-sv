@@ -189,7 +189,7 @@ class guiManager(QMainWindow, form_class):
 
         self.calc1 = [self.calcLE0, self.calcLE1, self.calcLE2, self.calcLE3, self.calcLE4, self.calcLE5, self.calcLE6, self.calcLE7, self.calcLE8, self.calcLE9, self.calcLE10, self.calcLE11, self.calcLE12, self.calcLE13, self.calcLE14]
 
-        # LineEdits para solo números
+        # LineEdits para solo números reales
         self.cashOF = [self.lineE8, self.lineE9]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -211,11 +211,14 @@ class guiManager(QMainWindow, form_class):
         # Tablas de productos
         self.productTables = [self.table1, self.table2, self.table3]
 
-        # LineEdits para solo números
-        self.productsON0 = [self.lineE27]
-        self.productsON1 = [self.lineE28]
-        self.lotsOI = [self.lineE37, self.lineE38]
+        # LineEdits para solo números reales
         self.lotsOF = [self.lineE35]
+
+        # LineEdits para solo números enteros
+        self.lotsOI = [self.lineE37, self.lineE38]
+
+        self.productsOF0 = [self.lineE27]
+        self.productsOF1 = [self.lineE28]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE PROVEEDORES
@@ -247,7 +250,7 @@ class guiManager(QMainWindow, form_class):
         self.transfersLE2 = [self.lineE51, self.lineE156, self.lineE157]
         self.transfersLE3 = [self.lineE158]
 
-        # LineEdits para solo números
+        # LineEdits para solo números reales
         self.transfersOF = [self.lineE51, self.lineE158]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -283,6 +286,9 @@ class guiManager(QMainWindow, form_class):
         self.newItems     = [self.newItem0, self.newItem1, self.newItem2, self.newItem3, self.newItem4, self.newItem5, self.newItem6, self.newItem7, self.newItem8, self.newItem9]
         self.popularItems = [self.popularItem0, self.popularItem1, self.popularItem2, self.popularItem3, self.popularItem4, self.popularItem5, self.popularItem6, self.popularItem7, self.popularItem8, self.popularItem9]
 
+        # LineEdits para solo números reales
+        self.salesOF = [self.lineE22, self.lineE152]
+
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE CONFIGURACIONES
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -294,7 +300,7 @@ class guiManager(QMainWindow, form_class):
         self.confLE1 = [self.lineE88]
 
         # LineEdits para solo números
-        self.confON = [self.lineE88]
+        self.confOF = [self.lineE88]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # CARGAR CONFIGURACIONES INICIALES
@@ -542,17 +548,18 @@ class guiManager(QMainWindow, form_class):
 
         # Configurar los spin box
         if not self.rbutton7.isChecked():
-            self.setOnlyInteger(self.productsON0)
-            self.setAnyCharacter(self.productsON1)
+            self.setOnlyFloat(self.productsOF0)
+            self.setAnyCharacter(self.productsOF1)
 
         else:
-            self.setOnlyInteger(self.productsON1)
-            self.setAnyCharacter(self.productsON0)
+            self.setOnlyFloat(self.productsOF1)
+            self.setAnyCharacter(self.productsOF0)
 
         self.setOnlyInteger(self.lotsOI)
         self.setOnlyFloat(self.lotsOF)
-        self.setOnlyFloat(self.confON)
+        self.setOnlyFloat(self.confOF)
         self.setOnlyFloat(self.transfersOF)
+        self.setOnlyFloat(self.salesOF)
         self.setOnlyFloat(self.cashOF)
         self.setupSpinLines(self.spinBox)
         self.add0.setAutoRepeat(True)
@@ -792,12 +799,12 @@ class guiManager(QMainWindow, form_class):
                 name = day.description                                  # Obtener nombre del día
                 startDate = day.recorded                                # Obtener fecha de inicio del día
                 dayBank = self.db.getBalance(startDate)[1]              # Obtener dinero en efectivo y en banco ganado en la fecha
-                self.lineE0.setText("Abierta")                          # Cambiar el campo de estado a Abierta
+                #self.lineE0.setText("Abierta")                          # Cambiar el campo de estado a Abierta
                 self.lineE2.setText(str(cash))                          # Actualizar campo de efectivo
                 self.lineE3.setText(str(dayBank))                       # Actualizar campo de banco
 
             else:
-                self.lineE0.setText("Cerrada")                          # Cambiar el campo de estado a Cerrada
+                #self.lineE0.setText("Cerrada")                          # Cambiar el campo de estado a Cerrada
                 self.setPage(self.subStacked1, 0)                       # Cambiar a la página para abrir un día
                 self.clearLEs(self.cashLE0)                             # Limpiar los campos de caja
 
@@ -1166,8 +1173,8 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO2)
             self.text64.setText("Nombre")
             self.resetProductImage(self.selectedItem1)
-            self.setOnlyInteger(self.productsON0)
-            self.setAnyCharacter(self.productsON1)
+            self.setOnlyFloat(self.productsOF0)
+            self.setAnyCharacter(self.productsOF1)
 
     # Radio button para consultar productos
     def on_rbutton6_pressed(self):
@@ -1177,8 +1184,8 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1)
             self.text64.setText("Buscar")
             self.resetProductImage(self.selectedItem1)
-            self.setOnlyInteger(self.productsON0)
-            self.setAnyCharacter(self.productsON1)
+            self.setOnlyFloat(self.productsOF0)
+            self.setAnyCharacter(self.productsOF1)
 
     # Radio button para editar productos
     def on_rbutton7_pressed(self):
@@ -1187,8 +1194,8 @@ class guiManager(QMainWindow, form_class):
             self.clearLEs(self.productsRO0)
             self.changeRO(self.productsRO1, listaLE1 = self.productsRO3)
             self.resetProductImage(self.selectedItem1)
-            self.setOnlyInteger(self.productsON1)
-            self.setAnyCharacter(self.productsON0)
+            self.setOnlyFloat(self.productsOF1)
+            self.setAnyCharacter(self.productsOF0)
 
     # Radio button para eliminar productos
     def on_rbutton8_pressed(self):
@@ -1198,8 +1205,8 @@ class guiManager(QMainWindow, form_class):
             self.changeRO(self.productsRO1)
             self.text64.setText("Nombre")
             self.resetProductImage(self.selectedItem1)
-            self.setOnlyInteger(self.productsON0)
-            self.setAnyCharacter(self.productsON1)
+            self.setOnlyFloat(self.productsOF0)
+            self.setAnyCharacter(self.productsOF1)
 
     # Radio button para agregar nuevos lotes
     def on_rbutton9_pressed(self):
@@ -1576,7 +1583,7 @@ class guiManager(QMainWindow, form_class):
     # Método para refrescar la vista del Ventas y elementos relacionados
     def refreshSales(self):
         # Configurar restricciones de los LineEdit en la vista de ventas
-        self.setupSalesLE()
+        #self.setupSalesLE()
 
         # Setear variables de control
         self.selectedProductRemaining = {}
@@ -1973,7 +1980,7 @@ class guiManager(QMainWindow, form_class):
                         if balance < cota:
                             cota = balance
 
-                        self.lineE152.setValidator(QIntValidator(0, cota))
+                        #self.lineE152.setValidator(QIntValidator(0, cota))
                         if self.lineE152.text() != "":
                             saldo = float(self.lineE152.text())
                             if saldo > cota:
@@ -1981,13 +1988,13 @@ class guiManager(QMainWindow, form_class):
 
                 else:
                     self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
-                    self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
+                    #self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
             else:
                 self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
-                self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
+                #self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
 
     # LineEdit para ingresar el total a pagar
-    def on_lineE21_textChanged(self):
+    """def on_lineE21_textChanged(self):
         if self.textChanged():
             if self.lineE21.text() != "":
                 total = float(self.lineE21.text())
@@ -1997,90 +2004,105 @@ class guiManager(QMainWindow, form_class):
                 if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
                 else: efectivo = 0
 
-                cota1 = total - efectivo
-
-                if self.lineE17.text() != "":
-                    ci = int(self.lineE17.text())
-                    if self.db.existClient(ci):
-                        balance = self.db.getClients(ci)[0].balance
-
-                        if balance >= 0:
-                            if balance < cota1:
-                                cota1 = balance
-
-                        else: cota1 = 0
-                    else: cota1 = 0
-                else: cota1 = 0
-
-                self.lineE152.setValidator(QIntValidator(0, cota1))
-                if self.lineE152.text() != "":
-                    saldo = float(self.lineE152.text())
-
-                    if saldo > cota1:
-                        self.lineE152.setText(str(cota1))
-
                 if self.lineE152.text() != "": saldo = float(self.lineE152.text())
                 else: saldo = 0
 
-                cota2 = total - saldo
+                if efectivo > total:
+                    self.lineE22.setText(str(total))
+                    self.lineE152.setText("0")
 
-                self.lineE22.setValidator(QIntValidator(0, cota2))
-                if self.lineE22.text() != "":
-                    efectivo = float(self.lineE22.text())
+                elif saldo > total:
+                    self.lineE152.setText(str(total))
+                    self.lineE22.setText("0")
 
-                    if efectivo > cota2:
-                        self.lineE22.setText(str(cota2))
+                else:
+                    cota1 = total - efectivo
+
+                    if self.lineE17.text() != "":
+                        ci = int(self.lineE17.text())
+                        if self.db.existClient(ci):
+                            balance = self.db.getClients(ci)[0].balance
+
+                            if balance >= 0:
+                                if balance < cota1:
+                                    cota1 = balance
+
+                            else: cota1 = 0
+                        else: cota1 = 0
+                    else: cota1 = 0
+
+                    if self.lineE152.text() != "":
+                        saldo = float(self.lineE152.text())
+
+                        if saldo > cota1:
+                            self.lineE152.setText(str(cota1))
+
+                    cota2 = total - saldo
+                    if self.lineE22.text() != "":
+                        efectivo = float(self.lineE22.text())
+
+                        if efectivo > cota2:
+                            self.lineE22.setText(str(cota2))
 
             else:
-                self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
-                self.lineE22.setValidator(QIntValidator(0, 0))  # Establecer limite de efectivo para pagar
+                self.lineE152.setText("0")
+                self.lineE22.setText("0")"""
 
     # LineEdit para ingresar el monto a pagar en efectivo
     def on_lineE22_textChanged(self):
         if self.textChanged():
             if self.lineE21.text() != "":
                 total = float(self.lineE21.text())
-                cota = total
 
                 if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
                 else: efectivo = 0
 
-                cota = total - efectivo
-                if self.lineE17.text() != "":
-                    ci = int(self.lineE17.text())
-                    if self.db.existClient(ci):
-                        balance = self.db.getClients(ci)[0].balance
+                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+                else: saldo = 0
 
-                        if balance < cota:
-                            cota = balance
+                if efectivo + saldo > total:
 
-                    else: cota = 0
-                else: cota = 0
+                    if efectivo > total:
+                        efectivo = total
+                        self.lineE22.setText(str(efectivo))
 
-                self.lineE152.setValidator(QIntValidator(0, cota))
-                if self.lineE152.text() != "":
-                    saldo = float(self.lineE152.text())
+                    if saldo > total - efectivo:
+                        self.lineE152.setText(str(total - efectivo))
 
-                    if saldo > cota:
-                        self.lineE152.setText(str(cota))
+            else: self.lineE22.setText("")
 
     # LineEdit para ingresar el monto a pagar con saldo
     def on_lineE152_textChanged(self):
         if self.textChanged():
             if self.lineE21.text() != "":
-                total = float(self.lineE21.text())
-                cota = total
-                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
-                else: saldo = 0
+                if self.lineE17.text() != "":
+                    ci = int(self.lineE17.text())
+                    if self.db.existClient(ci):
+                        balance = self.db.getClients(ci)[0].balance
 
-                cota = total - saldo
+                        if balance > 0:
 
-                self.lineE22.setValidator(QIntValidator(0, cota))
-                if self.lineE22.text() != "":
-                    efectivo = float(self.lineE22.text())
+                            total = float(self.lineE21.text())
 
-                    if efectivo > cota:
-                        self.lineE22.setText(str(cota))
+                            if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+                            else: saldo = 0
+
+                            if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                            else: efectivo = 0
+
+                            if saldo > min(saldo, balance, total):
+                                saldo = min(saldo, balance, total)
+                                self.lineE152.setText(str(saldo))
+
+                            if efectivo + saldo > total:
+
+                                if efectivo > total - saldo:
+                                    self.lineE22.setText(str(total - saldo))
+
+                        else: self.lineE152.setText("")
+                    else: self.lineE152.setText("")
+                else: self.lineE152.setText("")
+            else: self.lineE152.setText("")
 
     # LineEdit para ingresar el nombre del producto seleccionado
     def on_lineE23_textChanged(self):
