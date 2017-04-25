@@ -2082,18 +2082,40 @@ class guiManager(QMainWindow, form_class):
                         if balance < cota:
                             cota = balance
 
-                        #self.lineE152.setValidator(QIntValidator(0, cota))
                         if self.lineE152.text() != "":
                             saldo = float(self.lineE152.text())
                             if saldo > cota:
                                 self.lineE152.setText(str(cota))
 
                 else:
-                    self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
-                    #self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
+                    self.clearLEs(self.salesClientLE0)          # Limpiar lineEdits del apartado
             else:
                 self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
-                #self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
+
+    # LineEdit para mostrar el total a pagar
+    def on_lineE21_textChanged(self):
+        if self.textChanged():
+            if self.lineE21.text() != "":
+                total = float(self.lineE21.text())
+
+                if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                else: efectivo = 0
+
+                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+                else: saldo = 0
+
+                if efectivo + saldo > total:
+
+                    if efectivo > total:
+                        efectivo = total
+                        self.lineE22.setText(str(efectivo))
+
+                    if saldo > total - efectivo:
+                        self.lineE152.setText(str(total - efectivo))
+
+            else:
+                self.lineE22.setText("")
+                self.lineE152.setText("")
 
     # LineEdit para ingresar el monto a pagar en efectivo
     def on_lineE22_textChanged(self):
@@ -2515,7 +2537,7 @@ class guiManager(QMainWindow, form_class):
                 popUp = authorizationPopUp(parent=self)
                 if popUp.exec_():
                     adminUsername, adminPassword = popUp.getValues()
-                    if (adminUsername and adminPassword) != None: 
+                    if (adminUsername and adminPassword) != None:
                         if self.db.checkPassword(adminUsername, adminPassword):
                             userRange = self.db.getUserRange(adminUsername)
                             if userRange == "Administrador" or userRange == "Dios":
