@@ -2678,7 +2678,10 @@ class guiManager(QMainWindow, form_class):
                     if pay_type == "Efectivo":
                         if self.lineE158.text() != "":
                             amount = float(self.lineE158.text())
-                            self.db.createDeposit(ci, self.user, amount)
+                            if self.db.createDeposit(ci, self.user, amount):        # Crear depósito
+                                successPopUp(parent = self).exec_()
+                            else:
+                                errorPopUp(parent = self).exec_()
                             self.refreshTransfers()
                             self.lineE47.setFocus()
                         else:
@@ -2692,6 +2695,10 @@ class guiManager(QMainWindow, form_class):
                             confirmation_code = self.lineE157.text()
                             description = self.textE7.toPlainText()
                             self.db.createTransfer(ci, self.user, amount, bank, confirmation_code, description)
+                            if self.db.createTransfer(ci, self.user, amount, bank, confirmation_code, description):        # Crear transferencia
+                                successPopUp(parent = self).exec_()
+                            else:
+                                errorPopUp(parent = self).exec_()
                             self.refreshTransfers()
                             self.lineE47.setFocus()
                         else:
