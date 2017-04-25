@@ -2614,8 +2614,9 @@ class guiManager(QMainWindow, form_class):
     # Boton aceptar para hacer una recarga de saldo
     def on_pbutton15_pressed(self):
         if self.click():
-            if self.lineE47.text() != "":
-                ci = int(self.lineE47.text())
+            ci = self.lineE47.text()
+            if ci != "":
+                ci = int(ci)
                 if self.db.existClient(ci):
                     pay_type = self.cbox7.currentText()
 
@@ -2626,6 +2627,8 @@ class guiManager(QMainWindow, form_class):
                             self.db.createDeposit(ci, self.user, amount)
                             self.refreshTransfers()
                             self.lineE47.setFocus()
+                        else:
+                            errorPopUp("Debe ingresar monto a recargar",self).exec_()
 
                     # Modo de recarga con transferencia
                     else:
@@ -2637,6 +2640,12 @@ class guiManager(QMainWindow, form_class):
                             self.db.createTransfer(ci, self.user, amount, bank, confirmation_code, description)
                             self.refreshTransfers()
                             self.lineE47.setFocus()
+                        else:
+                            errorPopUp("Faltan datos",self).exec_()
+                else:
+                    errorPopUp("Cliente no existente",self).exec_()
+            else:
+                errorPopUp("Cédula requerida",self).exec_()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
