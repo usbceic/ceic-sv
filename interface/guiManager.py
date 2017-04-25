@@ -2481,6 +2481,27 @@ class guiManager(QMainWindow, form_class):
             else:
                 errorPopUp("Número de cédula no específicado", self).exec_()
 
+            if flag:
+                popUp = authorizationPopUp(parent=self)
+                if popUp.exec_():
+                    adminUsername, adminPassword = popUp.getValues()
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
+                            if self.db.updateClient(**kwargs):      # Crear cliente
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                errorPopUp(parent = self).exec_()
+
+                            self.clearLEs(self.clientsLE1) # Limpiar formulario
+                            self.refreshClients()          # Refrescar vista
+                            self.lineE57.setFocus()        # Enfocar
+                        else:
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                    else:
+                        errorPopUp("Datos incorrectos", self).exec_()
+
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
