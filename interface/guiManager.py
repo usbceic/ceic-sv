@@ -2433,25 +2433,61 @@ class guiManager(QMainWindow, form_class):
     # Botón para crear un cliente
     def on_pbutton17_pressed(self):
         if self.click():
-            if self.lineE52.text() != "":
-                ci = int(self.lineE52.text())
+            ci        = self.lineE52.text()
+            firstname = self.lineE53.text()
+            lastname  = self.lineE54.text()
+            phone     = self.lineE55.text()
+            email     = self.lineE56.text()
+            flag = False
+            if (ci and firstname and lastname) != "":
+                ci = int(ci)
                 if not self.db.existClient(ci):
-                    if self.lineE53.text() != "":
-                        if self.lineE54.text() != "":
 
-                            debt = (self.cbox10.currentText() == "Permitir")
-                            book = (self.cbox11.currentText() == "Permitir")
+                    if validateName(firstname):
 
-                            kwargs = {
-                                "ci"              : ci,
-                                "firstname"       : self.lineE53.text(),
-                                "lastname"        : self.lineE54.text(),
-                                "phone"           : self.lineE55.text(),
-                                "email"           : self.lineE56.text(),
-                                "debt_permission" : debt,
-                                "book_permission" : book
-                            }
+                        if validateName(lastname):
 
+                            if (phone != "" and validatePhoneNumber(phone)) or phone == "":
+
+                                if (email != "" and validateEmail(email)) or email == "":
+
+                                    debt = (self.cbox10.currentText() == "Permitir")
+                                    book = (self.cbox11.currentText() == "Permitir")
+                                    kwargs = {
+                                        "ci"              : ci,
+                                        "firstname"       : firstname,
+                                        "lastname"        : lastname,
+                                        "phone"           : phone,
+                                        "email"           : email,
+                                        "debt_permission" : debt,
+                                        "book_permission" : book
+                                    }
+                                    flag = True
+                                else:
+                                    errorPopUp("Formato de correo no válido",self).exec_()
+
+                            else:
+                                errorPopUp("Formato de teléfono no válido",self).exec_()
+
+                        else:
+                            errorPopUp("Formato de apellido no válido", self).exec_()
+
+                    else:
+                        errorPopUp("Formato de nombre no válido", self).exec_()
+
+                else:
+                    errorPopUp("Número de cédula previamente registrado", self).exec_()
+
+            else:
+                errorPopUp("Datos obligatorios: CI,Nombre y Apellido", self).exec_()
+
+            if flag:
+                popUp = authorizationPopUp(parent=self)
+                if popUp.exec_():
+                    adminUsername, adminPassword = popUp.getValues()
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
                             if self.db.createClient(**kwargs): # Crear cliente
                                 successPopUp(parent = self).exec_()
 
@@ -2461,41 +2497,78 @@ class guiManager(QMainWindow, form_class):
                             self.clearLEs(self.clientsLE0) # Limpiar formulario
                             self.refreshClients()          # Refrescar vista
                             self.lineE52.setFocus()        # Enfocar
-
                         else:
-                            warningPopUp("Apellido no específicado", self).exec_()
-
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                     else:
-                        warningPopUp("Nombre no específicado", self).exec_()
+                        errorPopUp("Datos incorrectos", self).exec_()
 
-                else:
-                    errorPopUp("Número de cédula previamente registrado", self).exec_()
+    #Botón para cancelar creación de cliente
+    def on_cancelpb16_pressed(self):
+        self.clearLEs(self.clientsLE0)
+        self.clearLEs(self.clientsLE1)
+        self.clearLEs(self.clientsLE2)
+        self.setFocus(self.lineE52)
 
-            else:
-                warningPopUp("Número de cédula no específicado", self).exec_()
 
     # Botón para editar un cliente
     def on_pbutton19_pressed(self):
         if self.click():
-            if self.lineE57.text() != "":
-                ci = int(self.lineE57.text())
+            ci        = self.lineE57.text()
+            firstname = self.lineE58.text()
+            lastname  = self.lineE59.text()
+            phone     = self.lineE60.text()
+            email     = self.lineE61.text()
+            flag = False
+            if ci != "":
+                ci = int(ci)
                 if self.db.existClient(ci):
-                    if self.lineE58.text() != "":
-                        if self.lineE59.text() != "":
+                    if validateName(firstname):
 
-                            debt = (self.cbox12.currentText() == "Permitir")
-                            book = (self.cbox13.currentText() == "Permitir")
+                        if validateName(lastname):
 
-                            kwargs = {
-                                "ciOriginal" : ci,
-                                "firstname"  : self.lineE58.text(),
-                                "lastname"   : self.lineE59.text(),
-                                "phone"      : self.lineE60.text(),
-                                "email"      : self.lineE61.text(),
-                                "debt_permission" : debt,
-                                "book_permission" : book
-                            }
+                            if (phone != "" and validatePhoneNumber(phone)) or phone == "":
 
+                                if (email != "" and validateEmail(email)) or email == "":
+
+                                    debt = (self.cbox12.currentText() == "Permitir")
+                                    book = (self.cbox13.currentText() == "Permitir")
+
+                                    kwargs = {
+                                        "ciOriginal" : ci,
+                                        "firstname"  : firstname,
+                                        "lastname"   : lastname,
+                                        "phone"      : phone,
+                                        "email"      : email,
+                                        "debt_permission" : debt,
+                                        "book_permission" : book
+                                    }
+                                    flag = True
+
+                                else:
+                                    errorPopUp("Formato de correo no válido",self).exec_()
+
+                            else:
+                                errorPopUp("Formato de teléfono no válido",self).exec_()
+
+                        else:
+                            errorPopUp("Formato de apellido no válido", self).exec_()
+
+                    else:
+                        errorPopUp("Formato de nombre no válido", self).exec_()
+
+                else:
+                    errorPopUp("Número de cédula no registrado", self).exec_()
+
+            else:
+                errorPopUp("Número de cédula no específicado", self).exec_()
+
+            if flag:
+                popUp = authorizationPopUp(parent=self)
+                if popUp.exec_():
+                    adminUsername, adminPassword = popUp.getValues()
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
                             if self.db.updateClient(**kwargs):      # Crear cliente
                                 successPopUp(parent = self).exec_()
 
@@ -2505,18 +2578,18 @@ class guiManager(QMainWindow, form_class):
                             self.clearLEs(self.clientsLE1) # Limpiar formulario
                             self.refreshClients()          # Refrescar vista
                             self.lineE57.setFocus()        # Enfocar
-
                         else:
-                            warningPopUp("Apellido no específicado", self).exec_()
-
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                     else:
-                        warningPopUp("Nombre no específicado", self).exec_()
+                        errorPopUp("Datos incorrectos", self).exec_()
 
-                else:
-                    errorPopUp("Número de cédula no registrado", self).exec_()
+    #Botón para cancelar creación de cliente
+    def on_cancelpb17_pressed(self):
+        self.clearLEs(self.clientsLE0)
+        self.clearLEs(self.clientsLE1)
+        self.clearLEs(self.clientsLE2)
+        self.setFocus(self.lineE57)
 
-            else:
-                warningPopUp("Número de cédula no específicado", self).exec_()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
@@ -2595,8 +2668,9 @@ class guiManager(QMainWindow, form_class):
     # Boton aceptar para hacer una recarga de saldo
     def on_pbutton15_pressed(self):
         if self.click():
-            if self.lineE47.text() != "":
-                ci = int(self.lineE47.text())
+            ci = self.lineE47.text()
+            if ci != "":
+                ci = int(ci)
                 if self.db.existClient(ci):
                     pay_type = self.cbox7.currentText()
 
@@ -2607,6 +2681,8 @@ class guiManager(QMainWindow, form_class):
                             self.db.createDeposit(ci, self.user, amount)
                             self.refreshTransfers()
                             self.lineE47.setFocus()
+                        else:
+                            errorPopUp("Debe ingresar monto a recargar",self).exec_()
 
                     # Modo de recarga con transferencia
                     else:
@@ -2618,6 +2694,20 @@ class guiManager(QMainWindow, form_class):
                             self.db.createTransfer(ci, self.user, amount, bank, confirmation_code, description)
                             self.refreshTransfers()
                             self.lineE47.setFocus()
+                        else:
+                            errorPopUp("Faltan datos",self).exec_()
+                else:
+                    errorPopUp("Cliente no existente",self).exec_()
+            else:
+                errorPopUp("Cédula requerida",self).exec_()
+
+    #Boton de cancelar de recarga de saldo
+    def on_cancelpb15_pressed(self):
+        self.clearLEs(self.transfersLE0)
+        self.clearLEs(self.transfersLE1)
+        self.clearLEs(self.transfersLE2)
+        self.clearLEs(self.transfersLE3)
+        self.setFocus(self.lineE47)
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
@@ -2758,6 +2848,13 @@ class guiManager(QMainWindow, form_class):
                     else:
                         errorPopUp("Datos incorrectos", self).exec_()
 
+    #Botón para cancelar creación de usuario
+    def on_cancelpb18_pressed(self):
+        self.clearLEs(self.usersLE0)
+        self.clearLEs(self.usersLE1)
+        self.clearLEs(self.usersLE2)
+        self.setFocus(self.lineE69)
+
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
         if self.click():
@@ -2783,7 +2880,7 @@ class guiManager(QMainWindow, form_class):
                     if self.db.checkPassword(adminUsername, adminPassword):
                         userRange = self.db.getUserRange(adminUsername)
                         if userRange == "Administrador" or userRange == "Dios":
-                            if self.db.updateUserRange(**newRangeInfo):    # Actualizar cliente
+                            if self.db.updateUserRange(**newRangeInfo):    # Actualizar usuario
                                 successPopUp(parent = self).exec_()
 
                             else:
@@ -2795,6 +2892,13 @@ class guiManager(QMainWindow, form_class):
                             errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                     else:
                         errorPopUp("Datos incorrectos", self).exec_()
+
+    #Botón para cancelar edición de usuario
+    def on_cancelpb18_pressed(self):
+        self.clearLEs(self.usersLE0)
+        self.clearLEs(self.usersLE1)
+        self.clearLEs(self.usersLE2)
+        self.setFocus(self.lineE75)
 
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
