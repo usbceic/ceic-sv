@@ -1434,7 +1434,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -5156,7 +5156,7 @@ QWidget:item:unchecked {
                            <set>Qt::AlignCenter</set>
                           </property>
                           <property name="readOnly">
-                           <bool>true</bool>
+                           <bool>false</bool>
                           </property>
                          </widget>
                         </item>

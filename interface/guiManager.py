@@ -421,11 +421,13 @@ class guiManager(QMainWindow, form_class):
 
     # Método para setear en 0 una lista spinLine
     def clearSpinLines(self, listSL):
-        for spinL in listSL: spinL.setText("0")
+        for spinL in listSL: self.clearSpinLine(spinL)
 
     # Método para setear en 0 un spinLine
     def clearSpinLine(self, spinL):
         spinL.setText("0")
+        self.add0.setEnabled(False)
+        self.substract0.setEnabled(False)
 
     # Obtener una lista con los nombres de todos los productos
     def getProductList(self, params, mode = 0):
@@ -561,7 +563,9 @@ class guiManager(QMainWindow, form_class):
         self.setOnlyFloat(self.transfersOF)
         self.setOnlyFloat(self.salesOF)
         self.setOnlyFloat(self.cashOF)
-        self.setupSpinLines(self.spinBox)
+        self.setOnlyFloat(self.spinBox)
+        self.add0.setEnabled(False)
+        self.substract0.setEnabled(False)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
 
@@ -1919,7 +1923,7 @@ class guiManager(QMainWindow, form_class):
     def on_pbutton7_pressed(self):
         if self.click():
             if self.lineE17.text() != "":
-                if self.lineE21.text() != "":
+                if len(self.selectedProducts) > 0:
                     ci = int(self.lineE17.text())
                     if  self.db.existClient(ci):
                         total = float(self.lineE21.text())
@@ -2045,7 +2049,6 @@ class guiManager(QMainWindow, form_class):
             self.selectedProductName = ""
             self.clearLEs(self.selectedProductLE1)
             self.clearSpinLine(self.spinLine0)
-            self.setupSpinLines(self.spinBox)
             self.resetProductImage(self.selectedItem0)
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2152,38 +2155,48 @@ class guiManager(QMainWindow, form_class):
     def on_lineE23_textChanged(self):
         if self.textChanged():
             product_name = self.lineE23.text()
-            if self.db.existProduct(product_name):
-                product = self.db.getProductByNameOrID(product_name)[0]
-                self.lineE24.setText(str(product.price))
-                self.selectedProductName = product_name
-                amount = "0"
+            if product_name != "":
+                if self.db.existProduct(product_name):
+                    product = self.db.getProductByNameOrID(product_name)[0]
+                    self.lineE24.setText(str(product.price))
+                    self.selectedProductName = product_name
+                    amount = "0"
 
-                if product_name in self.selectedProducts:
-                    # Actualizar cantidad
-                    amount = self.table11.selectedItems()[2].text()
+                    if product_name in self.selectedProducts:
+                        # Actualizar cantidad
+                        amount = self.table11.selectedItems()[2].text()
 
-                    # Eliminar producto de la factura
-                    del self.selectedProducts[product_name]
+                        # Eliminar producto de la factura
+                        del self.selectedProducts[product_name]
 
-                    # Recalcular elementos en la factura
-                    selectedList = []
-                    for key, value in self.selectedProducts.items():
-                        selectedList.append([key, value[0], value[1], value[2]])
+                        # Recalcular elementos en la factura
+                        selectedList = []
+                        for key, value in self.selectedProducts.items():
+                            selectedList.append([key, value[0], value[1], value[2]])
 
-                    # Refrescar factura
-                    self.updateInvoiceTable(self.table11, selectedList)
-                    self.setupTable(self.table11)
+                        # Refrescar factura
+                        self.updateInvoiceTable(self.table11, selectedList)
+                        self.setupTable(self.table11)
 
-                self.selectedProductRemaining[product_name] = product.remaining
-                self.spinLine0.setValidator(QIntValidator(0, product.remaining))
-                self.selectedItem0.setIcon(QIcon(join(productPath, product_name)))
-                self.spinLine0.setText(amount)
+                    self.selectedProductRemaining[product_name] = product.remaining
+                    self.selectedItem0.setIcon(QIcon(join(productPath, product_name)))
+                    if product.remaining > 0: self.add0.setEnabled(True)
+                    self.spinLine0.setText(amount)
+
+                else:
+                    self.selectedProductName = ""
+                    self.clearLEs(self.selectedProductLE0)
+                    self.clearSpinLine(self.spinLine0)
+                    self.substract0.setEnabled(False)
+                    self.add0.setEnabled(False)
+                    self.resetProductImage(self.selectedItem0)
 
             else:
                 self.selectedProductName = ""
                 self.clearLEs(self.selectedProductLE0)
                 self.clearSpinLine(self.spinLine0)
-                self.setupSpinLines(self.spinBox)
+                self.substract0.setEnabled(False)
+                self.add0.setEnabled(False)
                 self.resetProductImage(self.selectedItem0)
 
     # LineEdit para ingresar nombres de los productos
@@ -2195,14 +2208,31 @@ class guiManager(QMainWindow, form_class):
                     if self.spinLine0.text() != "": count = int(self.spinLine0.text())
                     else: count = 0
 
-                    self.lineE25.setText(str(((count)*float(self.lineE24.text()))))
+                    if count == 0:
+                        self.substract0.setEnabled(False)
+                        if self.selectedProductRemaining[self.selectedProductName] == 0 or self.selectedProductName == "":
+                            self.add0.setEnabled(False)
 
-                    if count == 0: self.substract0.setEnabled(False)
                     elif 0 < count < self.selectedProductRemaining[self.selectedProductName]:
                         self.add0.setEnabled(True)
                         self.substract0.setEnabled(True)
+
                     else:
+                        if count > self.selectedProductRemaining[self.selectedProductName]:
+                            count = self.selectedProductRemaining[self.selectedProductName]
+                            self.spinLine0.setText(str(count))
                         self.add0.setEnabled(False)
+                        self.substract0.setEnabled(True)
+
+                    self.lineE25.setText(str(((count)*float(self.lineE24.text()))))
+
+                else:
+                    self.substract0.setEnabled(False)
+                    self.add0.setEnabled(False)
+
+            else:
+                self.substract0.setEnabled(False)
+                self.add0.setEnabled(False)
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # TABLAS
