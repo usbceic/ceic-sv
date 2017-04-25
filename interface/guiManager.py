@@ -176,9 +176,9 @@ class guiManager(QMainWindow, form_class):
         # LISTAS PARA LA VISTA DE CAJA
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        # Apartado de Caja
-        self.cashLE0 = [self.lineE2, self.lineE3]
-        self.cashLE1 = [self.lineE2, self.lineE3, self.lineE15]
+        # Apartado de Caja y Periodo
+        self.cashLE0 = [self.lineE2, self.lineE3, self.lineE4]
+        self.cashLE1 = [self.lineE1, self.lineE2, self.lineE3, self.lineE4, self.lineE6, self.lineE15]
 
         # Apartado de movimientos
         self.cashLE2 = [self.lineE8]
@@ -190,7 +190,7 @@ class guiManager(QMainWindow, form_class):
         self.calc1 = [self.calcLE0, self.calcLE1, self.calcLE2, self.calcLE3, self.calcLE4, self.calcLE5, self.calcLE6, self.calcLE7, self.calcLE8, self.calcLE9, self.calcLE10, self.calcLE11, self.calcLE12, self.calcLE13, self.calcLE14]
 
         # LineEdits para solo números reales
-        self.cashOF = [self.lineE8, self.lineE9]
+        self.cashOF = [self.lineE1, self.lineE4, self.lineE6, self.lineE8, self.lineE9]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE INVENTARIO
@@ -799,12 +799,10 @@ class guiManager(QMainWindow, form_class):
                 name = day.description                                  # Obtener nombre del día
                 startDate = day.recorded                                # Obtener fecha de inicio del día
                 dayBank = self.db.getBalance(startDate)[1]              # Obtener dinero en efectivo y en banco ganado en la fecha
-                #self.lineE0.setText("Abierta")                          # Cambiar el campo de estado a Abierta
                 self.lineE2.setText(str(cash))                          # Actualizar campo de efectivo
                 self.lineE3.setText(str(dayBank))                       # Actualizar campo de banco
 
             else:
-                #self.lineE0.setText("Cerrada")                          # Cambiar el campo de estado a Cerrada
                 self.setPage(self.subStacked1, 0)                       # Cambiar a la página para abrir un día
                 self.clearLEs(self.cashLE0)                             # Limpiar los campos de caja
 
@@ -840,48 +838,116 @@ class guiManager(QMainWindow, form_class):
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    # Boton para limpiar calculadora
-    def on_cancelpb24_pressed(self):
-        if self.click():
-            self.clearLEs(self.calc1)
-
     # Boton para abrir día
     def on_pbutton3_pressed(self):
         if self.click():
             if self.db.isOpenPeriod():
-                description = self.cbox2.currentText()
-                self.db.startDay(self.user, description = description)
-                self.db.startTurn(self.user)
-                self.refreshCash()
+                if self.lineE4.text() != "":
 
-            elif not self.db.isOpenPeriod():
-                warningPopUp("Falta apertura de periodo", self).exec_()
+                    # Argumentos
+                    kwargs = {
+                        "clerk"          : self.user,
+                        "starting_cash"  : float(self.lineE4.text()),
+                        "starting_total" : float(self.lineE4.text()),
+                        "description"    : self.cbox2.currentText()
+                    }
+
+                    # Abrir Día
+                    if self.db.startDay(**kwargs) == (True, True):
+                        successPopUp(parent = self).exec_()
+                    else:
+                        errorPopUp("Error desconocido al intentar abrir el día", self).exec_()
+
+                    # Abrir turno
+                    if self.db.startTurn(self.user) != (True, True):
+                        errorPopUp("Error desconocido al intentar abrir el turno", self).exec_()
+
+                    # Refrescar la interfaz
+                    self.refreshCash()
+
+                else:
+                    warningPopUp("Debe especificar el efectivo para aperturar", self).exec_()
 
             else:
-                warningPopUp("Debe especificar el efectivo para aperturar", self).exec_()
+                warningPopUp("Falta apertura de periodo", self).exec_()
 
     # Boton para finalizar día
     def on_pbutton4_pressed(self):
         if self.click():
-            description = self.cbox3.currentText()
-            self.db.closeTurn(self.user)
-            self.db.closeDay(self.user, description = description)
+
+            # Argumentos
+            kwargs = {
+                "clerk"       : self.user,
+                "description" : self.cbox3.currentText()
+            }
+
+            # Cerrar turno
+            if not self.db.closeTurn(self.user):
+                errorPopUp("Error desconocido al intentar cerrar el turno", self).exec_()
+
+            # Cerrar día
+            if self.db.closeDay(**kwargs):
+                successPopUp(parent = self).exec_()
+            else:
+                errorPopUp("Error desconocido al intentar cerrar el día", self).exec_()
+
+            # Refrescar la interfaz
             self.refreshCash()
 
     # Boton para abrir periodo
     def on_pbutton5_pressed(self):
         if self.click():
             if self.lineE15.text() != "":
-                description = self.lineE15.text()
-                self.db.startPeriod(self.user, description=description)
-                self.refreshCash()
+                if self.lineE1.text() != "":
+                    if self.lineE6.text() != "":
+                        if self.db.getUserPermissionMask(self.user) > 1:
+
+                            # Argumentos
+                            kwargs = {
+                                "clerk"          : self.user,
+                                "starting_cash"  : float(self.lineE1.text()),
+                                "starting_total" : float(self.lineE1.text()) + float(self.lineE6.text()),
+                                "description"    : self.lineE15.text()
+                            }
+
+                            # Abrir periodo
+                            if self.db.startPeriod(**kwargs):
+                                successPopUp(parent = self).exec_()
+                            else:
+                                errorPopUp("Error desconocido al intentar abrir el periodo", self).exec_()
+
+                            # Refrescar la interfaz
+                            self.refreshCash()
+
+                        else:
+                            errorPopUp("No tiene permiso para realizar esta acción", self).exec_()
+
+                    else:
+                        warningPopUp("Falta específicar dinero inicial en banco", self).exec_()
+
+                else:
+                    warningPopUp("Falta específicar dinero inicial en efectivo", self).exec_()
+
+            else:
+                warningPopUp("Falta específicar un nombre", self).exec_()
 
     # Boton para finalizar periodo
     def on_pbutton6_pressed(self):
         if self.click():
             if not self.db.isOpenDay():
-                self.db.closePeriod(self.user)
-                self.refreshCash()
+                if self.db.getUserPermissionMask(self.user) > 1:
+
+                    # Cerrar periodo
+                    if self.db.closePeriod(self.user):
+                        successPopUp(parent = self).exec_()
+                    else:
+                        errorPopUp("Error desconocido al intentar cerrar el periodo", self).exec_()
+
+                    # Refrescar la interfaz
+                    self.refreshCash()
+
+                else:
+                    errorPopUp("No tiene permiso para realizar esta acción", self).exec_()
 
             else:
                 warningPopUp("Debe cerrar caja primero", self).exec_()
@@ -906,9 +972,21 @@ class guiManager(QMainWindow, form_class):
                 # Modalidad para registrar ingresos
                 if self.rbutton0.isChecked():
                     if self.lineE8.text() != "":
-                        cash_balance = float(self.lineE8.text())
-                        description  = self.cbox21.currentText()
-                        if self.db.incomeOperation(self.user, cash_balance = cash_balance, description = description):
+
+                        # Argumentos
+                        kwargs = {"clerk" : self.user, "description" : self.cbox21.currentText()}
+
+                        # Modalidad de efectivo
+                        if self.cbox1.currentText() == "Efectivo":
+                            kwargs["cash_balance"] = float(self.lineE8.text())
+
+                        # Modalidad de banco
+                        else:
+                            kwargs["transfer_balance"] = float(self.lineE8.text())
+
+                        # Crear movimiento
+                        if self.db.incomeOperation(**kwargs):
+                            # Operación exitosa
                             successPopUp(parent = self).exec_()
 
                         # Operación fallida
@@ -924,9 +1002,21 @@ class guiManager(QMainWindow, form_class):
                 # Modalidad para registrar egresos
                 else:
                     if self.lineE9.text() != "":
-                        cash_balance = float(self.lineE9.text())
-                        description  = self.cbox23.currentText()
-                        if self.db.expenditureOperation(self.user, cash_balance = cash_balance, description = description):
+
+                        # Argumentos
+                        kwargs = {"clerk" : self.user, "description" : self.cbox23.currentText()}
+
+                        # Modalidad de efectivo
+                        if self.cbox1.currentText() == "Efectivo":
+                            kwargs["cash_balance"] = float(self.lineE9.text())
+
+                        # Modalidad de banco
+                        else:
+                            kwargs["transfer_balance"] = float(self.lineE9.text())
+
+                        # Crear movimiento
+                        if self.db.expenditureOperation(**kwargs):
+                            # Operación exitosa
                             successPopUp(parent = self).exec_()
 
                         # Operación fallida
@@ -946,6 +1036,11 @@ class guiManager(QMainWindow, form_class):
             # Si no hay día abierto
             else:
                 warningPopUp("Falta apertura de caja", self).exec_()
+
+    # Boton para limpiar calculadora
+    def on_cancelpb24_pressed(self):
+        if self.click():
+            self.clearLEs(self.calc1)
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
@@ -1996,61 +2091,6 @@ class guiManager(QMainWindow, form_class):
             else:
                 self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
                 #self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
-
-    # LineEdit para ingresar el total a pagar
-    """def on_lineE21_textChanged(self):
-        if self.textChanged():
-            if self.lineE21.text() != "":
-                total = float(self.lineE21.text())
-                cota1 = total
-                cota2 = total
-
-                if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
-                else: efectivo = 0
-
-                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
-                else: saldo = 0
-
-                if efectivo > total:
-                    self.lineE22.setText(str(total))
-                    self.lineE152.setText("0")
-
-                elif saldo > total:
-                    self.lineE152.setText(str(total))
-                    self.lineE22.setText("0")
-
-                else:
-                    cota1 = total - efectivo
-
-                    if self.lineE17.text() != "":
-                        ci = int(self.lineE17.text())
-                        if self.db.existClient(ci):
-                            balance = self.db.getClients(ci)[0].balance
-
-                            if balance >= 0:
-                                if balance < cota1:
-                                    cota1 = balance
-
-                            else: cota1 = 0
-                        else: cota1 = 0
-                    else: cota1 = 0
-
-                    if self.lineE152.text() != "":
-                        saldo = float(self.lineE152.text())
-
-                        if saldo > cota1:
-                            self.lineE152.setText(str(cota1))
-
-                    cota2 = total - saldo
-                    if self.lineE22.text() != "":
-                        efectivo = float(self.lineE22.text())
-
-                        if efectivo > cota2:
-                            self.lineE22.setText(str(cota2))
-
-            else:
-                self.lineE152.setText("0")
-                self.lineE22.setText("0")"""
 
     # LineEdit para ingresar el monto a pagar en efectivo
     def on_lineE22_textChanged(self):
