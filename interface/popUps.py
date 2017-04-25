@@ -212,6 +212,9 @@ class confirmationPopUp(QDialog, popUp3):
         # Configurar mensaje del popUp
         if message != None: self.dtitle0.setText(message)
 
+        # Valores por defecto de la variable a retornar
+        self.confirmation = False
+
         # Configurar resolucion del popUp
         self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
@@ -248,7 +251,6 @@ class confirmationPopUp(QDialog, popUp3):
     # Acción al presionar el botón de cancelar
     def on_dpbutton1_pressed(self):
         if self.click():
-            self.confirmation = False
             self.accept()
 
 ###################################################################################################################################################################################
@@ -268,6 +270,9 @@ class authorizationPopUp(QDialog, popUp4):
         # Crear y configurar los objetos del ui
         super(authorizationPopUp, self).__init__(parent)
         self.setupUi(self)
+
+        # Valores por defecto de las variables a retornar
+        self.value0, self.value1 = None, None
 
         # Configurar resolucion del popUp
         self.setMinimumSize(self.sizeHint())
@@ -294,11 +299,13 @@ class authorizationPopUp(QDialog, popUp4):
 
     # Función para retornar los valores de los lineEdit
     def getValues(self):
-        return self.dlineE0.text(), self.dlineE1.text()
+        return self.value0, self.value1
 
     # Acción al presionar el botón de continuar
     def on_dpbutton0_pressed(self):
         if self.click():
+            self.value0 = self.dlineE0.text()
+            self.value1 = self.dlineE1.text()
             self.accept()
 
     # Acción al presionar el botón de cancelar
