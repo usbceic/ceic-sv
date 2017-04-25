@@ -81,13 +81,13 @@
 }
 
 /*Configurar el estilo de los subStacked fuera de GropBox*/
-#subStacked2 {
+#subStacked2, #subStacked1 {
     border: 1px solid divider-color;
     padding: 0px;
 }
 
 /*Configurar el estilo de los subStacked dentro de GropBox*/
-#subStacked0, #subStacked1, #subStacked3, #subStacked4, #subStacked5, #subStacked6, #subStacked7, #subStacked8, #subStacked9, #subStacked10, #subStacked11, #subStacked12, #subStacked13, #subStacked14, #subStacked15, #subStacked16, #subStacked17, #subStacked18, #subStacked19, #subStacked20{
+#subStacked0, #subStacked3, #subStacked4, #subStacked5, #subStacked6, #subStacked7, #subStacked8, #subStacked9, #subStacked10, #subStacked11, #subStacked12, #subStacked13, #subStacked14, #subStacked15, #subStacked16, #subStacked17, #subStacked18, #subStacked19, #subStacked20{
     border: none;
     padding: -6px;
 }
