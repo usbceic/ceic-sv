@@ -2462,6 +2462,12 @@ class guiManager(QMainWindow, form_class):
                     else:
                         errorPopUp("Datos incorrectos", self).exec_()
 
+    #Botón para cancelar creación de cliente
+    def on_cancelpb16_pressed(self):
+        self.clearLEs(self.clientsLE0)
+        self.clearLEs(self.clientsLE1)
+        self.clearLEs(self.clientsLE2)
+        self.setFocus(self.lineE52)
 
 
     # Botón para editar un cliente
@@ -2536,6 +2542,14 @@ class guiManager(QMainWindow, form_class):
                             errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                     else:
                         errorPopUp("Datos incorrectos", self).exec_()
+
+    #Botón para cancelar creación de cliente
+    def on_cancelpb17_pressed(self):
+        self.clearLEs(self.clientsLE0)
+        self.clearLEs(self.clientsLE1)
+        self.clearLEs(self.clientsLE2)
+        self.setFocus(self.lineE57)
+
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
@@ -2646,6 +2660,14 @@ class guiManager(QMainWindow, form_class):
                     errorPopUp("Cliente no existente",self).exec_()
             else:
                 errorPopUp("Cédula requerida",self).exec_()
+
+    #Boton de cancelar de recarga de saldo
+    def on_cancelpb15_pressed(self):
+        self.clearLEs(self.transfersLE0)
+        self.clearLEs(self.transfersLE1)
+        self.clearLEs(self.transfersLE2)
+        self.clearLEs(self.transfersLE3)
+        self.setFocus(self.lineE47)
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
@@ -2786,6 +2808,13 @@ class guiManager(QMainWindow, form_class):
                     else:
                         errorPopUp("Datos incorrectos", self).exec_()
 
+    #Botón para cancelar creación de usuario
+    def on_cancelpb18_pressed(self):
+        self.clearLEs(self.usersLE0)
+        self.clearLEs(self.usersLE1)
+        self.clearLEs(self.usersLE2)
+        self.setFocus(self.lineE69)
+
     # Botón para editar un usuario
     def on_pbutton23_pressed(self):
         if self.click():
@@ -2823,6 +2852,13 @@ class guiManager(QMainWindow, form_class):
                             errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                     else:
                         errorPopUp("Datos incorrectos", self).exec_()
+
+    #Botón para cancelar edición de usuario
+    def on_cancelpb18_pressed(self):
+        self.clearLEs(self.usersLE0)
+        self.clearLEs(self.usersLE1)
+        self.clearLEs(self.usersLE2)
+        self.setFocus(self.lineE75)
 
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
