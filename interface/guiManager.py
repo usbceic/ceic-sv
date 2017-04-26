@@ -557,6 +557,7 @@ class guiManager(QMainWindow, form_class):
             self.setOnlyFloat(self.productsOF1)
             self.setAnyCharacter(self.productsOF0)
 
+        self.setOnlyInteger(self.calc1)
         self.setOnlyInteger(self.lotsOI)
         self.setOnlyFloat(self.lotsOF)
         self.setOnlyFloat(self.confOF)
@@ -827,7 +828,7 @@ class guiManager(QMainWindow, form_class):
                 self.calc0[i].setText("0")
                 self.calc1[i].setReadOnly(True)
 
-        self.setOnlyInteger(self.calc1)
+        self.clearLEs(self.calc1)
         self.setStyle(self.theme)
 
     # Método para realizar la suma en la calculadora
