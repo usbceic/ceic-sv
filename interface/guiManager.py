@@ -792,20 +792,20 @@ class guiManager(QMainWindow, form_class):
             period = self.db.getPeriodStartAndEnd()[0]                  # Obtener información del inicio del periodo
             name = period.description                                   # Obtener nombre del periodo
             startDate = period.recorded                                 # Obtener fecha de inicio del periodo
-            cash, bank = self.db.getBalance(startDate)                  # Obtener dinero en efectivo y en banco ganado durante el periodo
+            cash, bank = self.db.getBalance(lower_date=startDate)       # Obtener dinero en efectivo y en banco ganado durante el periodo
             self.lineE10.setText(name)                                  # Actualizar campo de nombre del periodo
             self.lineE11.setText(startDate.strftime(self.dtFormat))     # Actualizar campo de fecha de inicio
-            self.lineE13.setText(str(cash))                             # Actualizar campo de efectivo en periodo
-            self.lineE14.setText(str(bank))                             # Actualizar campo de banco en periodo
+            self.lineE13.setText(str(cash + period.cash_total))         # Actualizar campo de efectivo en periodo
+            self.lineE14.setText(str(bank + period.total_money - period.cash_total)) # Actualizar campo de banco en periodo
 
             if self.db.isOpenDay():
                 self.setPage(self.subStacked1, 1)                       # Cambiar a la página para ver y cerrar un dia
                 day = self.db.getDayStartAndEnd()[0]                    # Obtener información del inicio del día
                 name = day.description                                  # Obtener nombre del día
                 startDate = day.recorded                                # Obtener fecha de inicio del día
-                dayBank = self.db.getBalance(startDate)[1]              # Obtener dinero en efectivo y en banco ganado en la fecha
-                self.lineE2.setText(str(cash))                          # Actualizar campo de efectivo
-                self.lineE3.setText(str(dayBank))                       # Actualizar campo de banco
+                dayCash, dayBank = self.db.getBalance(lower_date=startDate) # Obtener dinero en efectivo y en banco ganado en la fecha
+                self.lineE2.setText(str(dayCash + day.cash_total))     	# Actualizar campo de efectivo
+                self.lineE3.setText(str(dayBank + day.total_money - day.cash_total)) # Actualizar campo de banco
 
             else:
                 self.setPage(self.subStacked1, 0)                       # Cambiar a la página para abrir un día
@@ -993,6 +993,8 @@ class guiManager(QMainWindow, form_class):
                         if self.db.incomeOperation(**kwargs):
                             # Operación exitosa
                             successPopUp(parent = self).exec_()
+                            # Refrescar
+                            self.refreshCash()
 
                         # Operación fallida
                         else:
@@ -1023,6 +1025,8 @@ class guiManager(QMainWindow, form_class):
                         if self.db.expenditureOperation(**kwargs):
                             # Operación exitosa
                             successPopUp(parent = self).exec_()
+                            # Refrescar
+                            self.refreshCash()
 
                         # Operación fallida
                         else:
