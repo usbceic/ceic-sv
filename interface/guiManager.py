@@ -2886,28 +2886,32 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             flag = False
 
-            username   = self.lineE69.text()
-            firstname  = self.lineE70.text()
-            lastname   = self.lineE71.text()
-            email      = self.lineE72.text()
-            password   = self.lineE73.text()
-            if (username and firstname and lastname and email and password) != "":
+            username         = self.lineE69.text()
+            firstname        = self.lineE70.text()
+            lastname         = self.lineE71.text()
+            email            = self.lineE72.text()
+            password         = self.lineE73.text()
+            passConfirmation = self.lineE74.text()
+            if (username and firstname and lastname and email and password and passConfirmation) != "":
                 if validateName(firstname):
                     if validateName(lastname):
                         if(validateEmail(email)):
-                            if not self.db.existUser(username):
-                                kwargs = {
-                                    "username"        : username,
-                                    "firstname"       : firstname,
-                                    "lastname"        : lastname,
-                                    "email"           : email,
-                                    "password"        : password,
-                                    "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
-                                }
-                                flag = True
+                            if password == passConfirmation:
+                                if not self.db.existUser(username):
+                                    kwargs = {
+                                        "username"        : username,
+                                        "firstname"       : firstname,
+                                        "lastname"        : lastname,
+                                        "email"           : email,
+                                        "password"        : password,
+                                        "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
+                                    }
+                                    flag = True
 
+                                else:
+                                    errorPopUp("El usuario "+username+" ya existe",self).exec_()
                             else:
-                                errorPopUp("El usuario "+username+" ya existe",self).exec_()
+                                errorPopUp("Las contraseñas no coinciden",self).exec_()
                         else:
                             errorPopUp("Formato incorrecto de correo",self).exec_()
                     else:
