@@ -1,11 +1,10 @@
-#!/usr/bin/python3
 # -*- encoding: utf-8 -*-
 
 ###################################################################################################################################################################################
 ## DESCRIPCIÓN:
 ###################################################################################################################################################################################
 
-# CEIC Suite
+# Modúlo con la implementación de la clase para construir una aplicación de Qt que solo permita ejecutar una instancia a la vez (singleton).
 
 ###################################################################################################################################################################################
 ## AUTORES:
@@ -14,35 +13,32 @@
 # Carlos Serrada, cserradag96@gmail.com
 
 ###################################################################################################################################################################################
-## PATH DE LA APLICACIÓN:
+## DEPENDENCIAS:
 ###################################################################################################################################################################################
 
-from sys import path       # Importación del path del sistema
-from os import getcwd      # Importación de la función para obtener el path actual
-from os.path import join   # Importación de función para unir paths con el formato del sistema
-
-# Agregar las rutas faltanes al path
-path.append(join(getcwd(), "models"))
-path.append(join(getcwd(), "interface"))
-path.append(join(getcwd(), "modules"))
-
-###################################################################################################################################################################################
-## MODÚLOS:
-###################################################################################################################################################################################
-
-from sys import argv, exit
+from sys import exit
 from QSingleton import QSingleton
+from sessionManager import sessionManager
+from PyQt4.QtCore import QTimer
 
 ###################################################################################################################################################################################
-## PROGRAMA PRINCIPAL:
+## DECLARACIÓN DEL SINGLETON:
 ###################################################################################################################################################################################
 
-if __name__ == '__main__':
+class CEICSuiteApp(QSingleton):
+    def __init__(self, argv, appID="epa2"):
+        super(CEICSuiteApp, self).__init__(argv)
 
-    CEICSuite = QSingleton('xddddd', argv)
-    if CEICSuite.isRunning(): exit(0)
-    CEICSuite.initCS()
+        self.setQuitOnLastWindowClosed(False)
+
+    def start(self):
+        self.sessionManager = sessionManager()
+        self.sessionManager.splash.show()
+        self.setActivationWindow(self.sessionManager)
+        QTimer.singleShot(5000, lambda: self.sessionManager.splash.hide())
+        QTimer.singleShot(5500, lambda: self.sessionManager.show())
+        return exit(self.exec_())
 
 ###################################################################################################################################################################################
 ## FIN :)
-###################################################################################################################################################################################
+##################################################################################################################################################################################
