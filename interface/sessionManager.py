@@ -88,7 +88,7 @@ class sessionManager(QMainWindow, loginWindow):
     # CONSTRUCTOR DE LA CLASE
     #==============================================================================================================================================================================
 
-    def __init__(self, parent=None):
+    def __init__(self, server, parent=None):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # INICIAR Y CONFIGURAR LA INSTANCIA
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ class sessionManager(QMainWindow, loginWindow):
         # CONECTAR E INICIAR EL ICONO DE LA BARRA DE NOTIFICACIONES
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        self.trayIcon = trayIcon(QIcon("interface/qt/images/logo.png"), self)   # Crear el icono de la barra de notificaciones
+        self.trayIcon = trayIcon(server, QIcon("interface/qt/images/logo.png"), self)   # Crear el icono de la barra de notificaciones
         self.trayIcon.show()                                                    # Mostrar el icono de la barra de notificaciones
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
