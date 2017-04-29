@@ -313,7 +313,7 @@ class sessionManager(QMainWindow, loginWindow):
             email      = self.lineEd5.text()
             password   = self.lineEd6.text()
             rePassword = self.lineEd7.text()
-            if (username and firstname and lastname and email and password) != "":
+            if (username and firstname and lastname and email and password and rePassword) != "":
                 if validateName(firstname):
                     if validateName(lastname):
                         if(validateEmail(email)):
@@ -345,16 +345,17 @@ class sessionManager(QMainWindow, loginWindow):
                 popUp = authorizationPopUp(parent=self)
                 if popUp.exec_():
                     adminUsername, adminPassword = popUp.getValues()
-                    if self.db.checkPassword(adminUsername, adminPassword):
-                        userRange = self.db.getUserRange(adminUsername)
-                        if userRange == "Administrador" or userRange == "Dios":
-                            self.db.createUser(**kwargs) # Crear usuario
-                            successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
-                            self.MainStacked.setCurrentIndex(0)
+                    if (adminUsername and adminPassword) != None:
+                        if self.db.checkPassword(adminUsername, adminPassword):
+                            userRange = self.db.getUserRange(adminUsername)
+                            if userRange == "Administrador" or userRange == "Dios":
+                                self.db.createUser(**kwargs) # Crear usuario
+                                successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
+                                self.MainStacked.setCurrentIndex(0)
+                            else:
+                                errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                         else:
-                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
-                    else:
-                        errorPopUp("Datos incorrectos", self).exec_()
+                            errorPopUp("Datos incorrectos", self).exec_()
 
     # Boton para descartar el registro
     def on_button9_pressed(self):
