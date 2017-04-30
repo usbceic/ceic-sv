@@ -1825,15 +1825,21 @@ class dbManager(object):
 
     # Método para buscar transferencias
     # Retorna queryset de las transferencias que cumplan el filtro
-    def getTransfers(self, clerk = None, ci = None):
-        if clerk is None  and ci is None: return self.session.query(Transfer).all()
+    def getTransfers(self, clerk = None, ci = None, limit = None, page = 1):
+        if clerk is None and ci is None and limit is None:
+            return self.session.query(Transfer).order_by(desc(Transfer.transfer_date)).all()
 
         kwargs = {}
         if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
         if ci != None and self.existClient(ci): kwargs['ci'] = ci
-        if not kwargs: return []
 
-        return self.session.query(Transfer).filter_by(**kwargs).all()
+        query = self.session.query(Transfer).filter_by(**kwargs).order_by(desc(Transfer.transfer_date)).all()
+
+        if limit != None:
+            query = query.limit(limit)
+            query = query.offset(page*limit)
+
+        return query.all()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE DEPÓSITOS:
@@ -1877,15 +1883,33 @@ class dbManager(object):
 
     # Método para buscar Depósitos
     # Retorna queryset de los depósitos que cumplan el filtro
-    def getDeposits(self, clerk = None, ci = None):
-        if clerk is None and ci is None: return self.session.query(Deposit).all()
+    def getDeposits(self, clerk = None, ci = None, limit = None, page = 1):
+        if clerk is None and ci is None and limit is None:
+            return self.session.query(Deposit).order_by(desc(Deposit.deposit_date)).all()
 
         kwargs = {}
         if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
         if ci != None and self.existClient(ci): kwargs['ci'] = ci
-        if not kwargs: return []
 
-        return self.session.query(Deposit).filter_by(**kwargs).all()
+        query = self.session.query(Deposit).filter_by(**kwargs).order_by(desc(Deposit.deposit_date))
+
+        if limit != None:
+            query = query.limit(limit)
+            query = query.offset(page*limit)
+
+        return query.all()
+
+    # Método para contar Depósitos
+    # Retorna la cantidad de depósitos que cumplan el filtro
+    def getDepositsCount(self, clerk = None, ci = None):
+        if clerk is None and ci is None:
+            return self.session.query(Deposit).count()
+
+        kwargs = {}
+        if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
+        if ci != None and self.existClient(ci): kwargs['ci'] = ci
+
+        return self.session.query(Deposit).filter_by(**kwargs).count()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE REVERSE PRODUCT LIST:

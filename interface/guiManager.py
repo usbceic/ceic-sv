@@ -142,6 +142,7 @@ class guiManager(QMainWindow, form_class):
         self.new10 = []                      # Lista de productos en Nuevos
         self.legalTenders = []               # Lista para las denominaciones del sistema monetario
         self.closeForgotten = False          # Variable para saber si hay un día abierto que no corresponde al día actual
+        self.pageLimit = 25                  # Valor por defecto para entradas por página en las tablas
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # PREFERENCIAS DE USUARIO
@@ -168,6 +169,10 @@ class guiManager(QMainWindow, form_class):
         # Tablas
         self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
                         self.table8, self.table9, self.table10, self.table11, self.table12, self.table13, self.table14, self.table15, self.table16]
+
+        # Páginas
+        self.tablesPages = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        self.tablesTotalPages = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE CAJA
@@ -810,6 +815,384 @@ class guiManager(QMainWindow, form_class):
     def on_arrow34_pressed(self): self.changePage(self.subStacked22, 1)  # Cambiar la página del subStacked18 hacia la izquierda
 
     #==============================================================================================================================================================================
+    # PAGINACIÓN
+    #==============================================================================================================================================================================
+
+    # Ir a la primera página
+    def firstPage(self, table):
+        index = self.tables.index(table)
+        self.tablesPages[index] = 1
+
+    # Ir a la página anterior
+    def previousPage(self, table):
+        index = self.tables.index(table)
+        if self.tablesPages[index] > 1:
+            self.tablesPages[index] -= 1
+
+    # Ir a la págna siguiente
+    def nextPage(self, table):
+        index = self.tables.index(table)
+        if self.tablesPages[index] < self.tablesTotalPages[index]:
+            self.tablesPages[index] += 1
+
+    # Ir a la última página
+    def lastPage(self, table):
+        index = self.tables.index(table)
+        self.tablesPages[index] = self.tablesTotalPages[index]
+
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # Todas las flechas para ir a la primera página
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Tablas de productos
+    def on_arrow42_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked5.currentIndex()
+
+            # Disponibles
+            if subStackedPage == 0:
+                self.firstPage(self.table0)
+                self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)
+                self.updateProductsTable(self.table0, self.productsInfoAvailable)
+
+            # No disponibles
+            elif subStackedPage == 1:
+                self.firstPage(self.table1)
+                self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2)
+                self.updateProductsTable(self.table1, self.productsInfoNotAvailable)
+
+            # Todos
+            else:
+                self.firstPage(self.table2)
+                self.productsInfo = self.getProductList(self.productsParams1)
+                self.updateProductsTable(self.table2, self.productsInfo)
+
+    # Tablas de clientes
+    def on_arrow58_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked9.currentIndex()
+
+            # Endeudados
+            if subStackedPage == 0:
+                self.firstPage(self.table6)
+                self.updateClientsTable(True)
+
+            # No endeudados
+            else:
+                self.firstPage(self.table7)
+                self.updateClientsTable()
+
+    # Tablas de usuarios
+    def on_arrow62_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked11.currentIndex()
+
+            # Aministradores
+            if subStackedPage == 0:
+                self.firstPage(self.table8)
+                self.updateUsersTable(2)
+
+            # Vendedores
+            elif subStackedPage == 1:
+                self.firstPage(self.table9)
+                self.updateUsersTable(1)
+
+            # Colaboradores
+            else:
+                self.firstPage(self.table10)
+                self.updateUsersTable(0)
+
+    # Tablas de libros
+    def on_arrow66_pressed(self):
+        if self.click():
+            self.firstPage(self.table12)
+
+    # Tablas de proveedores
+    def on_arrow70_pressed(self):
+        if self.click():
+            self.firstPage(self.table13)
+            self.updateProvidersTable()
+
+    # Tablas de recargas
+    def on_arrow74_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked22.currentIndex()
+
+            # Transferencias
+            if subStackedPage == 0:
+                self.firstPage(self.table14)
+                self.updateTranfersTable()
+
+            # Depósitos en efectivo
+            else:
+                self.firstPage(self.table16)
+                self.updateDepositsTable()
+
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # Todas las flechas para ir a la página anterior
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Tablas de productos
+    def on_arrow43_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked5.currentIndex()
+
+            # Disponibles
+            if subStackedPage == 0:
+                self.previousPage(self.table0)
+                self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)
+                self.updateProductsTable(self.table0, self.productsInfoAvailable)
+
+            # No disponibles
+            elif subStackedPage == 1:
+                self.previousPage(self.table1)
+                self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2)
+                self.updateProductsTable(self.table1, self.productsInfoNotAvailable)
+
+            # Todos
+            else:
+                self.previousPage(self.table2)
+                self.productsInfo = self.getProductList(self.productsParams1)
+                self.updateProductsTable(self.table2, self.productsInfo)
+
+    # Tablas de clientes
+    def on_arrow59_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked9.currentIndex()
+
+            # Endeudados
+            if subStackedPage == 0:
+                self.previousPage(self.table6)
+                self.updateClientsTable(True)
+
+            # No endeudados
+            else:
+                self.previousPage(self.table7)
+                self.updateClientsTable()
+
+    # Tablas de usuarios
+    def on_arrow63_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked11.currentIndex()
+
+            # Aministradores
+            if subStackedPage == 0:
+                self.previousPage(self.table8)
+                self.updateUsersTable(2)
+
+            # Vendedores
+            elif subStackedPage == 1:
+                self.previousPage(self.table9)
+                self.updateUsersTable(1)
+
+            # Colaboradores
+            else:
+                self.previousPage(self.table10)
+                self.updateUsersTable(0)
+
+    # Tablas de libros
+    def on_arrow67_pressed(self):
+        if self.click():
+            self.previousPage(self.table12)
+
+    # Tablas de proveedores
+    def on_arrow71_pressed(self):
+        if self.click():
+            self.previousPage(self.table13)
+            self.updateProvidersTable()
+
+    # Tablas de recargas
+    def on_arrow75_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked22.currentIndex()
+
+            # Transferencias
+            if subStackedPage == 0:
+                self.previousPage(self.table14)
+                self.updateTranfersTable()
+
+            # Depósitos en efectivo
+            else:
+                self.previousPage(self.table16)
+                self.updateDepositsTable()
+
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # Todas las flechas para ir a la página siguiente
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Tablas de productos
+    def on_arrow44_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked5.currentIndex()
+
+            # Disponibles
+            if subStackedPage == 0:
+                self.nextPage(self.table0)
+                self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)
+                self.updateProductsTable(self.table0, self.productsInfoAvailable)
+
+            # No disponibles
+            elif subStackedPage == 1:
+                self.nextPage(self.table1)
+                self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2)
+                self.updateProductsTable(self.table1, self.productsInfoNotAvailable)
+
+            # Todos
+            else:
+                self.nextPage(self.table2)
+                self.productsInfo = self.getProductList(self.productsParams1)
+                self.updateProductsTable(self.table2, self.productsInfo)
+
+    # Tablas de clientes
+    def on_arrow60_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked9.currentIndex()
+
+            # Endeudados
+            if subStackedPage == 0:
+                self.nextPage(self.table6)
+                self.updateClientsTable(True)
+
+            # No endeudados
+            else:
+                self.nextPage(self.table7)
+                self.updateClientsTable()
+
+    # Tablas de usuarios
+    def on_arrow64_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked11.currentIndex()
+
+            # Aministradores
+            if subStackedPage == 0:
+                self.nextPage(self.table8)
+                self.updateUsersTable(2)
+
+            # Vendedores
+            elif subStackedPage == 1:
+                self.nextPage(self.table9)
+                self.updateUsersTable(1)
+
+            # Colaboradores
+            else:
+                self.nextPage(self.table10)
+                self.updateUsersTable(0)
+
+    # Tablas de libros
+    def on_arrow68_pressed(self):
+        if self.click():
+            self.nextPage(self.table12)
+
+    # Tablas de proveedores
+    def on_arrow72_pressed(self):
+        if self.click():
+            self.nextPage(self.table13)
+            self.updateProvidersTable()
+
+    # Tablas de recargas
+    def on_arrow76_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked22.currentIndex()
+
+            # Transferencias
+            if subStackedPage == 0:
+                self.nextPage(self.table14)
+                self.updateTranfersTable()
+
+            # Depósitos en efectivo
+            else:
+                self.nextPage(self.table16)
+                self.updateDepositsTable()
+
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # Todas las flechas para ir a la última página
+    #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Tablas de productos
+    def on_arrow45_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked5.currentIndex()
+
+            # Disponibles
+            if subStackedPage == 0:
+                self.lastPage(self.table0)
+                self.productsInfoAvailable = self.getProductList(self.productsParams1, 1)
+                self.updateProductsTable(self.table0, self.productsInfoAvailable)
+
+            # No disponibles
+            elif subStackedPage == 1:
+                self.lastPage(self.table1)
+                self.productsInfoNotAvailable = self.getProductList(self.productsParams1, 2)
+                self.updateProductsTable(self.table1, self.productsInfoNotAvailable)
+
+            # Todos
+            else:
+                self.lastPage(self.table2)
+                self.productsInfo = self.getProductList(self.productsParams1)
+                self.updateProductsTable(self.table2, self.productsInfo)
+
+    # Tablas de clientes
+    def on_arrow61_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked9.currentIndex()
+
+            # Endeudados
+            if subStackedPage == 0:
+                self.lastPage(self.table6)
+                self.updateClientsTable(True)
+
+            # No endeudados
+            else:
+                self.lastPage(self.table7)
+                self.updateClientsTable()
+
+    # Tablas de usuarios
+    def on_arrow65_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked11.currentIndex()
+
+            # Aministradores
+            if subStackedPage == 0:
+                self.lastPage(self.table8)
+                self.updateUsersTable(2)
+
+            # Vendedores
+            elif subStackedPage == 1:
+                self.lastPage(self.table9)
+                self.updateUsersTable(1)
+
+            # Colaboradores
+            else:
+                self.lastPage(self.table10)
+                self.updateUsersTable(0)
+
+    # Tablas de libros
+    def on_arrow69_pressed(self):
+        if self.click():
+            self.lastPage(self.table12)
+
+    # Tablas de proveedores
+    def on_arrow73_pressed(self):
+        if self.click():
+            self.lastPage(self.table13)
+            self.updateProvidersTable()
+
+    # Tablas de recargas
+    def on_arrow77_pressed(self):
+        if self.click():
+            subStackedPage = self.subStacked22.currentIndex()
+
+            # Transferencias
+            if subStackedPage == 0:
+                self.lastPage(self.table14)
+                self.updateTranfersTable()
+
+            # Depósitos en efectivo
+            else:
+                self.lastPage(self.table16)
+                self.updateDepositsTable()
+
+    #==============================================================================================================================================================================
     # VISTA DE CAJA
     #==============================================================================================================================================================================
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1204,9 +1587,9 @@ class guiManager(QMainWindow, form_class):
         self.setupSearchBar(self.productSearch, self.productsNames)
 
         # Setup de las distintas tablas
-        self.updateProductTable(self.table0, self.productsInfoAvailable)
-        self.updateProductTable(self.table1, self.productsInfoNotAvailable)
-        self.updateProductTable(self.table2, self.productsInfo)
+        self.updateProductsTable(self.table0, self.productsInfoAvailable)
+        self.updateProductsTable(self.table1, self.productsInfoNotAvailable)
+        self.updateProductsTable(self.table2, self.productsInfo)
 
         # Configurar tablas
         self.setupTables(self.productTables)
@@ -1283,7 +1666,7 @@ class guiManager(QMainWindow, form_class):
             self.text68.setText("Disp. total")
 
     # Método para refrescar la tabla de productos en el inventario
-    def updateProductTable(self, table, itemsList):
+    def updateProductsTable(self, table, itemsList):
         self.clearTable(table)
 
         table.setRowCount(len(itemsList))
@@ -2812,7 +3195,7 @@ class guiManager(QMainWindow, form_class):
     # Método para refrescar la tabla de transferencias
     def updateTranfersTable(self):
         table = self.table14
-        transfers = self.db.getTransfers()
+        transfers = self.db.getTransfers(limit=self.pageLimit, page=self.tables.index(self.table14))
 
         self.clearTable(table)                                                         # Vaciar la tabla
         table.setRowCount(len(transfers))                                              # Contador de filas
@@ -2831,7 +3214,7 @@ class guiManager(QMainWindow, form_class):
     # Método para refrescar la tabla de transferencias
     def updateDepositsTable(self):
         table = self.table16
-        deposits = self.db.getDeposits()
+        deposits = self.db.getDeposits(limit=self.pageLimit, page=self.tables.index(self.table16))
 
         self.clearTable(table)                                                        # Vaciar la tabla
         table.setRowCount(len(deposits))                                              # Contador de filas
