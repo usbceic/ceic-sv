@@ -171,7 +171,7 @@ class guiManager(QMainWindow, form_class):
 
         # Tablas
         self.tables = [self.table0, self.table1, self.table2, self.table3, self.table4, self.table5, self.table6, self.table7,
-                        self.table8, self.table9, self.table10, self.table11, self.table12, self.table13, self.table14]
+                        self.table8, self.table9, self.table10, self.table11, self.table12, self.table13, self.table14, self.table15, self.table16]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE CAJA
@@ -759,6 +759,7 @@ class guiManager(QMainWindow, form_class):
     def on_arrow29_pressed(self): self.changePage(self.subStacked17)     # Cambiar la página del subStacked17 hacia la derecha
     def on_arrow31_pressed(self): self.changePage(self.subStacked18)     # Cambiar la página del subStacked18 hacia la derecha
     def on_arrow33_pressed(self): self.changePage(self.subStacked19)     # Cambiar la página del subStacked18 hacia la derecha
+    def on_arrow35_pressed(self): self.changePage(self.subStacked22)     # Cambiar la página del subStacked18 hacia la derecha
 
     def on_arrow0_pressed(self): self.changePage(self.subStacked3, 1)    # Cambiar la página del subStacked3 hacia la izquierda
     def on_arrow2_pressed(self): self.changePage(self.subStacked4, 1)    # Cambiar la página del subStacked4 hacia la izquierda
@@ -777,6 +778,7 @@ class guiManager(QMainWindow, form_class):
     def on_arrow28_pressed(self): self.changePage(self.subStacked17, 1)  # Cambiar la página del subStacked17 hacia la izquierda
     def on_arrow30_pressed(self): self.changePage(self.subStacked18, 1)  # Cambiar la página del subStacked18 hacia la izquierda
     def on_arrow32_pressed(self): self.changePage(self.subStacked19, 1)  # Cambiar la página del subStacked18 hacia la izquierda
+    def on_arrow34_pressed(self): self.changePage(self.subStacked22, 1)  # Cambiar la página del subStacked18 hacia la izquierda
 
     #==============================================================================================================================================================================
     # VISTA DE CAJA
@@ -2720,6 +2722,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.transfersLE3)
         self.clearTE(self.textE7)
         self.updateTranfersTable()
+        self.updateDepositsTable()
         self.refreshSales()
 
     # Método para refrescar la tabla de transferencias
@@ -2741,6 +2744,24 @@ class guiManager(QMainWindow, form_class):
         table.resizeColumnsToContents()                                 # Redimensionar columnas segun el contenido
         self.setupTable(table, 4)                                       # Reconfigurar tabla
 
+    # Método para refrescar la tabla de transferencias
+    def updateDepositsTable(self):
+        table = self.table16
+        deposits = self.db.getDeposits()
+
+        self.clearTable(table)                                                        # Vaciar la tabla
+        table.setRowCount(len(deposits))                                              # Contador de filas
+        for i in range(len(deposits)):                                                # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(deposits[i].clerk)))             # Usuario
+            table.setItem(i, 1, QTableWidgetItem(str(deposits[i].ci)))                # Cliente
+            table.setItem(i, 2, QTableWidgetItem(str(deposits[i].amount)))            # Monto
+            table.setItem(i, 3, QTableWidgetItem(str(deposits[i].deposit_date)))      # Fecha
+
+        self.elem_actual = 0                                            # Definir la fila que se seleccionará
+        if len(deposits) > 0: table.selectRow(self.elem_actual)         # Seleccionar fila
+        table.resizeColumnsToContents()                                 # Redimensionar columnas según el contenido
+        self.setupTable(table, 4)                                       # Reconfigurar tabla
+
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2758,10 +2779,16 @@ class guiManager(QMainWindow, form_class):
                     if pay_type == "Efectivo":
                         if self.lineE158.text() != "":
                             amount = float(self.lineE158.text())
-                            if self.db.createDeposit(ci, self.user, amount):        # Crear depósito
+
+                            # Crear depósito
+                            if self.db.createDeposit(ci, self.user, amount):
+                                # Operación exitosa
                                 successPopUp(parent = self).exec_()
                             else:
+                                # Operación fallida
                                 errorPopUp(parent = self).exec_()
+
+                            # Refrescar
                             self.refreshTransfers()
                             self.lineE47.setFocus()
                         else:
@@ -2770,17 +2797,35 @@ class guiManager(QMainWindow, form_class):
                     # Modo de recarga con transferencia
                     else:
                         if (self.lineE51.text() and self.lineE156.text() and self.lineE157.text() and self.textE7.toPlainText()) != "":
-                            amount = float(self.lineE51.text())
                             bank = self.lineE156.text()
-                            confirmation_code = self.lineE157.text()
-                            description = self.textE7.toPlainText()
-                            self.db.createTransfer(ci, self.user, amount, bank, confirmation_code, description)
-                            if self.db.createTransfer(ci, self.user, amount, bank, confirmation_code, description):        # Crear transferencia
-                                successPopUp(parent = self).exec_()
+                            confirmation_code =  self.lineE157.text()
+
+                            # Si la transferencia no existe
+                            if not self.db.existTransfer(bank, confirmation_code):
+                                # Argumentos
+                                kwargs = {
+                                    "clerk"             : self.user,
+                                    "ci"                : ci,
+                                    "amount"            : float(self.lineE51.text()),
+                                    "bank"              : bank,
+                                    "confirmation_code" : confirmation_code,
+                                    "description"       : self.textE7.toPlainText()
+                                }
+
+                                # Crear transferencia
+                                if self.db.createTransfer(**kwargs):
+                                    # Operación exitosa
+                                    successPopUp(parent = self).exec_()
+                                else:
+                                    # Operación fallida
+                                    errorPopUp(parent = self).exec_()
+
+                                # Refrescar
+                                self.refreshTransfers()
+                                self.lineE47.setFocus()
+
                             else:
-                                errorPopUp(parent = self).exec_()
-                            self.refreshTransfers()
-                            self.lineE47.setFocus()
+                                errorPopUp("La transferencia ya está registrada",self).exec_()
                         else:
                             errorPopUp("Faltan datos",self).exec_()
                 else:
@@ -2791,9 +2836,9 @@ class guiManager(QMainWindow, form_class):
     #Boton de cancelar de recarga de saldo
     def on_cancelpb15_pressed(self):
         self.clearLEs(self.transfersLE0)
-        self.clearLEs(self.transfersLE1)
         self.clearLEs(self.transfersLE2)
         self.clearLEs(self.transfersLE3)
+        self.clearTE(self.textE7)
         self.lineE47.setFocus()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------

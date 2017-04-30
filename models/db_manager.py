@@ -1767,12 +1767,14 @@ class dbManager(object):
         * Cuando la transferencia NO existe
     """
     def existTransfer(self, bank, confirmation_code):
+        bank = bank.title().strip()
+
         count = self.session.query(Transfer).filter_by(bank=bank, confirmation_code=confirmation_code).count()
         if count == 0:
-            print("La lista de " + bank + "asociada a la compra " + confirmation_code + " NO existe")
+            print("La transferencia desde el banco " + bank + " número " + confirmation_code + " NO existe")
             return False
         else:
-            print("La lista de " + bank + "asociada a la compra " + confirmation_code + " existe")
+            print("La transferencia desde el banco " + bank + " número " + confirmation_code + " existe")
             return True
 
     """
@@ -1783,6 +1785,8 @@ class dbManager(object):
         * Cuando no se puede crear
     """
     def createTransfer(self, ci, clerk, amount, bank, confirmation_code, description):
+        bank = bank.title().strip()
+
         if not self.existTransfer(bank, confirmation_code):
             kwargs = {"ci" : ci, "clerk" : clerk, "amount" : amount, "bank" : bank, "confirmation_code" : confirmation_code, "description" : description}
             self.session.add(Transfer(**kwargs))
@@ -1852,7 +1856,7 @@ class dbManager(object):
             return False
 
     """
-    Pseudo-Trigger para registrar el monto de una transferencia en el balnce del cliente que transfirió
+    Pseudo-Trigger para registrar el monto de un depósito en el balnce del cliente que deppsitó
      - No retorna nada
     """
     def afterInsertDeposit(self, ci, amount):
@@ -1867,8 +1871,8 @@ class dbManager(object):
                 self.session.rollback()
                 print("No se pudo actualizar el saldo del cliente", e)
 
-    # Método para buscar Transferencias
-    # Retorna queryset de las transferencias que cumplan el filtro
+    # Método para buscar Depósitos
+    # Retorna queryset de los depósitos que cumplan el filtro
     def getDeposits(self, clerk = None, ci = None):
         if clerk is None and ci is None: return self.session.query(Deposit).all()
 

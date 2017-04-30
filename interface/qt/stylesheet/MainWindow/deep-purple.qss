@@ -81,13 +81,13 @@
 }
 
 /*Configurar el estilo de los subStacked fuera de GropBox*/
-#subStacked2, #subStacked1 {
+#subStacked1, #subStacked2 {
     border: 1px solid #BDBDBD;
     padding: 0px;
 }
 
 /*Configurar el estilo de los subStacked dentro de GropBox*/
-#subStacked0, #subStacked3, #subStacked4, #subStacked5, #subStacked6, #subStacked7, #subStacked8, #subStacked9, #subStacked10, #subStacked11, #subStacked12, #subStacked13, #subStacked14, #subStacked15, #subStacked16, #subStacked17, #subStacked18, #subStacked19, #subStacked20{
+#subStacked0, #subStacked3, #subStacked4, #subStacked5, #subStacked6, #subStacked7, #subStacked8, #subStacked9, #subStacked10, #subStacked11, #subStacked12, #subStacked13, #subStacked14, #subStacked15, #subStacked16, #subStacked17, #subStacked18, #subStacked19, #subStacked20, #subStacked21, #subStacked22{
     border: none;
     padding: -6px;
 }
@@ -149,7 +149,7 @@
 ***********************************/
 
 /*Configurar el estilo de los groupBox*/
-#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26, #groupBox27, #groupBox28, #groupBox29{
+#groupBox0, #groupBox1, #groupBox2, #groupBox3, #groupBox4, #groupBox16, #groupBox17, #groupBox23,  #groupBox24, #groupBox26, #groupBox28, #groupBox29{
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -157,7 +157,7 @@
 }
 
 /*Configurar el estilo de los groupBox con subStacked*/
-#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25{
+#groupBox5, #groupBox6, #groupBox7, #groupBox8, #groupBox9, #groupBox10, #groupBox11, #groupBox12, #groupBox13, #groupBox14, #groupBox15, #groupBox18, #groupBox19, #groupBox20, #groupBox21, #groupBox22, #groupBox25, #groupBox27 {
    background: #FFFFFF;
    border: 1px solid #BDBDBD;
    border-radius: 2px;
@@ -169,7 +169,7 @@
 ***********************************/
 
 /*Configurar el estilo por defecto de las flechas de movimiento de los  subStacked*/
-#arrow0, #arrow1, #arrow2, #arrow3, #arrow4, #arrow5, #arrow6, #arrow7, #arrow8, #arrow9, #arrow10, #arrow11, #arrow12, #arrow13, #arrow14, #arrow15, #arrow16, #arrow17, #arrow18, #arrow19, #arrow20, #arrow21, #arrow22, #arrow23, #arrow24, #arrow25, #arrow26, #arrow27, #arrow28, #arrow29, #arrow30, #arrow31, #arrow32, #arrow33{
+#arrow0, #arrow1, #arrow2, #arrow3, #arrow4, #arrow5, #arrow6, #arrow7, #arrow8, #arrow9, #arrow10, #arrow11, #arrow12, #arrow13, #arrow14, #arrow15, #arrow16, #arrow17, #arrow18, #arrow19, #arrow20, #arrow21, #arrow22, #arrow23, #arrow24, #arrow25, #arrow26, #arrow27, #arrow28, #arrow29, #arrow30, #arrow31, #arrow32, #arrow33, #arrow34, #arrow35, #arrow36, #arrow37, #arrow38, #arrow39, #arrow40, #arrow41{
      background: transparent;
      border: none;
      min-width: 2em;
@@ -177,7 +177,7 @@
 }
 
 /*Configurar el estilo de las flechas de movimiento de los subStacked cuando el mouse pasa por encima de ellas y cuando son presionadas por el mismo*/
-#arrow0:hover, #arrow1:hover, #arrow2:hover, #arrow3:hover, #arrow4:hover, #arrow5:hover, #arrow6:hover, #arrow7:hover, #arrow8:hover, #arrow9:hover, #arrow10:hover, #arrow11:hover, #arrow12:hover, #arrow13:hover, #arrow14:hover, #arrow15:hover, #arrow16:hover, #arrow17:hover, #arrow18:hover, #arrow19:hover, #arrow20:hover, #arrow21:hover, #arrow22:hover, #arrow23:hover, #arrow24:hover, #arrow25:hover, #arrow26:hover, #arrow27:hover, #arrow28:hover, #arrow29:hover, #arrow30:hover, #arrow31:hover, #arrow32:hover, #arrow33:hover, #arrow0:pressed, #arrow1:pressed, #arrow2:pressed, #arrow3:pressed, #arrow4:pressed, #arrow5:pressed, #arrow6:pressed, #arrow7:pressed, #arrow8:pressed, #arrow9:pressed, #arrow10:pressed, #arrow11:pressed, #arrow12:pressed, #arrow13:pressed, #arrow14:pressed, #arrow15:pressed, #arrow16:pressed, #arrow17:pressed, #arrow18:pressed, #arrow19:pressed, #arrow20:pressed, #arrow21:pressed, #arrow22:pressed, #arrow23:pressed, #arrow24:pressed, #arrow25:pressed, #arrow26:pressed, #arrow27:pressed, #arrow28:pressed, #arrow29:pressed, #arrow30:pressed, #arrow31:pressed, #arrow32:pressed, #arrow33:pressed{
+#arrow0:hover, #arrow1:hover, #arrow2:hover, #arrow3:hover, #arrow4:hover, #arrow5:hover, #arrow6:hover, #arrow7:hover, #arrow8:hover, #arrow9:hover, #arrow10:hover, #arrow11:hover, #arrow12:hover, #arrow13:hover, #arrow14:hover, #arrow15:hover, #arrow16:hover, #arrow17:hover, #arrow18:hover, #arrow19:hover, #arrow20:hover, #arrow21:hover, #arrow22:hover, #arrow23:hover, #arrow24:hover, #arrow25:hover, #arrow26:hover, #arrow27:hover, #arrow28:hover, #arrow29:hover, #arrow30:hover, #arrow31:hover, #arrow32:hover, #arrow33:hover, #arrow34:hover, #arrow35:hover, #arrow36:hover, #arrow37:hover, #arrow38:hover, #arrow39:hover, #arrow40:hover, #arrow41:hover, #arrow0:pressed, #arrow1:pressed, #arrow2:pressed, #arrow3:pressed, #arrow4:pressed, #arrow5:pressed, #arrow6:pressed, #arrow7:pressed, #arrow8:pressed, #arrow9:pressed, #arrow10:pressed, #arrow11:pressed, #arrow12:pressed, #arrow13:pressed, #arrow14:pressed, #arrow15:pressed, #arrow16:pressed, #arrow17:pressed, #arrow18:pressed, #arrow19:pressed, #arrow20:pressed, #arrow21:pressed, #arrow22:pressed, #arrow23:pressed, #arrow24:pressed, #arrow25:pressed, #arrow26:pressed, #arrow27:pressed, #arrow28:pressed, #arrow29:pressed, #arrow30:pressed, #arrow31:pressed, #arrow32:pressed, #arrow33:pressed, #arrow34:pressed, #arrow35:pressed, #arrow36:pressed, #arrow37:pressed, #arrow38:pressed, #arrow39:pressed, #arrow40:pressed, #arrow41:pressed{
     background: #D1C4E9;
 }
 
