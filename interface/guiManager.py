@@ -146,6 +146,7 @@ class guiManager(QMainWindow, form_class):
         self.top10 = []                      # Lista de productos en Top 10
         self.new10 = []                      # Lista de productos en Nuevos
         self.legalTenders = []               # Lista para las denominaciones del sistema monetario
+        self.closeForgotten = False          # Variable para saber si hay un día abierto que no corresponde al día actual
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # PREFERENCIAS DE USUARIO
@@ -158,7 +159,7 @@ class guiManager(QMainWindow, form_class):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Barras de búsqueda por cédula:
-        self.clientsSearch = [self.lineE17, self.lineE47, self.lineE52, self.lineE57]
+        self.clientsSearch = [self.lineE16, self.lineE17, self.lineE47, self.lineE52, self.lineE57]
 
         # Barras de búsqueda por nombre de producto:
         self.productSearch = [self.lineE23, self.lineE26, self.lineE33]
@@ -241,6 +242,10 @@ class guiManager(QMainWindow, form_class):
         self.clientsLE1 = [self.lineE57, self.lineE58, self.lineE59, self.lineE60, self.lineE61]
         self.clientsLE2 = [self.lineE58, self.lineE59, self.lineE60, self.lineE61]
         self.clientsLE3 = [self.lineE16, self.lineE31, self.lineE32, self.lineE67, self.lineE68]
+        self.clientsLE4 = [self.lineE31, self.lineE32, self.lineE67, self.lineE68]
+
+        # LineEdits para solo números reales
+        self.clientsOF = [self.lineE68]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE RECARGAS
@@ -311,6 +316,9 @@ class guiManager(QMainWindow, form_class):
         # Se connectan los botones entre otras cosas con algunos de los métodos definidos a continuación
         QMetaObject.connectSlotsByName(self)
 
+        # Crear respaldo de la base de datos
+        self.db.backup()
+
         # Aplicar configuraciones generales de la interfaz
         self.generalSetup()
 
@@ -333,12 +341,6 @@ class guiManager(QMainWindow, form_class):
     def setSize(self):
         self.setFixedSize(self.width(), self.height())
         #self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
-
-    #==============================================================================================================================================================================
-    # CONFIGURACIÓN DE LAS PREFERENCIAS DE USUARIO
-    #==============================================================================================================================================================================
-
-    # Falta agregar
 
     #==============================================================================================================================================================================
     # MÉTODOS GENERALES MULTIPROPÓSITOS
@@ -516,9 +518,9 @@ class guiManager(QMainWindow, form_class):
 
         # Si el usuario tiene rango mayor a Colaborador
         if self.db.getUserPermissionMask(self.user) > 0:
-            # Se establece la pagina de caja por defecto
-            self.MainStacked.setCurrentIndex(0)
-            self.MainTitle.setText("Caja")
+            if self.MainStacked.currentIndex() != 10:
+                self.MainStacked.setCurrentIndex(0)
+                self.MainTitle.setText("Caja")
 
         # Si el usuario es Colaborador
         else:
@@ -542,6 +544,9 @@ class guiManager(QMainWindow, form_class):
             # Ocultar configuraciones del programa
             self.groupBox6.hide()
 
+        # Verificar si no se cerró el último día abierto anterior al día actual
+        self.verifyCloseForgotten()
+
     # Método para aplicar las configuraciones iniciales
     def generalSetup(self):
         # Centrar posición de la ventana
@@ -563,6 +568,7 @@ class guiManager(QMainWindow, form_class):
         self.setOnlyInteger(self.lotsOI)
         self.setOnlyFloat(self.lotsOF)
         self.setOnlyFloat(self.confOF)
+        self.setOnlyFloat(self.clientsOF)
         self.setOnlyFloat(self.transfersOF)
         self.setOnlyFloat(self.salesOF)
         self.setOnlyFloat(self.cashOF)
@@ -571,6 +577,15 @@ class guiManager(QMainWindow, form_class):
         self.substract0.setEnabled(False)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
+
+    # Método para verificar si no se hizo cierre de un día anterior
+    def verifyCloseForgotten(self):
+        if self.db.isOpenDay():
+            date = self.db.getDayStartAndEnd()[0].recorded.date()
+            current = datetime.now().date()
+            if date < current:
+                self.closeForgotten = True
+                warningPopUp("Debe realizar cierre de caja", self).exec_()
 
     # Método para abrir turno
     def openTurn(self, user):
@@ -608,28 +623,12 @@ class guiManager(QMainWindow, form_class):
      # Cambiar a la página de ventas
     def on_sales_pressed(self):
         if self.click():
-            # Si hay dia y periodo abierto:
-            if self.db.isOpenPeriod() and self.db.isOpenDay():
-                self.setPage(self.MainStacked, 1)
-                self.MainTitle.setText("Ventas")
-
-            # Si no hay periodo abierto
-            elif not self.db.isOpenPeriod():
-                warningPopUp("Falta apertura de periodo", self).exec_()
-
-            # Si no hay día abierto
-            else:
-                warningPopUp("Falta apertura de caja", self).exec_()
-
-    # Cambiar a la página de inventario
-    def on_inventory_pressed(self):
-        if self.click():
-            # Si el usuario tiene rango mayor a Colaborador
-            if self.db.getUserPermissionMask(self.user) > 1:
+            # Si no hay cierres olvidados:
+            if not self.closeForgotten:
                 # Si hay dia y periodo abierto:
                 if self.db.isOpenPeriod() and self.db.isOpenDay():
-                    self.setPage(self.MainStacked, 2)
-                    self.MainTitle.setText("Inventario")
+                    self.setPage(self.MainStacked, 1)
+                    self.MainTitle.setText("Ventas")
 
                 # Si no hay periodo abierto
                 elif not self.db.isOpenPeriod():
@@ -638,6 +637,34 @@ class guiManager(QMainWindow, form_class):
                 # Si no hay día abierto
                 else:
                     warningPopUp("Falta apertura de caja", self).exec_()
+
+            # Si no hay día abierto olvidado
+            else:
+                warningPopUp("Debe realizar cierre de caja", self).exec_()
+
+    # Cambiar a la página de inventario
+    def on_inventory_pressed(self):
+        if self.click():
+            # Si el usuario tiene rango mayor a Colaborador
+            if self.db.getUserPermissionMask(self.user) > 1:
+                # Si no hay cierres olvidados:
+                if not self.closeForgotten:
+                    # Si hay dia y periodo abierto:
+                    if self.db.isOpenPeriod() and self.db.isOpenDay():
+                        self.setPage(self.MainStacked, 2)
+                        self.MainTitle.setText("Inventario")
+
+                    # Si no hay periodo abierto
+                    elif not self.db.isOpenPeriod():
+                        warningPopUp("Falta apertura de periodo", self).exec_()
+
+                    # Si no hay día abierto
+                    else:
+                        warningPopUp("Falta apertura de caja", self).exec_()
+
+                # Si no hay día abierto olvidado
+                else:
+                    warningPopUp("Debe realizar cierre de caja", self).exec_()
 
             # Si el usuario es Colaborador
             else:
@@ -702,18 +729,24 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             # Si el usuario tiene rango mayor a Colaborador
             if self.db.getUserPermissionMask(self.user) > 0:
-                # Si hay dia y periodo abierto:
-                if self.db.isOpenPeriod() and self.db.isOpenDay():
-                    self.setPage(self.MainStacked, 8)
-                    self.MainTitle.setText("Recargas de saldo")
+                # Si no hay cierres olvidados:
+                if not self.closeForgotten:
+                    # Si hay dia y periodo abierto:
+                    if self.db.isOpenPeriod() and self.db.isOpenDay():
+                        self.setPage(self.MainStacked, 8)
+                        self.MainTitle.setText("Recargas de saldo")
 
-                # Si no hay periodo abierto
-                elif not self.db.isOpenPeriod():
-                    warningPopUp("Falta apertura de periodo", self).exec_()
+                    # Si no hay periodo abierto
+                    elif not self.db.isOpenPeriod():
+                        warningPopUp("Falta apertura de periodo", self).exec_()
 
-                # Si no hay día abierto
+                    # Si no hay día abierto
+                    else:
+                        warningPopUp("Falta apertura de caja", self).exec_()
+
+                # Si no hay día abierto olvidado
                 else:
-                    warningPopUp("Falta apertura de caja", self).exec_()
+                    warningPopUp("Debe realizar cierre de caja", self).exec_()
 
             # Si el usuario es Colaborador
             else:
@@ -898,6 +931,9 @@ class guiManager(QMainWindow, form_class):
                 successPopUp(parent = self).exec_()
             else:
                 errorPopUp("Error desconocido al intentar cerrar el día", self).exec_()
+
+            # Marcar que no hay cierres olvidados
+            self.closeForgotten = False
 
             # Refrescar la interfaz
             self.refreshCash()
@@ -2449,22 +2485,22 @@ class guiManager(QMainWindow, form_class):
 
     # Método para refrescar las tablas de clientes
     def updateClientsTable(self, debt = False):
+        clients = self.db.getClients(debt=debt)
         if debt:
             table = self.table6
-            clients = self.db.getClients(debt=debt)
+            factor = -1
 
         else:
             table = self.table7
-            clients = self.db.getClients()
+            factor = 1
 
-        self.clearTable(table)                                                # Vaciar la tabla
-        table.setRowCount(len(clients))                                       # Contador de filas
-        for i in range(len(clients)):                                         # Llenar tabla
-            table.setItem(i, 0, QTableWidgetItem(str(clients[i].ci)))         # Cédula
-            table.setItem(i, 1, QTableWidgetItem(str(clients[i].firstname)))  # Nombre
-            table.setItem(i, 2, QTableWidgetItem(str(clients[i].lastname)))   # Apellido
-            table.setItem(i, 3, QTableWidgetItem(str(clients[i].balance)))    # Saldo
-
+        self.clearTable(table)                                                    # Vaciar la tabla
+        table.setRowCount(len(clients))                                           # Contador de filas
+        for i in range(len(clients)):                                             # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(clients[i].ci)))             # Cédula
+            table.setItem(i, 1, QTableWidgetItem(str(clients[i].firstname)))      # Nombre
+            table.setItem(i, 2, QTableWidgetItem(str(clients[i].lastname)))       # Apellido
+            table.setItem(i, 3, QTableWidgetItem(str(factor*clients[i].balance))) # Saldo
 
         self.elem_actual = 0                                            # Definir la fila que se seleccionará
         if len(clients) > 0: table.selectRow(self.elem_actual)          # Seleccionar fila
@@ -3162,6 +3198,7 @@ class guiManager(QMainWindow, form_class):
 
     # Método para cambiar el usuario que usa la intefáz
     def changeUser(self, user):
+        self.db.backup()
         self.user = user
         self.openTurn(self.user)
         self.refresh()
@@ -3308,13 +3345,54 @@ class guiManager(QMainWindow, form_class):
     # Boton para hacer backup
     def on_pbutton24_pressed(self):
         if self.click():
-            self.db.backup()
+            popUp = authorizationPopUp(parent=self)
+            if popUp.exec_():
+                adminUsername, adminPassword = popUp.getValues()
+                if (adminUsername and adminPassword) != None:
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
+                            # Realizar respaldo
+                            if self.db.backup():
+                                # Operación exitosa
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                # Operación fallida
+                                errorPopUp(parent = self).exec_()
+                        else:
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                    else:
+                        errorPopUp("Datos incorrectos", self).exec_()
 
     # Boton para restaurar desde el ultimo backup
     def on_pbutton25_pressed(self):
         if self.click():
-            self.db.restore()
-            self.refresh()
+            popUp = authorizationPopUp(parent=self)
+            if popUp.exec_():
+                adminUsername, adminPassword = popUp.getValues()
+                if (adminUsername and adminPassword) != None:
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
+                            popUp = confirmationPopUp("Todas las operaciones que no esten en el backup se perderán", self)
+                            if popUp.exec_():
+                                if popUp.getValue():
+                                    if self.db.restore():
+                                        # Operación exitosa
+                                        successPopUp(parent = self).exec_()
+
+                                    else:
+                                        # Operación fallida
+                                        errorPopUp(parent = self).exec_()
+
+                                    # Refrescar
+                                    self.refresh()
+
+                        else:
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                    else:
+                        errorPopUp("Datos incorrectos", self).exec_()
 
     # Boton para guardar cambios
     def on_pbutton26_pressed(self):
@@ -3356,6 +3434,7 @@ class guiManager(QMainWindow, form_class):
                                     else:
                                         errorPopUp(parent = self).exec_()
 
+                                    # Refrescar
                                     self.clearLEs(self.confLE0)
 
                                 else:
@@ -3428,6 +3507,18 @@ class guiManager(QMainWindow, form_class):
                     errorPopUp(parent = self).exec_()
 
                 self.refreshLegalTenders()
+
+    # Botón de cancelar en el apartado del usuario
+    def on_cancelpb20_pressed(self):
+        if self.click():
+            if  self.subStacked18.currentIndex() == 0:
+                self.loadUserInfo()
+
+            if  self.subStacked18.currentIndex() == 1:
+                self.clearLEs(self.confLE0)
+
+            else:
+                self.loadUserPreferences()
 
     #==============================================================================================================================================================================
     # MANEJADOR DE EVENTOS DE TECLADO

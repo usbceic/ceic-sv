@@ -16075,7 +16075,7 @@ QWidget:item:unchecked {
                           <string notr="true"/>
                          </property>
                          <property name="text">
-                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clientes activos&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clientes no endeudados&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                          </property>
                         </widget>
                        </item>
@@ -16308,7 +16308,7 @@ QWidget:item:unchecked {
                          </column>
                          <column>
                           <property name="text">
-                           <string>Saldo</string>
+                           <string>Deuda</string>
                           </property>
                          </column>
                         </widget>
@@ -17518,7 +17518,7 @@ QWidget:item:unchecked {
                             <string/>
                            </property>
                            <property name="readOnly">
-                            <bool>false</bool>
+                            <bool>true</bool>
                            </property>
                           </widget>
                          </item>
@@ -17552,7 +17552,7 @@ QWidget:item:unchecked {
                             <string/>
                            </property>
                            <property name="readOnly">
-                            <bool>false</bool>
+                            <bool>true</bool>
                            </property>
                           </widget>
                          </item>
@@ -17586,7 +17586,7 @@ QWidget:item:unchecked {
                             <string/>
                            </property>
                            <property name="readOnly">
-                            <bool>false</bool>
+                            <bool>true</bool>
                            </property>
                           </widget>
                          </item>

@@ -1315,8 +1315,8 @@ class dbManager(object):
 
     # Método para buscar clientes.
     # Retorna queryset de los clientes que cumplan el filtro
-    def getClients(self, ci=None, firstname=None, lastname=None, debt = False):
-        if ci is None and firstname is None and lastname is None and not debt:
+    def getClients(self, ci=None, firstname=None, lastname=None, debt=None):
+        if ci is None and firstname is None and lastname is None and debt is None:
             return self.session.query(Client).all()
 
         filters = and_()
@@ -1329,8 +1329,12 @@ class dbManager(object):
         if lastname is not None:
             filters = and_(filters, Client.lastname.ilike("%"+lastname+"%"))
 
-        if debt:
-            filters = and_(filters, Client.balance < 0)
+        if debt is not None:
+            if debt:
+                filters = and_(filters, Client.balance < 0)
+
+            else:
+                filters = and_(filters, Client.balance >= 0)
 
         return self.session.query(Client).filter(*filters).all()
 
