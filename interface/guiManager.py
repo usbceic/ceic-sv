@@ -2674,25 +2674,29 @@ class guiManager(QMainWindow, form_class):
             if ci != "":
                 ci = int(ci)
                 if self.db.existClient(ci):
-                    amount = self.lineE68.text()
-                    if amount != "":
-                        amount = float(amount)
+                    client = self.db.getClients(ci)[0]
+                    if client.balance < 0:
+                        amount = self.lineE68.text()
+                        if amount != "":
+                            amount = float(amount)
 
-                        # Registrar deuda
-                        if self.db.substractToClientBalance(ci, amount):
-                            # Operación exitosa
-                            successPopUp(parent = self).exec_()
+                            # Registrar deuda
+                            if self.db.substractToClientBalance(ci, amount):
+                                # Operación exitosa
+                                successPopUp(parent = self).exec_()
+
+                            else:
+                                # Operación fallida
+                                errorPopUp(parent = self).exec_()
+
+                            self.clearLEs(self.clientsLE3) # Limpiar formulario
+                            self.refreshClients()          # Refrescar vista
+                            self.lineE16.setFocus()        # Enfocar
 
                         else:
-                            # Operación fallida
-                            errorPopUp(parent = self).exec_()
-
-                        self.clearLEs(self.clientsLE3) # Limpiar formulario
-                        self.refreshClients()          # Refrescar vista
-                        self.lineE16.setFocus()        # Enfocar
-
+                           errorPopUp("Incremento no específicado", self).exec_()
                     else:
-                       errorPopUp("Incremento no específicado", self).exec_()
+                        errorPopUp("El cliente no tiene deuda", self).exec_()
                 else:
                    errorPopUp("Número de cédula no registrado", self).exec_()
             else:
@@ -2736,6 +2740,25 @@ class guiManager(QMainWindow, form_class):
 
             else:
                 self.clearLEs(self.clientsLE2)
+
+    # LineEdit para ingresar la cédula del cliente
+    def on_lineE16_textChanged(self):
+        if self.textChanged():
+            if self.lineE16.text() != "":
+                ci = int(self.lineE16.text())
+                if self.db.existClient(ci):
+                    client = self.db.getClients(ci)[0]
+                    self.lineE31.setText(client.firstname)
+                    self.lineE32.setText(client.lastname)
+
+                    if client.balance < 0: self.lineE67.setText(str(-client.balance))
+                    else: self.lineE67.setText("0")
+
+                else:
+                    self.clearLEs(self.clientsLE4)
+
+            else:
+                self.clearLEs(self.clientsLE4)
 
     #==============================================================================================================================================================================
     # VISTA DE RECARGAS
