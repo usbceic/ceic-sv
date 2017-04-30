@@ -97,13 +97,8 @@ styles = [
     "yellow.qss"
 ]
 
-LEpopup = "LEpopup.qss"
-
 # Interfaz .ui creada con qt designer
 form_class = loadUiType(join(UIpath, MainUI))[0]
-
-# Constante de primer inicio
-A = True
 
 ###################################################################################################################################################################################
 ## MANEJADOR DE LA INTERFAZ GRÁFICA DE LA VENTANA PRINCIPAL:
