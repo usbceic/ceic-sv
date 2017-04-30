@@ -1417,7 +1417,7 @@ class dbManager(object):
                 print("No se pudo actualizar el saldo del cliente", e)
 
     """
-    Método para añadir saldo al balance de un cliente
+    Método para restar saldo al balance de un cliente
      - No retorna nada
     """
     def substractToClientBalance(self, ci, amount):

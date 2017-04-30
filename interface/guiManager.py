@@ -240,6 +240,7 @@ class guiManager(QMainWindow, form_class):
         self.clientsLE0 = [self.lineE52, self.lineE53, self.lineE54, self.lineE55, self.lineE56]
         self.clientsLE1 = [self.lineE57, self.lineE58, self.lineE59, self.lineE60, self.lineE61]
         self.clientsLE2 = [self.lineE58, self.lineE59, self.lineE60, self.lineE61]
+        self.clientsLE3 = [self.lineE16, self.lineE31, self.lineE32, self.lineE67, self.lineE68]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE RECARGAS
@@ -2436,8 +2437,8 @@ class guiManager(QMainWindow, form_class):
 
         # Limpiar los campos
         self.clearLEs(self.clientsLE0)
-        self.clearLEs(self.clientsLE0)
         self.clearLEs(self.clientsLE1)
+        self.clearLEs(self.clientsLE3)
 
         # Setear los comboBox
         self.resetClientsCBs()
@@ -2572,14 +2573,10 @@ class guiManager(QMainWindow, form_class):
                 self.refreshClients()          # Refrescar vista
                 self.lineE52.setFocus()        # Enfocar
 
-
     #Botón para cancelar creación de cliente
     def on_cancelpb16_pressed(self):
         self.clearLEs(self.clientsLE0)
-        self.clearLEs(self.clientsLE1)
-        self.clearLEs(self.clientsLE2)
         self.lineE52.setFocus()
-
 
     # Botón para editar un cliente
     def on_pbutton19_pressed(self):
@@ -2665,13 +2662,46 @@ class guiManager(QMainWindow, form_class):
                 self.refreshClients()          # Refrescar vista
                 self.lineE57.setFocus()        # Enfocar
 
-    #Botón para cancelar creación de cliente
+    # Botón para cancelar creación de cliente
     def on_cancelpb17_pressed(self):
-        self.clearLEs(self.clientsLE0)
         self.clearLEs(self.clientsLE1)
-        self.clearLEs(self.clientsLE2)
         self.lineE57.setFocus()
 
+    # Botón para hacer incremento de deuda a un cliente
+    def on_pbutton16_pressed(self):
+        if self.click():
+            ci = self.lineE16.text()
+            if ci != "":
+                ci = int(ci)
+                if self.db.existClient(ci):
+                    amount = self.lineE68.text()
+                    if amount != "":
+                        amount = float(amount)
+
+                        # Registrar deuda
+                        if self.db.substractToClientBalance(ci, amount):
+                            # Operación exitosa
+                            successPopUp(parent = self).exec_()
+
+                        else:
+                            # Operación fallida
+                            errorPopUp(parent = self).exec_()
+
+                        self.clearLEs(self.clientsLE3) # Limpiar formulario
+                        self.refreshClients()          # Refrescar vista
+                        self.lineE16.setFocus()        # Enfocar
+
+                    else:
+                       errorPopUp("Incremento no específicado", self).exec_()
+                else:
+                   errorPopUp("Número de cédula no registrado", self).exec_()
+            else:
+                errorPopUp("Número de cédula no específicado", self).exec_()
+
+    # Botón para cancelar registrar incremento a un cliente
+    def on_cancelpb25_pressed(self):
+        self.clearLEs(self.clientsLE3) # Limpiar formulario
+        self.lineE16.setFocus()        # Enfocar
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
