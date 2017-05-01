@@ -42,6 +42,9 @@ from shutil import copy2
 # Módulo que contiene el tipo de dato datetime para hcaer operaciones con fechas
 from datetime import datetime
 
+# Módulo que contiene funciones matemáticas
+from math import ceil
+
 # Módulo manejador de la base de datos
 from db_manager import dbManager
 
@@ -142,7 +145,7 @@ class guiManager(QMainWindow, form_class):
         self.new10 = []                      # Lista de productos en Nuevos
         self.legalTenders = []               # Lista para las denominaciones del sistema monetario
         self.closeForgotten = False          # Variable para saber si hay un día abierto que no corresponde al día actual
-        self.pageLimit = 25                  # Valor por defecto para entradas por página en las tablas
+        self.pageLimit = 5                  # Valor por defecto para entradas por página en las tablas
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # PREFERENCIAS DE USUARIO
@@ -510,6 +513,7 @@ class guiManager(QMainWindow, form_class):
 
     # Método para refrescar la interfaz
     def refresh(self):
+        self.getTablesTotalPages()
         self.refreshSales()
         self.refreshProviders()
         self.refreshTransfers()
@@ -818,6 +822,43 @@ class guiManager(QMainWindow, form_class):
     # PAGINACIÓN
     #==============================================================================================================================================================================
 
+    # Calcular el total de páginas de totdas las tablas:
+    def getTablesTotalPages(self):
+        # Tablas de productos
+        #self.tablesTotalPages[self.tables.index(self.table0)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # Disponibles
+        #self.tablesTotalPages[self.tables.index(self.table1)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # No disponibles
+        #self.tablesTotalPages[self.tables.index(self.table2)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # Todos
+
+        # Tablas de clientes
+        #self.tablesTotalPages[self.tables.index(self.table6)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # Endeudados
+        #self.tablesTotalPages[self.tables.index(self.table7)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # No endeudados
+
+        # Tablas de usuarios
+        #self.tablesTotalPages[self.tables.index(self.table8)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # Administradores
+        #self.tablesTotalPages[self.tables.index(self.table9)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # Vendedores
+        #self.tablesTotalPages[self.tables.index(self.table10)] = ceil(self.db.getDepositsCount()/self.pageLimit) # Colaboradores
+
+        # Tablas de proveedores
+        #self.tablesTotalPages[self.tables.index(self.table13)] = ceil(self.db.getDepositsCount()/self.pageLimit)
+
+        # Tablas de recargas
+        #self.tablesTotalPages[self.tables.index(self.table14)] = ceil(self.db.getDepositsCount()/self.pageLimit) # Transferencias
+        self.tablesTotalPages[self.tables.index(self.table16)] = ceil(self.db.getDepositsCount()/self.pageLimit)  # Depósitos
+
+    # Calcular el total de páginas de la tabla de proveedores
+    def getClientsTotalPages(self):
+        self.tablesTotalPages[self.tables.index(self.table6)] = ceil(self.db.getClientsCount(True)/self.pageLimit)
+        self.tablesTotalPages[self.tables.index(self.table7)] = ceil(self.db.getClientsCount()/self.pageLimit)
+
+    # Calcular el total de páginas de la tabla de proveedores
+    def getProvidersTotalPages(self):
+        self.tablesTotalPages[self.tables.index(self.table13)] = ceil(self.db.getProvidersCount()/self.pageLimit)
+
+    # Calcular el total de páginas de las tabla de recargas
+    def getTransfersTotalPages(self):
+        self.tablesTotalPages[self.tables.index(self.table14)] = ceil(self.db.getDepositsCount()/self.pageLimit)
+        self.tablesTotalPages[self.tables.index(self.table16)] = ceil(self.db.getDepositsCount()/self.pageLimit)
+
     # Ir a la primera página
     def firstPage(self, table):
         index = self.tables.index(table)
@@ -874,13 +915,13 @@ class guiManager(QMainWindow, form_class):
 
             # Endeudados
             if subStackedPage == 0:
-                self.firstPage(self.table6)
-                self.updateClientsTable(True)
+                self.firstPage(self.table7)
+                self.updateClientsTable()
 
             # No endeudados
             else:
-                self.firstPage(self.table7)
-                self.updateClientsTable()
+                self.firstPage(self.table6)
+                self.updateClientsTable(True)
 
     # Tablas de usuarios
     def on_arrow62_pressed(self):
@@ -962,13 +1003,13 @@ class guiManager(QMainWindow, form_class):
 
             # Endeudados
             if subStackedPage == 0:
-                self.previousPage(self.table6)
-                self.updateClientsTable(True)
-
-            # No endeudados
-            else:
                 self.previousPage(self.table7)
                 self.updateClientsTable()
+
+            # No endeud
+            else:
+                self.previousPage(self.table6)
+                self.updateClientsTable(True)
 
     # Tablas de usuarios
     def on_arrow63_pressed(self):
@@ -1050,13 +1091,13 @@ class guiManager(QMainWindow, form_class):
 
             # Endeudados
             if subStackedPage == 0:
-                self.nextPage(self.table6)
-                self.updateClientsTable(True)
+                self.nextPage(self.table7)
+                self.updateClientsTable()
 
             # No endeudados
             else:
-                self.nextPage(self.table7)
-                self.updateClientsTable()
+                self.nextPage(self.table6)
+                self.updateClientsTable(True)
 
     # Tablas de usuarios
     def on_arrow64_pressed(self):
@@ -1138,13 +1179,13 @@ class guiManager(QMainWindow, form_class):
 
             # Endeudados
             if subStackedPage == 0:
-                self.lastPage(self.table6)
-                self.updateClientsTable(True)
+                self.lastPage(self.table7)
+                self.updateClientsTable()
 
             # No endeudados
             else:
-                self.lastPage(self.table7)
-                self.updateClientsTable()
+                self.lastPage(self.table6)
+                self.updateClientsTable(True)
 
     # Tablas de usuarios
     def on_arrow65_pressed(self):
@@ -2713,12 +2754,13 @@ class guiManager(QMainWindow, form_class):
         self.clearTEs(self.providersTE1)
 
         # Refrescar tabla
+        self.getProvidersTotalPages()
         self.updateProvidersTable()
 
     # Método para refrescar la tabla de proveedores
     def updateProvidersTable(self):
         table = self.table13
-        providers = self.db.getAllProviders()
+        providers = self.db.getAllProviders(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
         self.clearTable(table)                                                       # Vaciar la tabla
         table.setRowCount(len(providers))                                            # Contador de filas
@@ -2858,18 +2900,20 @@ class guiManager(QMainWindow, form_class):
         self.resetClientsCBs()
 
         # Refrescar tabla
+        self.getClientsTotalPages()
         self.updateClientsTable()
         self.updateClientsTable(True)
 
     # Método para refrescar las tablas de clientes
     def updateClientsTable(self, debt = False):
-        clients = self.db.getClients(debt=debt)
         if debt:
             table = self.table6
+            clients = self.db.getClients(debt=debt, limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
             factor = -1
 
         else:
             table = self.table7
+            clients = self.db.getClients(debt=debt, limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
             factor = 1
 
         self.clearTable(table)                                                    # Vaciar la tabla
@@ -3188,6 +3232,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.transfersLE2)
         self.clearLEs(self.transfersLE3)
         self.clearTE(self.textE7)
+        self.getTransfersTotalPages()
         self.updateTranfersTable()
         self.updateDepositsTable()
         self.refreshSales()
@@ -3195,7 +3240,7 @@ class guiManager(QMainWindow, form_class):
     # Método para refrescar la tabla de transferencias
     def updateTranfersTable(self):
         table = self.table14
-        transfers = self.db.getTransfers(limit=self.pageLimit, page=self.tables.index(self.table14))
+        transfers = self.db.getTransfers(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
         self.clearTable(table)                                                         # Vaciar la tabla
         table.setRowCount(len(transfers))                                              # Contador de filas
@@ -3214,7 +3259,7 @@ class guiManager(QMainWindow, form_class):
     # Método para refrescar la tabla de transferencias
     def updateDepositsTable(self):
         table = self.table16
-        deposits = self.db.getDeposits(limit=self.pageLimit, page=self.tables.index(self.table16))
+        deposits = self.db.getDeposits(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
         self.clearTable(table)                                                        # Vaciar la tabla
         table.setRowCount(len(deposits))                                              # Contador de filas

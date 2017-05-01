@@ -533,8 +533,20 @@ class dbManager(object):
     Método para obtener TODA la informacion de los proveedores existentes en la base de datos
         - Retorna un queryset con TODOS los proveedores
     '''
-    def getAllProviders(self):
-        return self.session.query(Provider).all()
+    def getAllProviders(self, limit = None, page = 1):
+        query = self.session.query(Provider).order_by(Provider.creation_date)
+
+        if limit != None:
+            query = self.session.query(Provider).order_by(desc(Provider.creation_date)).limit(limit).offset((page-1)*limit)
+
+        return query.all()
+
+    '''
+    Método para obtener la cantidad de proveedores registrados
+        - Retorna la cantidad de proveedores registrados
+    '''
+    def getProvidersCount(self):
+        return self.session.query(Provider).count()
 
     '''
     Método para obtener TODOS los nombres de los proveedores existentes en la base de datos en orden lexicografico.
@@ -542,7 +554,7 @@ class dbManager(object):
     '''
 
     def getAllProvidersByName(self):
-        return self.session.query(Provider.provider_name).all().order_by(Provider.provider_name)
+        return self.session.query(Provider.provider_name).order_by(Provider.provider_name).all()
 
     '''
     Método para obtener TODOS los nombres de los proveedores existentes en la base de datos en orden de creación.
@@ -550,7 +562,7 @@ class dbManager(object):
     '''
 
     def getAllProvidersByCreationDate(self):
-        return self.session.query(Provider.provider_name).all().order_by(Provider.creation_date)
+        return self.session.query(Provider.provider_name).order_by(Provider.creation_date).all()
 
     '''
     Método para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden lexicografico.
@@ -558,7 +570,7 @@ class dbManager(object):
     '''
 
     def getAllActiveProvidersByName(self):
-        return self.session.query(Provider.provider_name).filter(Provider.active == True).order_by(Provider.provider_name)
+        return self.session.query(Provider.provider_name).filter(Provider.active == True).order_by(Provider.provider_name).all()
 
     '''
     Método para obtener TODOS los nombres de los proveedores ACTIVOS en la base de datos en orden de creación.
@@ -566,7 +578,7 @@ class dbManager(object):
     '''
 
     def getAllActiveProvidersByCreationDate(self):
-        return self.session.query(Provider.provider_name).filter(Provider.active == True).order_by(Provider.creation_date)
+        return self.session.query(Provider.provider_name).filter(Provider.active == True).order_by(Provider.creation_date).all()
 
     '''
     Método para obtener TODOS los nombres de los proveedores NO ACTIVOS en la base de datos en orden lexicografico.
@@ -574,7 +586,7 @@ class dbManager(object):
     '''
 
     def getAllActiveProvidersByName(self):
-        return self.session.query(Provider.provider_name).filter(Provider.active == False).order_by(Provider.provider_name)
+        return self.session.query(Provider.provider_name).filter(Provider.active == False).order_by(Provider.provider_name).all()
 
     '''
     Método para obtener TODOS los nombres de los proveedores NO ACTIVOS en la base de datos en orden de creación.
@@ -582,7 +594,7 @@ class dbManager(object):
     '''
 
     def getAllActiveProvidersByCreationDate(self):
-        return self.session.query(Provider.provider_name).filter(Provider.active == False).order_by(Provider.creation_date)
+        return self.session.query(Provider.provider_name).filter(Provider.active == False).order_by(Provider.creation_date).all()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PRODUCTOS:
@@ -1291,8 +1303,10 @@ class dbManager(object):
     # MÉTODOS PARA EL CONTROL DE CLIENTES:
     #==============================================================================================================================================================================
 
-    # Método para verificar que un cliente existe.
-    # Retorna true cuando el cliente existe y false en caso contario
+    '''
+    Método para verificar que un cliente existe.
+        - Retorna true cuando el cliente existe y false en caso contario
+    '''
     def existClient(self, ci):
         count = self.session.query(Client).filter_by(ci=ci).count()
         if count == 0:
@@ -1313,11 +1327,13 @@ class dbManager(object):
             clientsCI.append(str(ci[0]))
         return sorted(clientsCI)
 
-    # Método para buscar clientes.
-    # Retorna queryset de los clientes que cumplan el filtro
-    def getClients(self, ci=None, firstname=None, lastname=None, debt=None):
-        if ci is None and firstname is None and lastname is None and debt is None:
-            return self.session.query(Client).all()
+    '''
+    Método para buscar clientes.
+        - Retorna queryset de los clientes que cumplan el filtro
+    '''
+    def getClients(self, ci=None, firstname=None, lastname=None, debt=None, limit=None, page=1):
+        if ci is None and firstname is None and lastname is None and debt is None and limit is None:
+            return self.session.query(Client).order_by(desc(Client.last_seen)).all()
 
         filters = and_()
         if ci is not None:
@@ -1336,10 +1352,31 @@ class dbManager(object):
             else:
                 filters = and_(filters, Client.balance >= 0)
 
-        return self.session.query(Client).filter(*filters).all()
+        query = self.session.query(Client).filter(*filters).order_by(desc(Client.last_seen))
 
-    # Método para crear un cliente nuevo
-    # Retorna true cuando el cliente es creado satisfactoreamente y false cuando no se puede crear o cuando ya existia el cliente
+        if limit != None:
+            query = self.session.query(Client).filter(*filters).order_by(desc(Client.last_seen)).limit(limit).offset((page-1)*limit)
+
+        return query.all()
+
+    '''
+    Método para contar clientes.
+        - Retorna la cantidad de clientes.
+    '''
+    def getClientsCount(self, debt = None):
+        if debt is None:
+            return self.session.query(Client).count()
+
+        filters = and_()
+        if debt: filters = and_(filters, Client.balance < 0)
+        else: filters = and_(filters, Client.balance >= 0)
+
+        return self.session.query(Client).filter(*filters).count()
+
+    '''
+    Método para crear un cliente nuevo
+        - Retorna true cuando el cliente es creado satisfactoreamente y false cuando no se puede crear o cuando ya existia el cliente
+    '''
     def createClient(self, ci, firstname, lastname, phone=None, email=None, debt_permission=None, book_permission=None):
         if self.existClient(ci):
             return False
@@ -1833,11 +1870,10 @@ class dbManager(object):
         if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
         if ci != None and self.existClient(ci): kwargs['ci'] = ci
 
-        query = self.session.query(Transfer).filter_by(**kwargs).order_by(desc(Transfer.transfer_date)).all()
+        query = self.session.query(Transfer).filter_by(**kwargs).order_by(desc(Transfer.transfer_date))
 
         if limit != None:
-            query = query.limit(limit)
-            query = query.offset(page*limit)
+            query = self.session.query(Transfer).filter_by(**kwargs).order_by(desc(Transfer.transfer_date)).limit(limit).offset((page-1)*limit)
 
         return query.all()
 
@@ -1894,8 +1930,7 @@ class dbManager(object):
         query = self.session.query(Deposit).filter_by(**kwargs).order_by(desc(Deposit.deposit_date))
 
         if limit != None:
-            query = query.limit(limit)
-            query = query.offset(page*limit)
+            query = self.session.query(Deposit).filter_by(**kwargs).order_by(desc(Deposit.deposit_date)).limit(limit).offset((page-1)*limit)
 
         return query.all()
 
