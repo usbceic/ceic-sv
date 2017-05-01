@@ -1,38 +1,38 @@
-# README #
+**CEIC Suite**
+==============================
 
-### Propósito del repositorio ###
-
-* Sistema de Ventas del Centro de Estudiantes de Ingeniería en Computación
+* Sistema de Ventas del Centro de Estudiantes de Ingeniería de la Computación
 * Este sistema mantiene centralizadas todas las operaciones de ventas y servicios que ofrece el centro de estudiantes.
 
-### Estado actual del proyecto ###
+
+Estado actual del proyecto
+-------------
 
 El proyecto aun está en fase beta.
 
 * A nivel de base de datos:
     - Todo el modelo está comentado y se tiene el esquema de la base digitalizado en extensiones ".svg" y ".png"
     - Todo el archivo de creación del modelo y comunicación entre el ORM (SQLAlchemy) y la base de datos como tal, están listos.
-    - Todos los métodos para insersión, actualización y eliminación de datos en la parte de ventas estan listos
-    - Creemos que los triggers para la parte de ventas estan listos xD
-    - Para la parte de prestamos de libros, faltan todos los métodos para inserción, actualización y eliminacion de datos, así como los triggers pertinentes.
+    - Todos los CRUDs para la parte de ventas estan listos.
+    - Todos los triggers para la parte de ventas estan listos.
+    - Para la parte de prestamos de libros, faltan todos los CRUDs, así como los triggers pertinentes.
 
 
 * A nivel de interfaz:
     - Todo el código esta comentado
     - Todas las vistas de la ventana de inicio están listas, con sus debidas verificaciones y mensajes de alerta.
     - La vista de caja esta completamente funcional con verfificaciones y mensajes de alerta.
-    - La vista de ventas esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
-    - La vista de inventario esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
-    - La vista de proveedores esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
-    - La vista de clientes esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
-    - La vista de recargas de saldo esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
-    - La vista de usuarios esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
-    - La vista de configuraciones esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
-    - La vista de ayuda esta completamente funcional pero faltan verfificaciones y mensajes de alerta.
-    - Falta conectar toda la vista para consultar estadísticas (Casi 100% seguro que quedará para el futuro).
+    - La vista de ventas esta completamente funcional con verfificaciones y mensajes de alerta.
+    - La vista de inventario esta completamente funcional con verfificaciones y mensajes de alerta.
+    - La vista de proveedores esta completamente funcional con verfificaciones y mensajes de alerta.
+    - La vista de clientes esta completamente funcional con verfificaciones y mensajes de alerta.
+    - La vista de recargas de saldo esta completamente funcional con verfificaciones y mensajes de alerta.
+    - La vista de usuarios esta completamente funcional con verfificaciones y mensajes de alerta.
+    - La vista de configuraciones esta completamente funcional con verfificaciones y mensajes de alerta.
+    - La vista de ayuda esta completamente funcional con verfificaciones y mensajes de alerta.
+    - Falta conectar toda la vista para consultar estadísticas (100% seguro que quedará para el futuro).
     - Falta conectar la vista para prestamos de libros.
     - Falta conectar la vista de la biblioteca.
-    - Falta conectar paginación para las tablas.
     - Faltan pulir detalles y establecer atajos de teclado.
 
 
@@ -42,12 +42,25 @@ El proyecto aun está en fase beta.
     - Falta definir la liscencia y otros aspectos legales.
     - Falta el manual de usuario.
 
-### Como configurar y correr la aplicación ###
+
+Como configurar y correr la aplicación
+-------------
 
 * Esta aplicación trabaja con Python, Qt y PostgreSQL
-* Para correr la aplicación mediante la consola utilizar el comando *python ceic_suite.py*
+* Vaya a la carpeta 'doc' y ejecute el script de instalación de dependencias:
+    <code>
+    cd doc
+    chmod +x installScript.sh
+    sudo ./installScript.sh
+    <code>
 
-### Requisitos ###
+* Para correr la aplicación mediante la consola utilizar el comando:
+    <code>*python ceic_suite.py*<code>
+
+
+Requisitos
+-------------
+
 * Sistemas operativos soportados:
     - Ubuntu 13.04 o superior
     - Windows XP o superior
@@ -64,7 +77,9 @@ El proyecto aun está en fase beta.
 * Instalar PostgreSQL 9.4.x o superior
 * Instalar las fuentes tipográficas incluidas en este software
 
-### Información de contacto ###
+
+Información de contacto
+-------------
 
 * Coordinación de Tecnología y colaboradores del Centro de Estudiantes de Ing. Computación
 
