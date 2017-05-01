@@ -275,7 +275,7 @@ class guiManager(QMainWindow, form_class):
 
         # Apartado de usuarios
         self.usersLE0 = [self.lineE62, self.lineE63, self.lineE64, self.lineE65, self.lineE66]
-        self.usersLE1 = [self.lineE69, self.lineE70, self.lineE71, self.lineE72, self.lineE73]
+        self.usersLE1 = [self.lineE69, self.lineE70, self.lineE71, self.lineE72, self.lineE73, self.lineE74]
         self.usersLE2 = [self.lineE75, self.lineE76, self.lineE77, self.lineE78]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
