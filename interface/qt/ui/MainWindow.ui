@@ -1439,7 +1439,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -3458,6 +3458,11 @@ QWidget:item:unchecked {
                <column>
                 <property name="text">
                  <string>Monto</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Descripción</string>
                 </property>
                </column>
                <column>

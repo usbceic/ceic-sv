@@ -825,18 +825,18 @@ class guiManager(QMainWindow, form_class):
     # PAGINACIÓN
     #==============================================================================================================================================================================
 
-    # Calcular el total de páginas de la tabla de proveedores
+    # Calcular el total de páginas de las tablas de productos
     def getProductsTotalPages(self):
         self.tablesTotalPages[self.tables.index(self.table0)] = ceil(self.db.getProductsCount(True)/self.pageLimit)   # Disponibles
         self.tablesTotalPages[self.tables.index(self.table1)] = ceil(self.db.getProductsCount(False)/self.pageLimit)  # No disponibles
         self.tablesTotalPages[self.tables.index(self.table2)] = ceil(self.db.getProductsCount()/self.pageLimit)       # Todos
 
-    # Calcular el total de páginas de la tabla de proveedores
+    # Calcular el total de páginas de las tablas de clientes
     def getClientsTotalPages(self):
         self.tablesTotalPages[self.tables.index(self.table6)] = ceil(self.db.getClientsCount(True)/self.pageLimit)  # Endeudados
         self.tablesTotalPages[self.tables.index(self.table7)] = ceil(self.db.getClientsCount()/self.pageLimit)      # No endeudados
 
-    # Calcular el total de páginas de la tabla de proveedores
+    # Calcular el total de páginas de las tablas de usuarios
     def getUsersTotalPages(self):
         self.tablesTotalPages[self.tables.index(self.table8)]  = ceil(self.db.getUsersCount(2)/self.pageLimit)  # Colaboradores
         self.tablesTotalPages[self.tables.index(self.table9)]  = ceil(self.db.getUsersCount(1)/self.pageLimit)  # Vendedores
@@ -846,10 +846,14 @@ class guiManager(QMainWindow, form_class):
     def getProvidersTotalPages(self):
         self.tablesTotalPages[self.tables.index(self.table13)] = ceil(self.db.getProvidersCount()/self.pageLimit)
 
-    # Calcular el total de páginas de las tabla de recargas
+    # Calcular el total de páginas de las tablas de recargas
     def getTransfersTotalPages(self):
         self.tablesTotalPages[self.tables.index(self.table14)] = ceil(self.db.getTransfersCount()/self.pageLimit)  # Transferencias
         self.tablesTotalPages[self.tables.index(self.table16)] = ceil(self.db.getDepositsCount()/self.pageLimit)   # Efectivo
+
+    # Calcular el total de páginas de la tabla de movimientos
+    def getMovementsTotalPages(self):
+        self.tablesTotalPages[self.tables.index(self.table15)] = ceil(self.db.getMovementsCount()/self.pageLimit)
 
     # Ir a la primera página
     def firstPage(self, table):
@@ -940,7 +944,7 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             self.firstPage(self.table12)
 
-    # Tablas de proveedores
+    # Tabla de proveedores
     def on_arrow70_pressed(self):
         if self.click():
             self.firstPage(self.table13)
@@ -960,6 +964,12 @@ class guiManager(QMainWindow, form_class):
             else:
                 self.firstPage(self.table16)
                 self.updateDepositsTable()
+
+    # Tabla de movimientos
+    def on_arrow78_pressed(self):
+        if self.click():
+            self.firstPage(self.table15)
+            self.updateMovementsTable()
 
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # Todas las flechas para ir a la página anterior
@@ -1028,7 +1038,7 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             self.previousPage(self.table12)
 
-    # Tablas de proveedores
+    # Tabla de proveedores
     def on_arrow71_pressed(self):
         if self.click():
             self.previousPage(self.table13)
@@ -1048,6 +1058,12 @@ class guiManager(QMainWindow, form_class):
             else:
                 self.previousPage(self.table16)
                 self.updateDepositsTable()
+
+    # Tabla de movimientos
+    def on_arrow79_pressed(self):
+        if self.click():
+            self.previousPage(self.table15)
+            self.updateMovementsTable()
 
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # Todas las flechas para ir a la página siguiente
@@ -1116,7 +1132,7 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             self.nextPage(self.table12)
 
-    # Tablas de proveedores
+    # Tabla de proveedores
     def on_arrow72_pressed(self):
         if self.click():
             self.nextPage(self.table13)
@@ -1136,6 +1152,12 @@ class guiManager(QMainWindow, form_class):
             else:
                 self.nextPage(self.table16)
                 self.updateDepositsTable()
+
+    # Tabla de movimientos
+    def on_arrow80_pressed(self):
+        if self.click():
+            self.nextPage(self.table15)
+            self.updateMovementsTable()
 
     #------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # Todas las flechas para ir a la última página
@@ -1204,7 +1226,7 @@ class guiManager(QMainWindow, form_class):
         if self.click():
             self.lastPage(self.table12)
 
-    # Tablas de proveedores
+    # Tabla de proveedores
     def on_arrow73_pressed(self):
         if self.click():
             self.lastPage(self.table13)
@@ -1224,6 +1246,12 @@ class guiManager(QMainWindow, form_class):
             else:
                 self.lastPage(self.table16)
                 self.updateDepositsTable()
+
+    # Tabla de movimientos
+    def on_arrow81_pressed(self):
+        if self.click():
+            self.lastPage(self.table15)
+            self.updateMovementsTable()
 
     #==============================================================================================================================================================================
     # VISTA DE CAJA
@@ -1263,6 +1291,8 @@ class guiManager(QMainWindow, form_class):
             self.clearLEs(self.cashLE1)                                 # Limpiar los campos de los apartados de periodo y caja
 
         self.clearLEs(self.calc1)                                       # Limpiar calculadora
+        self.getMovementsTotalPages()
+        self.updateMovementsTable()
 
     # Método para configurar la calculadora
     def updateCalc(self, legalTenders):
@@ -1285,6 +1315,44 @@ class guiManager(QMainWindow, form_class):
             if self.calc1[i].text() != "":
                 total += float(self.calc1[i].text())*float(legalTenders[i])
         self.lineE79.setText(naturalFormat(total))
+
+    # Método para refrescar la tabla de movimientos de caja
+    def updateMovementsTable(self):
+        table = self.table15
+        movements = self.db.getMovements(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
+
+        self.clearTable(table)                                                         # Vaciar la tabla
+        table.setRowCount(len(movements))                                              # Contador de filas
+        for i in range(len(movements)):                                                # Llenar tabla
+            op_type = movements[i].op_type
+            open_record = movements[i].open_record
+            cash_balance = movements[i].cash_balance
+            cash_total = str(movements[i].cash_total)
+            description = movements[i].description
+            date = movements[i].recorded.strftime(self.dtFormat)
+
+            if op_type == 0:
+                if open_record: movement = "Apertura de periodo"
+                else: movement = "Cierre de periodo"
+            elif op_type == 1:
+                if open_record: movement = "Apertura de caja"
+                else: movement = "Cierre caja"
+            elif op_type == 3:
+                if cash_balance > 0: movement = "Ingreso en efectivo"
+                else: movement = "Ingreso en banco"
+            else:
+                if cash_balance > 0: movement = "Egreso en efectivo"
+                else: movement = "Egreso en banco"
+
+            table.setItem(i, 0, QTableWidgetItem(movement))     # Tipo
+            table.setItem(i, 1, QTableWidgetItem(cash_total))   # Banco
+            table.setItem(i, 2, QTableWidgetItem(description))  # Descripción
+            table.setItem(i, 3, QTableWidgetItem(date))         # Fecha
+
+        self.elem_actual = 0                                      # Definir la fila que se seleccionará
+        if len(movements) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
+        table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
+        self.setupTable(table, 2)                                 # Reconfigurar tabla
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES

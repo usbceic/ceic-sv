@@ -37,7 +37,7 @@ def naturalFormat(amount, extension = None):
 
     tmp = str(amount).split(".")
     integer = tmp[0]
-    if len(tmp) < 2: decimal = ""
+    if len(tmp) < 2: decimal = "0"
     else: decimal = tmp[1]
 
     for i in range(len(integer)-3, 0, -3):

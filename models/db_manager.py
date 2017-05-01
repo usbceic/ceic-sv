@@ -2422,7 +2422,7 @@ class dbManager(object):
      - Devuelve tupla (True, True) si se logró con éxito
      - Devuelve (False, False), (True, False) en caso contrario
     """
-    def createEntry(self, clerk, op_type, cash_balance, transfer_balance, description=""):
+    def createEntry(self, clerk, op_type, cash_balance, transfer_balance, cash_total, description=""):
 
         if 0 <= op_type and op_type <= 2:
             print("Las operaciones 0..2 estan reservadas")
@@ -2433,7 +2433,7 @@ class dbManager(object):
             return (False, False)
 
 
-        new_entry = Operation_log(clerk=clerk, op_type=op_type, transfer_balance=transfer_balance, cash_balance=cash_balance, cash_total=0, total_money=0, description=description)
+        new_entry = Operation_log(clerk=clerk, op_type=op_type, transfer_balance=transfer_balance, cash_balance=cash_balance, cash_total=cash_total, total_money=0, description=description)
         self.session.add(new_entry)
         try:
             self.session.commit()
@@ -2454,7 +2454,20 @@ class dbManager(object):
     def incomeOperation(self, clerk, cash_balance = 0, transfer_balance = 0, description=""):
         if cash_balance >= 0 and transfer_balance >= 0:
             if cash_balance > 0 or transfer_balance > 0:
-                self.createEntry(clerk, 3, cash_balance, transfer_balance, description)
+
+                if cash_balance > 0: cash_total = cash_balance
+                else: cash_total = transfer_balance
+
+                kwargs = {
+                    'clerk'            : clerk,
+                    'op_type'          : 3,
+                    'cash_balance'     : cash_balance,
+                    'transfer_balance' : transfer_balance,
+                    'cash_total'       : cash_total,
+                    'description'      : description
+                }
+
+                self.createEntry(**kwargs)
                 print("Se ha hecho el ingreso exitosamente")
                 return True
 
@@ -2474,8 +2487,20 @@ class dbManager(object):
     def expenditureOperation(self, clerk, cash_balance = 0, transfer_balance = 0, description=""):
         if cash_balance >= 0 and transfer_balance >= 0:
             if cash_balance > 0 or transfer_balance > 0:
-                cash_balance, transfer_balance = -cash_balance, -transfer_balance
-                self.createEntry(clerk, 4, cash_balance, transfer_balance, description)
+
+                if cash_balance > 0: cash_total = cash_balance
+                else: cash_total = transfer_balance
+
+                kwargs = {
+                    'clerk'            : clerk,
+                    'op_type'          : 4,
+                    'cash_balance'     : -cash_balance,
+                    'transfer_balance' : -transfer_balance,
+                    'cash_total'       : -cash_total,
+                    'description'      : description
+                }
+
+                self.createEntry(**kwargs)
                 print("Se ha hecho el egreso exitosamente")
                 return True
 
@@ -2486,7 +2511,6 @@ class dbManager(object):
         else:
             print("No se puede egresar una cantidad negativa")
             return False
-
 
     """
     Método para obtener todas las operaciones entre dos fechas (inclusivas)
@@ -2548,7 +2572,6 @@ class dbManager(object):
             log = self.session.query(Operation_log).filter(*filters_log)
 
         return (cash_checkouts, product_reverse, service_reverse, transfers, deposits, log)
-
 
     """
     Método para obtener todas las operaciones entre dos fechas (inclusivas)
@@ -2665,8 +2688,22 @@ class dbManager(object):
             print("Razon:", e)
             return False
 
+    """
+    Método para obtener los movimientos de caja (ingresos, egresos, apertura y cierre de caja y periodo)
+     - Retorna queryset con los movimientos que cumplan el filtro
+    """
+    def getMovements(self, limit = None, page = 1):
+        if limit is None:
+            return self.session.query(Operation_log).filter(Operation_log.op_type != 2).order_by(desc(Operation_log.recorded)).all()
 
+        return self.session.query(Operation_log).filter(Operation_log.op_type != 2).order_by(desc(Operation_log.recorded)).limit(limit).offset((page-1)*limit).all()
 
+    """
+    Método para obtener la cantidad de movimientos de caja (ingresos, egresos, apertura y cierre de caja y periodo)
+     - Retorna la cantidad de movimientos que cumplan el filtro
+    """
+    def getMovementsCount(self):
+        return self.session.query(Operation_log).filter(Operation_log.op_type != 2).count()
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE MONEDAS / BILLETES PARA PAGO:
@@ -2803,7 +2840,6 @@ class dbManager(object):
             self.session.rollback()
             return False
 
-
     """
     Método para actualizar la información de un libro
         - Retorna True:
@@ -2837,7 +2873,6 @@ class dbManager(object):
 
         if quantity_lent is not None:
             kwargs['quantity_lent'] = quantity_lent
-
 
         try:
             self.session.query(Book).filter_by(book_id=oldID).update(kwargs)
