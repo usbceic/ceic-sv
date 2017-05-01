@@ -704,7 +704,7 @@ class dbManager(object):
     Método para obtener los atributos especificados de todos los productos que cumplan con el filtro especificado
      - Retorna un queryset con lós resultados de la búsqueda
     """
-    def getProducts(self, product_id=None, product_name=None, price=None, remaining=None, remaining_lots=None, category=None, available=None, active=None):
+    def getProducts(self, product_id=None, product_name=None, price=None, remaining=None, remaining_lots=None, category=None, available=None, active=None, limit=None, page=1):
         columns = []
         if product_id != None: columns.append(Product.product_id)
         if product_name != None: columns.append(Product.product_name)
@@ -717,7 +717,23 @@ class dbManager(object):
         if available != None: filters["available"] = available
         if active != None: filters["active"] = active
 
-        return self.session.query(*columns).filter_by(**filters).all()
+        query = self.session.query(*columns).filter_by(**filters)
+
+        if limit != None:
+            query = self.session.query(*columns).filter_by(**filters).limit(limit).offset((page-1)*limit)
+
+        return query.all()
+
+    """
+    Método para obtener la cantidad de productos segun un filtro
+     - Retorna la cantidad de productos segun un filtro
+    """
+    def getProductsCount(self, available=None, active=True):
+        filters = {}
+        if available != None: filters["available"] = available
+        if active != None: filters["active"] = active
+
+        return self.session.query(Product).filter_by(**filters).count()
 
     """
     Método para actualizar información de un producto
@@ -1892,6 +1908,20 @@ class dbManager(object):
 
         return query.all()
 
+    '''
+    Método para contar transferencias
+        - Retorna la cantidad de transferencias que cumplan el filtro
+    '''
+    def getTransfersCount(self, clerk = None, ci = None):
+        if clerk is None and ci is None:
+            return self.session.query(Transfer).count()
+
+        kwargs = {}
+        if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
+        if ci != None and self.existClient(ci): kwargs['ci'] = ci
+
+        return self.session.query(Transfer).filter_by(**kwargs).count()
+
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE DEPÓSITOS:
     #==============================================================================================================================================================================
@@ -1932,8 +1962,10 @@ class dbManager(object):
                 self.session.rollback()
                 print("No se pudo actualizar el saldo del cliente", e)
 
-    # Método para buscar Depósitos
-    # Retorna queryset de los depósitos que cumplan el filtro
+    '''
+    Método para buscar Depósitos
+        - Retorna queryset de los depósitos que cumplan el filtro
+    '''
     def getDeposits(self, clerk = None, ci = None, limit = None, page = 1):
         if clerk is None and ci is None and limit is None:
             return self.session.query(Deposit).order_by(desc(Deposit.deposit_date)).all()
@@ -1949,8 +1981,10 @@ class dbManager(object):
 
         return query.all()
 
-    # Método para contar Depósitos
-    # Retorna la cantidad de depósitos que cumplan el filtro
+    '''
+    Método para contar Depósitos
+        - Retorna la cantidad de depósitos que cumplan el filtro
+    '''
     def getDepositsCount(self, clerk = None, ci = None):
         if clerk is None and ci is None:
             return self.session.query(Deposit).count()

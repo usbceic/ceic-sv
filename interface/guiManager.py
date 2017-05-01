@@ -438,13 +438,13 @@ class guiManager(QMainWindow, form_class):
 
     # Obtener una lista con los nombres de todos los productos
     def getProductList(self, params, mode = 0):
-        if mode == 0: params.update({"available" : None})
-        elif mode == 1: params.update({"available" : True})
-        else:  params.update({"available" : False})
+        if mode == 0: params.update({"available" : None, "page" : self.tablesPages[self.tables.index(self.table2)]})
+        elif mode == 1: params.update({"available" : True, "page" :self.tablesPages[self.tables.index(self.table0)]})
+        else: params.update({"available" : False, "page" : self.tablesPages[self.tables.index(self.table1)]})
 
         productsList = self.db.getProducts(**params)
 
-        if len(params) == 3:
+        if len(params) == 4:
             productsNames = []
             for i in range(len(productsList)):
                 productsNames += productsList[i]
@@ -822,9 +822,15 @@ class guiManager(QMainWindow, form_class):
     #==============================================================================================================================================================================
 
     # Calcular el total de páginas de la tabla de proveedores
+    def getProductsTotalPages(self):
+        self.tablesTotalPages[self.tables.index(self.table0)] = ceil(self.db.getProductsCount(True)/self.pageLimit)   # Disponibles
+        self.tablesTotalPages[self.tables.index(self.table1)] = ceil(self.db.getProductsCount(False)/self.pageLimit)  # No disponibles
+        self.tablesTotalPages[self.tables.index(self.table2)] = ceil(self.db.getProductsCount()/self.pageLimit)       # Todos
+
+    # Calcular el total de páginas de la tabla de proveedores
     def getClientsTotalPages(self):
-        self.tablesTotalPages[self.tables.index(self.table6)] = ceil(self.db.getClientsCount(True)/self.pageLimit)
-        self.tablesTotalPages[self.tables.index(self.table7)] = ceil(self.db.getClientsCount()/self.pageLimit)
+        self.tablesTotalPages[self.tables.index(self.table6)] = ceil(self.db.getClientsCount(True)/self.pageLimit)  # Endeudados
+        self.tablesTotalPages[self.tables.index(self.table7)] = ceil(self.db.getClientsCount()/self.pageLimit)      # No endeudados
 
     # Calcular el total de páginas de la tabla de proveedores
     def getUsersTotalPages(self):
@@ -838,8 +844,8 @@ class guiManager(QMainWindow, form_class):
 
     # Calcular el total de páginas de las tabla de recargas
     def getTransfersTotalPages(self):
-        self.tablesTotalPages[self.tables.index(self.table14)] = ceil(self.db.getDepositsCount()/self.pageLimit)
-        self.tablesTotalPages[self.tables.index(self.table16)] = ceil(self.db.getDepositsCount()/self.pageLimit)
+        self.tablesTotalPages[self.tables.index(self.table14)] = ceil(self.db.getTransfersCount()/self.pageLimit)  # Transferencias
+        self.tablesTotalPages[self.tables.index(self.table16)] = ceil(self.db.getDepositsCount()/self.pageLimit)   # Efectivo
 
     # Ir a la primera página
     def firstPage(self, table):
@@ -1593,7 +1599,8 @@ class guiManager(QMainWindow, form_class):
             "remaining"      : True,
             "remaining_lots" : True,
             "category"       : True,
-            "active"         : True
+            "active"         : True,
+            "limit"          : self.pageLimit
         }
 
         # Listas de nombres de los productos
@@ -1610,6 +1617,7 @@ class guiManager(QMainWindow, form_class):
         self.setupSearchBar(self.productSearch, self.productsNames)
 
         # Setup de las distintas tablas
+        self.getProductsTotalPages()
         self.updateProductsTable(self.table0, self.productsInfoAvailable)
         self.updateProductsTable(self.table1, self.productsInfoNotAvailable)
         self.updateProductsTable(self.table2, self.productsInfo)
@@ -3532,7 +3540,6 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.usersLE1)
         self.clearLEs(self.usersLE2)
         self.lineE75.setFocus()
-
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
