@@ -32,8 +32,8 @@ for current in path:
 ###################################################################################################################################################################################
 
 from models import *
-from session import *
-from db_backup import *
+from session import startSession, resetDataBase
+from db_backup import DBBackup
 from sqlalchemy import func, distinct, update, event, and_, or_, desc
 from passlib.hash import bcrypt
 from str_random import str_random
@@ -260,7 +260,7 @@ class dbManager(object):
     def loginUser(self, username, password):
         if self.checkPassword(username, password):
             try:
-                self.session.execute(update(User).where(User.username==username).values(last_login=datetime.datetime.now()))
+                self.session.execute(update(User).where(User.username==username).values(last_login=datetime.now()))
                 self.session.commit()
                 print("Se ha actualizado la fecha de último inicio de sesión para el usuario: " + username)
                 return 0
@@ -1530,7 +1530,7 @@ class dbManager(object):
         * Cuando no pudo hacerse check in por alguna otra razón
     """
     def checkInClient(self, ci):
-        return self.updateClient(ci, last_seen=datetime.datetime.now())
+        return self.updateClient(ci, last_seen=datetime.now())
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE ORDENES DE COMPRAS (PURCHASE):
@@ -1566,7 +1566,7 @@ class dbManager(object):
             self.session.add(newPurchase)
             try:
                 self.session.commit()
-                self.updateClient(ciOriginal=ci, last_seen=datetime.datetime.now())
+                self.updateClient(ciOriginal=ci, last_seen=datetime.now())
                 print("Se ha creado correctamente la compra")
                 return str(newPurchase.purchase_id)
             except Exception as e:
@@ -1823,7 +1823,7 @@ class dbManager(object):
 
             # Se marca la orden de compra como pagada
             for i in range(10):
-                self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"payed" : True, "payed_date" : datetime.datetime.now()})
+                self.session.query(Purchase).filter_by(purchase_id = purchase_id).update({"payed" : True, "payed_date" : datetime.now()})
                 try:
                     self.session.commit()
                     print("Se ha actualizado la compra correctamente")
@@ -2993,7 +2993,7 @@ if __name__ == '__main__':
     except Exception as e:
         print("Excepcion de Libro:", e)
         import datetime
-        b = Book(title="Prueba", book_year=datetime.datetime.now(), lang=l.lang_name)
+        b = Book(title="Prueba", book_year=datetime.now(), lang=l.lang_name)
         m.session.add(b)
         m.session.commit()
 

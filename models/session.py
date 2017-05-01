@@ -16,9 +16,9 @@
 ## DEPENDENCIAS:
 ###################################################################################################################################################################################
 
-from sqlalchemy.orm import sessionmaker, scoped_session
 import db_engine
-import models
+from models import Base
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 ###################################################################################################################################################################################
 ## DECLARACIÓN DE LOS MÉTODOS PARA MANEJAR LA SESIÓN EN LA BASE DE DATOS:
@@ -28,7 +28,7 @@ def startSession(name, password, debug=False, dropAll=False):
 	db_engine.startConnection(name, password, debug)
 	if dropAll:
 		dropAllDataBase()
-	models.Base.metadata.create_all(db_engine.Engine)
+	Base.metadata.create_all(db_engine.Engine)
 	return scoped_session(sessionmaker(bind=db_engine.Engine))
 
 def duplicateSession(autoflush=True):
@@ -39,7 +39,7 @@ def duplicateSession(autoflush=True):
 def dropAllDataBase():
 	try:
 		print("PELIGRO, DROPEANDO TODAS LAS TABLAS")
-		models.Base.metadata.drop_all(db_engine.Engine)
+		Base.metadata.drop_all(db_engine.Engine)
 		print("TABLAS DROPEADAS")
 	except Exception as e:
 		print("No se logro dropear todas las tablas")
@@ -47,7 +47,7 @@ def dropAllDataBase():
 
 def resetDataBase():
 	dropAllDataBase()
-	models.Base.metadata.create_all(db_engine.Engine)
+	Base.metadata.create_all(db_engine.Engine)
 
 ###################################################################################################################################################################################
 ## FIN :)

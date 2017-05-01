@@ -19,7 +19,7 @@
 ###################################################################################################################################################################################
 
 import sys
-import datetime
+from datetime import datetime
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Boolean, Integer, String, DateTime, Date, Numeric, ForeignKeyConstraint, CheckConstraint, UniqueConstraint, ForeignKey
@@ -48,8 +48,8 @@ class User(this.Base):
     permission_mask = Column(Integer, nullable=False)
     profile         = Column(String, default="")
     active          = Column(Boolean, nullable=False, default=True)
-    creation_date   = Column(DateTime, nullable=False, default=datetime.datetime.now)
-    last_login      = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    creation_date   = Column(DateTime, nullable=False, default=datetime.now)
+    last_login      = Column(DateTime, nullable=False, default=datetime.now)
 
     # Relaciones
     lot                    = relationship("Lot")
@@ -81,7 +81,7 @@ class Provider(this.Base):
     pay_information = Column(String)
     description     = Column(String)
     active          = Column(Boolean, nullable=False, default=True)
-    creation_date   = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    creation_date   = Column(DateTime, nullable=False, default=datetime.now)
 
     # Relaciones
     lot  = relationship("Lot")
@@ -103,7 +103,7 @@ class Product(this.Base):
     product_id     = Column(GUID, primary_key=True, default=GUID.random_value)
     product_name   = Column(String, nullable=False, unique=True)
     price          = Column(Numeric, nullable=False)
-    creation_date  = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    creation_date  = Column(DateTime, nullable=False, default=datetime.now)
     remaining      = Column(Integer, nullable=False, default=0)
     remaining_lots = Column(Integer, nullable=False, default=0)
     available      = Column(Boolean, nullable=False, default=False)
@@ -143,7 +143,7 @@ class Lot(this.Base):
     cost             = Column(Numeric, nullable=False)
     quantity         = Column(Integer, nullable=False)
     remaining        = Column(Integer, nullable=False)
-    adquisition_date = Column(Date, nullable=False, default=datetime.datetime.now)
+    adquisition_date = Column(Date, nullable=False, default=datetime.now)
     perishable       = Column(Boolean, nullable=False, default=False)
     expiration_date  = Column(Date)
     available        = Column(Boolean, nullable=False, default=True)
@@ -223,7 +223,7 @@ class Client(this.Base):
     book_permission = Column(Boolean, nullable=False, default=True)
     blocked         = Column(Boolean, nullable=False, default=False)
     balance         = Column(Numeric, nullable=False, default=0)
-    last_seen       = Column(DateTime, default=datetime.datetime.now)
+    last_seen       = Column(DateTime, default=datetime.now)
     active          = Column(Boolean, nullable=False, default=True)
 
     # Constraints
@@ -257,7 +257,7 @@ class Purchase(this.Base):
     clerk         = Column(String, nullable=False)
     total         = Column(Numeric, nullable=False, default=0)
     interest      = Column(Numeric, nullable=False, default=0)
-    purchase_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    purchase_date = Column(DateTime, nullable=False, default=datetime.now)
     debt          = Column(Boolean, nullable=False, default=False)
     payed         = Column(Boolean, nullable=False, default=False)
     payed_date    = Column(DateTime, default=None)
@@ -362,7 +362,7 @@ class Checkout(this.Base):
     # Atributos
     checkout_id  = Column(GUID, nullable=False, primary_key=True, default=GUID.random_value)
     purchase_id  = Column(GUID, nullable=False, primary_key=True)
-    pay_date     = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    pay_date     = Column(DateTime, nullable=False, default=datetime.now)
     amount       = Column(Numeric, nullable=False)
     with_balance = Column(Boolean, nullable=False, default=False)
 
@@ -392,7 +392,7 @@ class Reverse_product_list(this.Base):
     product_id   = Column(GUID, nullable=False, primary_key=True)
     purchase_id  = Column(GUID, nullable=False, primary_key=True)
     clerk_id     = Column(String, nullable=False)
-    reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    reverse_date = Column(DateTime, nullable=False, default=datetime.now)
     amount       = Column(Integer, nullable=False)
     cash         = Column(Boolean, default=True)
     cash_amount  = Column(Numeric, nullable=False, default=0.0)
@@ -431,7 +431,7 @@ class Reverse_service_list(this.Base):
     service_id   = Column(GUID, nullable=False, primary_key=True)
     purchase_id  = Column(GUID, nullable=False, primary_key=True)
     clerk_id     = Column(String, nullable=False)
-    reverse_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    reverse_date = Column(DateTime, nullable=False, default=datetime.now)
     amount       = Column(Integer, nullable=False)
     cash         = Column(Boolean, default=True)
     cash_amount  = Column(Numeric, nullable=False, default=0.0)
@@ -469,7 +469,7 @@ class Transfer(this.Base):
     transfer_id       = Column(GUID, primary_key=True, default=GUID.random_value)
     ci                = Column(Integer, nullable=False)
     clerk             = Column(String, nullable=False)
-    transfer_date     = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    transfer_date     = Column(DateTime, nullable=False, default=datetime.now)
     amount            = Column(Numeric, nullable=False)
     bank              = Column(String, nullable=False)
     confirmation_code = Column(String, nullable=False)
@@ -505,7 +505,7 @@ class Deposit(this.Base):
     deposit_id        = Column(GUID, primary_key=True, default=GUID.random_value)
     ci                = Column(Integer, nullable=False)
     clerk             = Column(String, nullable=False)
-    deposit_date      = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    deposit_date      = Column(DateTime, nullable=False, default=datetime.now)
     amount            = Column(Numeric, nullable=False)
 
     # Constraints
@@ -536,7 +536,7 @@ class Operation_log(this.Base):
     clerk            = Column(String, nullable=False)
     op_type          = Column(Integer, nullable=False)
     open_record      = Column(Boolean, default=None)
-    recorded         = Column(DateTime, nullable=False, default=datetime.datetime.now)
+    recorded         = Column(DateTime, nullable=False, default=datetime.now)
     transfer_balance = Column(Numeric, nullable=False, default=0)
     cash_balance     = Column(Numeric, nullable=False, default=0)
     cash_total       = Column(Numeric, nullable=False)
@@ -741,7 +741,7 @@ class Lent_to(this.Base):
     ci                    = Column(Integer, nullable=False, primary_key=True)
     lender_clerk          = Column(String, nullable=False, primary_key=True)
     start_description     = Column(String, nullable=False, primary_key=True)
-    start_time            = Column(DateTime, nullable=False, default=datetime.datetime.now, primary_key=True)
+    start_time            = Column(DateTime, nullable=False, default=datetime.now, primary_key=True)
     estimated_return_time = Column(DateTime, nullable=False)
     receiver_clerk        = Column(String, default=None)
     return_time           = Column(DateTime, default=None)
