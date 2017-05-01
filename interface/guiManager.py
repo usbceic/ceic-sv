@@ -73,10 +73,10 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QRegExp, QUrl
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QRegExp
 
 # Módulo con estructuras de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton, QRegExpValidator, QDesktopServices
+from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton, QRegExpValidator
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -431,10 +431,6 @@ class guiManager(QMainWindow, form_class):
         validator = QRegExpValidator(QRegExp('^(([1-9][0-9]*|0)(\.[0-9]{,3})?|\.[0-9]{,2}[1-9])$'))
         for item in listON: item.setValidator(validator)
 
-    # Método para configurar un spinLine
-    def setupSpinLines(self, listSL):
-        for spinL in listSL: spinL.setValidator(QIntValidator(0, 0))
-
     # Método para setear en 0 una lista spinLine
     def clearSpinLines(self, listSL):
         for spinL in listSL: self.clearSpinLine(spinL)
@@ -576,15 +572,15 @@ class guiManager(QMainWindow, form_class):
             self.setOnlyFloat(self.productsOF1)
             self.setAnyCharacter(self.productsOF0)
 
-        self.setOnlyInteger(self.calc1)
-        self.setOnlyInteger(self.lotsOI)
         self.setOnlyFloat(self.lotsOF)
         self.setOnlyFloat(self.confOF)
         self.setOnlyFloat(self.clientsOF)
         self.setOnlyFloat(self.transfersOF)
         self.setOnlyFloat(self.salesOF)
         self.setOnlyFloat(self.cashOF)
-        self.setOnlyFloat(self.spinBox)
+        self.setOnlyInteger(self.calc1)
+        self.setOnlyInteger(self.lotsOI)
+        self.setOnlyInteger(self.spinBox)
         self.add0.setEnabled(False)
         self.substract0.setEnabled(False)
         self.add0.setAutoRepeat(True)
@@ -2175,9 +2171,6 @@ class guiManager(QMainWindow, form_class):
 
     # Método para refrescar la vista del Ventas y elementos relacionados
     def refreshSales(self):
-        # Configurar restricciones de los LineEdit en la vista de ventas
-        #self.setupSalesLE()
-
         # Setear variables de control
         self.selectedProductRemaining = {}
         self.selectedProductName = ""
@@ -2203,11 +2196,6 @@ class guiManager(QMainWindow, form_class):
 
         # Enfocar
         self.lineE17.setFocus()
-
-    # Función para aplicar la configuración por defecto de los lineEdit de la vista de ventas
-    def setupSalesLE(self):
-        self.lineE152.setValidator(QIntValidator(0, 0)) # Establecer limite de saldo para pagar
-        self.lineE22.setValidator(QIntValidator(0, 0))  # Establecer limite de efectivo para pagar
 
     # Método para refrescar la tabla de factura en ventas
     def updateInvoiceTable(self, table, itemsList):
@@ -2480,7 +2468,7 @@ class guiManager(QMainWindow, form_class):
     def on_pbutton9_pressed(self):
         if self.click():
             name = self.lineE23.text()
-            if self.db.existProduct(name) and int(self.spinLine0.text()) > 0:
+            if self.db.existProduct(name) and self.spinLine0.text() != "" and int(self.spinLine0.text()) > 0:
 
                 # Cargar información
                 product = self.db.getProductByNameOrID(name)[0]                     # Obtener cliente
