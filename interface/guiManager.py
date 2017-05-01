@@ -203,6 +203,9 @@ class guiManager(QMainWindow, form_class):
         # LineEdits para solo números reales
         self.cashOF = [self.lineE1, self.lineE4, self.lineE6, self.lineE8, self.lineE9]
 
+        # Tablas
+        self.cashTables = [self.table15]
+
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE INVENTARIO
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -219,17 +222,18 @@ class guiManager(QMainWindow, form_class):
         self.lotsRO2 = [self.lineE34, self.lineE35, self.lineE37]
         self.lotsRO3 = [self.lineE38]
 
-        # Tablas de productos
-        self.productTables = [self.table1, self.table2, self.table3]
-
         # LineEdits para solo números reales
         self.lotsOF = [self.lineE35]
 
         # LineEdits para solo números enteros
         self.lotsOI = [self.lineE37, self.lineE38]
 
+        # LineEdits para solo números reales
         self.productsOF0 = [self.lineE27]
         self.productsOF1 = [self.lineE28]
+
+        # Tablas
+        self.productsTables = [self.table0, self.table1, self.table2]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE PROVEEDORES
@@ -241,6 +245,9 @@ class guiManager(QMainWindow, form_class):
         self.providersLE2 = [self.lineE150, self.lineE151]
         self.providersTE0 = [self.textE1, self.textE2]
         self.providersTE1 = [self.textE3, self.textE4]
+
+        # Tablas
+        self.providersTables = [self.table13]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE CLIENTES
@@ -256,6 +263,9 @@ class guiManager(QMainWindow, form_class):
         # LineEdits para solo números reales
         self.clientsOF = [self.lineE68]
 
+        # Tablas
+        self.clientsTables = [self.table6, self.table7]
+
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE RECARGAS
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -269,6 +279,9 @@ class guiManager(QMainWindow, form_class):
         # LineEdits para solo números reales
         self.transfersOF = [self.lineE51, self.lineE158]
 
+        # Tablas
+        self.transfersTables = [self.table14, self.table16]
+
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE USUARIOS
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -277,6 +290,9 @@ class guiManager(QMainWindow, form_class):
         self.usersLE0 = [self.lineE62, self.lineE63, self.lineE64, self.lineE65, self.lineE66]
         self.usersLE1 = [self.lineE69, self.lineE70, self.lineE71, self.lineE72, self.lineE73, self.lineE74]
         self.usersLE2 = [self.lineE75, self.lineE76, self.lineE77, self.lineE78]
+
+        # Tablas
+        self.usersTables = [self.table8, self.table9, self.table10]
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE VENTAS
@@ -515,6 +531,7 @@ class guiManager(QMainWindow, form_class):
 
     # Método para refrescar la interfaz
     def refresh(self):
+        self.refreshPages()
         self.refreshSales()
         self.refreshProviders()
         self.refreshTransfers()
@@ -831,10 +848,14 @@ class guiManager(QMainWindow, form_class):
         self.tablesTotalPages[self.tables.index(self.table1)] = ceil(self.db.getProductsCount(False)/self.pageLimit)  # No disponibles
         self.tablesTotalPages[self.tables.index(self.table2)] = ceil(self.db.getProductsCount()/self.pageLimit)       # Todos
 
+        self.checkValidPage(self.productsTables)
+
     # Calcular el total de páginas de las tablas de clientes
     def getClientsTotalPages(self):
         self.tablesTotalPages[self.tables.index(self.table6)] = ceil(self.db.getClientsCount(True)/self.pageLimit)  # Endeudados
         self.tablesTotalPages[self.tables.index(self.table7)] = ceil(self.db.getClientsCount()/self.pageLimit)      # No endeudados
+
+        self.checkValidPage(self.clientsTables)
 
     # Calcular el total de páginas de las tablas de usuarios
     def getUsersTotalPages(self):
@@ -842,18 +863,37 @@ class guiManager(QMainWindow, form_class):
         self.tablesTotalPages[self.tables.index(self.table9)]  = ceil(self.db.getUsersCount(1)/self.pageLimit)  # Vendedores
         self.tablesTotalPages[self.tables.index(self.table10)] = ceil(self.db.getUsersCount(0)/self.pageLimit)  # Administradores
 
+        self.checkValidPage(self.usersTables)
+
     # Calcular el total de páginas de la tabla de proveedores
     def getProvidersTotalPages(self):
         self.tablesTotalPages[self.tables.index(self.table13)] = ceil(self.db.getProvidersCount()/self.pageLimit)
+
+        self.checkValidPage(self.providersTables)
 
     # Calcular el total de páginas de las tablas de recargas
     def getTransfersTotalPages(self):
         self.tablesTotalPages[self.tables.index(self.table14)] = ceil(self.db.getTransfersCount()/self.pageLimit)  # Transferencias
         self.tablesTotalPages[self.tables.index(self.table16)] = ceil(self.db.getDepositsCount()/self.pageLimit)   # Efectivo
 
+        self.checkValidPage(self.transfersTables)
+
     # Calcular el total de páginas de la tabla de movimientos
     def getMovementsTotalPages(self):
         self.tablesTotalPages[self.tables.index(self.table15)] = ceil(self.db.getMovementsCount()/self.pageLimit)
+
+        self.checkValidPage(self.cashTables)
+
+    # Validador de número de página
+    def checkValidPage(self, tables):
+        for table in tables:
+            index = self.tables.index(table)
+            self.tablesPages[index] = max(min(self.tablesPages[index], self.tablesTotalPages[index]), 1)
+
+    # Setear todas las páginas en 1
+    def refreshPages(self):
+        for i in range(len(self.tablesPages)):
+            self.tablesPages[i] = 1
 
     # Ir a la primera página
     def firstPage(self, table):
@@ -1327,7 +1367,7 @@ class guiManager(QMainWindow, form_class):
             op_type = movements[i].op_type
             open_record = movements[i].open_record
             cash_balance = movements[i].cash_balance
-            cash_total = str(movements[i].cash_total)
+            cash_total = movements[i].cash_total
             description = movements[i].description
             date = movements[i].recorded.strftime(self.dtFormat)
 
@@ -1343,11 +1383,12 @@ class guiManager(QMainWindow, form_class):
             else:
                 if cash_balance > 0: movement = "Egreso en efectivo"
                 else: movement = "Egreso en banco"
+                cash_total = -cash_total
 
-            table.setItem(i, 0, QTableWidgetItem(movement))     # Tipo
-            table.setItem(i, 1, QTableWidgetItem(cash_total))   # Banco
-            table.setItem(i, 2, QTableWidgetItem(description))  # Descripción
-            table.setItem(i, 3, QTableWidgetItem(date))         # Fecha
+            table.setItem(i, 0, QTableWidgetItem(movement))         # Tipo
+            table.setItem(i, 1, QTableWidgetItem(str(cash_total)))  # Banco
+            table.setItem(i, 2, QTableWidgetItem(description))      # Descripción
+            table.setItem(i, 3, QTableWidgetItem(date))             # Fecha
 
         self.elem_actual = 0                                      # Definir la fila que se seleccionará
         if len(movements) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
