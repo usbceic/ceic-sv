@@ -3418,7 +3418,7 @@ QWidget:item:unchecked {
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
                <property name="textElideMode">
-                <enum>Qt::ElideMiddle</enum>
+                <enum>Qt::ElideLeft</enum>
                </property>
                <property name="showGrid">
                 <bool>true</bool>
@@ -3453,6 +3453,9 @@ QWidget:item:unchecked {
                <column>
                 <property name="text">
                  <string>Tipo</string>
+                </property>
+                <property name="textAlignment">
+                 <set>AlignLeft|AlignVCenter</set>
                 </property>
                </column>
                <column>

@@ -518,6 +518,7 @@ class guiManager(QMainWindow, form_class):
     def setupTables(self, tables):
         for table in tables:
             self.setupTable(table)
+            table.horizontalHeader().setDefaultAlignment(Qt.AlignLeft)
 
     # Vaciar el contenido de cada tabla especificada en la lista "tables"
     def clearTables(self, tables):
@@ -2593,7 +2594,6 @@ class guiManager(QMainWindow, form_class):
 
                 # Refrescar interfaz
                 self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
-                self.setupTable(self.table11)                       # Reconfigurar la tabla de factura
                 self.clearLEs(self.selectedProductLE1)              # Limpiar los lineEdit de este apartado
                 self.clearSpinLine(self.spinLine0)                  # Setear en 0 el lineEdit del contador
 
@@ -2610,7 +2610,6 @@ class guiManager(QMainWindow, form_class):
 
         # Refrescar interfaz
         self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
-        self.setupTable(self.table11)                       # Reconfigurar la tabla de factura
 
     # Boton para cancelar una compra
     def on_cancelpb0_pressed(self):
@@ -2772,7 +2771,6 @@ class guiManager(QMainWindow, form_class):
 
                         # Refrescar factura
                         self.updateInvoiceTable(self.table11, selectedList)
-                        self.setupTable(self.table11)
 
                     self.selectedProductRemaining[product_name] = product.remaining
                     self.selectedItem0.setIcon(QIcon(join(productPath, product_name)))
@@ -2885,7 +2883,7 @@ class guiManager(QMainWindow, form_class):
         self.elem_actual = 0                                            # Definir la fila que se seleccionará
         if len(providers) > 0: table.selectRow(self.elem_actual)        # Seleccionar fila
         table.resizeColumnsToContents()                                 # Redimensionar columnas segun el contenido
-        self.setupTable(table)                                          # Reconfigurar tabla
+        self.setupTable(table, 4)                                       # Reconfigurar tabla
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -3038,7 +3036,7 @@ class guiManager(QMainWindow, form_class):
         self.elem_actual = 0                                            # Definir la fila que se seleccionará
         if len(clients) > 0: table.selectRow(self.elem_actual)          # Seleccionar fila
         table.resizeColumnsToContents()                                 # Redimensionar columnas segun el contenido
-        self.setupTable(table)                                          # Reconfigurar tabla
+        self.setupTable(table, 3)                                       # Reconfigurar tabla
 
     # Método para reestablecer los comboBox en registrar y editar
     def resetClientsCBs(self):
@@ -3383,7 +3381,7 @@ class guiManager(QMainWindow, form_class):
         self.elem_actual = 0                                            # Definir la fila que se seleccionará
         if len(deposits) > 0: table.selectRow(self.elem_actual)         # Seleccionar fila
         table.resizeColumnsToContents()                                 # Redimensionar columnas según el contenido
-        self.setupTable(table, 4)                                       # Reconfigurar tabla
+        self.setupTable(table, 3)                                       # Reconfigurar tabla
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -3544,7 +3542,7 @@ class guiManager(QMainWindow, form_class):
         self.elem_actual = 0                                 # Definir la fila que se seleccionará
         if len(users) > 0: table.selectRow(self.elem_actual) # Seleccionar fila
         table.resizeColumnsToContents()                      # Redimensionar columnas segun el contenido
-        self.setupTable(table)                               # Reconfigurar tabla
+        self.setupTable(table, 3)                            # Reconfigurar tabla
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
