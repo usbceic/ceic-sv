@@ -86,7 +86,7 @@ sudo ./installScript.sh
 
 ```
 #!shell
-python ceic_suite.py
+python3 ceic_suite.py
 ```
 
 Información de contacto
