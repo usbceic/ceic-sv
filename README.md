@@ -1,5 +1,6 @@
 **CEIC Suite**
 ==============================
+***
 
 * Sistema de Ventas del Centro de Estudiantes de Ingeniería de la Computación
 * Este sistema mantiene centralizadas todas las operaciones de ventas y servicios que ofrece el centro de estudiantes.
@@ -7,6 +8,7 @@
 
 Estado actual del proyecto
 -------------
+***
 
 El proyecto aun está en fase beta.
 
@@ -16,6 +18,7 @@ El proyecto aun está en fase beta.
     - Todos los CRUDs para la parte de ventas estan listos.
     - Todos los triggers para la parte de ventas estan listos.
     - Para la parte de prestamos de libros, faltan todos los CRUDs, así como los triggers pertinentes.
+
 
 
 * A nivel de interfaz:
@@ -36,6 +39,7 @@ El proyecto aun está en fase beta.
     - Faltan pulir detalles y establecer atajos de teclado.
 
 
+
 * General:
     - Aun no se cuenta con un instalador pero se tiene un script para facilitar el proceso de instalación de las dependencias (solo para distribuciones basadas en Debian).
     - Aun no se tiene el sistema de licencias para poder comercializar el producto.
@@ -43,23 +47,9 @@ El proyecto aun está en fase beta.
     - Falta el manual de usuario.
 
 
-Como configurar y correr la aplicación
--------------
-
-* Esta aplicación trabaja con Python, Qt y PostgreSQL
-* Vaya a la carpeta 'doc' y ejecute el script de instalación de dependencias:
-    <code>
-    cd doc
-    chmod +x installScript.sh
-    sudo ./installScript.sh
-    <code>
-
-* Para correr la aplicación mediante la consola utilizar el comando:
-    <code>*python ceic_suite.py*<code>
-
-
 Requisitos
 -------------
+***
 
 * Sistemas operativos soportados:
     - Ubuntu 13.04 o superior
@@ -78,8 +68,32 @@ Requisitos
 * Instalar las fuentes tipográficas incluidas en este software
 
 
+Como configurar y correr la aplicación
+-------------
+***
+
+* Esta aplicación trabaja con Python, Qt y PostgreSQL
+* Vaya a la carpeta 'doc' y ejecute el script de instalación de dependencias:
+
+'''
+#!script
+#
+cd doc
+chmod +x installScript.sh
+sudo ./installScript.sh
+'''
+
+* Para correr la aplicación mediante la consola utilizar el comando:
+
+'''
+#!script
+#
+python ceic_suite.py
+'''
+
 Información de contacto
 -------------
+***
 
 * Coordinación de Tecnología y colaboradores del Centro de Estudiantes de Ing. Computación
 
