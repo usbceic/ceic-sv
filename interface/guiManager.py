@@ -80,7 +80,7 @@ from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter,
 ###################################################################################################################################################################################
 
 # UI
-MainUI = "material.ui"
+MainUI = "MainWindow.ui"
 
 # Styles
 styles = [

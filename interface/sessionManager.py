@@ -71,7 +71,7 @@ from validators import validatePhoneNumber, validateEmail, validateName
 ###################################################################################################################################################################################
 
 # UI
-MainUI = "login.ui"
+MainUI = "LoginWindow.ui"
 splashName = "splash.png"
 iconTrayName = "logo.png"
 
