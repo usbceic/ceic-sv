@@ -70,10 +70,10 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QRegExp
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QRegExp, QUrl
 
 # Módulo con estructuras de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton, QRegExpValidator
+from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QIntValidator, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton, QRegExpValidator, QDesktopServices
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -587,6 +587,11 @@ class guiManager(QMainWindow, form_class):
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
         self.setupTables(self.tables)
+        #self.textE0.anchorClicked.connect(self.link)
+
+    #def link(self, linkStr):
+    #QDesktopServices.openUrl(QUrl(linkStr))
+
 
     # Método para verificar si no se hizo cierre de un día anterior
     def verifyCloseForgotten(self):

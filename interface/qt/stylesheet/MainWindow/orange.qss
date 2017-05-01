@@ -627,6 +627,11 @@ QWidget:item:unchecked {
 * Text Edit
 ***********************************/
 
+#textE0 {
+    border: 0px solid transparent;
+    padding: 2px;
+}
+
 #textE1, #textE2, #textE3, #textE4, #textE7 {
     border: 1px solid #BDBDBD;
     border-radius: 2px;
