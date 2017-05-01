@@ -3263,13 +3263,13 @@ class guiManager(QMainWindow, form_class):
         table = self.table16
         deposits = self.db.getDeposits(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
-        self.clearTable(table)                                                        # Vaciar la tabla
-        table.setRowCount(len(deposits))                                              # Contador de filas
-        for i in range(len(deposits)):                                                # Llenar tabla
-            table.setItem(i, 0, QTableWidgetItem(str(deposits[i].clerk)))             # Usuario
-            table.setItem(i, 1, QTableWidgetItem(str(deposits[i].ci)))                # Cliente
-            table.setItem(i, 2, QTableWidgetItem(str(deposits[i].amount)))            # Monto
-            table.setItem(i, 3, QTableWidgetItem(str(deposits[i].deposit_date)))      # Fecha
+        self.clearTable(table)                                                                            # Vaciar la tabla
+        table.setRowCount(len(deposits))                                                                  # Contador de filas
+        for i in range(len(deposits)):                                                                    # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(deposits[i].clerk)))                                 # Usuario
+            table.setItem(i, 1, QTableWidgetItem(str(deposits[i].ci)))                                    # Cliente
+            table.setItem(i, 2, QTableWidgetItem(str(deposits[i].amount)))                                # Monto
+            table.setItem(i, 3, QTableWidgetItem(str(deposits[i].deposit_date.strftime(self.dtFormat))))  # Fecha
 
         self.elem_actual = 0                                            # Definir la fila que se seleccionará
         if len(deposits) > 0: table.selectRow(self.elem_actual)         # Seleccionar fila
