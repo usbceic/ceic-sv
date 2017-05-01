@@ -1,3 +1,4 @@
+***
 **CEIC Suite**
 ==============================
 ***
@@ -6,6 +7,7 @@
 * Este sistema mantiene centralizadas todas las operaciones de ventas y servicios que ofrece el centro de estudiantes.
 
 
+***
 Estado actual del proyecto
 -------------
 ***
@@ -47,6 +49,7 @@ El proyecto aun está en fase beta.
     - Falta el manual de usuario.
 
 
+***
 Requisitos
 -------------
 ***
@@ -68,6 +71,7 @@ Requisitos
 * Instalar las fuentes tipográficas incluidas en este software
 
 
+***
 Como configurar y correr la aplicación
 -------------
 ***
@@ -89,6 +93,7 @@ sudo ./installScript.sh
 python3 ceic_suite.py
 ```
 
+***
 Información de contacto
 -------------
 ***
