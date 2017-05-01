@@ -1550,6 +1550,7 @@ class dbManager(object):
             self.session.add(newPurchase)
             try:
                 self.session.commit()
+                self.updateClient(ciOriginal=ci, last_seen=datetime.datetime.now())
                 print("Se ha creado correctamente la compra")
                 return str(newPurchase.purchase_id)
             except Exception as e:
