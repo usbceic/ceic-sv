@@ -75,13 +75,19 @@ Como configurar y correr la aplicación
 * Esta aplicación trabaja con Python, Qt y PostgreSQL
 * Vaya a la carpeta 'doc' y ejecute el script de instalación de dependencias:
 
-    cd doc
-    chmod +x installScript.sh
-    sudo ./installScript.sh
+'''
+#!shell
+cd doc
+chmod +x installScript.sh
+sudo ./installScript.sh
+'''
 
 * Para correr la aplicación mediante la consola utilizar el comando:
 
-    python ceic_suite.py
+'''
+#!shell
+python ceic_suite.py
+'''
 
 Información de contacto
 -------------
