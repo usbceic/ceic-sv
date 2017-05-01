@@ -87,7 +87,12 @@ class dbManager(object):
     Retorna True si logro hacer restore, False en caso contrario
     """
     def restore(self):
-        return DBBackup().restore()
+        self.close()
+        dropAllDataBase()
+        Base.metadata.create_all(db_engine.Engine)
+        restore = DBBackup().restore()
+        self.session = startSession("sistema_ventas", "hola")
+        return restore
 
     """
     Método para borrar el último backup

@@ -83,7 +83,7 @@ class DBBackup(object):
     """
     def dump(self, table_or_mapped_class):
         query = self.session.query(table_or_mapped_class).all()
-        return dumps(query, protocol=2)
+        return dumps(query, protocol=4)
 
     """
     Loads the contents into a given table (should be opened with `rb`)
