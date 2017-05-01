@@ -145,7 +145,7 @@ class guiManager(QMainWindow, form_class):
         self.new10 = []                      # Lista de productos en Nuevos
         self.legalTenders = []               # Lista para las denominaciones del sistema monetario
         self.closeForgotten = False          # Variable para saber si hay un día abierto que no corresponde al día actual
-        self.pageLimit = 5                  # Valor por defecto para entradas por página en las tablas
+        self.pageLimit = 25                  # Valor por defecto para entradas por página en las tablas
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # PREFERENCIAS DE USUARIO
@@ -498,7 +498,7 @@ class guiManager(QMainWindow, form_class):
 
     # Aplicar configuración general de redimiensionamiento a una lista de tablas
     def setupTables(self, tables):
-        for table in self.tables:
+        for table in tables:
             self.setupTable(table)
 
     # Vaciar el contenido de cada tabla especificada en la lista "tables"
@@ -580,6 +580,7 @@ class guiManager(QMainWindow, form_class):
         self.substract0.setEnabled(False)
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
+        self.setupTables(self.tables)
 
     # Método para verificar si no se hizo cierre de un día anterior
     def verifyCloseForgotten(self):
@@ -1622,9 +1623,6 @@ class guiManager(QMainWindow, form_class):
         self.updateProductsTable(self.table1, self.productsInfoNotAvailable)
         self.updateProductsTable(self.table2, self.productsInfo)
 
-        # Configurar tablas
-        self.setupTables(self.productTables)
-
         # Limpiar campos
         if hasattr(self, 'lineExtra') and self.lineExtra != None: self.clearLE(self.lineExtra)
         self.clearLEs(self.productsRO0)
@@ -1708,10 +1706,10 @@ class guiManager(QMainWindow, form_class):
             table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Cantidad
             table.setItem(i, 4, QTableWidgetItem(str(itemsList[i][4]))) # Lotes
 
-        self.elem_actual = 0
-        if len(itemsList) > 0: table.selectRow(self.elem_actual)
-
-        table.resizeColumnsToContents()
+        self.elem_actual = 0                                      # Definir la fila que se seleccionará
+        if len(itemsList) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
+        table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
+        self.setupTable(table)                                    # Reconfigurar tabla
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -2197,6 +2195,7 @@ class guiManager(QMainWindow, form_class):
         self.elem_actual = 0                                      # Definir la fila que se seleccionará
         if len(itemsList) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
         table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
+        self.setupTable(table)                                    # Reconfigurar tabla
 
     # Refrescar apartado de Top 10
     def refreshTop10(self):
