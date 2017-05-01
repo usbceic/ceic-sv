@@ -76,7 +76,7 @@ Como configurar y correr la aplicación
 * Vaya a la carpeta 'doc' y ejecute el script de instalación de dependencias:
 
 '''
-#!shell
+#!bash
 cd doc
 chmod +x installScript.sh
 sudo ./installScript.sh
@@ -85,7 +85,7 @@ sudo ./installScript.sh
 * Para correr la aplicación mediante la consola utilizar el comando:
 
 '''
-#!shell
+#!bash
 python ceic_suite.py
 '''
 
