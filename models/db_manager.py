@@ -698,7 +698,7 @@ class dbManager(object):
     """
     def getProductsNames(self, product_name, acitve=True):
         product_name = product_name.title().strip()
-        return self.session.query(Product.product_name).filter_by(active=active).all()
+        return self.session.query(Product.product_name).filter_by(active=active).order_by(Product.product_name).all()
 
     """
     Método para obtener los atributos especificados de todos los productos que cumplan con el filtro especificado
@@ -717,10 +717,10 @@ class dbManager(object):
         if available != None: filters["available"] = available
         if active != None: filters["active"] = active
 
-        query = self.session.query(*columns).filter_by(**filters)
+        query = self.session.query(*columns).filter_by(**filters).order_by(Product.product_name)
 
         if limit != None:
-            query = self.session.query(*columns).filter_by(**filters).limit(limit).offset((page-1)*limit)
+            query = self.session.query(*columns).filter_by(**filters).order_by(Product.product_name).limit(limit).offset((page-1)*limit)
 
         return query.all()
 
