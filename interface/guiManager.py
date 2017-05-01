@@ -2057,6 +2057,20 @@ class guiManager(QMainWindow, form_class):
                     self.selectedItem1.setIcon(QIcon(filePath))
                     self.tempImage = filePath
 
+    # Boton de cancelar en el apartado de productos
+    def on_cancelpb2_pressed(self):
+        if self.click():
+            if self.rbutton7.isChecked(): self.clearLE(self.lineExtra)
+            self.clearLEs(self.productsRO0)
+            self.resetProductImage(self.selectedItem1)
+
+    # Boton de cancelar en el apartado de lotes
+    def on_cancelpb3_pressed(self):
+        if self.click():
+            self.clearCB(self.cbox5)
+            self.clearLEs(self.lotsRO0)
+            self.resetProductImage(self.selectedItem2)
+
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
