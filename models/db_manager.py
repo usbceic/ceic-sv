@@ -383,7 +383,7 @@ class dbManager(object):
     Método para retornar usuarios segun un filtro especificado
      - Retorna un queryset con los usuarios que pasan el filtro
     """
-    def getUsers(self, username = None, firstname = None, lastname = None, email = None, permission_mask = None):
+    def getUsers(self, username = None, firstname = None, lastname = None, email = None, permission_mask = None, limit = None, page = 1):
         filters = {}
         if username != None: filters["username"] = username
         if firstname != None: filters["firstname"] = firstname
@@ -391,7 +391,22 @@ class dbManager(object):
         if email != None: filters["email"] = email
         if permission_mask != None: filters["permission_mask"] = permission_mask
 
-        return self.session.query(User).filter_by(**filters).all()
+        query = self.session.query(User).filter_by(**filters).order_by(desc(User.last_login))
+
+        if limit != None:
+            query = self.session.query(User).filter_by(**filters).order_by(desc(User.last_login)).limit(limit).offset((page-1)*limit)
+
+        return query.all()
+
+    """
+    Método para retornar la cantidad de usuarios segun un filtro
+     - Retorna la cantidad de usuarios segun un filtro
+    """
+    def getUsersCount(self, permission_mask = None):
+        filters = {}
+        if permission_mask != None: filters["permission_mask"] = permission_mask
+
+        return self.session.query(User).filter_by(**filters).count()
 
     """
     Método para retornar el rango de un usuario especificado

@@ -513,7 +513,6 @@ class guiManager(QMainWindow, form_class):
 
     # Método para refrescar la interfaz
     def refresh(self):
-        self.getTablesTotalPages()
         self.refreshSales()
         self.refreshProviders()
         self.refreshTransfers()
@@ -822,33 +821,16 @@ class guiManager(QMainWindow, form_class):
     # PAGINACIÓN
     #==============================================================================================================================================================================
 
-    # Calcular el total de páginas de totdas las tablas:
-    def getTablesTotalPages(self):
-        # Tablas de productos
-        #self.tablesTotalPages[self.tables.index(self.table0)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # Disponibles
-        #self.tablesTotalPages[self.tables.index(self.table1)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # No disponibles
-        #self.tablesTotalPages[self.tables.index(self.table2)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # Todos
-
-        # Tablas de clientes
-        #self.tablesTotalPages[self.tables.index(self.table6)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # Endeudados
-        #self.tablesTotalPages[self.tables.index(self.table7)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # No endeudados
-
-        # Tablas de usuarios
-        #self.tablesTotalPages[self.tables.index(self.table8)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # Administradores
-        #self.tablesTotalPages[self.tables.index(self.table9)]  = ceil(self.db.getDepositsCount()/self.pageLimit) # Vendedores
-        #self.tablesTotalPages[self.tables.index(self.table10)] = ceil(self.db.getDepositsCount()/self.pageLimit) # Colaboradores
-
-        # Tablas de proveedores
-        #self.tablesTotalPages[self.tables.index(self.table13)] = ceil(self.db.getDepositsCount()/self.pageLimit)
-
-        # Tablas de recargas
-        #self.tablesTotalPages[self.tables.index(self.table14)] = ceil(self.db.getDepositsCount()/self.pageLimit) # Transferencias
-        self.tablesTotalPages[self.tables.index(self.table16)] = ceil(self.db.getDepositsCount()/self.pageLimit)  # Depósitos
-
     # Calcular el total de páginas de la tabla de proveedores
     def getClientsTotalPages(self):
         self.tablesTotalPages[self.tables.index(self.table6)] = ceil(self.db.getClientsCount(True)/self.pageLimit)
         self.tablesTotalPages[self.tables.index(self.table7)] = ceil(self.db.getClientsCount()/self.pageLimit)
+
+    # Calcular el total de páginas de la tabla de proveedores
+    def getUsersTotalPages(self):
+        self.tablesTotalPages[self.tables.index(self.table8)]  = ceil(self.db.getUsersCount(2)/self.pageLimit)  # Colaboradores
+        self.tablesTotalPages[self.tables.index(self.table9)]  = ceil(self.db.getUsersCount(1)/self.pageLimit)  # Vendedores
+        self.tablesTotalPages[self.tables.index(self.table10)] = ceil(self.db.getUsersCount(0)/self.pageLimit)  # Administradores
 
     # Calcular el total de páginas de la tabla de proveedores
     def getProvidersTotalPages(self):
@@ -3410,6 +3392,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.usersLE2)
 
         # Refrescar tabla
+        self.getUsersTotalPages()
         self.updateUsersTable(0) # Tabla de colaboradores
         self.updateUsersTable(1) # Tabla de vendedores
         self.updateUsersTable(2) # Tabla de administradores
@@ -3420,7 +3403,7 @@ class guiManager(QMainWindow, form_class):
         elif permission_mask == 1: table = self.table9
         else: table = self.table8
 
-        users = self.db.getUsers(permission_mask=permission_mask)
+        users = self.db.getUsers(permission_mask=permission_mask, limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
         self.clearTable(table)                                             # Vaciar la tabla
         table.setRowCount(len(users))                                      # Contador de filas
         for i in range(len(users)):                                        # Llenar tabla
