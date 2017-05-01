@@ -2043,11 +2043,11 @@ class dbManager(object):
                 return False
 
         kwargs = {
-            'product_id' : product_list.product_id,
+            'product_id'  : product_list.product_id,
             'purchase_id' : product_list.purchase_id,
-            'clerk_id' : clerk_username,
-            'amount' : amount,
-            'cash' : cash,
+            'clerk_id'    : clerk_username,
+            'amount'      : amount,
+            'cash'        : cash,
             'cash_amount' : cash_amount,
             'description' : description
         }

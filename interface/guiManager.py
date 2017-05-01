@@ -36,6 +36,12 @@ for current in path:
 ## MODÚLOS:
 ###################################################################################################################################################################################
 
+# Módulo con funciones del sistema operativo
+from os import mkdir
+
+# Módulo con funciones para el manejo de rutas del sistema operativo
+from os.path import isdir
+
 # Módulo con funciones para manejo de archivos en alto nivel (en especifico para este caso... copiar)
 from shutil import copy2
 
@@ -1804,7 +1810,7 @@ class guiManager(QMainWindow, form_class):
             # Modalidad para agregar nuevos productos
             if self.rbutton5.isChecked():
                 if self.lineE26.text() != "":
-                    product_name = self.lineE26.text()
+                    product_name = self.lineE26.text().title().strip()
 
                     if self.lineE27.text() != "":
                         # Obtener información del nuevo producto
@@ -1816,6 +1822,7 @@ class guiManager(QMainWindow, form_class):
                             if self.db.createProduct(product_name, price, categoy):
 
                                 if self.tempImage != "":
+                                    if not isdir(productPath): mkdir(productPath)
                                     copy2(self.tempImage, join(productPath, product_name))
 
                                 successPopUp(parent = self).exec_()
@@ -1847,7 +1854,7 @@ class guiManager(QMainWindow, form_class):
             # Modalidad para editar productos
             elif self.rbutton7.isChecked():
                 if self.lineE26.text() != "":
-                    product_name = self.lineE26.text()
+                    product_name = self.lineE26.text().title().strip()
                     if self.db.existProduct(product_name):
                         newName = self.lineE27.text()
                         newPrice = float(self.lineE28.text())
@@ -1856,6 +1863,11 @@ class guiManager(QMainWindow, form_class):
                         if newName != "" and newPrice > 0:
                             # Actualizar información de producto
                             if self.db.updateProduct(product_name, newName, newPrice, newCategory):
+
+                                if self.tempImage != "":
+                                    if not isdir(productPath): mkdir(productPath)
+                                    copy2(self.tempImage, join(productPath, product_name))
+
                                 successPopUp(parent = self).exec_()
 
                             else:
@@ -2039,7 +2051,7 @@ class guiManager(QMainWindow, form_class):
     # Boton para ver/agregar imágen de un producto
     def on_selectedItem1_pressed(self):
         if self.click():
-            if self.rbutton5.isChecked():
+            if self.rbutton5.isChecked() or self.rbutton7.isChecked():
                 filePath = QFileDialog.getOpenFileName(self, 'Seleccionar imágen', QDir.currentPath(), "Imágenes (*.bmp *.jpg *.jpeg *.png)")
                 if filePath != "":
                     self.selectedItem1.setIcon(QIcon(filePath))
