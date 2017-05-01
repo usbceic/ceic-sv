@@ -54,7 +54,9 @@ class dbManager(object):
     """
     def __init__(self, name, password, debug=False, dropAll=False, parent=None):
         super(dbManager, self).__init__()
-        self.session = startSession(name, password, debug, dropAll)
+        self.name = name
+        self.password = password
+        self.open(debug, dropAll)
 
     """
     Método de destrucción de la clase
@@ -62,6 +64,16 @@ class dbManager(object):
     """
     def __del__(self):
         self.close()
+
+    """
+    Método para abrir la sesión en la base de datos
+     - Abre la sesión en la base de datos
+    """
+    def open(self, debug=False, dropAll=False):
+        try:
+            self.session = startSession(self.name, self.password, debug, dropAll)
+        except Exception as e:
+            print("Error desconocido al intentar iniciar la sesión en la base")
 
     """
     Método para cerrar la sesión en la base de datos
@@ -88,10 +100,9 @@ class dbManager(object):
     """
     def restore(self):
         self.close()
-        dropAllDataBase()
-        Base.metadata.create_all(db_engine.Engine)
+        resetDataBase()
         restore = DBBackup().restore()
-        self.session = startSession("sistema_ventas", "hola")
+        self.open()
         return restore
 
     """
