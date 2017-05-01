@@ -41,6 +41,8 @@ class CEICSuiteApp(QSingleton):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         if self.isRunning(): exit(0)           # Si hay instancias corriendo entonces finaliza el programa
+        self.setApplicationName("CEIC Suite")  # Nombre de la aplicación
+        self.setApplicationVersion('1.0')      # Versión de la aplicación
         self.setQuitOnLastWindowClosed(False)  # Desactivar cierre en cascada
         self.startApp()                        # Iniciar la aplicación
 
