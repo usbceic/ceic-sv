@@ -2400,70 +2400,68 @@ class guiManager(QMainWindow, form_class):
     # Botón para efectuar venta
     def on_pbutton7_pressed(self):
         if self.click():
-            if self.lineE17.text() != "":
+            if self.lineE17.text() == "": ci = 0   # Cliente Anonimo
+            else: ci = int(self.lineE17.text())    # Cliente registrado
+
+            if  self.db.existClient(ci):
                 if len(self.selectedProducts) > 0:
-                    ci = int(self.lineE17.text())
-                    if  self.db.existClient(ci):
-                        total = float(self.lineE21.text())
-                        efectivo = 0
-                        saldo = 0
+                    total = float(self.lineE21.text())
+                    efectivo = 0
+                    saldo = 0
 
-                        if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
-                        if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+                    if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                    if self.lineE152.text() != "": saldo = float(self.lineE152.text())
 
-                        if efectivo + saldo >= total:
+                    if efectivo + saldo >= total:
 
-                            try:
-                                purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
-                                for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
-                                    self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
-                                if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
-                                if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
-                                successPopUp(parent = self).exec_()                                         # Venta exitosa
+                        try:
+                            purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
+                            for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
+                                self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
+                            if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
+                            if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
+                            successPopUp(parent = self).exec_()                                         # Venta exitosa
 
-                            except:
-                                errorPopUp(parent = self).exec_()                                           # Venta fallida
+                        except:
+                            errorPopUp(parent = self).exec_()                                           # Venta fallida
 
-                            # Setear variables y refrescar la interfaz
-                            self.refreshSales()
-
-                        else:
-
-                            client = self.db.getClients(ci)[0]
-                            if client.debt_permission and client.balance < total - efectivo:
-                                deuda = total - efectivo - saldo
-
-                                message = "Se le cargará una deuda de " + naturalFormat(deuda) + " al cliente"
-                                popUp = confirmationPopUp(message, self)
-
-                                if popUp.exec_():
-                                    if popUp.getValue():
-                                        try:
-                                            purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
-                                            for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
-                                                self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
-                                            if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
-                                            if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
-                                            self.db.createCheckout(purchase_id, deuda, True)                            # Crear pago con deuda
-                                            successPopUp(parent = self).exec_()                                         # Venta exitosa
-
-                                        except:
-                                            errorPopUp(parent = self).exec_()                                           # Venta fallida
-
-                                        # Setear variables y refrescar la interfaz
-                                        self.refreshSales()
-
-                            else:
-                                warningPopUp("Pago insuficiente", self).exec_()
+                        # Setear variables y refrescar la interfaz
+                        self.refreshSales()
 
                     else:
-                        warningPopUp("El cliente no existe", self).exec_()
+
+                        client = self.db.getClients(ci)[0]
+                        if client.debt_permission and client.balance < total - efectivo:
+                            deuda = total - efectivo - saldo
+
+                            message = "Se le cargará una deuda de " + naturalFormat(deuda) + " al cliente"
+                            popUp = confirmationPopUp(message, self)
+
+                            if popUp.exec_():
+                                if popUp.getValue():
+                                    try:
+                                        purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
+                                        for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
+                                            self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
+                                        if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
+                                        if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
+                                        self.db.createCheckout(purchase_id, deuda, True)                            # Crear pago con deuda
+                                        successPopUp(parent = self).exec_()                                         # Venta exitosa
+
+                                    except:
+                                        errorPopUp(parent = self).exec_()                                           # Venta fallida
+
+                                    # Setear variables y refrescar la interfaz
+                                    self.refreshSales()
+
+                        else:
+                            warningPopUp("Pago insuficiente", self).exec_()
 
                 else:
                     warningPopUp("No se han agregado productos", self).exec_()
 
             else:
-                 warningPopUp("Debe especificar un cliente", self).exec_()
+                warningPopUp("El cliente no existe", self).exec_()
 
     # Botón para agregar lista de producto
     def on_pbutton9_pressed(self):

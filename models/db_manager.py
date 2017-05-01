@@ -2837,11 +2837,6 @@ class dbManager(object):
             return False
         return False
 
-
-
-
-
-
 ###################################################################################################################################################################################
 ## PRUEBAS:
 ###################################################################################################################################################################################
@@ -2850,6 +2845,16 @@ class dbManager(object):
 if __name__ == '__main__':
     m = dbManager("sistema_ventas", "hola", dropAll=True)
     m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
+
+    kwargs = {
+        "ci"              : 0,
+        "firstname"       : "Anónimo",
+        "lastname"        : "",
+        "debt_permission" : False,
+        "book_permission" : False
+    }
+
+    m.createClient(**kwargs)
 
     """print(m.getBalance())
 
