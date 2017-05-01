@@ -29,7 +29,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Sistema De Ventas - CEIC</string>
+   <string>CEIC Suite</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../resources/gui.qrc">

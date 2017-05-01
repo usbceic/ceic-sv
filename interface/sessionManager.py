@@ -148,6 +148,10 @@ class sessionManager(QMainWindow, loginWindow):
         frameGm.moveCenter(centerPoint)
         self.move(frameGm.topLeft())
 
+    # Fijar tamaño de la ventana
+    def setSize(self):
+        self.setFixedSize(self.width(), self.height())
+
     # Configuración inicial para la vista de inicio de sesión
     def setupPage0(self):
         self.lineEd0.setPlaceholderText("Usuario")
@@ -171,6 +175,7 @@ class sessionManager(QMainWindow, loginWindow):
     def generalSetup(self):
         self.setMinimumSize(self.sizeHint()) # Configurar tamaño de la ventana
         self.center()                        # Centrar ventana
+        self.setSize()                       # Fijar tamaño de la ventana
         self.setupPage0()                    # Configurar vista de inicio de sesión
         self.setupPage1()                    # Configurar vista de registro de usuario
         self.setupPage2()                    # Configurar vista de recuperación de contraseña
@@ -408,6 +413,7 @@ class sessionManager(QMainWindow, loginWindow):
     # Acciones que tomar al intentar cerra la ventana de inicio
     def closeEvent(self, event):
         event.accept()
+
 ###################################################################################################################################################################################
 ## FIN :)
 ###################################################################################################################################################################################
