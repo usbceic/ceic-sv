@@ -1,14 +1,14 @@
 **CEIC Suite**
-***
 ==============================
+***
 
 * Sistema de Ventas del Centro de Estudiantes de Ingeniería de la Computación
 * Este sistema mantiene centralizadas todas las operaciones de ventas y servicios que ofrece el centro de estudiantes.
 
 
 Estado actual del proyecto
-***
 -------------
+***
 
 El proyecto aun está en fase beta.
 
@@ -48,8 +48,8 @@ El proyecto aun está en fase beta.
 
 
 Requisitos
-***
 -------------
+***
 
 * Sistemas operativos soportados:
     - Ubuntu 13.04 o superior
@@ -69,9 +69,8 @@ Requisitos
 
 
 Como configurar y correr la aplicación
-***
 -------------
-
+***
 
 * Esta aplicación trabaja con Python, Qt y PostgreSQL
 * Vaya a la carpeta 'doc' y ejecute el script de instalación de dependencias:
@@ -91,8 +90,8 @@ python3 ceic_suite.py
 ```
 
 Información de contacto
-***
 -------------
+***
 
 * Coordinación de Tecnología y colaboradores del Centro de Estudiantes de Ing. Computación
 
