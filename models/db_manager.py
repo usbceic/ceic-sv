@@ -233,25 +233,26 @@ class dbManager(object):
 
     """
     Método para iniciar sesión. Primero verifica la correspondencia entre username y contraseña con la base de datos y luego actualiza la fecha del último login
-     - Retorna True:
+     - Retorna 0:
         * Cuando los datos coinciden con los almacenados en la base de datos y se logra actualizar la fecha de último inicio de sesión del usuario
-     - Retorna False:
+     - Retorna 1:
         * Cuando el usuario NO existe
         * Cuando los datos NO coinciden con los almacenados en la base de datos
+     - Retorna 2:
         * Cuando NO se logra actualizar la fecha de último inicio de sesión del usuario por alguna razón
     """
     def loginUser(self, username, password):
         if self.checkPassword(username, password):
             try:
-                self.session.execute(update(User).where(User.username==username).values(last_login=datetime.datetime.now))
+                self.session.execute(update(User).where(User.username==username).values(last_login=datetime.datetime.now()))
                 self.session.commit()
                 print("Se ha actualizado la fecha de último inicio de sesión para el usuario: " + username)
-                return True
+                return 0
             except Exception as e:
-                print("Ha ocurrido un error al intentar la fecha del último inicio de sesión para el usuario " + username, e)
+                print("Ha ocurrido un error al intentar actualizar la fecha del último inicio de sesión para el usuario " + username, e)
                 self.session.rollback()
-                return False
-        return False
+                return 2
+        return 1
 
     """
     Método para cambiar la contraseña de un usuario

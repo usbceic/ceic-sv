@@ -198,7 +198,8 @@ class sessionManager(QMainWindow, loginWindow):
     # Método para iniciar sesión
     def startSession(self, user, password):
         if self.userDef and self.passDef:
-            if self.db.checkPassword(user, password):
+            successLogin = self.db.loginUser(user, password)
+            if successLogin == 0:
                 self.lineEd0.setText("")
                 self.lineEd1.setText("")
                 self.footer.setFocus()
@@ -213,7 +214,11 @@ class sessionManager(QMainWindow, loginWindow):
                 self.mainWindow.show()
                 self.hide()
 
-            else: errorPopUp("Datos incorrectos", self).exec_()
+            elif successLogin == 1:
+                errorPopUp("Datos incorrectos", self).exec_()
+
+            else:
+                errorPopUp("Error desconocido", self).exec_()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
