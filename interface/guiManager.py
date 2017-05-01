@@ -28,8 +28,8 @@ for current in path:
         path.append(join(dirname(current), "models"))                            # Agregar la carpeta models al path
         UIpath = join(join(current, "qt"), "ui")                                 # Declara imagen para la plantilla UI
         stylePath = join(join(join(current, "qt"), "stylesheet"), "MainWindow")  # Declarar path para los qss
-        splashPath = join(join(current, "qt"), "images")                         # Declarar path para la imagen splash
-        productPath = join(join(current, "images"), "inventory")
+        splashPath = join(join(current, "qt"), "images")                         # Declarar path para la imágen splash
+        productPath = join(join(current, "images"), "inventory")                 # Declarar path para las imágenes de los productos
         break
 
 ###################################################################################################################################################################################
