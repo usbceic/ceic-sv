@@ -28,6 +28,7 @@ for current in path:
         UIpath = join(join(current, "qt"), "ui")                                 # Declara imagen para la plantilla UI
         stylePath = join(join(join(current, "qt"), "stylesheet"), "LoginWindow") # Declarar path para los qss
         splashPath = join(join(current, "qt"), "images")                         # Declarar path para la imagen splash
+        iconTrayPath = join(join(current, "qt"), "images")                       # Declarar path para la imagen del iconTray
         break
 
 ###################################################################################################################################################################################
@@ -72,6 +73,7 @@ from validators import validatePhoneNumber, validateEmail, validateName
 # UI
 MainUI = "login.ui"
 splashName = "splash.png"
+iconTrayName = "logo.png"
 
 # Interfaz .ui creada con qt designer
 loginWindow = loadUiType(join(UIpath, MainUI))[0]
@@ -114,8 +116,8 @@ class sessionManager(QMainWindow, loginWindow):
         # CONECTAR E INICIAR EL ICONO DE LA BARRA DE NOTIFICACIONES
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        self.trayIcon = trayIcon(server, QIcon("interface/qt/images/logo.png"), self)   # Crear el icono de la barra de notificaciones
-        self.trayIcon.show()                                                    # Mostrar el icono de la barra de notificaciones
+        self.trayIcon = trayIcon(server, QIcon(join(iconTrayPath, iconTrayName)), self)  # Crear el icono de la barra de notificaciones
+        self.trayIcon.show()                                                             # Mostrar el icono de la barra de notificaciones
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # VARIABLES PARA FACILITAR EL USO DE VARIOS MÉTODOS DE LA CLASE
