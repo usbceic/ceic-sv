@@ -94,7 +94,6 @@ Información de contacto
 ***
 
 * Coordinación de Tecnología y colaboradores del Centro de Estudiantes de Ing. Computación
-
 * Carlos Serrada, cserradag96@gmail.com
 * Christian Oliveros, 01christianol01@gmail.com
 * Pablo Betancourt, pablodbc30@gmail.com
