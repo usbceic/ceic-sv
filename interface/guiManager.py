@@ -51,6 +51,9 @@ from datetime import datetime
 # Módulo que contiene funciones matemáticas
 from math import ceil
 
+# Módulo con funciones para el manejo de los navegadores web
+from webbrowser import open_new_tab
+
 # Módulo manejador de la base de datos
 from db_manager import dbManager
 
@@ -587,11 +590,16 @@ class guiManager(QMainWindow, form_class):
         self.add0.setAutoRepeat(True)
         self.substract0.setAutoRepeat(True)
         self.setupTables(self.tables)
-        #self.textE0.anchorClicked.connect(self.link)
+        self.textE0.anchorClicked.connect(self.openLink)
 
-    #def link(self, linkStr):
-    #QDesktopServices.openUrl(QUrl(linkStr))
+    # Método para abrir un enlace en el navegador por defecto
+    def openLink(self, link):
+        try:
+            url = 'https://' + link.toString()
+            open_new_tab(url)
 
+        except Exception as e:
+            print("No se pudo abrir el enlace: " + url)
 
     # Método para verificar si no se hizo cierre de un día anterior
     def verifyCloseForgotten(self):

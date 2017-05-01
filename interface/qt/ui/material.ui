@@ -1439,7 +1439,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>11</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -22394,7 +22394,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Open Sans'; font-size:10pt; font-style:italic;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Open Sans'; font-size:10pt; font-weight:600;&quot;&gt;    Agradecimientos especiales a:&lt;/span&gt;&lt;span style=&quot; font-family:'Open Sans'; font-size:10pt;&quot;&gt; David Cabeza y José Acevedo por la ayuda y sugerencias aportadas.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Open Sans'; font-size:10pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Open Sans'; font-size:10pt; font-weight:600;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-family:'Open Sans'; font-size:10pt;&quot;&gt;Ayúdanos a seguir mejorando este software reportando  los errores y contándonos tus sugerencias&lt;/span&gt;&lt;span style=&quot; font-family:'Open Sans'; font-size:10pt; font-weight:600;&quot;&gt; &lt;/span&gt;&lt;a href=&quot; https://bitbucket.org/cserradag96/ceic-sv/issues?status=new&amp;amp;status=open&quot;&gt;&lt;span style=&quot; font-family:'Open Sans'; text-decoration: underline; color:#0000ff;&quot;&gt;aquí.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Open Sans'; font-size:10pt; font-weight:600;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot; font-family:'Open Sans'; font-size:10pt;&quot;&gt;Ayúdanos a seguir mejorando este software reportando  los errores y contándonos tus sugerencias&lt;/span&gt;&lt;span style=&quot; font-family:'Open Sans'; font-size:10pt; font-weight:600;&quot;&gt; &lt;/span&gt;&lt;a href=&quot;bitbucket.org/cserradag96/ceic-sv/issues/new&quot;&gt;&lt;span style=&quot; font-family:'Open Sans'; text-decoration: underline; color:#0000ff;&quot;&gt;aquí.&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="openExternalLinks">
                   <bool>true</bool>
