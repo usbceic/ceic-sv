@@ -70,7 +70,7 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QRegExp
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QRegExp, QDate
 
 # Módulo con estructuras de Qt
 from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton, QRegExpValidator
@@ -499,6 +499,11 @@ class guiManager(QMainWindow, form_class):
     # Borrar contenido de una lista de LineEdit:
     def clearLEs(self, listLE):
         for lineE in listLE: lineE.setText("")
+
+    # Método para limpiar un DateEdit
+    def clearDE(self, dateEdit, readOnly):
+        dateEdit.setReadOnly(readOnly)
+        dateEdit.setDate(QDate().currentDate())
 
     # Marcar en solo lectura uno o más LineEdit:
     def ReadOnlyLE(self, listLE, boolean):
@@ -1750,6 +1755,12 @@ class guiManager(QMainWindow, form_class):
         self.resetProductImage(self.selectedItem1)
         self.resetProductImage(self.selectedItem2)
 
+        if self.rbutton9.isChecked() or self.rbutton11.isChecked():
+            self.clearDE(self.dtE2, False)
+
+        else:
+            self.clearDE(self.dtE2, True)
+
         # Adición de campos extras
         if self.rbutton7.isChecked(): self.addProductInput()
         else:
@@ -1879,7 +1890,9 @@ class guiManager(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO2, False, self.lotsRO3)
             self.readOnlyCB(self.cbox5, True)
+            self.clearDE(self.dtE2, False)
             self.resetProductImage(self.selectedItem2)
+            self.setStyle(self.theme)
 
     # Radio button para consultar lotes
     def on_rbutton10_pressed(self):
@@ -1889,7 +1902,9 @@ class guiManager(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
             self.readOnlyCB(self.cbox5, False)
+            self.clearDE(self.dtE2, True)
             self.resetProductImage(self.selectedItem2)
+            self.setStyle(self.theme)
 
     # Radio button para editar lotes
     def on_rbutton11_pressed(self):
@@ -1899,7 +1914,9 @@ class guiManager(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO0, False)
             self.readOnlyCB(self.cbox5, False)
+            self.clearDE(self.dtE2, False)
             self.resetProductImage(self.selectedItem2)
+            self.setStyle(self.theme)
 
     # Radio button para eliminar lotes
     def on_rbutton12_pressed(self):
@@ -1909,7 +1926,9 @@ class guiManager(QMainWindow, form_class):
             self.clearLEs(self.lotsRO0)
             self.changeRO(self.lotsRO1)
             self.readOnlyCB(self.cbox5, False)
+            self.clearDE(self.dtE2, True)
             self.resetProductImage(self.selectedItem2)
+            self.setStyle(self.theme)
 
     # Boton "Aceptar" en el apartado de productos
     def on_pbutton11_pressed(self):
@@ -2024,11 +2043,11 @@ class guiManager(QMainWindow, form_class):
             if self.rbutton9.isChecked():
 
                 # Obtener información del nuevo lote
-                product_name = self.lineE33.text()
-                provider_name = self.lineE34.text()
-                cost = self.lineE35.text()
-                #expiration_date = self.dtE2.text()
-                quantity = self.lineE37.text()
+                product_name = self.lineE33.text()   # Producto
+                provider_name = self.lineE34.text()  # Proveedor
+                cost = self.lineE35.text()           # Costo
+                expiration_date = self.dtE2.date().toPyDate()   # Fecha de expiración
+                quantity = self.lineE37.text()       # Cantidad
 
                 # Verificar completitud de los campos obligatorios
                 if (product_name and provider_name and cost and quantity) != "":
@@ -2038,14 +2057,13 @@ class guiManager(QMainWindow, form_class):
                         if self.db.existProvider(provider_name):
 
                             kwargs = {
-                                "product_name"  : product_name,
-                                "provider_name" : provider_name,
-                                "received_by"   : self.user,
-                                "cost"          : float(cost),
-                                "quantity"      : int(quantity)
+                                "product_name"    : product_name,
+                                "provider_name"   : provider_name,
+                                "received_by"     : self.user,
+                                "cost"            : float(cost),
+                                "quantity"        : int(quantity),
+                                'expiration_date' : expiration_date
                             }
-
-                            #if expiration_date != "": kwargs["expiration_date"] = expiration_date
 
                             # Agregar el lote a la BD
                             if self.db.createLot(**kwargs):
@@ -2074,14 +2092,12 @@ class guiManager(QMainWindow, form_class):
             # Modalidad para editar lotes
             elif self.rbutton11.isChecked():
 
-                product_name = self.lineE33.text()   # Producto
-                provider_name = self.lineE34.text()  # Proveedor
-                cost =  self.lineE35.text()          # Costo
-                quantity = self.lineE37.text()       # Cantidad
-                remaining = self.lineE38.text()      # Disponibles
-
-                """if self.dtE2.text() != "None":
-                    expiration_date = datetime.strptime(self.dtE2.text(), self.dateFormat)  # Caducidad"""
+                product_name = self.lineE33.text()                  # Producto
+                provider_name = self.lineE34.text()                 # Proveedor
+                cost =  self.lineE35.text()                         # Costo
+                expiration_date = self.dtE2.date().toPyDate()   # Fecha de expiración
+                quantity = self.lineE37.text()                      # Cantidad
+                remaining = self.lineE38.text()                     # Disponibles
 
                 if (product_name and provider_name and cost and quantity and remaining) != "":
 
@@ -2089,15 +2105,19 @@ class guiManager(QMainWindow, form_class):
 
                         if self.db.existProvider(provider_name):
 
-                            cost      = float(cost)                        # Costo
-                            quantity  = int(quantity)                      # Cantidad
-                            remaining = int(remaining)                     # Disponibles
+                            kwargs = {
+                                "lot_id"          : self.currentLots[self.currentLot],
+                                "product_name"    : product_name,
+                                "provider_id"     : provider_name,
+                                "cost"            : float(cost),
+                                "quantity"        : int(quantity),
+                                "remaining"       : int(remaining),
+                                'expiration_date' : expiration_date
+                            }
 
                             if quantity >= remaining:
 
-                                lot_id    = self.currentLots[self.currentLot]  # Lote
-
-                                if self.db.updateLot(lot_id, product_name, provider_name, cost, quantity, remaining):
+                                if self.db.updateLot(**kwargs):
                                     successPopUp(parent = self).exec_()
 
                                 else:
@@ -2167,47 +2187,49 @@ class guiManager(QMainWindow, form_class):
     # Boton de cancelar en el apartado de productos
     def on_cancelpb2_pressed(self):
         if self.click():
-            if self.rbutton7.isChecked(): self.clearLE(self.lineExtra)
             self.clearLEs(self.productsRO0)
-            self.resetProductImage(self.selectedItem1)
 
     # Boton de cancelar en el apartado de lotes
     def on_cancelpb3_pressed(self):
         if self.click():
-            self.clearCB(self.cbox5)
             self.clearLEs(self.lotsRO0)
-            self.resetProductImage(self.selectedItem2)
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # CAMPOS DE TEXTO
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    # LineEdit para ingresar nombres de los productos
+    # LineEdit para ingresar nombres de los productos en el aparatado de productos
     def on_lineE26_textChanged(self):
         if self.textChanged():
-            if not self.rbutton5.isChecked() and self.lineE26.text() != "":
-                product_name = self.lineE26.text()
-                if self.db.existProduct(product_name):
-                    product = self.db.getProductByNameOrID(product_name=product_name)[0]
-                    self.selectedItem1.setIcon(QIcon(join(productPath, product_name)))
-                    if self.rbutton7.isChecked():
-                        self.lineE27.setText(product.product_name)        # Product Name
-                        self.lineE28.setText(str(product.price))          # Precio
-                        self.lineE29.setText(product.category)            # Categoria
-                        self.lineE30.setText(str(product.remaining_lots)) # Lotes
-                        self.lineExtra.setText(str(product.remaining))    # Disp. Total
+            if not self.rbutton5.isChecked():
+                if self.lineE26.text() != "":
+                    product_name = self.lineE26.text()
+                    if self.db.existProduct(product_name):
+                        product = self.db.getProductByNameOrID(product_name=product_name)[0]
+                        self.selectedItem1.setIcon(QIcon(join(productPath, product_name)))
+                        if self.rbutton7.isChecked():
+                            self.lineE27.setText(product.product_name)        # Product Name
+                            self.lineE28.setText(str(product.price))          # Precio
+                            self.lineE29.setText(product.category)            # Categoria
+                            self.lineE30.setText(str(product.remaining_lots)) # Lotes
+                            self.lineExtra.setText(str(product.remaining))    # Disp. Total
+
+                        else:
+                            self.lineE27.setText(str(product.price))          # Precio
+                            self.lineE28.setText(product.category)            # Categoria
+                            self.lineE29.setText(str(product.remaining_lots)) # Lotes
+                            self.lineE30.setText(str(product.remaining))      # Disp. Total
 
                     else:
-                        self.lineE27.setText(str(product.price))          # Precio
-                        self.lineE28.setText(product.category)            # Categoria
-                        self.lineE29.setText(str(product.remaining_lots)) # Lotes
-                        self.lineE30.setText(str(product.remaining))      # Disp. Total
-
+                        if self.rbutton7.isChecked(): self.clearLE(self.lineExtra)
+                        self.clearLEs(self.productsRO1)
+                        self.resetProductImage(self.selectedItem1)
                 else:
+                    if self.rbutton7.isChecked(): self.clearLE(self.lineExtra)
                     self.clearLEs(self.productsRO1)
                     self.resetProductImage(self.selectedItem1)
 
-    # LineEdit para ingresar nombres de los productos
+    # LineEdit para ingresar nombres de los productos en el apartado de lotes
     def on_lineE33_textChanged(self):
         if self.textChanged():
             if self.lineE33.text() != "":
@@ -2231,15 +2253,31 @@ class guiManager(QMainWindow, form_class):
 
                             self.lineE34.setText(lot.provider_id)        # Proveedor
                             self.lineE35.setText(str(lot.cost))          # Costo
-                            #self.dtE2.setText(str(lot.expiration_date)) # Caducidad
                             self.lineE37.setText(str(lot.quantity))      # Cantidad
                             self.lineE38.setText(str(lot.remaining))     # Disponibilidad
+
+                            # Fecha de expiración
+                            dateStr = lot.expiration_date.strftime('%Y-%m-%d')
+                            date = QDate().fromString(dateStr, 'yyyy-MM-dd')
+                            self.dtE2.setDate(date)
 
                         self.lotMutex1 = True
 
                 else:
                     self.clearLEs(self.lotsRO1)
+                    self.lotMutex1 = False
+                    self.clearCB(self.cbox5)
+                    self.lotMutex1 = True
                     self.resetProductImage(self.selectedItem2)
+                    self.dtE2.setDate(QDate().currentDate())
+
+            else:
+                self.clearLEs(self.lotsRO1)
+                self.lotMutex1 = False
+                self.clearCB(self.cbox5)
+                self.lotMutex1 = True
+                self.resetProductImage(self.selectedItem2)
+                self.dtE2.setDate(QDate().currentDate())
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # COMBO BOX
@@ -2255,9 +2293,13 @@ class guiManager(QMainWindow, form_class):
 
                 self.lineE34.setText(lot.provider_id)        # Proveedor
                 self.lineE35.setText(str(lot.cost))          # Costo
-                #self.dtE2.setText(str(lot.expiration_date)) # Caducidad
                 self.lineE37.setText(str(lot.quantity))      # Cantidad
                 self.lineE38.setText(str(lot.remaining))     # Disponibilidad
+
+                # Fecha de expiración
+                dateStr = lot.expiration_date.strftime('%Y-%m-%d')
+                date = QDate().fromString(dateStr, 'yyyy-MM-dd')
+                self.dtE2.setDate(date)
 
     #==============================================================================================================================================================================
     # VISTA DE VENTAS

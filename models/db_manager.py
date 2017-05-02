@@ -1044,7 +1044,15 @@ class dbManager(object):
             elif remaining == None and quantity > 0:
                 values["remaining"] = quantity
 
-            if expiration_date != None: values["expiration_date"] = expiration_date
+            if expiration_date != None:
+                if expiration_date > datetime.now().date():
+                    values["expiration_date"] = expiration_date
+                    values["perishable"] = True
+
+                else:
+                    values["expiration_date"] = None
+                    values["perishable"] = False
+
             try:
                 self.session.query(Lot).filter_by(lot_id=lot_id).update(values)
                 self.session.commit()
