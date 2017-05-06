@@ -406,6 +406,12 @@ class guiManager(QMainWindow, form_class):
             self.selectedRowChanged = True
             return False
 
+    # Cambiar el tema de la interfáz
+    def setStyle(self, theme):
+        style = getStyle(join(stylePath, theme))
+        if style != None:
+            self.setStyleSheet(style)
+
     # Cambiar página de un QStackedWidget
     def setPage(self, stacked, index):
         stacked.setCurrentIndex(index)
@@ -3760,10 +3766,10 @@ class guiManager(QMainWindow, form_class):
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     # Cambiar el tema de la interfáz
-    def setStyle(self, theme):
-        style = getStyle(join(stylePath, theme))
-        if style != None:
-            self.setStyleSheet(style)
+    def changeTheme(self, theme):
+        if self.theme != theme:
+            self.theme = theme
+            self.setStyle(self.theme)
 
     # Método para cargar la información del sistema monetario
     def loadLegalTenders(self):
@@ -3790,9 +3796,8 @@ class guiManager(QMainWindow, form_class):
     # Método para cargar las preferencias del usuario
     def loadUserPreferences(self):
         user = self.db.getUsers(self.user)[0]
-        if user.profile != "": self.theme = user.profile
-        else: self.theme = "blue.qss"
-        self.setStyle(self.theme)
+        if user.profile != "": self.changeTheme(user.profile)
+        else: self.changeTheme("blue.qss")
 
     # Método para cambiar el usuario que usa la intefáz
     def changeUser(self, user):
@@ -3823,122 +3828,102 @@ class guiManager(QMainWindow, form_class):
     # Boton para establecer el tema 0
     def on_theme0_pressed(self):
         if self.click():
-            self.setStyle(styles[0])
-            self.theme = styles[0]
+            self.changeTheme(styles[0])
 
     # Boton para establecer el tema 1
     def on_theme1_pressed(self):
         if self.click():
-            self.setStyle(styles[1])
-            self.theme = styles[1]
+            self.changeTheme(styles[1])
 
     # Boton para establecer el tema 2
     def on_theme2_pressed(self):
         if self.click():
-            self.setStyle(styles[2])
-            self.theme = styles[2]
+            self.changeTheme(styles[2])
 
     # Boton para establecer el tema 3
     def on_theme3_pressed(self):
         if self.click():
-            self.setStyle(styles[3])
-            self.theme = styles[3]
+            self.changeTheme(styles[3])
 
     # Boton para establecer el tema 4
     def on_theme4_pressed(self):
         if self.click():
-            self.setStyle(styles[4])
-            self.theme = styles[4]
+            self.changeTheme(styles[4])
 
     # Boton para establecer el tema 5
     def on_theme5_pressed(self):
         if self.click():
-            self.setStyle(styles[5])
-            self.theme = styles[5]
+            self.changeTheme(styles[5])
 
     # Boton para establecer el tema 6
     def on_theme6_pressed(self):
         if self.click():
-            self.setStyle(styles[6])
-            self.theme = styles[6]
+            self.changeTheme(styles[6])
 
     # Boton para establecer el tema 7
     def on_theme7_pressed(self):
         if self.click():
-            self.setStyle(styles[7])
-            self.theme = styles[7]
+            self.changeTheme(styles[7])
 
     # Boton para establecer el tema 0
     def on_theme8_pressed(self):
         if self.click():
-            self.setStyle(styles[8])
-            self.theme = styles[8]
+            self.changeTheme(styles[8])
 
     # Boton para establecer el tema 1
     def on_theme9_pressed(self):
         if self.click():
-            self.setStyle(styles[9])
-            self.theme = styles[9]
+            self.changeTheme(styles[9])
 
     # Boton para establecer el tema 2
     def on_theme10_pressed(self):
         if self.click():
-            self.setStyle(styles[10])
-            self.theme = styles[10]
+            self.changeTheme(styles[10])
 
     # Boton para establecer el tema 3
     def on_theme11_pressed(self):
         if self.click():
-            self.setStyle(styles[11])
-            self.theme = styles[11]
+            self.changeTheme(styles[11])
 
     # Boton para establecer el tema 4
     def on_theme12_pressed(self):
         if self.click():
-            self.setStyle(styles[12])
-            self.theme = styles[12]
+            self.changeTheme(styles[12])
 
     # Boton para establecer el tema 5
     def on_theme13_pressed(self):
         if self.click():
-            self.setStyle(styles[13])
-            self.theme = styles[13]
+            self.changeTheme(styles[13])
 
     # Boton para establecer el tema 6
     def on_theme14_pressed(self):
         if self.click():
-            self.setStyle(styles[14])
-            self.theme = styles[14]
+            self.changeTheme(styles[14])
 
     # Boton para establecer el tema 7
     def on_theme15_pressed(self):
         if self.click():
-            self.setStyle(styles[15])
-            self.theme = styles[15]
+            self.changeTheme(styles[15])
 
         # Boton para establecer el tema 0
     def on_theme16_pressed(self):
         if self.click():
-            self.setStyle(styles[16])
-            self.theme = styles[16]
+            self.changeTheme(styles[16])
 
     # Boton para establecer el tema 1
     def on_theme17_pressed(self):
         if self.click():
-            self.setStyle(styles[17])
-            self.theme = styles[17]
+            self.changeTheme(styles[17])
 
     # Boton para establecer el tema 2
     def on_theme18_pressed(self):
         if self.click():
-            self.setStyle(styles[18])
-            self.theme = styles[18]
+            self.changeTheme(styles[18])
 
     # Boton para establecer el tema 3
     def on_theme19_pressed(self):
         if self.click():
-            self.setStyle(styles[19])
-            self.theme = styles[19]
+            self.changeTheme(styles[19])
 
     # Boton para hacer backup
     def on_pbutton24_pressed(self):
