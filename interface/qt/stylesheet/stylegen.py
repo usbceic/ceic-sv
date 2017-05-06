@@ -25,75 +25,31 @@ from os.path import isfile, isdir, join     # Funciones para manejos de paths y 
 ## CONSTANTES:
 ###################################################################################################################################################################################
 
-currentPath = getcwd()
-palettePath = join(currentPath, "palettes")
-foldersName = ["MainWindow", "LoginWindow", "errorPopUp", "warningPopUp", "successPopUp", "confirmationPopUp", "authorizationPopUp"]
-regexColor  = '#[0-9A-F]{6}'
+currentPath  = getcwd()
+palettePath  = join(currentPath, "palettes")
+objectNames  = ["MainWindow", "LoginWindow", "errorPopUp", "warningPopUp", "successPopUp", "confirmationPopUp", "authorizationPopUp"]
+templatesID  = ["main", "login", "error-popup", "warning-popup", "success-popup", "confirmation-popup", "authorization-popup"]
+templatesExt = "-gen.qss"
+regexColor   = '#[0-9A-F]{6}'
 
 ###################################################################################################################################################################################
-## SCRIPT:
+## PROCEDIMIENTOS:
 ###################################################################################################################################################################################
 
-if __name__ == '__main__':
+# Procedimiento para generar stylesheets
+def genStyleSheets(num):
+    try:
+        # Calcular datos
+        objectName = objectNames[num]
+        template   = templatesID[num]+templatesExt
+        savePath   = join(currentPath, objectName)
 
-    # Instrucciones
-    print("\nPara generar un stylesheet para MainWindow ingrese 0")
-    print("Para generar un stylesheet para LoginWindow ingrese 1")
-    print("Para generar un stylesheet para errorPopUp ingrese 2")
-    print("Para generar un stylesheet para warningPopUp ingrese 3")
-    print("Para generar un stylesheet para successPopUp ingrese 4")
-    print("Para generar un stylesheet para confirmationPopUp ingrese 5")
-    print("Para generar un stylesheet para authorizationPopUp ingrese 6\n")
+        # Avisar al usuario que stylesheets se generarán
+        print("\nGenerando stylesheets para " + objectName)
 
-    # Bucle par que el usuario marque una opcion válida
-    while True:
-        op = int(input("Selección: "))
-
-        # Si escogió MainWindow
-        if op == 0:
-            template = "main-gen.qss"
-            savePath = join(currentPath, foldersName[0])
-
-        # Si escogió LoginWindow
-        elif op == 1:
-            template = "login-gen.qss"
-            savePath = join(currentPath, foldersName[1])
-
-        # Si escogió errorPopUp
-        elif op == 2:
-            template = "error-popup-gen.qss"
-            savePath = join(currentPath, foldersName[2])
-
-        # Si escogió warningPopUp
-        elif op == 3:
-            template = "warning-popup-gen.qss"
-            savePath = join(currentPath, foldersName[3])
-
-        # Si escogió successPopUp
-        elif op == 4:
-            template = "success-popup-gen.qss"
-            savePath = join(currentPath, foldersName[4])
-
-        # Si escogió confirmationPopUp
-        elif op == 5:
-            template = "confirmation-popup-gen.qss"
-            savePath = join(currentPath, foldersName[5])
-
-        # Si escogió authorizationPopUp
-        elif op == 6:
-            template = "authorization-popup-gen.qss"
-            savePath = join(currentPath, foldersName[6])
-
-        # Si escogió una opción inválida
-        else: continue
-
-        # Si no exite la carpeta de salida, se crea
+        # Crear la carpeta de salida si no existe
         if not isdir(savePath): mkdir(savePath)
 
-        # Romper bucle
-        break
-
-    try:
         # Leer archivo generador
         file = open(join(currentPath, template), 'r')
         stylesheet = file.read()
@@ -102,7 +58,6 @@ if __name__ == '__main__':
         # Leer paletas de colores
         palettes = [palette for palette in listdir(palettePath) if isfile(join(palettePath, palette))]
 
-        print("")
         for paletteName in palettes:
 
             # Leer paleta de colores
@@ -146,6 +101,40 @@ if __name__ == '__main__':
     # Capturador de errores desconocidos
     except:
         print("\nHa ocurrido un error inesperado.\n")
+
+###################################################################################################################################################################################
+## SCRIPT:
+###################################################################################################################################################################################
+
+if __name__ == '__main__':
+
+    # Instrucciones
+    print("\nPara generar un stylesheet para MainWindow ingrese 0")
+    print("Para generar stylesheets para LoginWindow ingrese 1")
+    print("Para generar stylesheets para errorPopUp ingrese 2")
+    print("Para generar stylesheets para warningPopUp ingrese 3")
+    print("Para generar stylesheets para successPopUp ingrese 4")
+    print("Para generar stylesheets para confirmationPopUp ingrese 5")
+    print("Para generar stylesheets para authorizationPopUp ingrese 6")
+    print("Para generar stylesheets para todas las plantillas ingrese 7\n")
+
+    # Bucle par que el usuario marque una opcion válida
+    while True:
+        option = int(input("Selección: "))
+
+        # Crear stylesheets para un elemento
+        if 0 <= option <= 6:
+            genStyleSheets(option)
+
+        # Crear stylesheets para todos los elementos
+        elif option == 7:
+            for i in range(len(templatesID)): genStyleSheets(i)
+
+        # Volver a preguntar si escogió una opción inválida
+        else: continue
+
+        # Finalizar
+        break
 
 ###################################################################################################################################################################################
 ## FIN :)
