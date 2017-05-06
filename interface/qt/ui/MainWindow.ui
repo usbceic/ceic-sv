@@ -3460,6 +3460,11 @@ QWidget:item:unchecked {
                </column>
                <column>
                 <property name="text">
+                 <string>Usuario</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
                  <string>Monto</string>
                 </property>
                </column>

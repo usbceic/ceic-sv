@@ -1309,23 +1309,23 @@ class guiManager(QMainWindow, form_class):
     # Método para actualizar caja
     def refreshCash(self):
         if self.db.isOpenPeriod():
-            self.setPage(self.subStacked2, 1)                           # Cambiar a la página para ver y cerrar un periodo
-            period = self.db.getPeriodStartAndEnd()[0]                  # Obtener información del inicio del periodo
-            name = period.description                                   # Obtener nombre del periodo
-            startDate = period.recorded                                 # Obtener fecha de inicio del periodo
-            cash, bank = self.db.getBalance(lower_date=startDate)       # Obtener dinero en efectivo y en banco ganado durante el periodo
-            self.lineE10.setText(name)                                  # Actualizar campo de nombre del periodo
-            self.lineE11.setText(startDate.strftime(self.dtFormat))     # Actualizar campo de fecha de inicio
-            self.lineE13.setText(str(cash + period.cash_total))         # Actualizar campo de efectivo en periodo
+            self.setPage(self.subStacked2, 1)                                        # Cambiar a la página para ver y cerrar un periodo
+            period = self.db.getPeriodStartAndEnd()[0]                               # Obtener información del inicio del periodo
+            name = period.description                                                # Obtener nombre del periodo
+            startDate = period.recorded                                              # Obtener fecha de inicio del periodo
+            cash, bank = self.db.getBalance(lower_date=startDate)                    # Obtener dinero en efectivo y en banco ganado durante el periodo
+            self.lineE10.setText(name)                                               # Actualizar campo de nombre del periodo
+            self.lineE11.setText(startDate.strftime(self.dtFormat))                  # Actualizar campo de fecha de inicio
+            self.lineE13.setText(str(cash + period.cash_total))                      # Actualizar campo de efectivo en periodo
             self.lineE14.setText(str(bank + period.total_money - period.cash_total)) # Actualizar campo de banco en periodo
 
             if self.db.isOpenDay():
-                self.setPage(self.subStacked1, 1)                       # Cambiar a la página para ver y cerrar un dia
-                day = self.db.getDayStartAndEnd()[0]                    # Obtener información del inicio del día
-                name = day.description                                  # Obtener nombre del día
-                startDate = day.recorded                                # Obtener fecha de inicio del día
-                dayCash, dayBank = self.db.getBalance(lower_date=startDate) # Obtener dinero en efectivo y en banco ganado en la fecha
-                self.lineE2.setText(str(dayCash + day.cash_total))     	# Actualizar campo de efectivo
+                self.setPage(self.subStacked1, 1)                                    # Cambiar a la página para ver y cerrar un dia
+                day = self.db.getDayStartAndEnd()[0]                                 # Obtener información del inicio del día
+                name = day.description                                               # Obtener nombre del día
+                startDate = day.recorded                                             # Obtener fecha de inicio del día
+                dayCash, dayBank = self.db.getBalance(lower_date=startDate)          # Obtener dinero en efectivo y en banco ganado en la fecha
+                self.lineE2.setText(str(dayCash + day.cash_total))     	             # Actualizar campo de efectivo
                 self.lineE3.setText(str(dayBank + day.total_money - day.cash_total)) # Actualizar campo de banco
 
             else:
@@ -1371,9 +1371,10 @@ class guiManager(QMainWindow, form_class):
         table.setRowCount(len(movements))                                              # Contador de filas
         for i in range(len(movements)):                                                # Llenar tabla
             op_type = movements[i].op_type
+            clerk = movements[i].clerk
             open_record = movements[i].open_record
             cash_balance = movements[i].cash_balance
-            cash_total = movements[i].cash_total
+            cash_total = str(movements[i].cash_total)
             description = movements[i].description
             date = movements[i].recorded.strftime(self.dtFormat)
 
@@ -1389,12 +1390,12 @@ class guiManager(QMainWindow, form_class):
             else:
                 if cash_balance > 0: movement = "Egreso en efectivo"
                 else: movement = "Egreso en banco"
-                cash_total = -cash_total
 
-            table.setItem(i, 0, QTableWidgetItem(movement))         # Tipo
-            table.setItem(i, 1, QTableWidgetItem(str(cash_total)))  # Banco
-            table.setItem(i, 2, QTableWidgetItem(description))      # Descripción
-            table.setItem(i, 3, QTableWidgetItem(date))             # Fecha
+            table.setItem(i, 0, QTableWidgetItem(movement))    # Tipo
+            table.setItem(i, 1, QTableWidgetItem(clerk))       # Usuario
+            table.setItem(i, 2, QTableWidgetItem(cash_total))  # Monto
+            table.setItem(i, 3, QTableWidgetItem(description)) # Descripción
+            table.setItem(i, 4, QTableWidgetItem(date))        # Fecha
 
         self.elem_actual = 0                                      # Definir la fila que se seleccionará
         if len(movements) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
