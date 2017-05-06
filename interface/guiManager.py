@@ -2570,14 +2570,19 @@ class guiManager(QMainWindow, form_class):
                         self.refreshSales()
 
                     else:
-
                         client = self.db.getClients(ci)[0]
                         if client.debt_permission and client.balance < total - efectivo:
-                            deuda = total - efectivo - saldo
+                            saldo = float(client.balance)
 
-                            message = "Se le cargará una deuda de " + naturalFormat(deuda) + " al cliente"
+                            if saldo > 0:
+                                deuda = total - efectivo - saldo
+                                message = "Se descontarán " + naturalFormat(saldo) + " del saldo del cliente y se le cargará una deuda de " + naturalFormat(deuda)
+
+                            else:
+                                deuda = total - efectivo
+                                message = "Se le cargará una deuda de " + naturalFormat(deuda) + " al cliente"
+
                             popUp = confirmationPopUp(message, self)
-
                             if popUp.exec_():
                                 if popUp.getValue():
                                     try:
@@ -2598,7 +2603,7 @@ class guiManager(QMainWindow, form_class):
                         elif client.debt_permission and client.balance >= total - efectivo:
                             saldo = total - efectivo
 
-                            message = "Se descontará " + naturalFormat(saldo) + " del saldo del cliente"
+                            message = "Se descontarán " + naturalFormat(saldo) + " del saldo del cliente"
                             popUp = confirmationPopUp(message, self)
 
                             if popUp.exec_():
