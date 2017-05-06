@@ -58,7 +58,7 @@ from db_manager import dbManager
 from popUps import errorPopUp, warningPopUp, successPopUp, confirmationPopUp, authorizationPopUp
 
 # Módulo con los validadores para campos de texto
-from validators import validatePhoneNumber, validateEmail, validateName
+from validators import intValidator, floatValidator, anyCharacterValidator, validatePhoneNumber, validateEmail, validateName
 
 # Módulo con los validadores para campos de texto
 from app_utilities import getStyle, naturalFormat, openLink
@@ -70,10 +70,10 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QRegExp, QDate
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QDate
 
 # Módulo con estructuras de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton, QRegExpValidator
+from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -424,24 +424,24 @@ class guiManager(QMainWindow, form_class):
         LEcompleter.setModel(LEmodel)
         LEcompleter.setCompletionMode(QCompleter.PopupCompletion)
         LEcompleter.setCaseSensitivity(Qt.CaseInsensitive)
-        validator = QRegExpValidator(QRegExp('[1-9][0-9]*'))
+        validator = intValidator()
         for lineE in listLE:
             if numValidator: lineE.setValidator(validator)
             lineE.setCompleter(LEcompleter)
 
     # Método para configurar campos para ingresar cualquier cosa
     def setAnyCharacter(self, listAC):
-        validator = QRegExpValidator(QRegExp('.*'))
+        validator = anyCharacterValidator()
         for item in listAC: item.setValidator(validator)
 
     # Método para configurar campos para solo ingresar números
     def setOnlyInteger(self, listON):
-        validator = QRegExpValidator(QRegExp('[1-9][0-9]*'))
+        validator = intValidator()
         for item in listON: item.setValidator(validator)
 
     # Método para configurar campos para solo ingresar números
     def setOnlyFloat(self, listON):
-        validator = QRegExpValidator(QRegExp('^(([1-9][0-9]*|0)(\.[0-9]{,3})?|\.[0-9]{,2}[1-9])$'))
+        validator = floatValidator()
         for item in listON: item.setValidator(validator)
 
     # Método para setear en 0 una lista spinLine

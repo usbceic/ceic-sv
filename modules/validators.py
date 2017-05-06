@@ -19,10 +19,30 @@
 ###################################################################################################################################################################################
 
 import re
+from PyQt4.QtCore import QRegExp
+from PyQt4.QtGui import QRegExpValidator
 
 ###################################################################################################################################################################################
 ## DECLARACIÓN DE LOS VALIDADORES:
 ###################################################################################################################################################################################
+
+"""
+Método que retorna el validador online para los campos para números enteros
+"""
+def intValidator():
+	return QRegExpValidator(QRegExp('[1-9][0-9]*'))
+
+"""
+Método que retorna el validador online para los campos para números reales
+"""
+def floatValidator():
+	return QRegExpValidator(QRegExp('^(([1-9][0-9]*|0)(\.[0-9]{,3})?|0\.[0-9]{,2}[1-9])$'))
+
+"""
+Método que retorna el validador online para los campos para cualquier carácter
+"""
+def anyCharacterValidator():
+	return QRegExpValidator(QRegExp('.*'))
 
 """
 Método para validar números telefonicos
