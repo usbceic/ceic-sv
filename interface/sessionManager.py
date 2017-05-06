@@ -65,6 +65,8 @@ from popUps import errorPopUp, successPopUp, authorizationPopUp
 # Módulo con los validadores para campos de texto
 from validators import validatePhoneNumber, validateEmail, validateName
 
+# Módulo con los validadores para campos de texto
+from app_utilities import getStyle
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -127,7 +129,13 @@ class sessionManager(QMainWindow, loginWindow):
         self.userDef = False       # Variable para saber si ya se definio un usuario para iniciar sesión
         self.passDef = False       # Variable para saber si ya se definio una contraseña para iniciar sesión
         self.guiExist = False      # Variable para saber si ya se creó la ventana principal previamente
-        self.isOpenSession = False #
+        self.isOpenSession = False # Variable para determinar si existe una sesión abierta
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # PREFERENCIAS DE USUARIO
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        self.theme = "blue.qss"
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # CARGAR CONFIGURACIONES INICIALES
@@ -151,6 +159,18 @@ class sessionManager(QMainWindow, loginWindow):
     # Fijar tamaño de la ventana
     def setSize(self):
         self.setFixedSize(self.width(), self.height())
+
+    # Establecer el tema de la interfáz
+    def setStyle(self, theme):
+        style = getStyle(join(stylePath, theme))
+        if style != None:
+            self.setStyleSheet(style)
+
+    # Cambiar el tema de la interfáz
+    def changeTheme(self, theme):
+        if self.theme != theme:
+            self.theme = theme
+            self.setStyle(self.theme)
 
     # Configuración inicial para la vista de inicio de sesión
     def setupPage0(self):
@@ -179,7 +199,7 @@ class sessionManager(QMainWindow, loginWindow):
         self.setupPage0()                    # Configurar vista de inicio de sesión
         self.setupPage1()                    # Configurar vista de registro de usuario
         self.setupPage2()                    # Configurar vista de recuperación de contraseña
-        self.MainStacked.setCurrentIndex(0)  # Se establece la pagina de inicio de sesión por defecto
+        self.LoginStacked.setCurrentIndex(0)  # Se establece la pagina de inicio de sesión por defecto
 
     #==============================================================================================================================================================================
     # MÉTODOS GENERALES MULTIPROPÓSITOS
@@ -193,6 +213,12 @@ class sessionManager(QMainWindow, loginWindow):
         else:
             self.clicked = True
             return False
+
+    # Método para cargar las preferencias del usuario
+    def loadUserTheme(self, username):
+        user = self.db.getUsers(username)[0]
+        if user.profile != "": self.changeTheme(user.profile)
+        else: self.changeTheme("blue.qss")
 
     #==============================================================================================================================================================================
     # VISTA DE INICIO DE SESIÓN
@@ -234,7 +260,7 @@ class sessionManager(QMainWindow, loginWindow):
     # Boton para ir a la vista de olvide mi contraseña
     def on_button3_pressed(self):
         if self.click():
-            self.MainStacked.setCurrentIndex(2)
+            self.LoginStacked.setCurrentIndex(2)
             self.header.setIcon(QIcon(':/login/conf'))
 
     # Boton para iniciar sesión
@@ -245,7 +271,7 @@ class sessionManager(QMainWindow, loginWindow):
     # Boton para ir a la vista de registro
     def on_button5_pressed(self):
         if self.click():
-            self.MainStacked.setCurrentIndex(1)
+            self.LoginStacked.setCurrentIndex(1)
             self.header.setIcon(QIcon(':/login/camera'))
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -254,8 +280,18 @@ class sessionManager(QMainWindow, loginWindow):
 
     # Cambio de texto en el lineEdit para el nombre de usuario
     def on_lineEd0_textChanged(self):
-        if self.lineEd0.text() == "": self.userDef = False
-        else: self.userDef = True
+        if self.lineEd0.text() != "":
+            self.userDef = True
+            username = self.lineEd0.text()
+            if self.db.existUser(username):
+                self.loadUserTheme(username)
+
+            else:
+                self.changeTheme("blue.qss")
+
+        else:
+            self.userDef = False
+            self.changeTheme("blue.qss")
 
     # Presionar enter estando en el lineEdit para el nombre de usuario
     def on_lineEd0_returnPressed(self):
@@ -286,7 +322,7 @@ class sessionManager(QMainWindow, loginWindow):
 
                 successPopUp("Correo de recuperación enviado", self).exec_()
 
-                self.MainStacked.setCurrentIndex(0)
+                self.LoginStacked.setCurrentIndex(0)
 
             else:
                 errorPopUp("El correo no está registrado", self).exec_()
@@ -298,7 +334,7 @@ class sessionManager(QMainWindow, loginWindow):
     # Boton para volver a la vista de inicio de sesión
     def on_button7_pressed(self):
         if self.click():
-            self.MainStacked.setCurrentIndex(0)
+            self.LoginStacked.setCurrentIndex(0)
             self.header.setIcon(QIcon(':/login/users'))
 
     # Botón para enviar el correo de recuperación de contraseña
@@ -363,7 +399,7 @@ class sessionManager(QMainWindow, loginWindow):
                             if userRange == "Administrador" or userRange == "Dios":
                                 self.db.createUser(**kwargs) # Crear usuario
                                 successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
-                                self.MainStacked.setCurrentIndex(0)
+                                self.LoginStacked.setCurrentIndex(0)
                             else:
                                 errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                         else:
@@ -372,7 +408,7 @@ class sessionManager(QMainWindow, loginWindow):
     # Boton para descartar el registro
     def on_button9_pressed(self):
         if self.click():
-            self.MainStacked.setCurrentIndex(0)
+            self.LoginStacked.setCurrentIndex(0)
             self.header.setIcon(QIcon(':/login/users'))
 
     #==============================================================================================================================================================================
@@ -392,9 +428,9 @@ class sessionManager(QMainWindow, loginWindow):
     # Manejador de eventos por teclado
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Return:
-            if self.MainStacked.currentIndex() == 0:
+            if self.LoginStacked.currentIndex() == 0:
                 self.startSession(self.lineEd0.text(), self.lineEd1.text())
-            elif self.MainStacked.currentIndex() == 1:
+            elif self.LoginStacked.currentIndex() == 1:
                 print("xD")
             else:
                 self.sendMail()

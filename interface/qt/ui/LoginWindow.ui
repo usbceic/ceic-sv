@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>218</width>
-    <height>444</height>
+    <height>483</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">/*#########################################################
-##                        MainWindow                     ##
+##                        LoginWindow                    ##
 ###########################################################*/
 
 /*Configurar el color de fondo de la ventana*/
@@ -32,19 +32,20 @@
 }
 
 /***********************************
-* MainStacked
+* LoginStacked
 ***********************************/
 
-#MainStacked {
+/*Configuración general del  LoginStacked*/
+#LoginStacked {
     border: 0px inline transparent;
     background: transparent;
     padding: -10px;
 }
 
 /*Configurar el color de fondo de cada pagina del Stacked*/
-#pag0, #pag1, #page2 {
+#pag0, #pag1, #pag2 {
      background: transparent;
-	min-width: 21em;
+    min-width: 21em;
      padding: -8px;
 }
 
@@ -321,11 +322,11 @@
        </spacer>
       </item>
       <item>
-       <widget class="QStackedWidget" name="MainStacked">
+       <widget class="QStackedWidget" name="LoginStacked">
         <property name="currentIndex">
          <number>0</number>
         </property>
-        <widget class="QWidget" name="page0">
+        <widget class="QWidget" name="pag0">
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
            <widget class="QFrame" name="frame0">
@@ -766,7 +767,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="page1">
+        <widget class="QWidget" name="pag1">
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
            <widget class="QFrame" name="frame1">
@@ -1144,7 +1145,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QWidget" name="page2">
+        <widget class="QWidget" name="pag2">
          <layout class="QGridLayout" name="gridLayout_10">
           <item row="0" column="0">
            <widget class="QFrame" name="frame2">

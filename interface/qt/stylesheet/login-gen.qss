@@ -1,5 +1,5 @@
 /*#########################################################
-##                        MainWindow                     ##
+##                        LoginWindow                    ##
 ###########################################################*/
 
 /*Configurar el color de fondo de la ventana*/
@@ -8,10 +8,40 @@
     color: primary-text-color;
 }
 
-/*Configurar el color de fondo de cada pagina del Stacked*/
-#pag0, #pag1, #page2 {
+/***********************************
+* Global
+***********************************/
+
+/*Efecto al seleccionar texto*/
+* {
+    selection-color: primary-text-color;
+    selection-background-color: light-primary-color;
+}
+
+/***********************************
+* LoginStacked
+***********************************/
+
+/*Configuración general del  LoginStacked*/
+#LoginStacked {
+    border: 0px inline transparent;
     background: transparent;
-    padding: -8px;
+    padding: -10px;
+}
+
+/*Configurar el color de fondo de cada pagina del Stacked*/
+#pag0, #pag1, #pag2 {
+     background: transparent;
+    min-width: 21em;
+     padding: -8px;
+}
+
+/***********************************
+* Frames
+***********************************/
+
+#frame0, #frame1, #frame2 {
+    background: #FFFFFF;
 }
 
 /***********************************
@@ -19,13 +49,26 @@
 ***********************************/
 
 /* Configuración del label CEIC Suite*/
-#label0 {
+#footer {
     background: transparent;
+    min-height: 3em;
+    min-width: 3em;
 }
 
 /* Configuración de los titulos*/
 #label1, #label2, #label3 {
+    color: primary-text-color;
+    border: 1px solid divider-color;
+    border-radius: 2px;
     background: light-primary-color;
+    font-family: Open Sans;
+    font-size: 12pt;
+    font-style: bold;
+    font-weight: 600;
+    min-height: 1.8em;
+    max-height: 1.8em;
+    text-transform: capitalize;
+    qproperty-alignment: 'AlignVCenter | AlignHCenter';
 }
 
 /***********************************
@@ -33,17 +76,17 @@
 ***********************************/
 
 /*Estilo por defecto de los iconos de foto de perfil*/
-#pubutton0, #pubutton6,  #pubutton10 {
+#header {
     background: light-primary-color;
-    border: 1px solid transparent;
-    border-radius: 45px;
-    min-width: 6em;
-    min-height: 6em;
-    padding: 2px;
+    border: 2px outset transparent;
+    border-radius: 41px;
+    min-width: 64px;
+    min-height: 64px;
+    padding: 8px;
 }
 
 /*Estilo por defecto de los iconos de usuario y contraseña*/
-#pubutton1,  #pubutton2 {
+#button1,  #button2 {
     background: transparent;
     border: 1px outset transparent;
     min-width: 1em;
@@ -52,81 +95,59 @@
 }
 
 /*Estilo por defecto por defecto del botón de olvidé mi contraseña*/
-#pubutton3 {
+#button3 {
     color: secondary-text-color;
     background: transparent;
 }
 
 /*Configuración del estilo al pasar por encima y presionar el botón de olvidé mi contraseña*/
-#pubutton3:hover, #pubutton3:pressed {
+#button3:hover, #button3:pressed {
     color: primary-text-color;
     text-decoration: underline;
 }
 
 /*Estilo por defecto de los botones para acceder/continuar/aceptar*/
-#pubutton4, #pubutton7, #pubutton12, #pubutton13 {
-    color: text-primary-color;
-    border: 1px outset divider-color;
+#button4, #button6, #button8 {
+    color: #FFFFFF;
+    border: 1px outline divider-color;
     border-radius: 2px;
     background: default-primary-color;
-    min-height: 3em;
-    min-width: 2em;
+    min-height: 2.5em;
+    min-width: 4.5em;
     padding: 2px;
 }
 
 /*Configuración del estilo al pasar por encima y presionar los botones para acceder/continuar/aceptar*/
-#pubutton4:hover,  #pubutton7:hover, #pubutton12:hover,  #pubutton13:hover, #pubutton4:pressed, #pubutton7:pressed, #pubutton12:pressed, #pubutton13:pressed {
+#button4:hover,  #button6:hover, #button8:hover,  #button4:pressed, #button6:pressed, #button8:pressed {
     background: dark-primary-color;
 }
 
 /*Estilo por defecto de los botones para limpiar/cancelar*/
-#pubutton20, #pubutton21, #pubutton22, #pubutton23 {
+#button7, #button9 {
     color: default-primary-color;
     border: 1px solid transparent;
     background: transparent;
-    min-height: 3em;
-    min-width: 2em;
+    min-height: 2.5em;
+    min-width: 4em;
+    padding: 2px;
 }
 
 /*Configuración del estilo al pasar por encima y presionar los botones para limpiar/cancelar*/
-#pubutton20:hover, #pubutton21:hover, #pubutton22:hover, #pubutton23:hover, #pubutton20:pressed, #pubutton21:pressed, #pubutton22:pressed, #pubutton23:pressed {
+#button7:hover, #button9:hover, #button7:pressed, #button9:pressed {
     color: dark-primary-color;
 }
 
 
 /*Estilo por defecto del botón para ir a la pantalla de registro*/
-#pubutton5 {
+#button5 {
     color: secondary-text-color;
     background: transparent;
 }
 
 /*Configuración del estilo al pasar por encima y presionar el botón para ir a la pantalla de registro*/
-#pubutton5:hover, #pubutton5:pressed {
+#button5:hover, #button5:pressed {
     color: primary-text-color;
     text-decoration: underline;
-}
-
-/*Estilo por defecto de los botones para volver atrás*/
-#pubutton8, #pubutton9 {
-    padding: 0px;
-    border: 2px solid transparent;
-    border-radius: 4px;
-    background: transparent;
-}
-
-/*Configuración del estilo al pasar por encima y presionar os botones para volver atrás*/
-#pubutton8:hover, #pubutton8:pressed, #pubutton9:hover, #pubutton9:pressed {
-    background: dark-primary-color;
-}
-
-/***********************************
-* GroupBox
-***********************************/
-
-/*Configuración del estilo de todos los GroupBox */
-#gbox0, #gbox2, #gbox3, #gbox4 {
-    padding: -8px;
-    background: transparent;
 }
 
 /***********************************
@@ -138,6 +159,7 @@
     color: primary-text-color;
     border-style: outset;
     min-width: 5.5em;
+    min-height: 1.5em;
     padding: 2px;
     background: transparent;
 }
@@ -153,6 +175,7 @@
     border-radius: 3px;
     padding: 1px 1px 1px 4px;
     min-width: 9em;
+    min-height: 2em;
     background: transparent;
 }
 
@@ -190,5 +213,5 @@
     padding: 1px 6px 1px 1px;
     min-width: 14em;
     selection-background-color: divider-color;
-    background: text-primary-color;
+    background: #FFFFFF;
 }

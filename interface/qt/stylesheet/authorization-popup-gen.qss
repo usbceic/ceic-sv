@@ -8,6 +8,16 @@ QDialog {
 }
 
 /***********************************
+* Global
+***********************************/
+
+/*Efecto al seleccionar texto*/
+* {
+    selection-color: primary-text-color;
+    selection-background-color: light-primary-color;
+}
+
+/***********************************
 * LineEdit
 ***********************************/
 
