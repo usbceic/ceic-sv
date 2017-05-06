@@ -2572,7 +2572,29 @@ class guiManager(QMainWindow, form_class):
 
                     else:
                         client = self.db.getClients(ci)[0]
-                        if client.debt_permission and client.balance < total - efectivo:
+                        if client.balance >= total - efectivo:
+                            saldo = total - efectivo
+
+                            message = "Se descontarán " + naturalFormat(saldo) + " del saldo del cliente"
+                            popUp = confirmationPopUp(message, self)
+
+                            if popUp.exec_():
+                                if popUp.getValue():
+                                    try:
+                                        purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
+                                        for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
+                                            self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
+                                        if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
+                                        self.db.createCheckout(purchase_id, saldo, True)                            # Crear pago con saldo
+                                        successPopUp(parent = self).exec_()                                         # Venta exitosa
+
+                                    except:
+                                        errorPopUp(parent = self).exec_()                                           # Venta fallida
+
+                                    # Setear variables y refrescar la interfaz
+                                    self.refreshSales()
+
+                        elif client.debt_permission and client.balance < total - efectivo:
                             saldo = float(client.balance)
 
                             if saldo > 0:
@@ -2601,34 +2623,10 @@ class guiManager(QMainWindow, form_class):
                                     # Setear variables y refrescar la interfaz
                                     self.refreshSales()
 
-                        elif client.debt_permission and client.balance >= total - efectivo:
-                            saldo = total - efectivo
-
-                            message = "Se descontarán " + naturalFormat(saldo) + " del saldo del cliente"
-                            popUp = confirmationPopUp(message, self)
-
-                            if popUp.exec_():
-                                if popUp.getValue():
-                                    try:
-                                        purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
-                                        for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
-                                            self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
-                                        if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
-                                        self.db.createCheckout(purchase_id, saldo, True)                            # Crear pago con saldo
-                                        successPopUp(parent = self).exec_()                                         # Venta exitosa
-
-                                    except:
-                                        errorPopUp(parent = self).exec_()                                           # Venta fallida
-
-                                    # Setear variables y refrescar la interfaz
-                                    self.refreshSales()
-
                         else:
                             warningPopUp("Pago insuficiente", self).exec_()
-
                 else:
                     warningPopUp("No se han agregado productos", self).exec_()
-
             else:
                 warningPopUp("El cliente no existe", self).exec_()
 
