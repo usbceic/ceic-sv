@@ -32,6 +32,16 @@
 }
 
 /***********************************
+* Global
+***********************************/
+
+/*Efecto al seleccionar texto*/
+* {
+    selection-color: #212121;
+    selection-background-color: #BBDEFB;
+}
+
+/***********************************
 * LoginStacked
 ***********************************/
 
