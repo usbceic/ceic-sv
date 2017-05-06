@@ -3217,23 +3217,21 @@ class guiManager(QMainWindow, form_class):
     # Botón para editar un cliente
     def on_pbutton19_pressed(self):
         if self.click():
-            ci        = self.lineE57.text()
-            firstname = self.lineE58.text()
-            lastname  = self.lineE59.text()
-            phone     = self.lineE60.text()
-            email     = self.lineE61.text()
-            flag = False
+            ci         = self.lineE57.text()
+            firstname  = self.lineE58.text()
+            lastname   = self.lineE59.text()
+            phone      = self.lineE60.text()
+            email      = self.lineE61.text()
+
             if ci != "":
                 ci = int(ci)
                 if self.db.existClient(ci):
                     if validateName(firstname):
-
                         if validateName(lastname):
-
                             if (phone != "" and validatePhoneNumber(phone)) or phone == "":
-
                                 if (email != "" and validateEmail(email)) or email == "":
 
+                                    client = self.db.getClients(ci)[0]
                                     debt = (self.cbox12.currentText() == "Permitir")
                                     book = (self.cbox13.currentText() == "Permitir")
 
@@ -3246,57 +3244,56 @@ class guiManager(QMainWindow, form_class):
                                         "debt_permission" : debt,
                                         "book_permission" : book
                                     }
-                                    flag = debt
+
+                                    changeDebt = (debt != client.debt_permission)
+
+                                    if changeDebt:
+                                        if debt or client.balance >= 0:
+                                            popUp = authorizationPopUp(parent=self)
+                                            if popUp.exec_():
+                                                adminUsername, adminPassword = popUp.getValues()
+                                                if (adminUsername and adminPassword) != None:
+                                                    if self.db.checkPassword(adminUsername, adminPassword):
+                                                        userRange = self.db.getUserRange(adminUsername)
+                                                        if userRange == "Administrador" or userRange == "Dios":
+                                                            if self.db.updateClient(**kwargs):      # Actualizar cliente
+                                                                successPopUp(parent = self).exec_()
+
+                                                            else:
+                                                                errorPopUp(parent = self).exec_()
+
+                                                            self.clearLEs(self.clientsLE1) # Limpiar formulario
+                                                            self.refreshClients()          # Refrescar vista
+                                                            self.lineE57.setFocus()        # Enfocar
+                                                        else:
+                                                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                                                    else:
+                                                        errorPopUp("Datos incorrectos", self).exec_()
+                                        else:
+                                            errorPopUp("No se le puede quitar el permiso de deudas a un cliente endeudado",self).exec_()
+                                    else:
+                                        if self.db.updateClient(**kwargs):      # Actualizar cliente
+                                            successPopUp(parent = self).exec_()
+
+                                        else:
+                                            errorPopUp(parent = self).exec_()
+
+                                        self.clearLEs(self.clientsLE1) # Limpiar formulario
+                                        self.refreshClients()          # Refrescar vista
+                                        self.lineE57.setFocus()        # Enfocar
 
                                 else:
                                     errorPopUp("Formato de correo no válido",self).exec_()
-
                             else:
                                 errorPopUp("Formato de teléfono no válido",self).exec_()
-
                         else:
                             errorPopUp("Formato de apellido no válido", self).exec_()
-
                     else:
                         errorPopUp("Formato de nombre no válido", self).exec_()
-
                 else:
                     errorPopUp("Número de cédula no registrado", self).exec_()
-
             else:
                 errorPopUp("Número de cédula no específicado", self).exec_()
-
-            if flag:
-                popUp = authorizationPopUp(parent=self)
-                if popUp.exec_():
-                    adminUsername, adminPassword = popUp.getValues()
-                    if (adminUsername and adminPassword) != None:
-                        if self.db.checkPassword(adminUsername, adminPassword):
-                            userRange = self.db.getUserRange(adminUsername)
-                            if userRange == "Administrador" or userRange == "Dios":
-                                if self.db.updateClient(**kwargs):      # Crear cliente
-                                    successPopUp(parent = self).exec_()
-
-                                else:
-                                    errorPopUp(parent = self).exec_()
-
-                                self.clearLEs(self.clientsLE1) # Limpiar formulario
-                                self.refreshClients()          # Refrescar vista
-                                self.lineE57.setFocus()        # Enfocar
-                            else:
-                                errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
-                        else:
-                            errorPopUp("Datos incorrectos", self).exec_()
-            else:
-                if self.db.updateClient(**kwargs):      # Crear cliente
-                    successPopUp(parent = self).exec_()
-
-                else:
-                    errorPopUp(parent = self).exec_()
-
-                self.clearLEs(self.clientsLE1) # Limpiar formulario
-                self.refreshClients()          # Refrescar vista
-                self.lineE57.setFocus()        # Enfocar
 
     # Botón para cancelar creación de cliente
     def on_cancelpb17_pressed(self):
