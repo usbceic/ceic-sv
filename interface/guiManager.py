@@ -3761,8 +3761,10 @@ class guiManager(QMainWindow, form_class):
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     # Cambiar el tema de la interfáz
-    def setStyle(self, name):
-        self.setStyleSheet(getStyle(join(stylePath, name)))
+    def setStyle(self, theme):
+        style = getStyle(join(stylePath, theme))
+        if style != None:
+            self.setStyleSheet(style)
 
     # Método para cargar la información del sistema monetario
     def loadLegalTenders(self):

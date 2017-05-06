@@ -15,18 +15,19 @@
   </property>
   <property name="styleSheet">
    <string notr="true">/*#########################################################
-##                        QDialog                                                                                                                     ##
+##                     QDialog                           ##
 ##########################################################*/
 
-#authorizationPopUp {
-	background: white;
+QDialog {
+    background: #FFFFFF;
+    min-width: 200px;
 }
 
 /***********************************
 * LineEdit
 ***********************************/
 
-#dlineE0, #dlineE1 {
+QLineEdit {
     border: 1px solid #BDBDBD;
     border-radius: 2px;
     min-width: 6em;
@@ -54,20 +55,25 @@
    background: #1976D2;
 }
 
-/*Estilo por defecto del  botones para limpiar/cancelar*/
-#dpbutton1{ 
-    color: #2196F3;
-    border: 1px solid transparent;
+/*Estilo por defecto del  boton para cancelar*/
+#dpbutton1{
     background: transparent;
-    min-height: 30px;
-    min-width: 80px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    min-height: 2em;
+    min-width: 5.5em;
+    padding: 2px;
+    color: #2196F3;
+    font-weight: bold;
+    font-size: 11pt;
+    text-transform: uppercase;
 }
 
-/*Configuración del estilo al pasar por encima y presionar el boton para limpiar/cancelar*/
-#dpbutton1:hover, #dpbutton1:pressed {
+/*Estilo al pasar por encima y presionar el boton para cancelar*/
+#dpbutton1:hover, #dpbutton1:pressed{
     color: #1976D2;
+    background: #BBDEFB;
 }
-
 
 /***********************************
 * Labels
@@ -259,8 +265,7 @@
         <widget class="QPushButton" name="dpbutton1">
          <property name="font">
           <font>
-           <family>Open Sans</family>
-           <pointsize>12</pointsize>
+           <pointsize>11</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>

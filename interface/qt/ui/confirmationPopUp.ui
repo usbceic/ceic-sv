@@ -19,11 +19,11 @@
   </property>
   <property name="styleSheet">
    <string notr="true">/*#########################################################
-##                        QDialog                                                                                                                     ##
+##                     QDialog                           ##
 ##########################################################*/
 
-#errorPopUp {
-	background: white;
+QDialog {
+    background: #FFFFFF;
     min-width: 200px;
 }
 
@@ -72,8 +72,8 @@
 ***********************************/
 
 /*Configuración del titulo del dialog*/
-#dtitle0, #dtitle1 {
-   color: #212121;  
+QLabel {
+   color: #212121;
    font-family: Open Sans;
    font-size: 12pt;
    font-style: bold;

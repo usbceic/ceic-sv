@@ -18,18 +18,17 @@
 ###################################################################################################################################################################################
 
 from re import findall                      # Función para matchear expresiones regulares
-from os import listdir, mkdir               # Funciones para el manejo básico de directorios y archivos
+from os import getcwd, listdir, mkdir       # Funciones para el manejo básico de directorios y archivos
 from os.path import isfile, isdir, join     # Funciones para manejos de paths y otras cosas útiles xd
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
 ###################################################################################################################################################################################
 
-genPath = ""
-palettePath = "palette/"
-hexColor = '#[0-9A-F]{6}'
-savePath0 = "MainWindow/"
-savePath1 = "LoginWindow/"
+currentPath = getcwd()
+palettePath = join(currentPath, "palettes")
+foldersName = ["MainWindow", "LoginWindow", "errorPopUp", "warningPopUp", "successPopUp", "confirmationPopUp", "authorizationPopUp"]
+regexColor  = '#[0-9A-F]{6}'
 
 ###################################################################################################################################################################################
 ## SCRIPT:
@@ -39,7 +38,12 @@ if __name__ == '__main__':
 
     # Instrucciones
     print("\nPara generar un stylesheet para MainWindow ingrese 0")
-    print("Para generar un stylesheet para LoginWindow ingrese 1\n")
+    print("Para generar un stylesheet para LoginWindow ingrese 1")
+    print("Para generar un stylesheet para errorPopUp ingrese 2")
+    print("Para generar un stylesheet para warningPopUp ingrese 3")
+    print("Para generar un stylesheet para successPopUp ingrese 4")
+    print("Para generar un stylesheet para confirmationPopUp ingrese 5")
+    print("Para generar un stylesheet para authorizationPopUp ingrese 6\n")
 
     # Bucle par que el usuario marque una opcion válida
     while True:
@@ -47,17 +51,41 @@ if __name__ == '__main__':
 
         # Si escogió MainWindow
         if op == 0:
-            genName = "main-gen.qss"
-            savePath = savePath0
+            template = "main-gen.qss"
+            savePath = join(currentPath, foldersName[0])
 
         # Si escogió LoginWindow
         elif op == 1:
-            genName = "login-gen.qss"
-            savePath = savePath1
+            template = "login-gen.qss"
+            savePath = join(currentPath, foldersName[1])
+
+        # Si escogió errorPopUp
+        elif op == 2:
+            template = "error-popup-gen.qss"
+            savePath = join(currentPath, foldersName[2])
+
+        # Si escogió warningPopUp
+        elif op == 3:
+            template = "warning-popup-gen.qss"
+            savePath = join(currentPath, foldersName[3])
+
+        # Si escogió successPopUp
+        elif op == 4:
+            template = "success-popup-gen.qss"
+            savePath = join(currentPath, foldersName[4])
+
+        # Si escogió confirmationPopUp
+        elif op == 5:
+            template = "confirmation-popup-gen.qss"
+            savePath = join(currentPath, foldersName[5])
+
+        # Si escogió authorizationPopUp
+        elif op == 6:
+            template = "authorization-popup-gen.qss"
+            savePath = join(currentPath, foldersName[6])
 
         # Si escogió una opción inválida
-        else:
-            continue
+        else: continue
 
         # Si no exite la carpeta de salida, se crea
         if not isdir(savePath): mkdir(savePath)
@@ -67,7 +95,7 @@ if __name__ == '__main__':
 
     try:
         # Leer archivo generador
-        file = open(genPath+genName, 'r')
+        file = open(join(currentPath, template), 'r')
         stylesheet = file.read()
         file.close()
 
@@ -78,12 +106,12 @@ if __name__ == '__main__':
         for paletteName in palettes:
 
             # Leer paleta de colores
-            file = open(palettePath+paletteName, 'r')
+            file = open(join(palettePath, paletteName), 'r')
             palette = file.read()
             file.close()
 
             # Buscar colores
-            colors = findall(hexColor, palette)
+            colors = findall(regexColor, palette)
 
             # Se copia el stylesheet temporalmente
             tmp = stylesheet
@@ -105,15 +133,15 @@ if __name__ == '__main__':
                 key += aux[i]
                 if i < len(aux)//2-1: key += "-"
             newName = key+".qss"
-            new = open(savePath+newName, 'w')
+            new = open(join(savePath, newName), 'w')
             new.write(tmp)
             new.close()
-            print("Se ha creado el archivo "+newName+" satisfactoreamente.")
+            print("Se ha creado el archivo " + newName + " satisfactoreamente.")
         print("")
 
     # Capturador de errores por archivos inexistentes
     except FileNotFoundError:
-        print("\nERROR: No se pudo encontrar el archivo: '"+genPath+genName+"'.\n")
+        print("\nERROR: No se pudo encontrar el archivo: '" + join(currentPath, template) + "'.\n")
 
     # Capturador de errores desconocidos
     except:

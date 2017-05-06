@@ -22,21 +22,18 @@ from os.path import join, basename          # Importación de funciones para man
 # Para cada path en el path del sistema para la aplicación
 for current in path:
     if basename(current) == "interface":
-        UIpath = join(join(current, "qt"), "ui") # Declara imagen para la plantilla UI
+        UIpath = join(join(current, "qt"), "ui")              # Declara imagen para la plantilla UI
+        stylesPath = join(join(current, "qt"), "stylesheet")  # Declarar path para los qss
         break
 
 ###################################################################################################################################################################################
 ## MODÚLOS:
 ###################################################################################################################################################################################
 
-# Módulo con las herramientas parar trabajar los archivos .ui
-from PyQt4.uic import loadUiType
-
-# Módulo con procedimientos de Qt
-from PyQt4.QtGui import QDialog
-
-# Módulo con estructuras de Qt
-from PyQt4.QtCore import Qt, QMetaObject
+from PyQt4.uic import loadUiType         # Módulo con las herramientas parar trabajar los archivos .ui
+from PyQt4.QtGui import QDialog          # Módulo con procedimientos de Qt
+from PyQt4.QtCore import Qt, QMetaObject # Módulo con estructuras de Qt
+from app_utilities import getStyle       # Módulo con los validadores para campos de texto
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -72,6 +69,10 @@ class errorPopUp(QDialog, popUp0):
         self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
 
+        # Configurar tema
+        self.stylePath = join(stylesPath, "errorPopUp")
+        self.setStyle(parent.theme)
+
         # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
 
@@ -90,6 +91,12 @@ class errorPopUp(QDialog, popUp0):
         else:
             self.clicked = True
             return False
+
+    # Cambiar el tema de la interfáz
+    def setStyle(self, theme):
+        style = getStyle(join(self.stylePath, theme))
+        if style != None:
+            self.setStyleSheet(style)
 
     # Acción al presionar el botón de continuar
     def on_dpbutton0_pressed(self):
@@ -120,6 +127,10 @@ class warningPopUp(QDialog, popUp1):
         self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
 
+        # Configurar tema
+        self.stylePath = join(stylesPath, "warningPopUp")
+        self.setStyle(parent.theme)
+
         # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
 
@@ -138,6 +149,12 @@ class warningPopUp(QDialog, popUp1):
         else:
             self.clicked = True
             return False
+
+    # Cambiar el tema de la interfáz
+    def setStyle(self, theme):
+        style = getStyle(join(self.stylePath, theme))
+        if style != None:
+            self.setStyleSheet(style)
 
     # Acción al presionar el botón de continuar
     def on_dpbutton0_pressed(self):
@@ -168,6 +185,10 @@ class successPopUp(QDialog, popUp2):
         self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
 
+        # Configurar tema
+        self.stylePath = join(stylesPath, "successPopUp")
+        self.setStyle(parent.theme)
+
         # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
 
@@ -186,6 +207,12 @@ class successPopUp(QDialog, popUp2):
         else:
             self.clicked = True
             return False
+
+    # Cambiar el tema de la interfáz
+    def setStyle(self, theme):
+        style = getStyle(join(self.stylePath, theme))
+        if style != None:
+            self.setStyleSheet(style)
 
     # Acción al presionar el botón de continuar
     def on_dpbutton0_pressed(self):
@@ -219,6 +246,10 @@ class confirmationPopUp(QDialog, popUp3):
         self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
 
+        # Configurar tema
+        self.stylePath = join(stylesPath, "confirmationPopUp")
+        self.setStyle(parent.theme)
+
         # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
 
@@ -237,6 +268,12 @@ class confirmationPopUp(QDialog, popUp3):
         else:
             self.clicked = True
             return False
+
+    # Cambiar el tema de la interfáz
+    def setStyle(self, theme):
+        style = getStyle(join(self.stylePath, theme))
+        if style != None:
+            self.setStyleSheet(style)
 
     # Función para retornar el valor de la confirmacíón
     def getValue(self):
@@ -278,6 +315,10 @@ class authorizationPopUp(QDialog, popUp4):
         self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
 
+        # Configurar tema
+        self.stylePath = join(stylesPath, "authorizationPopUp")
+        self.setStyle(parent.theme)
+
         # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
 
@@ -296,6 +337,12 @@ class authorizationPopUp(QDialog, popUp4):
         else:
             self.clicked = True
             return False
+
+    # Cambiar el tema de la interfáz
+    def setStyle(self, theme):
+        style = getStyle(join(self.stylePath, theme))
+        if style != None:
+            self.setStyleSheet(style)
 
     # Función para retornar los valores de los lineEdit
     def getValues(self):

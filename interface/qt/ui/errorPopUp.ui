@@ -19,11 +19,11 @@
   </property>
   <property name="styleSheet">
    <string notr="true">/*#########################################################
-##                        QDialog                                                                                                                     ##
+##                     QDialog                           ##
 ##########################################################*/
 
-#errorPopUp {
-	background: white;
+QDialog {
+    background: #FFFFFF;
     min-width: 200px;
 }
 
@@ -32,7 +32,7 @@
 ***********************************/
 
 /*Estilo por defecto del  boton para continuar/aceptar*/
-#dpbutton0{
+QPushButton {
     color: #FFFFFF;
     border: 1px outline #BDBDBD;
     border-radius: 2px;
@@ -43,7 +43,7 @@
 }
 
 /*Estilo al pasar por encima y presionar el boton para continuar/aceptar*/
-#dpbutton0:hover, #dpbutton0:pressed{
+QPushButton:hover, QPushButton:pressed{
    background: #1976D2;
 }
 
@@ -52,8 +52,8 @@
 ***********************************/
 
 /*Configuración del titulo del dialog*/
-#dtitle0 {
-   color: #F44336;  
+QLabel {
+   color: #F44336;
    font-family: Open Sans;
    font-size: 12pt;
    font-style: bold;

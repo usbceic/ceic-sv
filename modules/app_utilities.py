@@ -26,10 +26,15 @@ from webbrowser import open_new_tab
 
 # Devuelve un string con el stylesheet especificado por el parametro name
 def getStyle(path):
-    file = open(path, "r")
-    style = file.read()
-    file.close()
-    return style
+    try:
+        file = open(path, "r")
+        style = file.read()
+        file.close()
+        return style
+
+    except Exception as e:
+        print("Ha ocurrido un error al leer: " + path, e)
+        return None
 
 # Función para dar formato natural a una cantidad
 def naturalFormat(amount, extension = None):

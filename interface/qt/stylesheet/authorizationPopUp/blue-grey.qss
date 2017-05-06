@@ -1,0 +1,87 @@
+/*#########################################################
+##                     QDialog                           ##
+##########################################################*/
+
+QDialog {
+    background: #FFFFFF;
+    min-width: 200px;
+}
+
+/***********************************
+* LineEdit
+***********************************/
+
+QLineEdit {
+    border: 1px solid #BDBDBD;
+    border-radius: 2px;
+    min-width: 6em;
+    min-height: 1.25em;
+    padding: 2px;
+}
+
+/***********************************
+* Botones
+***********************************/
+
+/*Estilo por defecto del  boton para continuar/aceptar*/
+#dpbutton0{
+    color: #FFFFFF;
+    border: 1px outline #BDBDBD;
+    border-radius: 2px;
+    background: #607D8B;
+    min-height: 30px;
+    min-width: 80px;
+    padding: 2px;
+}
+
+/*Estilo al pasar por encima y presionar el boton para continuar/aceptar*/
+#dpbutton0:hover, #dpbutton0:pressed{
+   background: #455A64;
+}
+
+/*Estilo por defecto del  boton para cancelar*/
+#dpbutton1{
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    min-height: 2em;
+    min-width: 5.5em;
+    padding: 2px;
+    color: #607D8B;
+    font-weight: bold;
+    font-size: 11pt;
+    text-transform: uppercase;
+}
+
+/*Estilo al pasar por encima y presionar el boton para cancelar*/
+#dpbutton1:hover, #dpbutton1:pressed{
+    color: #455A64;
+    background: #CFD8DC;
+}
+
+/***********************************
+* Labels
+***********************************/
+
+/*Configuración de los textos normales*/
+#dtext0, #dtext1{
+    color: #757575;
+    background: transparent;
+    font-family: Open Sans;
+    font-size: 11pt;
+}
+
+/*Configuración del titulo del dialog*/
+#dtitle0 {
+   color: #000000;
+   border: 1px solid #BDBDBD;
+   border-radius: 2px;
+   background: #CFD8DC;
+   font-family: Open Sans;
+   font-size: 12pt;
+   font-style: bold;
+   font-weight: 600;
+   text-transform: capitalize;
+   qproperty-alignment: 'AlignVCenter | AlignHCenter';
+   padding: 4px;
+}
