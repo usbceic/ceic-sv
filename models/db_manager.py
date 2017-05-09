@@ -1542,6 +1542,36 @@ class dbManager(object):
             return None
 
     """
+    Método para refrescar la deuda de un cliente
+    - Retorna el saldo total resultante del cliente cuando logra refrescar el saldo
+    - Retorna None en caso contrario
+    """
+    def refreshClientDebt(self, ci):
+        totalDebt = self.session.query(func.sum(Debt.amount))\
+        .join(Purchase, Debt.purchase_id == Purchase.purchase_id)\
+        .filter(Debt.pay_date == None, Purchase.ci == ci)\
+        .scalar()
+
+        totalIncrease = self.session.query(func.sum(Increase.amount))\
+        .filter_by(ci=ci, pay_date=None)\
+        .scalar()
+
+        if totalDebt == None: totalDebt = 0
+        if totalIncrease == None: totalIncrease = 0
+
+        total= totalDebt + totalIncrease
+
+        self.session.query(Client).filter_by(ci=ci).update({ "debt" : total})
+        try:
+            self.session.commit()
+            print("Se ha actualizado correctamente la deuda del cliente")
+            return total
+        except Exception as e:
+            self.session.rollback()
+            print("No se pudo actualizar la deuda del cliente", e)
+            return None
+
+    """
     Método para hacer check in de un cliente
      - Retorna True:
         * Cuando logra hacer check in correctamente
@@ -1586,7 +1616,7 @@ class dbManager(object):
             self.session.add(newPurchase)
             try:
                 self.session.commit()
-                self.updateClient(ciOriginal=ci, last_seen=datetime.now())
+                self.checkInClient(ci)
                 print("Se ha creado correctamente la compra")
                 return str(newPurchase.purchase_id)
             except Exception as e:
@@ -1920,27 +1950,59 @@ class dbManager(object):
             print("No se pudo pagar la deuda " + str(debt_id), e)
             return False
 
-    """
-    Método para refrescar la deuda de un cliente
-    - Retorna el saldo total resultante del cliente cuando logra refrescar el saldo
-    - Retorna None en caso contrario
-    """
-    def refreshClientDebt(self, ci):
-        total = self.session.query(func.sum(Debt.amount))\
-        .join(Purchase, Debt.purchase_id == Purchase.purchase_id)\
-        .filter(Debt.pay_date == None, Purchase.ci == ci)\
-        .scalar()
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE INCREMENTO EN DEUDA (INCREASE):
+    #==============================================================================================================================================================================
 
-        if total == None: total = 0
-        self.session.query(Client).filter_by(ci=ci).update({ "debt" : total})
+    """
+    Método para crear un incremento nuevo
+     - Retorna una cadena UUID:
+        * Cuando el incremento es creado satisfactoreamente
+     - Retorna None:
+        * Cuando no se puede crear
+    """
+    def createIncrease(self, ci, amount):
+        if self.existClient(ci):
+            kwargs = {"ci" : ci, "amount" : amount}
+            newIncrease = Debt(**kwargs)
+            self.session.add(newIncrease)
+            try:
+                self.session.commit()
+                print("Se ha creado correctamente el incremento")
+                self.afterInsertIncrease(ci)
+                return str(newIncrease.increase_id)
+            except Exception as e:
+                print("Error desconocido al intentar crear el incremento", e)
+                self.session.rollback()
+                return None
+        else:
+            print("No se puede crear el incremento porque NO existe el cliente")
+            return None
+
+    """
+    Pseudo-Trigger para actualizar el monto de la deuda de un cliente
+     - No retorna nada
+    """
+    def afterInsertIncrease(self, ci):
+        self.refreshClientDebt(ci)
+
+    """
+    Método para pagar un incremento
+     - Retorna una cadena UUID:
+        * Cuando el incremento es pagada satisfactoreamente
+     - Retorna None:
+        * Cuando no se puede pagar
+    """
+    def payIncrease(self, increase_id):
+        self.session.query(Increase).filter_by(increase_id=increase_id).update({ "pay_date" : datetime.now() })
         try:
             self.session.commit()
-            print("Se ha actualizado correctamente la deuda del cliente")
-            return total
+            print("Se ha pagado el incremento " + str(increase_id) + "satisfactoriamente")
+            return True
         except Exception as e:
             self.session.rollback()
-            print("No se pudo actualizar la deuda del cliente", e)
-            return None
+            print("No se pudo pagar el incremento " + str(increase_id), e)
+            return False
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE TRANSFERENCIAS:
@@ -2010,11 +2072,26 @@ class dbManager(object):
 
             # Se pagan todas las deudas que se puedan
             for debt in debts:
-                if debt.amount <= balance:
+                if balance == None: break
+                elif debt.amount <= balance:
                     self.payDebt(debt.debt_id)                                  # Pagar deuda
                     self.refreshClientDebt(ci)                                  # Actualizar deuda del cliente
                     balance = self.substractFromClientBalance(ci, debt.amount)  # Actualizar saldo del cleinte
+
+            # Si no hubo errores o y aun hay saldo
+            if balance != None:
+                # Se calculan todos los incrementos sin pagar del cliente que sean menor o igual a lo que posee en su saldo
+                increases = self.session.query(Increase.increase_id, Increase.amount)\
+                    .filter(Increase.pay_date == None, Increase.amount <= balance, Increase.ci == ci)\
+                    .all()
+
+                # Se pagan todas las deudas que se puedan
+                for increase in increases:
                     if balance == None: break
+                    elif increase.amount <= balance:
+                        self.payIncrease(increase.increase_id)                          # Pagar incremento
+                        self.refreshClientDebt(ci)                                      # Actualizar deuda del cliente
+                        balance = self.substractFromClientBalance(ci, increase.amount)  # Actualizar saldo del cleinte
 
     # Método para buscar transferencias
     # Retorna queryset de las transferencias que cumplan el filtro
@@ -2091,11 +2168,26 @@ class dbManager(object):
 
             # Se pagan todas las deudas que se puedan
             for debt in debts:
-                if debt.amount <= balance:
+                if balance == None: break
+                elif debt.amount <= balance:
                     self.payDebt(debt.debt_id)                                  # Pagar deuda
                     self.refreshClientDebt(ci)                                  # Actualizar deuda del cliente
                     balance = self.substractFromClientBalance(ci, debt.amount)  # Actualizar saldo del cleinte
+
+            # Si no hubo errores o y aun hay saldo
+            if balance != None:
+                # Se calculan todos los incrementos sin pagar del cliente que sean menor o igual a lo que posee en su saldo
+                increases = self.session.query(Increase.increase_id, Increase.amount)\
+                    .filter(Increase.pay_date == None, Increase.amount <= balance, Increase.ci == ci)\
+                    .all()
+
+                # Se pagan todas las deudas que se puedan
+                for increase in increases:
                     if balance == None: break
+                    elif increase.amount <= balance:
+                        self.payIncrease(increase.increase_id)                          # Pagar incremento
+                        self.refreshClientDebt(ci)                                      # Actualizar deuda del cliente
+                        balance = self.substractFromClientBalance(ci, increase.amount)  # Actualizar saldo del cleinte
 
     '''
     Método para buscar Depósitos

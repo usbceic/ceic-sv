@@ -33,7 +33,7 @@ this = sys.modules[__name__]
 this.Base = declarative_base()
 
 #==================================================================================================================================================================================
-# Tabla de usuarios
+# TABLA DE USUARIOS
 #==================================================================================================================================================================================
 class User(this.Base):
     # Nombre
@@ -69,7 +69,7 @@ class User(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de proveedores
+# TABLA DE PROVEEDORES
 #==================================================================================================================================================================================
 class Provider(this.Base):
     # Nombre
@@ -94,7 +94,7 @@ class Provider(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de productos
+# TABLA DE PRODUCTOS
 #==================================================================================================================================================================================
 class Product(this.Base):
     # Nombre
@@ -130,7 +130,7 @@ class Product(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de lotes
+# TABLA DE LOTES
 #==================================================================================================================================================================================
 class Lot(this.Base):
     # Nombre
@@ -177,7 +177,7 @@ class Lot(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de servicios
+# TABLA DE SERVICIOS
 #==================================================================================================================================================================================
 class Service(this.Base):
     # Nombre
@@ -208,7 +208,7 @@ class Service(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de clientes
+# TABLA DE CLIENTES
 #==================================================================================================================================================================================
 class Client(this.Base):
     # Nombre
@@ -237,6 +237,7 @@ class Client(this.Base):
 
     # Relaciones
     purchase  = relationship("Purchase")
+    increase  = relationship("Increase")
     transfer  = relationship("Transfer")
     deposit   = relationship("Deposit")
 
@@ -249,7 +250,7 @@ class Client(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de Compras
+# TABLA DE COMPRAS
 #==================================================================================================================================================================================
 class Purchase(this.Base):
     # Nombre
@@ -290,7 +291,7 @@ class Purchase(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de lista de productos de orden de compra
+# TABLA DE LISTA DE PRODUCTOS DE ORDEN DE COMPRA
 #==================================================================================================================================================================================
 class Product_list(this.Base):
     # Nombre
@@ -323,7 +324,7 @@ class Product_list(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de lista de servicios de orden de compra
+# TABLA DE SERVICIOS DE ORDEN DE COMPRA
 #==================================================================================================================================================================================
 class Service_list(this.Base):
     # Nombre
@@ -356,7 +357,7 @@ class Service_list(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de pagos de orden de compra
+# TABLA DE PAGOS DE ORDEN DE COMPRA
 #==================================================================================================================================================================================
 class Checkout(this.Base):
     # Nombre
@@ -364,7 +365,7 @@ class Checkout(this.Base):
 
     # Atributos
     checkout_id  = Column(GUID, nullable=False, primary_key=True, default=GUID.random_value)
-    purchase_id  = Column(GUID, nullable=False, primary_key=True)
+    purchase_id  = Column(GUID, nullable=False)
     pay_date     = Column(DateTime, nullable=False, default=datetime.now)
     amount       = Column(Numeric, nullable=False)
     with_balance = Column(Boolean, nullable=False, default=False)
@@ -385,7 +386,7 @@ class Checkout(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de pagos de orden de compra
+# TABLA DE DEUDAS
 #==================================================================================================================================================================================
 class Debt(this.Base):
     # Nombre
@@ -393,14 +394,14 @@ class Debt(this.Base):
 
     # Atributos
     debt_id     = Column(GUID, nullable=False, primary_key=True, default=GUID.random_value)
-    purchase_id = Column(GUID, nullable=False, primary_key=True)
+    purchase_id = Column(GUID, nullable=False)
     pay_date    = Column(DateTime)
     amount      = Column(Numeric, nullable=False)
 
     # Constraints
     __table_args__ = (
         # Verificaciones
-        CheckConstraint('amount > 0', name='exp_checkout_valid_amount'),
+        CheckConstraint('amount > 0', name='exp_debt_valid_amount'),
 
         # Claves foraneas
         ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
@@ -409,11 +410,40 @@ class Debt(this.Base):
     # Representación de una instancia de la clase
     def __repr__(self):
         kwargs = (str(self.debt_id), str(self.purchase_id), str(self.pay_date), str(self.amount))
-        template = "<Checkout(debt_id='%s', purchase_id='%s', pay_date='%s', amount='%s')>"
+        template = "<Debt(debt_id='%s', purchase_id='%s', pay_date='%s', amount='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de lista de productos de orden de compra
+# TABLA DE INCREMENTOS EN DEUDAS
+#==================================================================================================================================================================================
+class Increase(this.Base):
+    # Nombre
+    __tablename__ = 'increase'
+
+    # Atributos
+    increase_id   = Column(GUID, nullable=False, primary_key=True, default=GUID.random_value)
+    ci            = Column(Integer, nullable=False)
+    amount        = Column(Numeric, nullable=False)
+    creation_date = Column(DateTime, nullable=False, default=datetime.now)
+    pay_date      = Column(DateTime)
+
+    # Constraints
+    __table_args__ = (
+        # Verificaciones
+        CheckConstraint('amount > 0', name='exp_increase_valid_amount'),
+
+        # Claves foraneas
+        ForeignKeyConstraint(['ci'], ['client.ci']),
+    )
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (str(self.increase_id), str(self.ci), str(self.amount), str(self.creation_date), str(self.pay_date))
+        template = "<Increase(increase_id='%s', ci='%s', amount='%s', creation_date='%s', pay_date='%s')>"
+        return  template % kwargs
+
+#==================================================================================================================================================================================
+# TABLA DE DEVOLUCIONES PARA LISTA DE PRODUCTOS DE ORDEN DE COMPRA
 #==================================================================================================================================================================================
 class Reverse_product_list(this.Base):
     # Nombre
@@ -452,7 +482,7 @@ class Reverse_product_list(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de reversar lista de servicios de orden de compra
+# TABLA DE DEVOLUCIONES PARA LISTA DE SERVICIOS DE ORDEN DE COMPRA
 #==================================================================================================================================================================================
 class Reverse_service_list(this.Base):
     # Nombre
@@ -490,7 +520,7 @@ class Reverse_service_list(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de transferencias
+# TABLA DE TRANSFERENCIAS
 #==================================================================================================================================================================================
 class Transfer(this.Base):
     # Nombre
@@ -526,7 +556,7 @@ class Transfer(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de Depósitos
+# TABLA DE DEPÓSITOS
 #==================================================================================================================================================================================
 class Deposit(this.Base):
     # Nombre
@@ -556,7 +586,7 @@ class Deposit(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de Registro de Operaciones de Caja
+# TABLA DE REGISTRO DE OPERACIONES DE CAJA
 #==================================================================================================================================================================================
 class Operation_log(this.Base):
     # Nombre
@@ -592,7 +622,7 @@ class Operation_log(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de Monedas / Billetes para pago
+# TABLA DE MONEDAS / BILLETES DE PAGO
 #==================================================================================================================================================================================
 class Legal_tender(this.Base):
     # Nombre
@@ -611,7 +641,7 @@ class Legal_tender(this.Base):
         return "<Legal_tender(amount='%s')>" % (str(self.amount))
 
 #==================================================================================================================================================================================
-# Tabla que asocia libros con asignaturas
+# Tabla QUE ASOCIA LIBROS CON ASIGNATURAS
 #==================================================================================================================================================================================
 class Associated_with(this.Base):
     # Nombre
@@ -628,7 +658,7 @@ class Associated_with(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de Quien escribio el libro
+# TABLA DE QUIEN ESCRIBIO UN LIBRO
 #==================================================================================================================================================================================
 class Written_by(this.Base):
     # Nombre
@@ -660,7 +690,7 @@ class Written_by(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de lenguajes validos
+# TABLA DE LENGUAJES VÁLIDOS
 #==================================================================================================================================================================================
 class Valid_language(this.Base):
     # Nombre
@@ -679,7 +709,7 @@ class Valid_language(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de Libros
+# TABLA DE LIBROS
 #==================================================================================================================================================================================
 class Book(this.Base):
     # Nombre
@@ -717,7 +747,7 @@ class Book(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de Asignaturas
+# TABLA DE ASIGNATURAS
 #==================================================================================================================================================================================
 class Subject(this.Base):
     # Nombre
@@ -737,7 +767,7 @@ class Subject(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de Autores
+# TABLA DE AUTORES
 #==================================================================================================================================================================================
 class Author(this.Base):
     # Nombre
@@ -761,7 +791,7 @@ class Author(this.Base):
         return  template % kwargs
 
 #==================================================================================================================================================================================
-# Tabla de préstamos
+# TABLA DE PRÉSTAMOS
 #==================================================================================================================================================================================
 class Lent_to(this.Base):
     # Nombre
