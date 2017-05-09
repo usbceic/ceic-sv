@@ -57,6 +57,7 @@ class User(this.Base):
     reverse_product_list   = relationship("Reverse_product_list")
     reverse_service_list   = relationship("Reverse_service_list")
     transfer               = relationship("Transfer")
+    deposit                = relationship("Deposit")
     operation_log          = relationship("Operation_log")
     lent_to_lender_clerk   = relationship("Lent_to", foreign_keys="Lent_to.lender_clerk")
     lent_to_receiver_clerk = relationship("Lent_to", foreign_keys="Lent_to.receiver_clerk")
@@ -198,7 +199,7 @@ class Service(this.Base):
     )
 
     # Relaciones
-    service_list         = relationship("Service_list")
+    service_list = relationship("Service_list")
 
     # Representación de una instancia de la clase
     def __repr__(self):
@@ -223,6 +224,7 @@ class Client(this.Base):
     book_permission = Column(Boolean, nullable=False, default=True)
     blocked         = Column(Boolean, nullable=False, default=False)
     balance         = Column(Numeric, nullable=False, default=0)
+    debt            = Column(Numeric, nullable=False, default=0)
     last_seen       = Column(DateTime, default=datetime.now)
     active          = Column(Boolean, nullable=False, default=True)
 
@@ -230,18 +232,20 @@ class Client(this.Base):
     __table_args__ = (
         # Verificaciones
         CheckConstraint('balance >= 0 OR debt_permission', name='exp_client_valid_balance'),
+        CheckConstraint('debt = 0 OR debt_permission', name='exp_client_valid_debt'),
     )
 
     # Relaciones
     purchase  = relationship("Purchase")
     transfer  = relationship("Transfer")
+    deposit   = relationship("Deposit")
 
     # Representación de una instancia de la clase
     def __repr__(self):
         kwargs = (str(self.ci), self.firstname, self.lastname, self.phone, self.email, str(self.debt_permission), str(self.book_permission), str(self.blocked),
-            str(self.balance), str(self.last_seen))
+            str(self.balance), str(self.debt), str(self.last_seen))
         template = "<Client(ci=='%s', firstname=='%s', lastname=='%s', phone=='%s', email=='%s', debt_permission=='%s', book_permission=='%s', "
-        template += "blocked=='%s', balance=='%s', last_seen=='%s')>"
+        template += "blocked=='%s', balance=='%s', debt=='%s', last_seen=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================
@@ -258,7 +262,6 @@ class Purchase(this.Base):
     total         = Column(Numeric, nullable=False, default=0)
     interest      = Column(Numeric, nullable=False, default=0)
     purchase_date = Column(DateTime, nullable=False, default=datetime.now)
-    debt          = Column(Boolean, nullable=False, default=False)
     payed         = Column(Boolean, nullable=False, default=False)
     payed_date    = Column(DateTime, default=None)
 
@@ -275,15 +278,15 @@ class Purchase(this.Base):
     )
 
     # Relaciones
-    checkout     = relationship("Checkout")
     product_list = relationship("Product_list")
+    service_list = relationship("Service_list")
+    checkout     = relationship("Checkout")
+    debt         = relationship("Debt")
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.purchase_id), str(self.ci), self.clerk, str(self.total), str(self.interest), str(self.purchase_date),
-            str(self.debt), str(self.payed), str(self.payed_date))
-        template = "<Purchase(purchase_id='%s', ci='%s', clerk='%s', total='%s', interest='%s', purchase_date=='%s', debt=='%s', "
-        template += "payed=='%s', payed_date=='%s')>"
+        kwargs = (str(self.purchase_id), str(self.ci), self.clerk, str(self.total), str(self.interest), str(self.purchase_date), str(self.payed), str(self.payed_date))
+        template = "<Purchase(purchase_id='%s', ci='%s', clerk='%s', total='%s', interest='%s', purchase_date=='%s', payed=='%s', payed_date=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================
@@ -379,6 +382,34 @@ class Checkout(this.Base):
     def __repr__(self):
         kwargs = (str(self.checkout_id), str(self.purchase_id), str(self.pay_date), str(self.amount), str(self.with_balance))
         template = "<Checkout(checkout_id='%s', purchase_id='%s', pay_date='%s', amount='%s', with_balance=='%s')>"
+        return  template % kwargs
+
+#==================================================================================================================================================================================
+# Tabla de pagos de orden de compra
+#==================================================================================================================================================================================
+class Debt(this.Base):
+    # Nombre
+    __tablename__ = 'debt'
+
+    # Atributos
+    debt_id     = Column(GUID, nullable=False, primary_key=True, default=GUID.random_value)
+    purchase_id = Column(GUID, nullable=False, primary_key=True)
+    pay_date    = Column(DateTime)
+    amount      = Column(Numeric, nullable=False)
+
+    # Constraints
+    __table_args__ = (
+        # Verificaciones
+        CheckConstraint('amount > 0', name='exp_checkout_valid_amount'),
+
+        # Claves foraneas
+        ForeignKeyConstraint(['purchase_id'], ['purchase.purchase_id']),
+    )
+
+    # Representación de una instancia de la clase
+    def __repr__(self):
+        kwargs = (str(self.debt_id), str(self.purchase_id), str(self.pay_date), str(self.amount))
+        template = "<Checkout(debt_id='%s', purchase_id='%s', pay_date='%s', amount='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================

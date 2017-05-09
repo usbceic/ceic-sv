@@ -2613,17 +2613,17 @@ class guiManager(QMainWindow, form_class):
                             popUp = confirmationPopUp(message, self)
                             if popUp.exec_():
                                 if popUp.getValue():
-                                    try:
-                                        purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
-                                        for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
-                                            self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
-                                        if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
-                                        if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
-                                        self.db.createCheckout(purchase_id, deuda, True)                            # Crear pago con deuda
-                                        successPopUp(parent = self).exec_()                                         # Venta exitosa
+                                    #try:
+                                    purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
+                                    for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
+                                        self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
+                                    if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
+                                    if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
+                                    self.db.createCheckout(purchase_id, deuda, True)                            # Crear pago con deuda
+                                    successPopUp(parent = self).exec_()                                         # Venta exitosa
 
-                                    except:
-                                        errorPopUp(parent = self).exec_()                                           # Venta fallida
+                                    #except:
+                                    #    errorPopUp(parent = self).exec_()                                           # Venta fallida
 
                                     # Setear variables y refrescar la interfaz
                                     self.refreshSales()
@@ -3087,29 +3087,29 @@ class guiManager(QMainWindow, form_class):
         self.updateClientsTable(True)
 
     # Método para refrescar las tablas de clientes
-    def updateClientsTable(self, debt = False):
-        if debt:
+    def updateClientsTable(self, indebted = False):
+        if indebted:
             table = self.table6
-            clients = self.db.getClients(debt=debt, limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
-            factor = -1
+            clients = self.db.getClients(indebted=indebted, limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
         else:
             table = self.table7
-            clients = self.db.getClients(debt=debt, limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
-            factor = 1
+            clients = self.db.getClients(indebted=indebted, limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
-        self.clearTable(table)                                                    # Vaciar la tabla
-        table.setRowCount(len(clients))                                           # Contador de filas
-        for i in range(len(clients)):                                             # Llenar tabla
-            table.setItem(i, 0, QTableWidgetItem(str(clients[i].ci)))             # Cédula
-            table.setItem(i, 1, QTableWidgetItem(str(clients[i].firstname)))      # Nombre
-            table.setItem(i, 2, QTableWidgetItem(str(clients[i].lastname)))       # Apellido
-            table.setItem(i, 3, QTableWidgetItem(str(factor*clients[i].balance))) # Saldo
+        self.clearTable(table)                                                       # Vaciar la tabla
+        table.setRowCount(len(clients))                                              # Contador de filas
+        for i in range(len(clients)):                                                # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(clients[i].ci)))                # Cédula
+            table.setItem(i, 1, QTableWidgetItem(str(clients[i].firstname)))         # Nombre
+            table.setItem(i, 2, QTableWidgetItem(str(clients[i].lastname)))          # Apellido
+            table.setItem(i, 3, QTableWidgetItem(str(clients[i].balance)))           # Saldo
+            if indebted: table.setItem(i, 4, QTableWidgetItem(str(clients[i].debt))) # Deuda
 
         self.elem_actual = 0                                            # Definir la fila que se seleccionará
         if len(clients) > 0: table.selectRow(self.elem_actual)          # Seleccionar fila
         table.resizeColumnsToContents()                                 # Redimensionar columnas segun el contenido
-        self.setupTable(table, 3)                                       # Reconfigurar tabla
+        if indebted: self.setupTable(table, 4)                          # Reconfigurar tabla
+        else: self.setupTable(table, 3)                                 # Reconfigurar tabla
 
     # Método para reestablecer los comboBox en registrar y editar
     def resetClientsCBs(self):

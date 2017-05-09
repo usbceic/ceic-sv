@@ -16339,6 +16339,11 @@ QWidget:item:unchecked {
                          </column>
                          <column>
                           <property name="text">
+                           <string>Saldo</string>
+                          </property>
+                         </column>
+                         <column>
+                          <property name="text">
                            <string>Deuda</string>
                           </property>
                          </column>
