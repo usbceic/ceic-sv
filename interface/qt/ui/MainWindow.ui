@@ -18887,6 +18887,11 @@ QWidget:item:unchecked {
                            <string>Fecha</string>
                           </property>
                          </column>
+                         <column>
+                          <property name="text">
+                           <string>Hora</string>
+                          </property>
+                         </column>
                         </widget>
                        </item>
                       </layout>

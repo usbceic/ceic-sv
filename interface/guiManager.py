@@ -2977,7 +2977,7 @@ class guiManager(QMainWindow, form_class):
 
             kwargs = [
                 ("Nombre",      product.product_name),
-                ("Precio",      naturalFormat(product.price)),
+                ("Precio",      str(product.price)),
                 ("Categoria",   product.category),
                 ("Lotes",       str(product.remaining_lots)),
                 ("Disp. total", str(product.remaining)),
@@ -2993,7 +2993,7 @@ class guiManager(QMainWindow, form_class):
 
             kwargs = [
                 ("Nombre",      product.product_name),
-                ("Precio",      naturalFormat(product.price)),
+                ("Precio",      str(product.price)),
                 ("Categoria",   product.category),
                 ("Lotes",       str(product.remaining_lots)),
                 ("Disp. total", str(product.remaining)),
@@ -3009,7 +3009,7 @@ class guiManager(QMainWindow, form_class):
 
             kwargs = [
                 ("Nombre",      product.product_name),
-                ("Precio",      naturalFormat(product.price)),
+                ("Precio",      str(product.price)),
                 ("Categoria",   product.category),
                 ("Lotes",       str(product.remaining_lots)),
                 ("Disp. total", str(product.remaining)),
@@ -3175,7 +3175,8 @@ class guiManager(QMainWindow, form_class):
                 ("Proveedor",           provider.provider_name),
                 ("Teléfono",            provider.phone),
                 ("Correo",              provider.email),
-                ("Fecha de registro",   dateTimeFormat(provider.creation_date)),
+                ("Fecha de registro",   dateFormat(provider.creation_date)),
+                ("Hora de registro",    timeFormat(provider.creation_date)),
                 ("Información de pago", paragraphFormat(provider.pay_information)),
                 ("Descripción",         paragraphFormat(provider.description))
             ]
@@ -3573,12 +3574,13 @@ class guiManager(QMainWindow, form_class):
         self.depositsTableItems = self.db.getDeposits(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
         self.clearTable(table)                                                                         # Vaciar la tabla
-        table.setRowCount(len(self.depositsTableItems))                                                 # Contador de filas
-        for i in range(len(self.depositsTableItems)):                                                   # Llenar tabla
-            table.setItem(i, 0, QTableWidgetItem(str(self.depositsTableItems[i].clerk)))                # Usuario
-            table.setItem(i, 1, QTableWidgetItem(str(self.depositsTableItems[i].ci)))                   # Cliente
-            table.setItem(i, 2, QTableWidgetItem(str(self.depositsTableItems[i].amount)))               # Monto
-            table.setItem(i, 3, QTableWidgetItem(dateTimeFormat(self.depositsTableItems[i].deposit_date)))  # Fecha
+        table.setRowCount(len(self.depositsTableItems))                                                # Contador de filas
+        for i in range(len(self.depositsTableItems)):                                                  # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(self.depositsTableItems[i].clerk)))               # Usuario
+            table.setItem(i, 1, QTableWidgetItem(str(self.depositsTableItems[i].ci)))                  # Cliente
+            table.setItem(i, 2, QTableWidgetItem(str(self.depositsTableItems[i].amount)))              # Monto
+            table.setItem(i, 3, QTableWidgetItem(dateFormat(self.depositsTableItems[i].deposit_date))) # Fecha
+            table.setItem(i, 4, QTableWidgetItem(timeFormat(self.depositsTableItems[i].deposit_date))) # Hora
 
         self.elem_actual = 0                                                     # Definir la fila que se seleccionará
         if len(self.depositsTableItems) > 0: table.selectRow(self.elem_actual)    # Seleccionar fila
@@ -3726,9 +3728,10 @@ class guiManager(QMainWindow, form_class):
 
             kwargs = [
                 ("Registrado por", str(transfer.clerk)),
-                ("Cliente",        naturalFormat(transfer.ci)),
-                ("Fecha",          dateTimeFormat(transfer.transfer_date)),
-                ("Monto",          naturalFormat(transfer.amount)),
+                ("Cliente",        str(transfer.ci)),
+                ("Fecha",          dateFormat(transfer.transfer_date)),
+                ("Hora",           timeFormat(transfer.transfer_date)),
+                ("Monto",          str(transfer.amount)),
                 ("Banco",          str(transfer.bank)),
                 ("Código",         str(transfer.confirmation_code)),
                 ("Descripción",    paragraphFormat(transfer.description))
@@ -3764,9 +3767,10 @@ class guiManager(QMainWindow, form_class):
 
                 kwargs = [
                     ("Registrado por", str(deposit.clerk)),
-                    ("Cliente",        naturalFormat(deposit.ci)),
-                    ("Monto",          naturalFormat(deposit.amount)),
-                    ("Fecha",          dateTimeFormat(deposit.deposit_date)),
+                    ("Cliente",        str(deposit.ci)),
+                    ("Monto",          str(deposit.amount)),
+                    ("Fecha",          dateFormat(deposit.deposit_date)),
+                    ("Hora",           timeFormat(deposit.deposit_date)),
                     ("Descripción",    paragraphFormat(deposit.description))
                 ]
 
