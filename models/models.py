@@ -56,6 +56,7 @@ class User(this.Base):
     purchase_clerk         = relationship("Purchase", foreign_keys="Purchase.clerk")
     reverse_product_list   = relationship("Reverse_product_list")
     reverse_service_list   = relationship("Reverse_service_list")
+    increase               = relationship("Increase")
     transfer               = relationship("Transfer")
     deposit                = relationship("Deposit")
     operation_log          = relationship("Operation_log")
@@ -423,6 +424,7 @@ class Increase(this.Base):
     # Atributos
     increase_id   = Column(GUID, nullable=False, primary_key=True, default=GUID.random_value)
     ci            = Column(Integer, nullable=False)
+    clerk         = Column(String, nullable=False)
     amount        = Column(Numeric, nullable=False)
     creation_date = Column(DateTime, nullable=False, default=datetime.now)
     pay_date      = Column(DateTime)
@@ -434,12 +436,13 @@ class Increase(this.Base):
 
         # Claves foraneas
         ForeignKeyConstraint(['ci'], ['client.ci']),
+        ForeignKeyConstraint(['clerk'], ['users.username']),
     )
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.increase_id), str(self.ci), str(self.amount), str(self.creation_date), str(self.pay_date))
-        template = "<Increase(increase_id='%s', ci='%s', amount='%s', creation_date='%s', pay_date='%s')>"
+        kwargs = (str(self.increase_id), str(self.ci), str(self.clerk), str(self.amount), str(self.creation_date), str(self.pay_date))
+        template = "<Increase(increase_id='%s', ci='%s', clerk='%s',, amount='%s', creation_date='%s', pay_date='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================
