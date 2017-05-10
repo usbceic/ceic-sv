@@ -3313,7 +3313,7 @@ class guiManager(QMainWindow, form_class):
                             amount = float(amount)
 
                             # Registrar deuda
-                            if self.db.substractToClientBalance(ci, amount):
+                            if self.db.createIncrease(ci, amount):
                                 # Operación exitosa
                                 successPopUp(parent = self).exec_()
 
