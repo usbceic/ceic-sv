@@ -1964,7 +1964,7 @@ class dbManager(object):
     def createIncrease(self, ci, amount):
         if self.existClient(ci):
             kwargs = {"ci" : ci, "amount" : amount}
-            newIncrease = Debt(**kwargs)
+            newIncrease = Increase(**kwargs)
             self.session.add(newIncrease)
             try:
                 self.session.commit()

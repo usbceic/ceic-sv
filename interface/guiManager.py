@@ -3307,7 +3307,7 @@ class guiManager(QMainWindow, form_class):
                 ci = int(ci)
                 if self.db.existClient(ci):
                     client = self.db.getClients(ci)[0]
-                    if client.balance < 0:
+                    if client.debt > 0:
                         amount = self.lineE68.text()
                         if amount != "":
                             amount = float(amount)
@@ -3328,7 +3328,7 @@ class guiManager(QMainWindow, form_class):
                         else:
                            errorPopUp("Incremento no específicado", self).exec_()
                     else:
-                        errorPopUp("El cliente no tiene deuda", self).exec_()
+                        errorPopUp("El cliente no está endeudado", self).exec_()
                 else:
                    errorPopUp("Número de cédula no registrado", self).exec_()
             else:
