@@ -188,6 +188,7 @@ class guiManager(QMainWindow, form_class):
         self.usersTableItems0 = []
         self.usersTableItems1 = []
         self.usersTableItems2 = []
+        self.providersTableItems = []
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE CAJA
@@ -1709,6 +1710,609 @@ class guiManager(QMainWindow, form_class):
             self.executeCalc(self.legalTenders)
 
     #==============================================================================================================================================================================
+    # VISTA DE VENTAS
+    #==============================================================================================================================================================================
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # MÉTODOS ESPECIALES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Método para refrescar la vista del Ventas y elementos relacionados
+    def refreshSales(self):
+        # Setear variables de control
+        self.selectedProductRemaining = {}
+        self.selectedProductName = ""
+        self.selectedProducts = {}
+
+        # Configurar botones para añadir y quitar
+        self.add0.setEnabled(True)
+        self.substract0.setEnabled(False)
+
+        # Limpiar los campos
+        self.clearSpinLines(self.spinBox)
+        self.clearLEs(self.salesClientLE1)
+        self.clearLEs(self.salesCheckoutLE)
+        self.clearTable(self.table11)
+
+        self.refreshTop10()
+        self.refreshNew10()
+
+        # Refrescar el inventario
+        self.refreshInventory()
+        self.refreshClients()
+        self.refreshCash()
+
+        # Enfocar
+        self.lineE17.setFocus()
+
+    # Método para refrescar la tabla de factura en ventas
+    def updateInvoiceTable(self, table, itemsList):
+        self.clearTable(table)             # Vaciar la tabla
+        total = 0                          # Variable para contar el total a pagar
+        table.setRowCount(len(itemsList))  # Contador de filas
+        for i in range(len(itemsList)):    # LLenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][0]))) # Nombre
+            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][1]))) # Precio
+            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][2]))) # Cantidad
+            table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Subtotal
+
+            # Añadir boton para eliminar la fila
+            removeButton = QPushButton()
+            removeButton.setIcon(QIcon(':/buttons/cross'))
+            removeButton.setStyleSheet("background: transparent; border: none;")
+            removeButton.clicked.connect(self.on_removeRow_clicked)
+            table.setCellWidget(i, 4, removeButton)
+
+            # Sumar subtotal al total
+            total += float(itemsList[i][3])
+
+        self.lineE21.setText(str(total))                          # Actualizar el lineEdit del total
+        self.elem_actual = 0                                      # Definir la fila que se seleccionará
+        if len(itemsList) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
+        table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
+        self.setupTable(table)                                    # Reconfigurar tabla
+
+    # Refrescar apartado de Top 10
+    def refreshTop10(self):
+        self.top10 = self.db.getTop10()
+        for i in range(len(self.top10)):
+            product_name = self.top10[i].product_name
+            price = str(self.top10[i].price)
+            self.popularItems[i].setIcon(QIcon(join(productPath, product_name)))
+            self.popularTexts[i].setText(price)
+
+    # Refrescar apartado de Nuevos
+    def refreshNew10(self):
+        self.new10 = self.db.getNew10()
+        for i in range(len(self.new10)):
+            product_name = self.new10[i].product_name
+            price = str(self.new10[i].price)
+            self.newItems[i].setIcon(QIcon(join(productPath, product_name)))
+            self.newTexts[i].setText(price)
+
+    # Restar al spinBox
+    def substractToSalesSpinBox(self):
+        if self.spinLine0.text() != "":  count = int(self.spinLine0.text())
+        else: count = 0
+
+        if count > 0:
+            self.spinLine0.setText(str(count-1))
+
+    # Sumar al spinBox
+    def addToSalesSpinBox(self):
+        if self.spinLine0.text() != "":  count = int(self.spinLine0.text())
+        else: count = 0
+
+        if self.selectedProductName in self.selectedProductRemaining:
+            if count < self.selectedProductRemaining[self.selectedProductName]:
+                self.spinLine0.setText(str(count+1))
+
+            else:
+                warningPopUp("Límite de disponibilidad alcanzado", self).exec_()
+
+    # Seleccionar un item de las listas Top 10 y Nuevo
+    def selectPopularItem(self, n):
+        if n < len(self.top10):
+            product_name = self.top10[n].product_name
+            if self.lineE23.text() != product_name:
+                self.clearSpinLines(self.spinBox)
+                self.lineE23.setText(product_name)
+
+            else:
+                self.addToSalesSpinBox()
+
+    # Seleccionar un item de las listas Top 10 y Nuevo
+    def selectNewItem(self, n):
+        if n < len(self.new10):
+            product_name = self.new10[n].product_name
+            if self.lineE23.text() != product_name:
+                self.clearSpinLines(self.spinBox)
+                self.lineE23.setText(product_name)
+
+            else:
+                self.addToSalesSpinBox()
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # BOTONES
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Boton 1 del apartado de Top 10
+    def on_popularItem0_pressed(self):
+        if self.click():
+            self.selectPopularItem(0)
+
+    # Boton 2 del apartado de Top 10
+    def on_popularItem1_pressed(self):
+        if self.click():
+            self.selectPopularItem(1)
+
+    # Boton 3 del apartado de Top 10
+    def on_popularItem2_pressed(self):
+        if self.click():
+            self.selectPopularItem(2)
+
+    # Boton 4 del apartado de Top 10
+    def on_popularItem3_pressed(self):
+        if self.click():
+            self.selectPopularItem(3)
+
+    # Boton 5 del apartado de Top 10
+    def on_popularItem4_pressed(self):
+        if self.click():
+            self.selectPopularItem(4)
+
+    # Boton 6 del apartado de Top 10
+    def on_popularItem5_pressed(self):
+        if self.click():
+            self.selectPopularItem(5)
+
+    # Boton 7 del apartado de Top 10
+    def on_popularItem6_pressed(self):
+        if self.click():
+            self.selectPopularItem(6)
+
+    # Boton 8 del apartado de Top 10
+    def on_popularItem7_pressed(self):
+        if self.click():
+            self.selectPopularItem(7)
+
+    # Boton 9 del apartado de Top 10
+    def on_popularItem8_pressed(self):
+        if self.click():
+            self.selectPopularItem(8)
+
+    # Boton 10 del apartado de Top 10
+    def on_popularItem9_pressed(self):
+        if self.click():
+            self.selectPopularItem(9)
+
+    # Boton 1 del apartado de Nuevos
+    def on_newItem0_pressed(self):
+        if self.click():
+            self.selectNewItem(0)
+
+    # Boton 2 del apartado de Nuevos
+    def on_newItem1_pressed(self):
+        if self.click():
+            self.selectNewItem(1)
+
+    # Boton 3 del apartado de Nuevos
+    def on_newItem2_pressed(self):
+        if self.click():
+            self.selectNewItem(2)
+
+    # Boton 4 del apartado de Nuevos
+    def on_newItem3_pressed(self):
+        if self.click():
+            self.selectNewItem(3)
+
+    # Boton 5 del apartado de Nuevos
+    def on_newItem4_pressed(self):
+        if self.click():
+            self.selectNewItem(4)
+
+    # Boton 6 del apartado de Nuevos
+    def on_newItem5_pressed(self):
+        if self.click():
+            self.selectNewItem(5)
+
+    # Boton 7 del apartado de Nuevos
+    def on_newItem6_pressed(self):
+        if self.click():
+            self.selectNewItem(6)
+
+    # Boton 8 del apartado de Nuevos
+    def on_newItem7_pressed(self):
+        if self.click():
+            self.selectNewItem(7)
+
+    # Boton 9 del apartado de Nuevos
+    def on_newItem8_pressed(self):
+        if self.click():
+            self.selectNewItem(8)
+
+    # Boton 10 del apartado de Nuevos
+    def on_newItem9_pressed(self):
+        if self.click():
+            self.selectNewItem(9)
+
+    # Botón para sumar al spinLine
+    def on_add0_pressed(self):
+        if self.click():
+            self.addToSalesSpinBox()
+
+    # Botón para restar al spinLine
+    def on_substract0_pressed(self):
+        if self.click():
+            self.substractToSalesSpinBox()
+
+    # Botón para efectuar venta
+    def on_pbutton7_pressed(self):
+        if self.click():
+            if self.lineE17.text() == "": ci = 0   # Cliente Anonimo
+            else: ci = int(self.lineE17.text())    # Cliente registrado
+
+            if  self.db.existClient(ci):
+                if len(self.selectedProducts) > 0:
+                    total = float(self.lineE21.text())
+                    efectivo = 0
+                    saldo = 0
+
+                    if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                    if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+
+                    if efectivo + saldo >= total:
+
+                        try:
+                            purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
+                            for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
+                                self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
+                            if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
+                            if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
+                            successPopUp(parent = self).exec_()                                         # Venta exitosa
+
+                        except:
+                            errorPopUp(parent = self).exec_()                                           # Venta fallida
+
+                        # Setear variables y refrescar la interfaz
+                        self.refreshSales()
+
+                    else:
+                        client = self.db.getClients(ci)[0]
+                        if client.balance >= total - efectivo:
+                            saldo = total - efectivo
+
+                            message = "Se descontarán " + naturalFormat(saldo) + " del saldo del cliente"
+                            popUp = confirmationPopUp(message, self)
+
+                            if popUp.exec_():
+                                if popUp.getValue():
+                                    try:
+                                        purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
+                                        for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
+                                            self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
+                                        if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
+                                        self.db.createCheckout(purchase_id, saldo, True)                            # Crear pago con saldo
+                                        successPopUp(parent = self).exec_()                                         # Venta exitosa
+
+                                    except:
+                                        errorPopUp(parent = self).exec_()                                           # Venta fallida
+
+                                    # Setear variables y refrescar la interfaz
+                                    self.refreshSales()
+
+                        elif client.debt_permission and client.balance < total - efectivo:
+                            saldo = float(client.balance)
+
+                            deuda = total - efectivo
+                            message = "Se le cargará una deuda de " + naturalFormat(deuda) + " al cliente"
+
+                            popUp = confirmationPopUp(message, self)
+                            if popUp.exec_():
+                                if popUp.getValue():
+                                    try:
+                                        purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
+                                        for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
+                                            self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
+                                        if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
+                                        if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
+                                        self.db.createCheckout(purchase_id, deuda, True)                            # Crear pago con deuda
+                                        successPopUp(parent = self).exec_()                                         # Venta exitosa
+
+                                    except:
+                                        errorPopUp(parent = self).exec_()                                           # Venta fallida
+
+                                    # Setear variables y refrescar la interfaz
+                                    self.refreshSales()
+
+                        else:
+                            warningPopUp("Pago insuficiente", self).exec_()
+                else:
+                    warningPopUp("No se han agregado productos", self).exec_()
+            else:
+                warningPopUp("El cliente no existe", self).exec_()
+
+    # Botón para agregar lista de producto
+    def on_pbutton9_pressed(self):
+        if self.click():
+            name = self.lineE23.text()
+            if self.db.existProduct(name) and self.spinLine0.text() != "" and int(self.spinLine0.text()) > 0:
+
+                # Cargar información
+                product = self.db.getProductByNameOrID(name)[0]                     # Obtener cliente
+                price = str(product.price)                                          # Obtener precio
+                cantidad = self.spinLine0.text()                                    # Obtener cantidad
+                subtotal = float(price)*int(cantidad)                               # Obtener subtotal
+
+                # Actualizar datos en el manejador
+                if name not in self.selectedProducts:
+                    self.selectedProducts[name] = [price, cantidad, subtotal]             # Añadir a la lista de productos seleccionados
+                    self.selectedProductRemaining[name] = product.remaining-int(cantidad) # Acutalizar la cota superior del contador
+
+                else:
+                    temp = self.selectedProducts[name]
+                    temp[1] = str(int(temp[1])+int(cantidad))
+                    temp[2] = str(float(temp[2])+float(subtotal))
+                    self.selectedProducts[name] = temp                                   # Actualizar la instancia del producto en la lista de productos seleccionados
+                    self.selectedProductRemaining[name] = product.remaining-int(temp[1]) # Acutalizar la cota superior del contador
+
+                selectedList = []
+                for key, value in self.selectedProducts.items():
+                    selectedList.append([key, value[0], value[1], value[2]])
+
+                self.selectedProductName = ""
+
+                # Refrescar interfaz
+                self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
+                self.clearLEs(self.selectedProductLE1)              # Limpiar los lineEdit de este apartado
+                self.clearSpinLine(self.spinLine0)                  # Setear en 0 el lineEdit del contador
+
+    # Botones para eliminar listas de productos
+    def on_removeRow_clicked(self):
+        key = self.table11.selectedItems()[0].text()
+        del self.selectedProducts[key]
+
+        selectedList = []
+        for key, value in self.selectedProducts.items():
+            selectedList.append([key, value[0], value[1], value[2]])
+
+        self.selectedProductName = ""
+
+        # Refrescar interfaz
+        self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
+
+    # Boton para cancelar una compra
+    def on_cancelpb0_pressed(self):
+        if self.click():
+            self.refreshSales()
+
+    # Boton para descartar una seleccion de producto
+    def on_cancelpb1_pressed(self):
+        if self.click():
+            self.selectedProductName = ""
+            self.clearLEs(self.selectedProductLE1)
+            self.clearSpinLine(self.spinLine0)
+            self.resetProductImage(self.selectedItem0)
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # CAMPOS DE TEXTO
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # LineEdit para ingresar la cédula del cliente
+    def on_lineE17_textChanged(self):
+        if self.textChanged():
+            if self.lineE17.text() != "":
+                ci = int(self.lineE17.text())
+                if self.db.existClient(ci):
+                    client = self.db.getClients(ci)[0]                           # Obtener cliente
+                    self.lineE18.setText(client.firstname)                       # Establecer Nombre
+                    self.lineE19.setText(client.lastname)                        # Establecer Apellido
+                    self.lineE20.setText(str(client.balance))                    # Establecer Saldo
+
+                    if self.lineE21.text() != "":
+                        total = float(self.lineE21.text())
+                        cota = total
+
+                        if self.lineE22.text() != "":
+                            efectivo = float(self.lineE22.text())
+
+                        else:
+                            efectivo = 0
+
+                        cota = total - efectivo
+                        balance = client.balance
+
+                        if balance < cota:
+                            cota = balance
+
+                        if self.lineE152.text() != "":
+                            saldo = float(self.lineE152.text())
+                            if saldo > cota:
+                                self.lineE152.setText(str(cota))
+
+                else:
+                    self.clearLEs(self.salesClientLE0)          # Limpiar lineEdits del apartado
+            else:
+                self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
+
+    # LineEdit para mostrar el total a pagar
+    def on_lineE21_textChanged(self):
+        if self.textChanged():
+            if self.lineE21.text() != "":
+                total = float(self.lineE21.text())
+
+                if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                else: efectivo = 0
+
+                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+                else: saldo = 0
+
+                if efectivo + saldo > total:
+
+                    if efectivo > total:
+                        efectivo = total
+                        self.lineE22.setText(str(efectivo))
+
+                    if saldo > total - efectivo:
+                        self.lineE152.setText(str(total - efectivo))
+
+            else:
+                self.lineE22.setText("")
+                self.lineE152.setText("")
+
+    # LineEdit para ingresar el monto a pagar en efectivo
+    def on_lineE22_textChanged(self):
+        if self.textChanged():
+            if self.lineE21.text() != "":
+                total = float(self.lineE21.text())
+
+                if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                else: efectivo = 0
+
+                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+                else: saldo = 0
+
+                if efectivo + saldo > total:
+
+                    if efectivo > total:
+                        efectivo = total
+                        self.lineE22.setText(str(efectivo))
+
+                    if saldo > total - efectivo:
+                        self.lineE152.setText(str(total - efectivo))
+
+            else: self.lineE22.setText("")
+
+    # LineEdit para ingresar el monto a pagar con saldo
+    def on_lineE152_textChanged(self):
+        if self.textChanged():
+            if self.lineE21.text() != "":
+                if self.lineE17.text() != "":
+                    ci = int(self.lineE17.text())
+                    if self.db.existClient(ci):
+                        balance = self.db.getClients(ci)[0].balance
+
+                        if balance > 0:
+
+                            total = float(self.lineE21.text())
+
+                            if self.lineE152.text() != "": saldo = float(self.lineE152.text())
+                            else: saldo = 0
+
+                            if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
+                            else: efectivo = 0
+
+                            if saldo > min(saldo, balance, total):
+                                saldo = min(saldo, balance, total)
+                                self.lineE152.setText(str(saldo))
+
+                            if efectivo + saldo > total:
+
+                                if efectivo > total - saldo:
+                                    self.lineE22.setText(str(total - saldo))
+
+                        else: self.lineE152.setText("")
+                    else: self.lineE152.setText("")
+                else: self.lineE152.setText("")
+            else: self.lineE152.setText("")
+
+    # LineEdit para ingresar el nombre del producto seleccionado
+    def on_lineE23_textChanged(self):
+        if self.textChanged():
+            product_name = self.lineE23.text()
+            if product_name != "":
+                if self.db.existProduct(product_name):
+                    product = self.db.getProductByNameOrID(product_name)[0]
+                    self.lineE24.setText(str(product.price))
+                    self.selectedProductName = product_name
+                    amount = "0"
+
+                    if product_name in self.selectedProducts:
+                        # Actualizar cantidad
+                        amount = self.table11.selectedItems()[2].text()
+
+                        # Eliminar producto de la factura
+                        del self.selectedProducts[product_name]
+
+                        # Recalcular elementos en la factura
+                        selectedList = []
+                        for key, value in self.selectedProducts.items():
+                            selectedList.append([key, value[0], value[1], value[2]])
+
+                        # Refrescar factura
+                        self.updateInvoiceTable(self.table11, selectedList)
+
+                    self.selectedProductRemaining[product_name] = product.remaining
+                    self.selectedItem0.setIcon(QIcon(join(productPath, product_name)))
+                    if product.remaining > 0: self.add0.setEnabled(True)
+                    self.spinLine0.setText(amount)
+
+                else:
+                    self.selectedProductName = ""
+                    self.clearLEs(self.selectedProductLE0)
+                    self.clearSpinLine(self.spinLine0)
+                    self.substract0.setEnabled(False)
+                    self.add0.setEnabled(False)
+                    self.resetProductImage(self.selectedItem0)
+
+            else:
+                self.selectedProductName = ""
+                self.clearLEs(self.selectedProductLE0)
+                self.clearSpinLine(self.spinLine0)
+                self.substract0.setEnabled(False)
+                self.add0.setEnabled(False)
+                self.resetProductImage(self.selectedItem0)
+
+    # LineEdit para ingresar nombres de los productos
+    def on_spinLine0_textChanged(self):
+        if self.textChanged():
+            product_name = self.lineE23.text()
+            if product_name != "":
+                if self.db.existProduct(product_name):
+                    if self.spinLine0.text() != "": count = int(self.spinLine0.text())
+                    else: count = 0
+
+                    if count == 0:
+                        self.substract0.setEnabled(False)
+                        if self.selectedProductRemaining[self.selectedProductName] == 0 or self.selectedProductName == "":
+                            self.add0.setEnabled(False)
+
+                    elif 0 < count < self.selectedProductRemaining[self.selectedProductName]:
+                        self.add0.setEnabled(True)
+                        self.substract0.setEnabled(True)
+
+                    else:
+                        if count > self.selectedProductRemaining[self.selectedProductName]:
+                            count = self.selectedProductRemaining[self.selectedProductName]
+                            self.spinLine0.setText(str(count))
+                        self.add0.setEnabled(False)
+                        self.substract0.setEnabled(True)
+
+                    self.lineE25.setText(str(((count)*float(self.lineE24.text()))))
+
+                else:
+                    self.substract0.setEnabled(False)
+                    self.add0.setEnabled(False)
+
+            else:
+                self.substract0.setEnabled(False)
+                self.add0.setEnabled(False)
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # TABLAS
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Cambio de selección en la factura
+    def on_table11_itemClicked(self, item):
+        if self.rowChanged():
+            if item.column() != 4:
+                # Cargar información
+                items = self.table11.selectedItems()
+
+                # Actualizar los campos
+                self.lineE23.setText(items[0].text())
+
+    #==============================================================================================================================================================================
     # VISTA DE INVENTARIO
     #==============================================================================================================================================================================
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -2314,608 +2918,57 @@ class guiManager(QMainWindow, form_class):
                 date = QDate().fromString(dateStr, 'yyyy-MM-dd')
                 self.dtE2.setDate(date)
 
-    #==============================================================================================================================================================================
-    # VISTA DE VENTAS
-    #==============================================================================================================================================================================
-
-    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # MÉTODOS ESPECIALES
-    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    # Método para refrescar la vista del Ventas y elementos relacionados
-    def refreshSales(self):
-        # Setear variables de control
-        self.selectedProductRemaining = {}
-        self.selectedProductName = ""
-        self.selectedProducts = {}
-
-        # Configurar botones para añadir y quitar
-        self.add0.setEnabled(True)
-        self.substract0.setEnabled(False)
-
-        # Limpiar los campos
-        self.clearSpinLines(self.spinBox)
-        self.clearLEs(self.salesClientLE1)
-        self.clearLEs(self.salesCheckoutLE)
-        self.clearTable(self.table11)
-
-        self.refreshTop10()
-        self.refreshNew10()
-
-        # Refrescar el inventario
-        self.refreshInventory()
-        self.refreshClients()
-        self.refreshCash()
-
-        # Enfocar
-        self.lineE17.setFocus()
-
-    # Método para refrescar la tabla de factura en ventas
-    def updateInvoiceTable(self, table, itemsList):
-        self.clearTable(table)             # Vaciar la tabla
-        total = 0                          # Variable para contar el total a pagar
-        table.setRowCount(len(itemsList))  # Contador de filas
-        for i in range(len(itemsList)):    # LLenar tabla
-            table.setItem(i, 0, QTableWidgetItem(str(itemsList[i][0]))) # Nombre
-            table.setItem(i, 1, QTableWidgetItem(str(itemsList[i][1]))) # Precio
-            table.setItem(i, 2, QTableWidgetItem(str(itemsList[i][2]))) # Cantidad
-            table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Subtotal
-
-            # Añadir boton para eliminar la fila
-            removeButton = QPushButton()
-            removeButton.setIcon(QIcon(':/buttons/cross'))
-            removeButton.setStyleSheet("background: transparent; border: none;")
-            removeButton.clicked.connect(self.on_removeRow_clicked)
-            table.setCellWidget(i, 4, removeButton)
-
-            # Sumar subtotal al total
-            total += float(itemsList[i][3])
-
-        self.lineE21.setText(str(total))                          # Actualizar el lineEdit del total
-        self.elem_actual = 0                                      # Definir la fila que se seleccionará
-        if len(itemsList) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
-        table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
-        self.setupTable(table)                                    # Reconfigurar tabla
-
-    # Refrescar apartado de Top 10
-    def refreshTop10(self):
-        self.top10 = self.db.getTop10()
-        for i in range(len(self.top10)):
-            product_name = self.top10[i].product_name
-            price = str(self.top10[i].price)
-            self.popularItems[i].setIcon(QIcon(join(productPath, product_name)))
-            self.popularTexts[i].setText(price)
-
-    # Refrescar apartado de Nuevos
-    def refreshNew10(self):
-        self.new10 = self.db.getNew10()
-        for i in range(len(self.new10)):
-            product_name = self.new10[i].product_name
-            price = str(self.new10[i].price)
-            self.newItems[i].setIcon(QIcon(join(productPath, product_name)))
-            self.newTexts[i].setText(price)
-
-    # Restar al spinBox
-    def substractToSalesSpinBox(self):
-        if self.spinLine0.text() != "":  count = int(self.spinLine0.text())
-        else: count = 0
-
-        if count > 0:
-            self.spinLine0.setText(str(count-1))
-
-    # Sumar al spinBox
-    def addToSalesSpinBox(self):
-        if self.spinLine0.text() != "":  count = int(self.spinLine0.text())
-        else: count = 0
-
-        if self.selectedProductName in self.selectedProductRemaining:
-            if count < self.selectedProductRemaining[self.selectedProductName]:
-                self.spinLine0.setText(str(count+1))
-
-            else:
-                warningPopUp("Límite de disponibilidad alcanzado", self).exec_()
-
-    # Seleccionar un item de las listas Top 10 y Nuevo
-    def selectPopularItem(self, n):
-        if n < len(self.top10):
-            product_name = self.top10[n].product_name
-            if self.lineE23.text() != product_name:
-                self.clearSpinLines(self.spinBox)
-                self.lineE23.setText(product_name)
-
-            else:
-                self.addToSalesSpinBox()
-
-    # Seleccionar un item de las listas Top 10 y Nuevo
-    def selectNewItem(self, n):
-        if n < len(self.new10):
-            product_name = self.new10[n].product_name
-            if self.lineE23.text() != product_name:
-                self.clearSpinLines(self.spinBox)
-                self.lineE23.setText(product_name)
-
-            else:
-                self.addToSalesSpinBox()
-
-    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # BOTONES
-    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    # Boton 1 del apartado de Top 10
-    def on_popularItem0_pressed(self):
-        if self.click():
-            self.selectPopularItem(0)
-
-    # Boton 2 del apartado de Top 10
-    def on_popularItem1_pressed(self):
-        if self.click():
-            self.selectPopularItem(1)
-
-    # Boton 3 del apartado de Top 10
-    def on_popularItem2_pressed(self):
-        if self.click():
-            self.selectPopularItem(2)
-
-    # Boton 4 del apartado de Top 10
-    def on_popularItem3_pressed(self):
-        if self.click():
-            self.selectPopularItem(3)
-
-    # Boton 5 del apartado de Top 10
-    def on_popularItem4_pressed(self):
-        if self.click():
-            self.selectPopularItem(4)
-
-    # Boton 6 del apartado de Top 10
-    def on_popularItem5_pressed(self):
-        if self.click():
-            self.selectPopularItem(5)
-
-    # Boton 7 del apartado de Top 10
-    def on_popularItem6_pressed(self):
-        if self.click():
-            self.selectPopularItem(6)
-
-    # Boton 8 del apartado de Top 10
-    def on_popularItem7_pressed(self):
-        if self.click():
-            self.selectPopularItem(7)
-
-    # Boton 9 del apartado de Top 10
-    def on_popularItem8_pressed(self):
-        if self.click():
-            self.selectPopularItem(8)
-
-    # Boton 10 del apartado de Top 10
-    def on_popularItem9_pressed(self):
-        if self.click():
-            self.selectPopularItem(9)
-
-    # Boton 1 del apartado de Nuevos
-    def on_newItem0_pressed(self):
-        if self.click():
-            self.selectNewItem(0)
-
-    # Boton 2 del apartado de Nuevos
-    def on_newItem1_pressed(self):
-        if self.click():
-            self.selectNewItem(1)
-
-    # Boton 3 del apartado de Nuevos
-    def on_newItem2_pressed(self):
-        if self.click():
-            self.selectNewItem(2)
-
-    # Boton 4 del apartado de Nuevos
-    def on_newItem3_pressed(self):
-        if self.click():
-            self.selectNewItem(3)
-
-    # Boton 5 del apartado de Nuevos
-    def on_newItem4_pressed(self):
-        if self.click():
-            self.selectNewItem(4)
-
-    # Boton 6 del apartado de Nuevos
-    def on_newItem5_pressed(self):
-        if self.click():
-            self.selectNewItem(5)
-
-    # Boton 7 del apartado de Nuevos
-    def on_newItem6_pressed(self):
-        if self.click():
-            self.selectNewItem(6)
-
-    # Boton 8 del apartado de Nuevos
-    def on_newItem7_pressed(self):
-        if self.click():
-            self.selectNewItem(7)
-
-    # Boton 9 del apartado de Nuevos
-    def on_newItem8_pressed(self):
-        if self.click():
-            self.selectNewItem(8)
-
-    # Boton 10 del apartado de Nuevos
-    def on_newItem9_pressed(self):
-        if self.click():
-            self.selectNewItem(9)
-
-    # Botón para sumar al spinLine
-    def on_add0_pressed(self):
-        if self.click():
-            self.addToSalesSpinBox()
-
-    # Botón para restar al spinLine
-    def on_substract0_pressed(self):
-        if self.click():
-            self.substractToSalesSpinBox()
-
-    # Botón para efectuar venta
-    def on_pbutton7_pressed(self):
-        if self.click():
-            if self.lineE17.text() == "": ci = 0   # Cliente Anonimo
-            else: ci = int(self.lineE17.text())    # Cliente registrado
-
-            if  self.db.existClient(ci):
-                if len(self.selectedProducts) > 0:
-                    total = float(self.lineE21.text())
-                    efectivo = 0
-                    saldo = 0
-
-                    if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
-                    if self.lineE152.text() != "": saldo = float(self.lineE152.text())
-
-                    if efectivo + saldo >= total:
-
-                        try:
-                            purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
-                            for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
-                                self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
-                            if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
-                            if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
-                            successPopUp(parent = self).exec_()                                         # Venta exitosa
-
-                        except:
-                            errorPopUp(parent = self).exec_()                                           # Venta fallida
-
-                        # Setear variables y refrescar la interfaz
-                        self.refreshSales()
-
-                    else:
-                        client = self.db.getClients(ci)[0]
-                        if client.balance >= total - efectivo:
-                            saldo = total - efectivo
-
-                            message = "Se descontarán " + naturalFormat(saldo) + " del saldo del cliente"
-                            popUp = confirmationPopUp(message, self)
-
-                            if popUp.exec_():
-                                if popUp.getValue():
-                                    try:
-                                        purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
-                                        for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
-                                            self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
-                                        if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
-                                        self.db.createCheckout(purchase_id, saldo, True)                            # Crear pago con saldo
-                                        successPopUp(parent = self).exec_()                                         # Venta exitosa
-
-                                    except:
-                                        errorPopUp(parent = self).exec_()                                           # Venta fallida
-
-                                    # Setear variables y refrescar la interfaz
-                                    self.refreshSales()
-
-                        elif client.debt_permission and client.balance < total - efectivo:
-                            saldo = float(client.balance)
-
-                            deuda = total - efectivo
-                            message = "Se le cargará una deuda de " + naturalFormat(deuda) + " al cliente"
-
-                            popUp = confirmationPopUp(message, self)
-                            if popUp.exec_():
-                                if popUp.getValue():
-                                    try:
-                                        purchase_id = self.db.createPurchase(ci, self.user)                         # Crear compra
-                                        for key, val in self.selectedProducts.items():                              # Tomar cada producto seleccionado
-                                            self.db.createProductList(purchase_id, key, float(val[0]), int(val[1])) # Crear la lista de productos
-                                        if efectivo > 0: self.db.createCheckout(purchase_id, efectivo)              # Crear pago con dinero
-                                        if saldo > 0: self.db.createCheckout(purchase_id, saldo, True)              # Crear pago con saldo
-                                        self.db.createCheckout(purchase_id, deuda, True)                            # Crear pago con deuda
-                                        successPopUp(parent = self).exec_()                                         # Venta exitosa
-
-                                    except:
-                                        errorPopUp(parent = self).exec_()                                           # Venta fallida
-
-                                    # Setear variables y refrescar la interfaz
-                                    self.refreshSales()
-
-                        else:
-                            warningPopUp("Pago insuficiente", self).exec_()
-                else:
-                    warningPopUp("No se han agregado productos", self).exec_()
-            else:
-                warningPopUp("El cliente no existe", self).exec_()
-
-    # Botón para agregar lista de producto
-    def on_pbutton9_pressed(self):
-        if self.click():
-            name = self.lineE23.text()
-            if self.db.existProduct(name) and self.spinLine0.text() != "" and int(self.spinLine0.text()) > 0:
-
-                # Cargar información
-                product = self.db.getProductByNameOrID(name)[0]                     # Obtener cliente
-                price = str(product.price)                                          # Obtener precio
-                cantidad = self.spinLine0.text()                                    # Obtener cantidad
-                subtotal = float(price)*int(cantidad)                               # Obtener subtotal
-
-                # Actualizar datos en el manejador
-                if name not in self.selectedProducts:
-                    self.selectedProducts[name] = [price, cantidad, subtotal]             # Añadir a la lista de productos seleccionados
-                    self.selectedProductRemaining[name] = product.remaining-int(cantidad) # Acutalizar la cota superior del contador
-
-                else:
-                    temp = self.selectedProducts[name]
-                    temp[1] = str(int(temp[1])+int(cantidad))
-                    temp[2] = str(float(temp[2])+float(subtotal))
-                    self.selectedProducts[name] = temp                                   # Actualizar la instancia del producto en la lista de productos seleccionados
-                    self.selectedProductRemaining[name] = product.remaining-int(temp[1]) # Acutalizar la cota superior del contador
-
-                selectedList = []
-                for key, value in self.selectedProducts.items():
-                    selectedList.append([key, value[0], value[1], value[2]])
-
-                self.selectedProductName = ""
-
-                # Refrescar interfaz
-                self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
-                self.clearLEs(self.selectedProductLE1)              # Limpiar los lineEdit de este apartado
-                self.clearSpinLine(self.spinLine0)                  # Setear en 0 el lineEdit del contador
-
-    # Botones para eliminar listas de productos
-    def on_removeRow_clicked(self):
-        key = self.table11.selectedItems()[0].text()
-        del self.selectedProducts[key]
-
-        selectedList = []
-        for key, value in self.selectedProducts.items():
-            selectedList.append([key, value[0], value[1], value[2]])
-
-        self.selectedProductName = ""
-
-        # Refrescar interfaz
-        self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
-
-    # Boton para cancelar una compra
-    def on_cancelpb0_pressed(self):
-        if self.click():
-            self.refreshSales()
-
-    # Boton para descartar una seleccion de producto
-    def on_cancelpb1_pressed(self):
-        if self.click():
-            self.selectedProductName = ""
-            self.clearLEs(self.selectedProductLE1)
-            self.clearSpinLine(self.spinLine0)
-            self.resetProductImage(self.selectedItem0)
-
-    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    # CAMPOS DE TEXTO
-    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    # LineEdit para ingresar la cédula del cliente
-    def on_lineE17_textChanged(self):
-        if self.textChanged():
-            if self.lineE17.text() != "":
-                ci = int(self.lineE17.text())
-                if self.db.existClient(ci):
-                    client = self.db.getClients(ci)[0]                           # Obtener cliente
-                    self.lineE18.setText(client.firstname)                       # Establecer Nombre
-                    self.lineE19.setText(client.lastname)                        # Establecer Apellido
-                    self.lineE20.setText(str(client.balance))                    # Establecer Saldo
-
-                    if self.lineE21.text() != "":
-                        total = float(self.lineE21.text())
-                        cota = total
-
-                        if self.lineE22.text() != "":
-                            efectivo = float(self.lineE22.text())
-
-                        else:
-                            efectivo = 0
-
-                        cota = total - efectivo
-                        balance = client.balance
-
-                        if balance < cota:
-                            cota = balance
-
-                        if self.lineE152.text() != "":
-                            saldo = float(self.lineE152.text())
-                            if saldo > cota:
-                                self.lineE152.setText(str(cota))
-
-                else:
-                    self.clearLEs(self.salesClientLE0)          # Limpiar lineEdits del apartado
-            else:
-                self.clearLEs(self.salesClientLE0)              # Limpiar lineEdits del apartado
-
-    # LineEdit para mostrar el total a pagar
-    def on_lineE21_textChanged(self):
-        if self.textChanged():
-            if self.lineE21.text() != "":
-                total = float(self.lineE21.text())
-
-                if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
-                else: efectivo = 0
-
-                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
-                else: saldo = 0
-
-                if efectivo + saldo > total:
-
-                    if efectivo > total:
-                        efectivo = total
-                        self.lineE22.setText(str(efectivo))
-
-                    if saldo > total - efectivo:
-                        self.lineE152.setText(str(total - efectivo))
-
-            else:
-                self.lineE22.setText("")
-                self.lineE152.setText("")
-
-    # LineEdit para ingresar el monto a pagar en efectivo
-    def on_lineE22_textChanged(self):
-        if self.textChanged():
-            if self.lineE21.text() != "":
-                total = float(self.lineE21.text())
-
-                if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
-                else: efectivo = 0
-
-                if self.lineE152.text() != "": saldo = float(self.lineE152.text())
-                else: saldo = 0
-
-                if efectivo + saldo > total:
-
-                    if efectivo > total:
-                        efectivo = total
-                        self.lineE22.setText(str(efectivo))
-
-                    if saldo > total - efectivo:
-                        self.lineE152.setText(str(total - efectivo))
-
-            else: self.lineE22.setText("")
-
-    # LineEdit para ingresar el monto a pagar con saldo
-    def on_lineE152_textChanged(self):
-        if self.textChanged():
-            if self.lineE21.text() != "":
-                if self.lineE17.text() != "":
-                    ci = int(self.lineE17.text())
-                    if self.db.existClient(ci):
-                        balance = self.db.getClients(ci)[0].balance
-
-                        if balance > 0:
-
-                            total = float(self.lineE21.text())
-
-                            if self.lineE152.text() != "": saldo = float(self.lineE152.text())
-                            else: saldo = 0
-
-                            if self.lineE22.text() != "": efectivo = float(self.lineE22.text())
-                            else: efectivo = 0
-
-                            if saldo > min(saldo, balance, total):
-                                saldo = min(saldo, balance, total)
-                                self.lineE152.setText(str(saldo))
-
-                            if efectivo + saldo > total:
-
-                                if efectivo > total - saldo:
-                                    self.lineE22.setText(str(total - saldo))
-
-                        else: self.lineE152.setText("")
-                    else: self.lineE152.setText("")
-                else: self.lineE152.setText("")
-            else: self.lineE152.setText("")
-
-    # LineEdit para ingresar el nombre del producto seleccionado
-    def on_lineE23_textChanged(self):
-        if self.textChanged():
-            product_name = self.lineE23.text()
-            if product_name != "":
-                if self.db.existProduct(product_name):
-                    product = self.db.getProductByNameOrID(product_name)[0]
-                    self.lineE24.setText(str(product.price))
-                    self.selectedProductName = product_name
-                    amount = "0"
-
-                    if product_name in self.selectedProducts:
-                        # Actualizar cantidad
-                        amount = self.table11.selectedItems()[2].text()
-
-                        # Eliminar producto de la factura
-                        del self.selectedProducts[product_name]
-
-                        # Recalcular elementos en la factura
-                        selectedList = []
-                        for key, value in self.selectedProducts.items():
-                            selectedList.append([key, value[0], value[1], value[2]])
-
-                        # Refrescar factura
-                        self.updateInvoiceTable(self.table11, selectedList)
-
-                    self.selectedProductRemaining[product_name] = product.remaining
-                    self.selectedItem0.setIcon(QIcon(join(productPath, product_name)))
-                    if product.remaining > 0: self.add0.setEnabled(True)
-                    self.spinLine0.setText(amount)
-
-                else:
-                    self.selectedProductName = ""
-                    self.clearLEs(self.selectedProductLE0)
-                    self.clearSpinLine(self.spinLine0)
-                    self.substract0.setEnabled(False)
-                    self.add0.setEnabled(False)
-                    self.resetProductImage(self.selectedItem0)
-
-            else:
-                self.selectedProductName = ""
-                self.clearLEs(self.selectedProductLE0)
-                self.clearSpinLine(self.spinLine0)
-                self.substract0.setEnabled(False)
-                self.add0.setEnabled(False)
-                self.resetProductImage(self.selectedItem0)
-
-    # LineEdit para ingresar nombres de los productos
-    def on_spinLine0_textChanged(self):
-        if self.textChanged():
-            product_name = self.lineE23.text()
-            if product_name != "":
-                if self.db.existProduct(product_name):
-                    if self.spinLine0.text() != "": count = int(self.spinLine0.text())
-                    else: count = 0
-
-                    if count == 0:
-                        self.substract0.setEnabled(False)
-                        if self.selectedProductRemaining[self.selectedProductName] == 0 or self.selectedProductName == "":
-                            self.add0.setEnabled(False)
-
-                    elif 0 < count < self.selectedProductRemaining[self.selectedProductName]:
-                        self.add0.setEnabled(True)
-                        self.substract0.setEnabled(True)
-
-                    else:
-                        if count > self.selectedProductRemaining[self.selectedProductName]:
-                            count = self.selectedProductRemaining[self.selectedProductName]
-                            self.spinLine0.setText(str(count))
-                        self.add0.setEnabled(False)
-                        self.substract0.setEnabled(True)
-
-                    self.lineE25.setText(str(((count)*float(self.lineE24.text()))))
-
-                else:
-                    self.substract0.setEnabled(False)
-                    self.add0.setEnabled(False)
-
-            else:
-                self.substract0.setEnabled(False)
-                self.add0.setEnabled(False)
-
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # TABLAS
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    # Cambio de selección en la factura
-    def on_table11_itemClicked(self, item):
+    # Clickera una fila de la tabla de productos diponibles
+    def on_table0_itemClicked(self, item):
         if self.rowChanged():
-            if item.column() != 4:
-                # Cargar información
-                items = self.table11.selectedItems()
+            # Obtener la información completa del producto
+            product = self.productsInfoAvailable[self.table0.selectedItems()[0].row()]
 
-                # Actualizar los campos
-                self.lineE23.setText(items[0].text())
+            kwargs = [
+                ("Nombre",      product[1]),
+                ("Precio",      naturalFormat(product[2])),
+                ("Categoria",   product[3]),
+                ("Lotes",       str(product[4])),
+                ("Disp. total", str(product[5])),
+            ]
+
+            detailsPopUp(kwargs, self).exec_()
+
+    # Clickera una fila de la tabla de productos diponibles
+    def on_table1_itemClicked(self, item):
+        if self.rowChanged():
+            # Obtener la información completa del producto
+            product = self.productsInfoNotAvailable[self.table1.selectedItems()[0].row()]
+
+            kwargs = [
+                ("Nombre",      product[1]),
+                ("Precio",      naturalFormat(product[2])),
+                ("Categoria",   product[3]),
+                ("Lotes",       str(product[4])),
+                ("Disp. total", str(product[5])),
+            ]
+
+            detailsPopUp(kwargs, self).exec_()
+
+    # Clickera una fila de la tabla de productos diponibles
+    def on_table2_itemClicked(self, item):
+        if self.rowChanged():
+            # Obtener la información completa del producto
+            product = self.productsInfo[self.table2.selectedItems()[0].row()]
+
+            kwargs = [
+                ("Nombre",      product[1]),
+                ("Precio",      naturalFormat(product[2])),
+                ("Categoria",   product[3]),
+                ("Lotes",       str(product[4])),
+                ("Disp. total", str(product[5])),
+            ]
+
+            detailsPopUp(kwargs, self).exec_()
 
     #==============================================================================================================================================================================
     # VISTA DE PROVEEDORES
@@ -2944,21 +2997,21 @@ class guiManager(QMainWindow, form_class):
     # Método para refrescar la tabla de proveedores
     def updateProvidersTable(self):
         table = self.table13
-        providers = self.db.getAllProviders(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
+        self.providersTableItems = self.db.getAllProviders(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
-        self.clearTable(table)                                                       # Vaciar la tabla
-        table.setRowCount(len(providers))                                            # Contador de filas
-        for i in range(len(providers)):                                              # Llenar tabla
-            table.setItem(i, 0, QTableWidgetItem(str(providers[i].provider_name)))   # Nombre
-            table.setItem(i, 1, QTableWidgetItem(str(providers[i].phone)))           # Teléfono
-            table.setItem(i, 2, QTableWidgetItem(str(providers[i].email)))           # Correo
-            table.setItem(i, 3, QTableWidgetItem(str(providers[i].description)))     # Descripción
-            table.setItem(i, 4, QTableWidgetItem(str(providers[i].pay_information))) # Informacion de pago
+        self.clearTable(table)                                                                      # Vaciar la tabla
+        table.setRowCount(len(self.providersTableItems))                                            # Contador de filas
+        for i in range(len(self.providersTableItems)):                                              # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(self.providersTableItems[i].provider_name)))   # Nombre
+            table.setItem(i, 1, QTableWidgetItem(str(self.providersTableItems[i].phone)))           # Teléfono
+            table.setItem(i, 2, QTableWidgetItem(str(self.providersTableItems[i].email)))           # Correo
+            table.setItem(i, 3, QTableWidgetItem(str(self.providersTableItems[i].description)))     # Descripción
+            table.setItem(i, 4, QTableWidgetItem(str(self.providersTableItems[i].pay_information))) # Informacion de pago
 
-        self.elem_actual = 0                                            # Definir la fila que se seleccionará
-        if len(providers) > 0: table.selectRow(self.elem_actual)        # Seleccionar fila
-        table.resizeColumnsToContents()                                 # Redimensionar columnas segun el contenido
-        self.setupTable(table, 4)                                       # Reconfigurar tabla
+        self.elem_actual = 0                                                    # Definir la fila que se seleccionará
+        if len(self.providersTableItems) > 0: table.selectRow(self.elem_actual) # Seleccionar fila
+        table.resizeColumnsToContents()                                         # Redimensionar columnas segun el contenido
+        self.setupTable(table, 4)                                               # Reconfigurar tabla
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -3060,6 +3113,27 @@ class guiManager(QMainWindow, form_class):
             else:
                 self.clearLEs(self.providersLE2)
                 self.clearTEs(self.providersTE1)
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # TABLAS
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Clickera una fila de la tabla de transferencias
+    def on_table13_itemClicked(self, item):
+        if self.rowChanged():
+            # Obtener la información completa de la transferencia
+            provider = self.providersTableItems[self.table13.selectedItems()[0].row()]
+
+            kwargs = [
+                ("Proveedor",           provider.provider_name),
+                ("Teléfono",            provider.phone),
+                ("Correo",              provider.email),
+                ("Fecha de registro",   dateFormat(provider.creation_date)),
+                ("Información de pago", paragraphFormat(provider.pay_information)),
+                ("Descripción",         paragraphFormat(provider.description))
+            ]
+
+            detailsPopUp(kwargs, self).exec_()
 
     #==============================================================================================================================================================================
     # VISTA DE CLIENTES

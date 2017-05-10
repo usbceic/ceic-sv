@@ -200,7 +200,7 @@ class sessionManager(QMainWindow, loginWindow):
         self.setupPage0()                    # Configurar vista de inicio de sesión
         self.setupPage1()                    # Configurar vista de registro de usuario
         self.setupPage2()                    # Configurar vista de recuperación de contraseña
-        self.LoginStacked.setCurrentIndex(0)  # Se establece la pagina de inicio de sesión por defecto
+        self.LoginStacked.setCurrentIndex(0) # Se establece la pagina de inicio de sesión por defecto
 
     #==============================================================================================================================================================================
     # MÉTODOS GENERALES MULTIPROPÓSITOS

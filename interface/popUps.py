@@ -70,7 +70,7 @@ class errorPopUp(QDialog, popUp0):
         if message != None: self.dtitle0.setText(message)
 
         # Configurar resolucion del popUp
-        self.setFixedSize(self.sizeHint())
+        self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(dialogFlags)
 
         # Configurar tema
@@ -128,7 +128,7 @@ class warningPopUp(QDialog, popUp1):
         if message != None: self.dtitle0.setText(message)
 
         # Configurar resolucion del popUp
-        self.setFixedSize(self.sizeHint())
+        self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(dialogFlags)
 
         # Configurar tema
@@ -186,7 +186,7 @@ class successPopUp(QDialog, popUp2):
         if message != None: self.dtitle0.setText(message)
 
         # Configurar resolucion del popUp
-        self.setFixedSize(self.sizeHint())
+        self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(dialogFlags)
 
         # Configurar tema
@@ -247,7 +247,7 @@ class confirmationPopUp(QDialog, popUp3):
         self.confirmation = False
 
         # Configurar resolucion del popUp
-        self.setFixedSize(self.sizeHint())
+        self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(dialogFlags)
 
         # Configurar tema
@@ -316,7 +316,7 @@ class authorizationPopUp(QDialog, popUp4):
         self.value0, self.value1 = None, None
 
         # Configurar resolucion del popUp
-        self.setFixedSize(self.sizeHint())
+        self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(dialogFlags)
 
         # Configurar tema
@@ -385,7 +385,7 @@ class detailsPopUp(QDialog, popUp5):
         self.loadDetails(details)
 
         # Configurar resolucion del popUp
-        self.setFixedSize(self.sizeHint())
+        self.setMinimumSize(self.sizeHint())
         self.setWindowFlags(dialogFlags)
 
         # Configurar tema
