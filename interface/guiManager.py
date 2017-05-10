@@ -54,13 +54,13 @@ from math import ceil
 from db_manager import dbManager
 
 # Módulo con las clases para los popUp
-from popUps import errorPopUp, warningPopUp, successPopUp, confirmationPopUp, authorizationPopUp
+from popUps import errorPopUp, warningPopUp, successPopUp, confirmationPopUp, authorizationPopUp, detailsPopUp
 
 # Módulo con los validadores para campos de texto
 from validators import intValidator, floatValidator, anyCharacterValidator, validatePhoneNumber, validateEmail, validateName
 
 # Módulo con los validadores para campos de texto
-from app_utilities import getStyle, naturalFormat, openLink
+from app_utilities import getStyle, naturalFormat, paragraphFormat, dateFormat, onlyDateFormat, openLink
 
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
@@ -1320,7 +1320,7 @@ class guiManager(QMainWindow, form_class):
             startDate = period.recorded                                              # Obtener fecha de inicio del periodo
             cash, bank = self.db.getBalance(lower_date=startDate)                    # Obtener dinero en efectivo y en banco ganado durante el periodo
             self.lineE10.setText(name)                                               # Actualizar campo de nombre del periodo
-            self.lineE11.setText(startDate.strftime(self.dtFormat))                  # Actualizar campo de fecha de inicio
+            self.lineE11.setText(dateFormat(startDate))                              # Actualizar campo de fecha de inicio
             self.lineE13.setText(str(cash + period.cash_total))                      # Actualizar campo de efectivo en periodo
             self.lineE14.setText(str(bank + period.total_money - period.cash_total)) # Actualizar campo de banco en periodo
 
@@ -1381,7 +1381,7 @@ class guiManager(QMainWindow, form_class):
             cash_balance = movements[i].cash_balance
             cash_total = str(movements[i].cash_total)
             description = movements[i].description
-            date = movements[i].recorded.strftime(self.dtFormat)
+            date = dateFormat(movements[i].recorded)
 
             if op_type == 0:
                 if open_record: movement = "Apertura de periodo"
@@ -2263,7 +2263,7 @@ class guiManager(QMainWindow, form_class):
                             self.lineE38.setText(str(lot.remaining))     # Disponibilidad
 
                             # Fecha de expiración
-                            dateStr = lot.expiration_date.strftime('%Y-%m-%d')
+                            dateStr = onlyDateFormat(lot.expiration_date)
                             date = QDate().fromString(dateStr, 'yyyy-MM-dd')
                             self.dtE2.setDate(date)
 
@@ -2303,7 +2303,7 @@ class guiManager(QMainWindow, form_class):
                 self.lineE38.setText(str(lot.remaining))     # Disponibilidad
 
                 # Fecha de expiración
-                dateStr = lot.expiration_date.strftime('%Y-%m-%d')
+                dateStr = onlyDateFormat(lot.expiration_date)
                 date = QDate().fromString(dateStr, 'yyyy-MM-dd')
                 self.dtE2.setDate(date)
 
@@ -3423,34 +3423,34 @@ class guiManager(QMainWindow, form_class):
     # Método para refrescar la tabla de transferencias
     def updateTranfersTable(self):
         table = self.table14
-        transfers = self.db.getTransfers(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
+        self.transferTableItems = self.db.getTransfers(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
-        self.clearTable(table)                                                         # Vaciar la tabla
-        table.setRowCount(len(transfers))                                              # Contador de filas
-        for i in range(len(transfers)):                                                # Llenar tabla
-            table.setItem(i, 0, QTableWidgetItem(str(transfers[i].clerk)))             # Usuario
-            table.setItem(i, 1, QTableWidgetItem(str(transfers[i].ci)))                # Cliente
-            table.setItem(i, 2, QTableWidgetItem(str(transfers[i].amount)))            # Monto
-            table.setItem(i, 3, QTableWidgetItem(str(transfers[i].bank)))              # Banco
-            table.setItem(i, 4, QTableWidgetItem(str(transfers[i].confirmation_code))) # Código de confirmación
+        self.clearTable(table)                                                                       # Vaciar la tabla
+        table.setRowCount(len(self.transferTableItems))                                              # Contador de filas
+        for i in range(len(self.transferTableItems)):                                                # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(self.transferTableItems[i].clerk)))             # Usuario
+            table.setItem(i, 1, QTableWidgetItem(str(self.transferTableItems[i].ci)))                # Cliente
+            table.setItem(i, 2, QTableWidgetItem(str(self.transferTableItems[i].amount)))            # Monto
+            table.setItem(i, 3, QTableWidgetItem(str(self.transferTableItems[i].bank)))              # Banco
+            table.setItem(i, 4, QTableWidgetItem(str(self.transferTableItems[i].confirmation_code))) # Código de confirmación
 
-        self.elem_actual = 0                                            # Definir la fila que se seleccionará
-        if len(transfers) > 0: table.selectRow(self.elem_actual)        # Seleccionar fila
-        table.resizeColumnsToContents()                                 # Redimensionar columnas segun el contenido
-        self.setupTable(table, 4)                                       # Reconfigurar tabla
+        self.elem_actual = 0                                                    # Definir la fila que se seleccionará
+        if len(self.transferTableItems) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
+        table.resizeColumnsToContents()                                         # Redimensionar columnas segun el contenido
+        self.setupTable(table, 4)                                               # Reconfigurar tabla
 
     # Método para refrescar la tabla de transferencias
     def updateDepositsTable(self):
         table = self.table16
         deposits = self.db.getDeposits(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
-        self.clearTable(table)                                                                            # Vaciar la tabla
-        table.setRowCount(len(deposits))                                                                  # Contador de filas
-        for i in range(len(deposits)):                                                                    # Llenar tabla
-            table.setItem(i, 0, QTableWidgetItem(str(deposits[i].clerk)))                                 # Usuario
-            table.setItem(i, 1, QTableWidgetItem(str(deposits[i].ci)))                                    # Cliente
-            table.setItem(i, 2, QTableWidgetItem(str(deposits[i].amount)))                                # Monto
-            table.setItem(i, 3, QTableWidgetItem(str(deposits[i].deposit_date.strftime(self.dtFormat))))  # Fecha
+        self.clearTable(table)                                                           # Vaciar la tabla
+        table.setRowCount(len(deposits))                                                 # Contador de filas
+        for i in range(len(deposits)):                                                   # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(deposits[i].clerk)))                # Usuario
+            table.setItem(i, 1, QTableWidgetItem(str(deposits[i].ci)))                   # Cliente
+            table.setItem(i, 2, QTableWidgetItem(str(deposits[i].amount)))               # Monto
+            table.setItem(i, 3, QTableWidgetItem(dateFormat(deposits[i].deposit_date)))  # Fecha
 
         self.elem_actual = 0                                            # Definir la fila que se seleccionará
         if len(deposits) > 0: table.selectRow(self.elem_actual)         # Seleccionar fila
@@ -3573,6 +3573,28 @@ class guiManager(QMainWindow, form_class):
 
             else:
                 self.indexMutex = True
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # TABLAS
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Cambio de selección en la factura
+    def on_table14_itemClicked(self, item):
+        if self.rowChanged():
+            # Obtener la información completa de la transferencia
+            transfer = self.transferTableItems[self.table14.selectedItems()[0].row()]
+
+            kwargs = [
+                ("Registrado por", str(transfer.clerk)),
+                ("Cliente",        naturalFormat(transfer.ci)),
+                ("Fecha",          dateFormat(transfer.transfer_date)),
+                ("Monto",          naturalFormat(transfer.amount)),
+                ("Banco",          str(transfer.bank)),
+                ("Código",         str(transfer.confirmation_code)),
+                ("Descripción",    paragraphFormat(transfer.description))
+            ]
+
+            detailsPopUp(kwargs, self).exec_()
 
     #==============================================================================================================================================================================
     # VISTA DE USUARIOS

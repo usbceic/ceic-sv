@@ -1,0 +1,51 @@
+/*#########################################################
+##                     QDialog                           ##
+##########################################################*/
+
+QDialog {
+    background: #FFFFFF;
+    min-width: 200px;
+}
+
+/***********************************
+* Global
+***********************************/
+
+/*Efecto al seleccionar texto*/
+* {
+    selection-color: #212121;
+    selection-background-color: #F5F5F5;
+}
+
+/***********************************
+* Botones
+***********************************/
+
+/*Estilo por defecto del  boton para continuar/aceptar*/
+QPushButton {
+    color: #FFFFFF;
+    border: 1px outline #BDBDBD;
+    border-radius: 2px;
+    background: #9E9E9E;
+    min-height: 30px;
+    min-width: 80px;
+    padding: 2px;
+}
+
+/*Estilo al pasar por encima y presionar el boton para continuar/aceptar*/
+QPushButton:hover, QPushButton:pressed{
+   background: #616161;
+}
+
+/***********************************
+* Labels
+***********************************/
+
+/*Configuración del titulo del dialog*/
+QLabel {
+    color: #212121;
+    background: transparent;
+    font-family: Open Sans;
+    font-size: 11pt;
+    qproperty-alignment: 'AlignTop | AlignLeft';
+}

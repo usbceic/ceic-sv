@@ -27,14 +27,22 @@ from os.path import isfile, isdir, join     # Funciones para manejos de paths y 
 
 currentPath  = getcwd()
 palettePath  = join(currentPath, "palettes")
-objectNames  = ["MainWindow", "LoginWindow", "errorPopUp", "warningPopUp", "successPopUp", "confirmationPopUp", "authorizationPopUp"]
-templatesID  = ["main", "login", "error-popup", "warning-popup", "success-popup", "confirmation-popup", "authorization-popup"]
+objectNames  = ["MainWindow", "LoginWindow", "errorPopUp", "warningPopUp", "successPopUp", "confirmationPopUp", "authorizationPopUp", "detailsPopUp"]
+templatesID  = ["main", "login", "error-popup", "warning-popup", "success-popup", "confirmation-popup", "authorization-popup", "details-popup"]
 templatesExt = "-gen.qss"
 regexColor   = '#[0-9A-F]{6}'
 
 ###################################################################################################################################################################################
 ## PROCEDIMIENTOS:
 ###################################################################################################################################################################################
+
+# Procedimiento para generar e imprimir las instrucciones del script
+def printInstructions():
+    instructions = "\n"
+    for i in range(len(objectNames)):
+        instructions += "Para generar un stylesheet para " + objectNames[i] + " ingrese " + str(i) + "\n"
+    instructions += "Para generar stylesheets para todas las plantillas ingrese " + str(len(objectNames)) + "\n"
+    print(instructions)
 
 # Procedimiento para generar stylesheets
 def genStyleSheets(num):
@@ -109,25 +117,18 @@ def genStyleSheets(num):
 if __name__ == '__main__':
 
     # Instrucciones
-    print("\nPara generar un stylesheet para MainWindow ingrese 0")
-    print("Para generar stylesheets para LoginWindow ingrese 1")
-    print("Para generar stylesheets para errorPopUp ingrese 2")
-    print("Para generar stylesheets para warningPopUp ingrese 3")
-    print("Para generar stylesheets para successPopUp ingrese 4")
-    print("Para generar stylesheets para confirmationPopUp ingrese 5")
-    print("Para generar stylesheets para authorizationPopUp ingrese 6")
-    print("Para generar stylesheets para todas las plantillas ingrese 7\n")
+    printInstructions()
 
     # Bucle par que el usuario marque una opcion válida
     while True:
         option = int(input("Selección: "))
 
         # Crear stylesheets para un elemento
-        if 0 <= option <= 6:
+        if 0 <= option < len(objectNames):
             genStyleSheets(option)
 
         # Crear stylesheets para todos los elementos
-        elif option == 7:
+        elif option == len(objectNames):
             for i in range(len(templatesID)): genStyleSheets(i)
 
         # Volver a preguntar si escogió una opción inválida

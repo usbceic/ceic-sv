@@ -54,6 +54,29 @@ def naturalFormat(amount, extension = None):
 
     return legalTender
 
+# Función para dar formato de párrafo a un string
+def paragraphFormat(string, wrap_width = 40):
+    # Eliminar los saltos de linea
+    string = string.replace("\n\r", "")
+    string = string.replace("\n", "")
+
+    # Eliminar espacios sobrantes
+    string.strip()
+
+    # Separar la cadena segun el ancho de la regla
+    for i in range(wrap_width, len(string), wrap_width+1):
+        string = string[:i] + "\n" + string[i:]
+
+    return string
+
+# Función para dar formato de fecha y hora a una instancia de dateTime
+def dateFormat(date, dtFormat = "%d/%m/%y  %H:%M"):
+    return date.strftime(dtFormat)
+
+# Función para dar formato de fecha a una instancia de dateTime
+def onlyDateFormat(date, dFormat = "%Y-%m-%d"):
+    return date.strftime(dFormat)
+
 """
 Método que devuelve 0 si el objeto pasado es none, caso contrario devuelve el objeto
 """

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>detailsPopUp</class>
+ <widget class="QDialog" name="detailsPopUp">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>251</width>
+    <height>169</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Details</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/*#########################################################
+##                     QDialog                           ##
+##########################################################*/
+
+QDialog {
+    background: #FFFFFF;
+    min-width: 200px;
+}
+
+/***********************************
+* Global
+***********************************/
+
+/*Efecto al seleccionar texto*/
+* {
+    selection-color: #212121;
+    selection-background-color: #BBDEFB;
+}
+
+/***********************************
+* Botones
+***********************************/
+
+/*Estilo por defecto del  boton para continuar/aceptar*/
+QPushButton {
+    color: #FFFFFF;
+    border: 1px outline #BDBDBD;
+    border-radius: 2px;
+    background: #2196F3;
+    min-height: 30px;
+    min-width: 80px;
+    padding: 2px;
+}
+
+/*Estilo al pasar por encima y presionar el boton para continuar/aceptar*/
+QPushButton:hover, QPushButton:pressed{
+   background: #1976D2;
+}
+
+/***********************************
+* Labels
+***********************************/
+
+/*Configuración del titulo del dialog*/
+QLabel {
+    color: #212121;
+    background: transparent;
+    font-family: Open Sans;
+    font-size: 11pt;
+    qproperty-alignment: 'AlignTop | AlignLeft';
+}</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QFormLayout" name="detailsLayout"/>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>10</width>
+         <height>10</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="dpbutton0">
+         <property name="font">
+          <font>
+           <family>Open Sans</family>
+           <pointsize>12</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>CONTINUAR</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
