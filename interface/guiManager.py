@@ -3311,20 +3311,30 @@ class guiManager(QMainWindow, form_class):
                         amount = self.lineE68.text()
                         if amount != "":
                             amount = float(amount)
+                            popUp = authorizationPopUp(parent=self)
+                            if popUp.exec_():
+                                adminUsername, adminPassword = popUp.getValues()
+                                if (adminUsername and adminPassword) != None:
+                                    if self.db.checkPassword(adminUsername, adminPassword):
+                                        userRange = self.db.getUserRange(adminUsername)
+                                        if userRange == "Administrador" or userRange == "Dios":
 
-                            # Registrar deuda
-                            if self.db.createIncrease(ci, amount):
-                                # Operación exitosa
-                                successPopUp(parent = self).exec_()
+                                            # Registrar deuda
+                                            if self.db.createIncrease(ci, self.user, amount):
+                                                # Operación exitosa
+                                                successPopUp(parent = self).exec_()
 
-                            else:
-                                # Operación fallida
-                                errorPopUp(parent = self).exec_()
+                                            else:
+                                                # Operación fallida
+                                                errorPopUp(parent = self).exec_()
 
-                            self.clearLEs(self.clientsLE3) # Limpiar formulario
-                            self.refreshClients()          # Refrescar vista
-                            self.lineE16.setFocus()        # Enfocar
-
+                                            self.clearLEs(self.clientsLE3) # Limpiar formulario
+                                            self.refreshClients()          # Refrescar vista
+                                            self.lineE16.setFocus()        # Enfocar
+                                        else:
+                                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                                    else:
+                                        errorPopUp("Datos incorrectos", self).exec_()
                         else:
                            errorPopUp("Incremento no específicado", self).exec_()
                     else:

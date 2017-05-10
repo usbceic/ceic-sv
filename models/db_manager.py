@@ -1961,9 +1961,9 @@ class dbManager(object):
      - Retorna None:
         * Cuando no se puede crear
     """
-    def createIncrease(self, ci, amount):
-        if self.existClient(ci):
-            kwargs = {"ci" : ci, "amount" : amount}
+    def createIncrease(self, ci, clerk, amount):
+        if self.existClient(ci) and self.existUser(clerk):
+            kwargs = {"ci" : ci, "clerk" : clerk, "amount" : amount}
             newIncrease = Increase(**kwargs)
             self.session.add(newIncrease)
             try:
