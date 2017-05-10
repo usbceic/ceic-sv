@@ -3172,13 +3172,13 @@ class guiManager(QMainWindow, form_class):
             provider = self.db.getProvider(self.table13.selectedItems()[0].text())
 
             kwargs = [
-                ("Proveedor",           provider.provider_name),
-                ("Teléfono",            provider.phone),
-                ("Correo",              provider.email),
-                ("Fecha de registro",   dateFormat(provider.creation_date)),
-                ("Hora de registro",    timeFormat(provider.creation_date)),
-                ("Información de pago", paragraphFormat(provider.pay_information)),
-                ("Descripción",         paragraphFormat(provider.description))
+                ("Proveedor",          provider.provider_name),
+                ("Teléfono",           provider.phone),
+                ("Correo",             provider.email),
+                ("Fecha - registro",   dateFormat(provider.creation_date)),
+                ("Hora - registro",    timeFormat(provider.creation_date)),
+                ("Info. de pago",      paragraphFormat(provider.pay_information)),
+                ("Descripción",        paragraphFormat(provider.description))
             ]
 
             detailsPopUp(kwargs, self).exec_()
@@ -3744,27 +3744,22 @@ class guiManager(QMainWindow, form_class):
         if self.rowChanged():
             # Obtener la información completa del depósito
             item = self.table16.selectedItems()
+            selected = [item[0].text(), item[1].text(), item[2].text(), item[3].text(), item[4].text()]
 
-            clerk  = item[0].text()
-            ci     = item[1].text()
-            amount = item[2].text()
-            date   = item[3].text()
+            deposit = None
+            for elem in self.depositsTableItems:
+                clerk  = str(elem.clerk)
+                ci     = str(elem.ci)
+                amount = str(elem.amount)
+                date   = dateFormat(elem.deposit_date)
+                time   = timeFormat(elem.deposit_date)
 
-            deposit_id = None
-            for deposit in self.depositsTableItems:
-                clerk2  = str(deposit.clerk)
-                ci2     = str(deposit.ci)
-                amount2 = str(deposit.amount)
-                date2   = dateTimeFormat(deposit.deposit_date)
+                current = [clerk, ci, amount, date, time]
 
-                if (clerk == clerk2 and ci == ci2 and amount == amount2 and date == date2):
-                    deposit_id = deposit.deposit_id
-                    break
+                if selected == current:
+                    deposit =  self.db.getDeposits(elem.deposit_id)[0]
 
-            if deposit_id != None:
-
-                deposit = self.db.getDeposits(deposit_id)[0]
-
+            if deposit != None:
                 kwargs = [
                     ("Registrado por", str(deposit.clerk)),
                     ("Cliente",        str(deposit.ci)),
