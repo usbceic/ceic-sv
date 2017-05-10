@@ -256,8 +256,8 @@ class guiManager(QMainWindow, form_class):
         self.clientsLE0 = [self.lineE52, self.lineE53, self.lineE54, self.lineE55, self.lineE56]
         self.clientsLE1 = [self.lineE57, self.lineE58, self.lineE59, self.lineE60, self.lineE61]
         self.clientsLE2 = [self.lineE58, self.lineE59, self.lineE60, self.lineE61]
-        self.clientsLE3 = [self.lineE16, self.lineE31, self.lineE32, self.lineE67, self.lineE68]
-        self.clientsLE4 = [self.lineE31, self.lineE32, self.lineE67, self.lineE68]
+        self.clientsLE3 = [self.lineE16, self.lineE31, self.lineE32, self.lineE90, self.lineE67, self.lineE68]
+        self.clientsLE4 = [self.lineE31, self.lineE32, self.lineE90, self.lineE67, self.lineE68]
 
         # LineEdits para solo números reales
         self.clientsOF = [self.lineE68]
@@ -270,8 +270,8 @@ class guiManager(QMainWindow, form_class):
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
         # Apartado de cliente
-        self.transfersLE0 = [self.lineE47, self.lineE48, self.lineE49, self.lineE50, self.lineE51]
-        self.transfersLE1 = [self.lineE48, self.lineE49, self.lineE50]
+        self.transfersLE0 = [self.lineE47, self.lineE48, self.lineE49, self.lineE50, self.lineE159]
+        self.transfersLE1 = [self.lineE48, self.lineE49, self.lineE50, self.lineE159]
         self.transfersLE2 = [self.lineE51, self.lineE156, self.lineE157]
         self.transfersLE3 = [self.lineE158]
 
@@ -3382,9 +3382,8 @@ class guiManager(QMainWindow, form_class):
                     client = self.db.getClients(ci)[0]
                     self.lineE31.setText(client.firstname)
                     self.lineE32.setText(client.lastname)
-
-                    if client.balance < 0: self.lineE67.setText(str(-client.balance))
-                    else: self.lineE67.setText("0")
+                    self.lineE90.setText(str(client.balance))
+                    self.lineE67.setText(str(client.debt))
 
                 else:
                     self.clearLEs(self.clientsLE4)
@@ -3541,6 +3540,7 @@ class guiManager(QMainWindow, form_class):
                     self.lineE48.setText(client.firstname)
                     self.lineE49.setText(client.lastname)
                     self.lineE50.setText(str(client.balance))
+                    self.lineE159.setText(str(client.debt))
 
                 else:
                     self.clearLEs(self.transfersLE1)

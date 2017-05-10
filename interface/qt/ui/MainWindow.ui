@@ -17541,7 +17541,7 @@ QWidget:item:unchecked {
                           </widget>
                          </item>
                          <item row="1" column="1">
-                          <widget class="QLineEdit" name="lineE31">
+                          <widget class="QLineEdit" name="lineE80">
                            <property name="font">
                             <font>
                              <family>Open Sans</family>
@@ -17592,7 +17592,7 @@ QWidget:item:unchecked {
                            </property>
                           </widget>
                          </item>
-                         <item row="3" column="0">
+                         <item row="4" column="0">
                           <widget class="QLabel" name="text19">
                            <property name="font">
                             <font>
@@ -17608,7 +17608,7 @@ QWidget:item:unchecked {
                            </property>
                           </widget>
                          </item>
-                         <item row="3" column="1">
+                         <item row="4" column="1">
                           <widget class="QLineEdit" name="lineE67">
                            <property name="font">
                             <font>
@@ -17626,7 +17626,7 @@ QWidget:item:unchecked {
                            </property>
                           </widget>
                          </item>
-                         <item row="4" column="0">
+                         <item row="5" column="0">
                           <widget class="QLabel" name="text20">
                            <property name="font">
                             <font>
@@ -17642,7 +17642,7 @@ QWidget:item:unchecked {
                            </property>
                           </widget>
                          </item>
-                         <item row="4" column="1">
+                         <item row="5" column="1">
                           <widget class="QLineEdit" name="lineE68">
                            <property name="font">
                             <font>
@@ -17657,6 +17657,40 @@ QWidget:item:unchecked {
                            </property>
                            <property name="readOnly">
                             <bool>false</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="1">
+                          <widget class="QLineEdit" name="lineE90">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true"/>
+                           </property>
+                           <property name="text">
+                            <string/>
+                           </property>
+                           <property name="readOnly">
+                            <bool>true</bool>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="0">
+                          <widget class="QLabel" name="text21">
+                           <property name="font">
+                            <font>
+                             <family>Open Sans</family>
+                             <pointsize>11</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">background-color: transparent;</string>
+                           </property>
+                           <property name="text">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Saldo&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                            </property>
                           </widget>
                          </item>
@@ -17815,9 +17849,9 @@ QWidget:item:unchecked {
             <property name="geometry">
              <rect>
               <x>20</x>
-              <y>80</y>
+              <y>70</y>
               <width>231</width>
-              <height>461</height>
+              <height>481</height>
              </rect>
             </property>
             <property name="title">
@@ -18000,7 +18034,7 @@ QWidget:item:unchecked {
                      </property>
                     </widget>
                    </item>
-                   <item row="4" column="0">
+                   <item row="5" column="0">
                     <widget class="QLabel" name="text153">
                      <property name="font">
                       <font>
@@ -18016,7 +18050,7 @@ QWidget:item:unchecked {
                      </property>
                     </widget>
                    </item>
-                   <item row="4" column="1">
+                   <item row="5" column="1">
                     <widget class="QComboBox" name="cbox7">
                      <property name="cursor">
                       <cursorShape>ArrowCursor</cursorShape>
@@ -18058,6 +18092,40 @@ QWidget:item:unchecked {
                        <string>Efectivo</string>
                       </property>
                      </item>
+                    </widget>
+                   </item>
+                   <item row="4" column="1">
+                    <widget class="QLineEdit" name="lineE159">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="readOnly">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="0">
+                    <widget class="QLabel" name="text152">
+                     <property name="font">
+                      <font>
+                       <family>Open Sans</family>
+                       <pointsize>11</pointsize>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">background-color: transparent;</string>
+                     </property>
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deuda&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
                     </widget>
                    </item>
                   </layout>
@@ -18456,7 +18524,7 @@ QWidget:item:unchecked {
               <x>270</x>
               <y>40</y>
               <width>521</width>
-              <height>531</height>
+              <height>541</height>
              </rect>
             </property>
             <property name="title">
