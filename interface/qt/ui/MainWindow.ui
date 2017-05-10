@@ -13,7 +13,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>860</width>
+    <width>863</width>
     <height>710</height>
    </rect>
   </property>
@@ -670,7 +670,7 @@ QWidget:item:unchecked {
     padding: 2px;
 }
 
-#textE1, #textE2, #textE3, #textE4, #textE7 {
+#textE1, #textE2, #textE3, #textE4, #textE7, #textE8 {
     border: 1px solid #BDBDBD;
     border-radius: 2px;
     min-width: 4em;
@@ -1439,7 +1439,7 @@ QWidget:item:unchecked {
            <string notr="true"/>
           </property>
           <property name="currentIndex">
-           <number>8</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="mainPage0">
            <widget class="QGroupBox" name="groupBox0">
@@ -2311,7 +2311,7 @@ QWidget:item:unchecked {
                     </property>
                     <property name="sizeHint" stdset="0">
                      <size>
-                      <width>40</width>
+                      <width>35</width>
                       <height>20</height>
                      </size>
                     </property>
@@ -2324,7 +2324,7 @@ QWidget:item:unchecked {
                     </property>
                     <property name="sizeHint" stdset="0">
                      <size>
-                      <width>40</width>
+                      <width>35</width>
                       <height>20</height>
                      </size>
                     </property>
@@ -2440,7 +2440,7 @@ QWidget:item:unchecked {
                     </property>
                     <property name="sizeHint" stdset="0">
                      <size>
-                      <width>40</width>
+                      <width>35</width>
                       <height>20</height>
                      </size>
                     </property>
@@ -2453,7 +2453,7 @@ QWidget:item:unchecked {
                     </property>
                     <property name="sizeHint" stdset="0">
                      <size>
-                      <width>40</width>
+                      <width>35</width>
                       <height>20</height>
                      </size>
                     </property>
@@ -3470,12 +3470,12 @@ QWidget:item:unchecked {
                </column>
                <column>
                 <property name="text">
-                 <string>Descripción</string>
+                 <string>Fecha</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>Fecha</string>
+                 <string>Hora</string>
                 </property>
                </column>
               </widget>

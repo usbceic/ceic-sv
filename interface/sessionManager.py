@@ -246,6 +246,7 @@ class sessionManager(QMainWindow, loginWindow):
                 else: self.mainWindow.changeUser(user)
                 self.isOpenSession = True
                 self.mainWindow.show()
+                self.sessionAlive.emit()
                 self.hide()
 
             elif successLogin == 1:

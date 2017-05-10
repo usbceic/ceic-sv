@@ -632,7 +632,7 @@ QWidget:item:unchecked {
     padding: 2px;
 }
 
-#textE1, #textE2, #textE3, #textE4, #textE7 {
+#textE1, #textE2, #textE3, #textE4, #textE7, #textE8 {
     border: 1px solid #BDBDBD;
     border-radius: 2px;
     min-width: 4em;

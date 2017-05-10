@@ -2132,14 +2132,30 @@ class dbManager(object):
     #==============================================================================================================================================================================
 
     """
+    Método para verificar que un depósito existe
+     - Retorna True:
+        * Cuando el depósito existe
+     - Retorna False:
+        * Cuando el depósito NO existe
+    """
+    def existDeposit(self, deposit_id):
+        count = self.session.query(Deposit).filter_by(deposit_id = deposit_id).count()
+        if count == 0:
+            print("el depósito " + str(deposit_id) + " NO existe")
+            return False
+        else:
+            print("el depósito " + str(deposit_id) + " existe")
+            return True
+
+    """
     Método para crear un depósito nuevo
      - Retorna True:
         * Cuando el depósito es creado satisfactoreamente
      - Retorna False:
         * Cuando no se puede crear
     """
-    def createDeposit(self, ci, clerk, amount):
-        kwargs = {"ci" : ci, "clerk" : clerk, "amount" : amount}
+    def createDeposit(self, ci, clerk, amount, description):
+        kwargs = {"ci" : ci, "clerk" : clerk, "amount" : amount, "description" : description}
         self.session.add(Deposit(**kwargs))
         try:
             self.session.commit()
@@ -2196,11 +2212,12 @@ class dbManager(object):
     Método para buscar Depósitos
         - Retorna queryset de los depósitos que cumplan el filtro
     '''
-    def getDeposits(self, clerk = None, ci = None, amount = None, deposit_date = None, limit = None, page = 1):
-        if (clerk or ci or amount or deposit_date or limit) == None:
+    def getDeposits(self, deposit_id = None, clerk = None, ci = None, amount = None, deposit_date = None, limit = None, page = 1):
+        if (deposit_id or clerk or ci or amount or deposit_date or limit) == None:
             return self.session.query(Deposit).order_by(desc(Deposit.deposit_date)).all()
 
         kwargs = {}
+        if deposit_id != None and self.existDeposit(deposit_id): kwargs['deposit_id'] = deposit_id
         if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
         if ci != None and self.existClient(ci): kwargs['ci'] = ci
         if amount != None: kwargs['amount'] = amount

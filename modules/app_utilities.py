@@ -17,8 +17,8 @@
 ## DEPENDENCIAS:
 ###################################################################################################################################################################################
 
-# Módulo con funciones para el manejo de los navegadores web
-from webbrowser import open_new_tab
+from webbrowser import open_new_tab # Módulo con funciones para el manejo de los navegadores web
+from datetime import datetime
 
 ###################################################################################################################################################################################
 ## FUNCIONES:
@@ -70,12 +70,24 @@ def paragraphFormat(string, wrap_width = 40):
     return string
 
 # Función para dar formato de fecha y hora a una instancia de dateTime
-def dateFormat(date, dtFormat = "%d/%m/%y  %H:%M"):
+def dateTimeFormat(date, dtFormat = "%d/%m/%y %I:%M:%S %p"):
     return date.strftime(dtFormat)
 
 # Función para dar formato de fecha a una instancia de dateTime
-def onlyDateFormat(date, dFormat = "%Y-%m-%d"):
+def dateFormat(date, dFormat = "%d/%m/%y"):
     return date.strftime(dFormat)
+
+# Función para dar formato de hora a una instancia de dateTime
+def timeFormat(date, dtFormat = "%I:%M:%S %p"):
+    return date.strftime(dtFormat)
+
+# Función para convertir una fecha de string a dateTime
+def strToDateTime(string, dtFormat = "%d/%m/%y %I:%M:%S %p"):
+    return datetime.strptime(string, dtFormat)
+
+# Función para convertir una fecha de string a date
+def strToDate(string, dFormat = "%d/%m/%y"):
+    return datetime.strptime(string, dFormat)
 
 """
 Método que devuelve 0 si el objeto pasado es none, caso contrario devuelve el objeto

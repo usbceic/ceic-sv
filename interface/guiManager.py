@@ -60,7 +60,7 @@ from popUps import errorPopUp, warningPopUp, successPopUp, confirmationPopUp, au
 from validators import intValidator, floatValidator, anyCharacterValidator, validatePhoneNumber, validateEmail, validateName
 
 # Módulo con los validadores para campos de texto
-from app_utilities import getStyle, naturalFormat, paragraphFormat, dateFormat, onlyDateFormat, openLink
+from app_utilities import getStyle, naturalFormat, paragraphFormat, dateTimeFormat, dateFormat, timeFormat, openLink
 
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
@@ -1328,7 +1328,7 @@ class guiManager(QMainWindow, form_class):
             startDate = period.recorded                                              # Obtener fecha de inicio del periodo
             cash, bank = self.db.getBalance(lower_date=startDate)                    # Obtener dinero en efectivo y en banco ganado durante el periodo
             self.lineE10.setText(name)                                               # Actualizar campo de nombre del periodo
-            self.lineE11.setText(dateFormat(startDate))                              # Actualizar campo de fecha de inicio
+            self.lineE11.setText(dateFormat(startDate))                          # Actualizar campo de fecha de inicio
             self.lineE13.setText(str(cash + period.cash_total))                      # Actualizar campo de efectivo en periodo
             self.lineE14.setText(str(bank + period.total_money - period.cash_total)) # Actualizar campo de banco en periodo
 
@@ -1388,8 +1388,8 @@ class guiManager(QMainWindow, form_class):
             open_record = movements[i].open_record
             cash_balance = movements[i].cash_balance
             cash_total = str(movements[i].cash_total)
-            description = movements[i].description
             date = dateFormat(movements[i].recorded)
+            time = timeFormat(movements[i].recorded)
 
             if op_type == 0:
                 if open_record: movement = "Apertura de periodo"
@@ -1407,8 +1407,8 @@ class guiManager(QMainWindow, form_class):
             table.setItem(i, 0, QTableWidgetItem(movement))    # Tipo
             table.setItem(i, 1, QTableWidgetItem(clerk))       # Usuario
             table.setItem(i, 2, QTableWidgetItem(cash_total))  # Monto
-            table.setItem(i, 3, QTableWidgetItem(description)) # Descripción
-            table.setItem(i, 4, QTableWidgetItem(date))        # Fecha
+            table.setItem(i, 3, QTableWidgetItem(date))        # Fecha
+            table.setItem(i, 4, QTableWidgetItem(time))        # Hora
 
         self.elem_actual = 0                                      # Definir la fila que se seleccionará
         if len(movements) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
@@ -2874,7 +2874,7 @@ class guiManager(QMainWindow, form_class):
                             self.lineE38.setText(str(lot.remaining))     # Disponibilidad
 
                             # Fecha de expiración
-                            dateStr = onlyDateFormat(lot.expiration_date)
+                            dateStr = dateFormat(lot.expiration_date, "%Y-%m-%d")
                             date = QDate().fromString(dateStr, 'yyyy-MM-dd')
                             self.dtE2.setDate(date)
 
@@ -2914,7 +2914,7 @@ class guiManager(QMainWindow, form_class):
                 self.lineE38.setText(str(lot.remaining))     # Disponibilidad
 
                 # Fecha de expiración
-                dateStr = onlyDateFormat(lot.expiration_date)
+                dateStr = dateFormat(lot.expiration_date, "%Y-%m-%d")
                 date = QDate().fromString(dateStr, 'yyyy-MM-dd')
                 self.dtE2.setDate(date)
 
@@ -3128,7 +3128,7 @@ class guiManager(QMainWindow, form_class):
                 ("Proveedor",           provider.provider_name),
                 ("Teléfono",            provider.phone),
                 ("Correo",              provider.email),
-                ("Fecha de registro",   dateFormat(provider.creation_date)),
+                ("Fecha de registro",   dateTimeFormat(provider.creation_date)),
                 ("Información de pago", paragraphFormat(provider.pay_information)),
                 ("Descripción",         paragraphFormat(provider.description))
             ]
@@ -3531,7 +3531,7 @@ class guiManager(QMainWindow, form_class):
             table.setItem(i, 0, QTableWidgetItem(str(self.depositsTableItems[i].clerk)))                # Usuario
             table.setItem(i, 1, QTableWidgetItem(str(self.depositsTableItems[i].ci)))                   # Cliente
             table.setItem(i, 2, QTableWidgetItem(str(self.depositsTableItems[i].amount)))               # Monto
-            table.setItem(i, 3, QTableWidgetItem(dateFormat(self.depositsTableItems[i].deposit_date)))  # Fecha
+            table.setItem(i, 3, QTableWidgetItem(dateTimeFormat(self.depositsTableItems[i].deposit_date)))  # Fecha
 
         self.elem_actual = 0                                                     # Definir la fila que se seleccionará
         if len(self.depositsTableItems) > 0: table.selectRow(self.elem_actual)    # Seleccionar fila
@@ -3555,18 +3555,23 @@ class guiManager(QMainWindow, form_class):
                     if pay_type == "Efectivo":
                         if self.lineE158.text() != "":
                             amount = float(self.lineE158.text())
+                            if self.textE8.toPlainText() != "":
+                                description = self.textE8.toPlainText()
 
-                            # Crear depósito
-                            if self.db.createDeposit(ci, self.user, amount):
-                                # Operación exitosa
-                                successPopUp(parent = self).exec_()
+                                # Crear depósito
+                                if self.db.createDeposit(ci, self.user, amount, description):
+                                    # Operación exitosa
+                                    successPopUp(parent = self).exec_()
+                                else:
+                                    # Operación fallida
+                                    errorPopUp(parent = self).exec_()
+
+                                # Refrescar
+                                self.refreshTransfers()
+                                self.lineE47.setFocus()
+
                             else:
-                                # Operación fallida
-                                errorPopUp(parent = self).exec_()
-
-                            # Refrescar
-                            self.refreshTransfers()
-                            self.lineE47.setFocus()
+                                errorPopUp("Debe ingresar una descripción",self).exec_()
                         else:
                             errorPopUp("Debe ingresar monto a recargar",self).exec_()
 
@@ -3675,7 +3680,7 @@ class guiManager(QMainWindow, form_class):
             kwargs = [
                 ("Registrado por", str(transfer.clerk)),
                 ("Cliente",        naturalFormat(transfer.ci)),
-                ("Fecha",          dateFormat(transfer.transfer_date)),
+                ("Fecha",          dateTimeFormat(transfer.transfer_date)),
                 ("Monto",          naturalFormat(transfer.amount)),
                 ("Banco",          str(transfer.bank)),
                 ("Código",         str(transfer.confirmation_code)),
@@ -3688,16 +3693,37 @@ class guiManager(QMainWindow, form_class):
     def on_table16_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del depósito
-            deposit = self.db.getDeposits(self.table16.selectedItems()[0].text())[0]
+            item = self.table16.selectedItems()
 
-            kwargs = [
-                ("Registrado por", str(deposit.clerk)),
-                ("Cliente",        naturalFormat(deposit.ci)),
-                ("Fecha",          dateFormat(deposit.deposit_date)),
-                ("Monto",          naturalFormat(deposit.amount))
-            ]
+            clerk  = item[0].text()
+            ci     = item[1].text()
+            amount = item[2].text()
+            date   = item[3].text()
 
-            detailsPopUp(kwargs, self).exec_()
+            deposit_id = None
+            for deposit in self.depositsTableItems:
+                clerk2  = str(deposit.clerk)
+                ci2     = str(deposit.ci)
+                amount2 = str(deposit.amount)
+                date2   = dateTimeFormat(deposit.deposit_date)
+
+                if (clerk == clerk2 and ci == ci2 and amount == amount2 and date == date2):
+                    deposit_id = deposit.deposit_id
+                    break
+
+            if deposit_id != None:
+
+                deposit = self.db.getDeposits(deposit_id)[0]
+
+                kwargs = [
+                    ("Registrado por", str(deposit.clerk)),
+                    ("Cliente",        naturalFormat(deposit.ci)),
+                    ("Monto",          naturalFormat(deposit.amount)),
+                    ("Fecha",          dateTimeFormat(deposit.deposit_date)),
+                    ("Descripción",    paragraphFormat(deposit.description))
+                ]
+
+                detailsPopUp(kwargs, self).exec_()
 
     #==============================================================================================================================================================================
     # VISTA DE USUARIOS
@@ -3908,8 +3934,8 @@ class guiManager(QMainWindow, form_class):
                 ("Apellido",      collaborator.lastname),
                 ("Email",         collaborator.email),
                 ("Rango",         self.db.getRange(collaborator.permission_mask)),
-                ("Registro",      dateFormat(collaborator.creation_date)),
-                ("Última visita", dateFormat(collaborator.last_login))
+                ("Registro",      dateTimeFormat(collaborator.creation_date)),
+                ("Última visita", dateTimeFormat(collaborator.last_login))
             ]
 
             detailsPopUp(kwargs, self).exec_()
@@ -3926,8 +3952,8 @@ class guiManager(QMainWindow, form_class):
                 ("Apellido",      seller.lastname),
                 ("Email",         seller.email),
                 ("Rango",         self.db.getRange(seller.permission_mask)),
-                ("Registro",      dateFormat(seller.creation_date)),
-                ("Última visita", dateFormat(seller.last_login))
+                ("Registro",      dateTimeFormat(seller.creation_date)),
+                ("Última visita", dateTimeFormat(seller.last_login))
             ]
 
             detailsPopUp(kwargs, self).exec_()
@@ -3944,8 +3970,8 @@ class guiManager(QMainWindow, form_class):
                 ("Apellido",      admin.lastname),
                 ("Email",         admin.email),
                 ("Rango",         self.db.getRange(admin.permission_mask)),
-                ("Registro",      dateFormat(admin.creation_date)),
-                ("Última visita", dateFormat(admin.last_login))
+                ("Registro",      dateTimeFormat(admin.creation_date)),
+                ("Última visita", dateTimeFormat(admin.last_login))
             ]
 
             detailsPopUp(kwargs, self).exec_()
