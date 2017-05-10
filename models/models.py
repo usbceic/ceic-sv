@@ -571,6 +571,7 @@ class Deposit(this.Base):
     clerk             = Column(String, nullable=False)
     deposit_date      = Column(DateTime, nullable=False, default=datetime.now)
     amount            = Column(Numeric, nullable=False)
+    description       = Column(String, nullable=False)
 
     # Constraints
     __table_args__ = (
@@ -584,8 +585,8 @@ class Deposit(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.deposit_id), str(self.ci), self.clerk, str(self.deposit_date), str(self.amount))
-        template = "<Deposit(deposit_id='%s', ci='%s', clerk='%s', deposit_date='%s', amount='%s')>"
+        kwargs = (str(self.deposit_id), str(self.ci), self.clerk, str(self.deposit_date), str(self.amount), self.description)
+        template = "<Deposit(deposit_id='%s', ci='%s', clerk='%s', deposit_date='%s', amount='%s', description=='%s')>"
         return  template % kwargs
 
 #==================================================================================================================================================================================

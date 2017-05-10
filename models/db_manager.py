@@ -2095,13 +2095,16 @@ class dbManager(object):
 
     # Método para buscar transferencias
     # Retorna queryset de las transferencias que cumplan el filtro
-    def getTransfers(self, clerk = None, ci = None, limit = None, page = 1):
-        if clerk is None and ci is None and limit is None:
+    def getTransfers(self, clerk = None, ci = None, amount = None, bank = None, confirmation_code = None, limit = None, page = 1):
+        if (clerk or ci or amount or bank or confirmation_code or limit) == None:
             return self.session.query(Transfer).order_by(desc(Transfer.transfer_date)).all()
 
         kwargs = {}
         if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
         if ci != None and self.existClient(ci): kwargs['ci'] = ci
+        if amount != None: kwargs['amount'] = amount
+        if bank != None: kwargs['bank'] = bank
+        if confirmation_code != None: kwargs['confirmation_code'] = confirmation_code
 
         query = self.session.query(Transfer).filter_by(**kwargs).order_by(desc(Transfer.transfer_date))
 
@@ -2193,13 +2196,15 @@ class dbManager(object):
     Método para buscar Depósitos
         - Retorna queryset de los depósitos que cumplan el filtro
     '''
-    def getDeposits(self, clerk = None, ci = None, limit = None, page = 1):
-        if clerk is None and ci is None and limit is None:
+    def getDeposits(self, clerk = None, ci = None, amount = None, deposit_date = None, limit = None, page = 1):
+        if (clerk or ci or amount or deposit_date or limit) == None:
             return self.session.query(Deposit).order_by(desc(Deposit.deposit_date)).all()
 
         kwargs = {}
         if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
         if ci != None and self.existClient(ci): kwargs['ci'] = ci
+        if amount != None: kwargs['amount'] = amount
+        if deposit_date != None: kwargs['deposit_date'] = deposit_date
 
         query = self.session.query(Deposit).filter_by(**kwargs).order_by(desc(Deposit.deposit_date))
 
