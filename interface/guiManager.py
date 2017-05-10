@@ -182,13 +182,14 @@ class guiManager(QMainWindow, form_class):
         self.tablesPages = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         self.tablesTotalPages = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
-
-        self.depositsTableItems = []
+        # Contenido de las tablas
+        self.depositsTableItems  = []
         self.transfersTableItems = []
-        self.usersTableItems0 = []
-        self.usersTableItems1 = []
-        self.usersTableItems2 = []
+        self.usersTableItems0    = []
+        self.usersTableItems1    = []
+        self.usersTableItems2    = []
         self.providersTableItems = []
+        self.movementsTableItems = []
 
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE CAJA
@@ -1375,34 +1376,39 @@ class guiManager(QMainWindow, form_class):
                 total += float(self.calc1[i].text())*float(legalTenders[i])
         self.lineE79.setText(naturalFormat(total))
 
+    # Método para convertir el identificador númerico de tipo de operación a un identificador sde tipo string
+    def opTypeConversion(self, op_type, open_record, cash_balance):
+        if op_type == 0:
+            if open_record: movement = "Apertura de periodo"
+            else: movement = "Cierre de periodo"
+        elif op_type == 1:
+            if open_record: movement = "Apertura de caja"
+            else: movement = "Cierre caja"
+        elif op_type == 3:
+            if cash_balance > 0: movement = "Ingreso en efectivo"
+            else: movement = "Ingreso en banco"
+        else:
+            if cash_balance > 0: movement = "Egreso en efectivo"
+            else: movement = "Egreso en banco"
+
+        return movement
+
     # Método para refrescar la tabla de movimientos de caja
     def updateMovementsTable(self):
         table = self.table15
-        movements = self.db.getMovements(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
+        self.movementsTableItems = self.db.getMovements(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
-        self.clearTable(table)                                                         # Vaciar la tabla
-        table.setRowCount(len(movements))                                              # Contador de filas
-        for i in range(len(movements)):                                                # Llenar tabla
-            op_type = movements[i].op_type
-            clerk = movements[i].clerk
-            open_record = movements[i].open_record
-            cash_balance = movements[i].cash_balance
-            cash_total = str(movements[i].cash_total)
-            date = dateFormat(movements[i].recorded)
-            time = timeFormat(movements[i].recorded)
-
-            if op_type == 0:
-                if open_record: movement = "Apertura de periodo"
-                else: movement = "Cierre de periodo"
-            elif op_type == 1:
-                if open_record: movement = "Apertura de caja"
-                else: movement = "Cierre caja"
-            elif op_type == 3:
-                if cash_balance > 0: movement = "Ingreso en efectivo"
-                else: movement = "Ingreso en banco"
-            else:
-                if cash_balance > 0: movement = "Egreso en efectivo"
-                else: movement = "Egreso en banco"
+        self.clearTable(table)                                             # Vaciar la tabla
+        table.setRowCount(len(self.movementsTableItems))                   # Contador de filas
+        for i in range(len(self.movementsTableItems)):                     # Llenar tabla
+            op_type      = self.movementsTableItems[i].op_type
+            clerk        = self.movementsTableItems[i].clerk
+            open_record  = self.movementsTableItems[i].open_record
+            cash_balance = self.movementsTableItems[i].cash_balance
+            cash_total   = str(self.movementsTableItems[i].cash_total)
+            date         = dateFormat(self.movementsTableItems[i].recorded)
+            time         = timeFormat(self.movementsTableItems[i].recorded)
+            movement     = self.opTypeConversion(op_type, open_record, cash_balance)
 
             table.setItem(i, 0, QTableWidgetItem(movement))    # Tipo
             table.setItem(i, 1, QTableWidgetItem(clerk))       # Usuario
@@ -1411,7 +1417,7 @@ class guiManager(QMainWindow, form_class):
             table.setItem(i, 4, QTableWidgetItem(time))        # Hora
 
         self.elem_actual = 0                                      # Definir la fila que se seleccionará
-        if len(movements) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
+        if len(self.movementsTableItems) > 0: table.selectRow(self.elem_actual)  # Seleccionar fila
         table.resizeColumnsToContents()                           # Redimensionar columnas segun el contenido
         self.setupTable(table, 2)                                 # Reconfigurar tabla
 
@@ -1708,6 +1714,47 @@ class guiManager(QMainWindow, form_class):
     def on_calcLE14_textChanged(self):
         if self.textChanged():
             self.executeCalc(self.legalTenders)
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # TABLAS
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Clickera una fila de la tabla de movimientos
+    def on_table15_itemClicked(self, item):
+        if self.rowChanged():
+            # Obtener la información completa del movimiento
+            item = self.table15.selectedItems()
+            selected = [item[0].text(), item[1].text(), item[2].text(), item[3].text(), item[4].text()]
+
+            movement = None
+            for elem in self.movementsTableItems:
+                op_type      = elem.op_type
+                open_record  = elem.open_record
+                cash_balance = elem.cash_balance
+
+                op_name = self.opTypeConversion(op_type, open_record, cash_balance)
+                clerk   = elem.clerk
+                amount  = str(elem.cash_total)
+                date    = dateFormat(elem.recorded)
+                time    = timeFormat(elem.recorded)
+
+                current = [op_name, clerk, amount, date, time]
+
+                if selected == current:
+                    movement = current + [paragraphFormat(elem.description)]
+                    break
+
+            if movement != None:
+                kwargs = [
+                    ("Tipo",        movement[0]),
+                    ("Usuario",     movement[1]),
+                    ("Monto",       movement[2]),
+                    ("Fecha",       movement[3]),
+                    ("Hora",        movement[4]),
+                    ("Descripción", movement[5])
+                ]
+
+                detailsPopUp(kwargs, self).exec_()
 
     #==============================================================================================================================================================================
     # VISTA DE VENTAS
