@@ -159,6 +159,7 @@ class sessionManager(QMainWindow, loginWindow):
     # Fijar tamaño de la ventana
     def setSize(self):
         self.setFixedSize(self.width(), self.height())
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowMaximizeButtonHint)
 
     # Establecer el tema de la interfáz
     def setStyle(self, theme):

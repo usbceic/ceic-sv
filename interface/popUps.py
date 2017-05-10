@@ -46,6 +46,9 @@ popUp3 = loadUiType(join(UIpath, "confirmationPopUp.ui"))[0]   # Cargar platilla
 popUp4 = loadUiType(join(UIpath, "authorizationPopUp.ui"))[0]  # Cargar platilla para el authorizationPopup
 popUp5 = loadUiType(join(UIpath, "detailsPopUp.ui"))[0]        # Cargar platilla para el detailsPopup
 
+# Flags para los elementos del marco de la ventana
+dialogFlags = (Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint) & ~Qt.WindowMaximizeButtonHint
+
 ###################################################################################################################################################################################
 ## DECLARACIÓN DEL POPUP PARA ERRORES
 ###################################################################################################################################################################################
@@ -67,8 +70,8 @@ class errorPopUp(QDialog, popUp0):
         if message != None: self.dtitle0.setText(message)
 
         # Configurar resolucion del popUp
-        self.setMinimumSize(self.sizeHint())
-        self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
+        self.setFixedSize(self.sizeHint())
+        self.setWindowFlags(dialogFlags)
 
         # Configurar tema
         self.stylePath = join(stylesPath, "errorPopUp")
@@ -125,8 +128,8 @@ class warningPopUp(QDialog, popUp1):
         if message != None: self.dtitle0.setText(message)
 
         # Configurar resolucion del popUp
-        self.setMinimumSize(self.sizeHint())
-        self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
+        self.setFixedSize(self.sizeHint())
+        self.setWindowFlags(dialogFlags)
 
         # Configurar tema
         self.stylePath = join(stylesPath, "warningPopUp")
@@ -183,8 +186,8 @@ class successPopUp(QDialog, popUp2):
         if message != None: self.dtitle0.setText(message)
 
         # Configurar resolucion del popUp
-        self.setMinimumSize(self.sizeHint())
-        self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
+        self.setFixedSize(self.sizeHint())
+        self.setWindowFlags(dialogFlags)
 
         # Configurar tema
         self.stylePath = join(stylesPath, "successPopUp")
@@ -244,8 +247,8 @@ class confirmationPopUp(QDialog, popUp3):
         self.confirmation = False
 
         # Configurar resolucion del popUp
-        self.setMinimumSize(self.sizeHint())
-        self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
+        self.setFixedSize(self.sizeHint())
+        self.setWindowFlags(dialogFlags)
 
         # Configurar tema
         self.stylePath = join(stylesPath, "confirmationPopUp")
@@ -313,8 +316,8 @@ class authorizationPopUp(QDialog, popUp4):
         self.value0, self.value1 = None, None
 
         # Configurar resolucion del popUp
-        self.setMinimumSize(self.sizeHint())
-        self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
+        self.setFixedSize(self.sizeHint())
+        self.setWindowFlags(dialogFlags)
 
         # Configurar tema
         self.stylePath = join(stylesPath, "authorizationPopUp")
@@ -382,8 +385,8 @@ class detailsPopUp(QDialog, popUp5):
         self.loadDetails(details)
 
         # Configurar resolucion del popUp
-        self.setMinimumSize(self.sizeHint())
-        self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
+        self.setFixedSize(self.sizeHint())
+        self.setWindowFlags(dialogFlags)
 
         # Configurar tema
         self.stylePath = join(stylesPath, "detailsPopUp")

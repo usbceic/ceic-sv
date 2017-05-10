@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>detailsPopUp</class>
  <widget class="QDialog" name="detailsPopUp">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,6 +15,10 @@
   </property>
   <property name="windowTitle">
    <string>Details</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../resources/gui.qrc">
+    <normaloff>:/logo/logo</normaloff>:/logo/logo</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">/*#########################################################
@@ -67,6 +74,9 @@ QLabel {
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinimumSize</enum>
+   </property>
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -131,6 +141,8 @@ QLabel {
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/gui.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -182,6 +182,13 @@ class guiManager(QMainWindow, form_class):
         self.tablesPages = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         self.tablesTotalPages = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
+
+        self.depositsTableItems = []
+        self.transfersTableItems = []
+        self.usersTableItems0 = []
+        self.usersTableItems1 = []
+        self.usersTableItems2 = []
+
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # LISTAS PARA LA VISTA DE CAJA
         #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -364,7 +371,7 @@ class guiManager(QMainWindow, form_class):
     # Fijar tamaño de la ventana
     def setSize(self):
         self.setFixedSize(self.width(), self.height())
-        #self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
+        self.setWindowFlags(self.windowFlags() & ~Qt.WindowMaximizeButtonHint)
 
     #==============================================================================================================================================================================
     # MÉTODOS GENERALES MULTIPROPÓSITOS
@@ -3442,20 +3449,20 @@ class guiManager(QMainWindow, form_class):
     # Método para refrescar la tabla de transferencias
     def updateDepositsTable(self):
         table = self.table16
-        deposits = self.db.getDeposits(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
+        self.depositsTableItems = self.db.getDeposits(limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
 
-        self.clearTable(table)                                                           # Vaciar la tabla
-        table.setRowCount(len(deposits))                                                 # Contador de filas
-        for i in range(len(deposits)):                                                   # Llenar tabla
-            table.setItem(i, 0, QTableWidgetItem(str(deposits[i].clerk)))                # Usuario
-            table.setItem(i, 1, QTableWidgetItem(str(deposits[i].ci)))                   # Cliente
-            table.setItem(i, 2, QTableWidgetItem(str(deposits[i].amount)))               # Monto
-            table.setItem(i, 3, QTableWidgetItem(dateFormat(deposits[i].deposit_date)))  # Fecha
+        self.clearTable(table)                                                                         # Vaciar la tabla
+        table.setRowCount(len(self.depositsTableItems))                                                 # Contador de filas
+        for i in range(len(self.depositsTableItems)):                                                   # Llenar tabla
+            table.setItem(i, 0, QTableWidgetItem(str(self.depositsTableItems[i].clerk)))                # Usuario
+            table.setItem(i, 1, QTableWidgetItem(str(self.depositsTableItems[i].ci)))                   # Cliente
+            table.setItem(i, 2, QTableWidgetItem(str(self.depositsTableItems[i].amount)))               # Monto
+            table.setItem(i, 3, QTableWidgetItem(dateFormat(self.depositsTableItems[i].deposit_date)))  # Fecha
 
-        self.elem_actual = 0                                            # Definir la fila que se seleccionará
-        if len(deposits) > 0: table.selectRow(self.elem_actual)         # Seleccionar fila
-        table.resizeColumnsToContents()                                 # Redimensionar columnas según el contenido
-        self.setupTable(table, 3)                                       # Reconfigurar tabla
+        self.elem_actual = 0                                                     # Definir la fila que se seleccionará
+        if len(self.depositsTableItems) > 0: table.selectRow(self.elem_actual)    # Seleccionar fila
+        table.resizeColumnsToContents()                                          # Redimensionar columnas según el contenido
+        self.setupTable(table, 3)                                                # Reconfigurar tabla
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # BOTONES
@@ -3578,7 +3585,7 @@ class guiManager(QMainWindow, form_class):
     # TABLAS
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    # Cambio de selección en la factura
+    # Clickera una fila de la tabla de transferencias
     def on_table14_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa de la transferencia
@@ -3592,6 +3599,21 @@ class guiManager(QMainWindow, form_class):
                 ("Banco",          str(transfer.bank)),
                 ("Código",         str(transfer.confirmation_code)),
                 ("Descripción",    paragraphFormat(transfer.description))
+            ]
+
+            detailsPopUp(kwargs, self).exec_()
+
+    # Clickera una fila de la tabla de depósitos
+    def on_table16_itemClicked(self, item):
+        if self.rowChanged():
+            # Obtener la información completa del depósito
+            deposit = self.depositsTableItems[self.table16.selectedItems()[0].row()]
+
+            kwargs = [
+                ("Registrado por", str(deposit.clerk)),
+                ("Cliente",        naturalFormat(deposit.ci)),
+                ("Fecha",          dateFormat(deposit.deposit_date)),
+                ("Monto",          naturalFormat(deposit.amount))
             ]
 
             detailsPopUp(kwargs, self).exec_()
@@ -3628,6 +3650,11 @@ class guiManager(QMainWindow, form_class):
         else: table = self.table8
 
         users = self.db.getUsers(permission_mask=permission_mask, limit=self.pageLimit, page=self.tablesPages[self.tables.index(table)])
+
+        if permission_mask == 0: self.usersTableItems0 = users
+        elif permission_mask == 1: self.usersTableItems1 = users
+        else: self.usersTableItems2 = users
+
         self.clearTable(table)                                             # Vaciar la tabla
         table.setRowCount(len(users))                                      # Contador de filas
         for i in range(len(users)):                                        # Llenar tabla
@@ -3783,6 +3810,64 @@ class guiManager(QMainWindow, form_class):
                     self.lineE64.setText(user.lastname)
                     self.lineE65.setText(user.email)
                     self.lineE66.setText(self.db.getRange(user.permission_mask))
+
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # TABLAS
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Clickera una fila de la tabla de colaboradores
+    def on_table10_itemClicked(self, item):
+        if self.rowChanged():
+            # Obtener la información completa del colaborador
+            collaborator = self.usersTableItems0[self.table10.selectedItems()[0].row()]
+
+            kwargs = [
+                ("Username",      collaborator.username),
+                ("Nombre",        collaborator.firstname),
+                ("Apellido",      collaborator.lastname),
+                ("Email",         collaborator.email),
+                ("Rango",         self.db.getRange(collaborator.permission_mask)),
+                ("Registro",      dateFormat(collaborator.creation_date)),
+                ("Última visita", dateFormat(collaborator.last_login))
+            ]
+
+            detailsPopUp(kwargs, self).exec_()
+
+    # Clickera una fila de la tabla de vendedores
+    def on_table9_itemClicked(self, item):
+        if self.rowChanged():
+            # Obtener la información completa del vendedor
+            seller = self.usersTableItems1[self.table9.selectedItems()[0].row()]
+
+            kwargs = [
+                ("Username",      seller.username),
+                ("Nombre",        seller.firstname),
+                ("Apellido",      seller.lastname),
+                ("Email",         seller.email),
+                ("Rango",         self.db.getRange(seller.permission_mask)),
+                ("Registro",      dateFormat(seller.creation_date)),
+                ("Última visita", dateFormat(seller.last_login))
+            ]
+
+            detailsPopUp(kwargs, self).exec_()
+
+    # Clickera una fila de la tabla de administradores
+    def on_table8_itemClicked(self, item):
+        if self.rowChanged():
+            # Obtener la información completa del administrador
+            admin = self.usersTableItems2[self.table8.selectedItems()[0].row()]
+
+            kwargs = [
+                ("Username",      admin.username),
+                ("Nombre",        admin.firstname),
+                ("Apellido",      admin.lastname),
+                ("Email",         admin.email),
+                ("Rango",         self.db.getRange(admin.permission_mask)),
+                ("Registro",      dateFormat(admin.creation_date)),
+                ("Última visita", dateFormat(admin.last_login))
+            ]
+
+            detailsPopUp(kwargs, self).exec_()
 
     #==============================================================================================================================================================================
     # VISTA DE CONFIGURACIONES
