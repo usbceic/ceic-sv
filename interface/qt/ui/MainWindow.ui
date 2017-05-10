@@ -15006,6 +15006,9 @@ QWidget:item:unchecked {
                  <property name="selectionBehavior">
                   <enum>QAbstractItemView::SelectRows</enum>
                  </property>
+                 <property name="sortingEnabled">
+                  <bool>true</bool>
+                 </property>
                  <attribute name="verticalHeaderStretchLastSection">
                   <bool>false</bool>
                  </attribute>
@@ -18428,6 +18431,56 @@ QWidget:item:unchecked {
                     </layout>
                    </item>
                    <item>
+                    <layout class="QGridLayout" name="gridLayout_60">
+                     <item row="0" column="0">
+                      <spacer name="horizontalSpacer_87">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item row="0" column="2">
+                      <spacer name="horizontalSpacer_89">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item row="0" column="1">
+                      <layout class="QVBoxLayout" name="verticalLayout_79">
+                       <item>
+                        <widget class="QLabel" name="text224">
+                         <property name="font">
+                          <font>
+                           <family>Open Sans</family>
+                           <pointsize>11</pointsize>
+                          </font>
+                         </property>
+                         <property name="text">
+                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Descripción&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPlainTextEdit" name="textE8"/>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
                     <spacer name="verticalSpacer_26">
                      <property name="orientation">
                       <enum>Qt::Vertical</enum>
@@ -18620,6 +18673,9 @@ QWidget:item:unchecked {
                          <property name="selectionBehavior">
                           <enum>QAbstractItemView::SelectRows</enum>
                          </property>
+                         <property name="sortingEnabled">
+                          <bool>true</bool>
+                         </property>
                          <attribute name="verticalHeaderStretchLastSection">
                           <bool>false</bool>
                          </attribute>
@@ -18754,6 +18810,9 @@ QWidget:item:unchecked {
                          </property>
                          <property name="selectionBehavior">
                           <enum>QAbstractItemView::SelectRows</enum>
+                         </property>
+                         <property name="sortingEnabled">
+                          <bool>true</bool>
                          </property>
                          <attribute name="verticalHeaderStretchLastSection">
                           <bool>false</bool>
@@ -20204,6 +20263,9 @@ QWidget:item:unchecked {
                          <property name="selectionBehavior">
                           <enum>QAbstractItemView::SelectRows</enum>
                          </property>
+                         <property name="sortingEnabled">
+                          <bool>true</bool>
+                         </property>
                          <attribute name="verticalHeaderStretchLastSection">
                           <bool>false</bool>
                          </attribute>
@@ -20334,6 +20396,9 @@ QWidget:item:unchecked {
                          <property name="selectionBehavior">
                           <enum>QAbstractItemView::SelectRows</enum>
                          </property>
+                         <property name="sortingEnabled">
+                          <bool>true</bool>
+                         </property>
                          <attribute name="verticalHeaderStretchLastSection">
                           <bool>false</bool>
                          </attribute>
@@ -20463,6 +20528,9 @@ QWidget:item:unchecked {
                          </property>
                          <property name="selectionBehavior">
                           <enum>QAbstractItemView::SelectRows</enum>
+                         </property>
+                         <property name="sortingEnabled">
+                          <bool>true</bool>
                          </property>
                          <attribute name="verticalHeaderStretchLastSection">
                           <bool>false</bool>

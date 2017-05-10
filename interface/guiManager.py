@@ -2926,14 +2926,14 @@ class guiManager(QMainWindow, form_class):
     def on_table0_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del producto
-            product = self.productsInfoAvailable[self.table0.selectedItems()[0].row()]
+            product = self.db.getProductByNameOrID(self.table0.selectedItems()[0].text())[0]
 
             kwargs = [
-                ("Nombre",      product[1]),
-                ("Precio",      naturalFormat(product[2])),
-                ("Categoria",   product[3]),
-                ("Lotes",       str(product[4])),
-                ("Disp. total", str(product[5])),
+                ("Nombre",      product.product_name),
+                ("Precio",      naturalFormat(product.price)),
+                ("Categoria",   product.category),
+                ("Lotes",       str(product.remaining_lots)),
+                ("Disp. total", str(product.remaining)),
             ]
 
             detailsPopUp(kwargs, self).exec_()
@@ -2942,14 +2942,14 @@ class guiManager(QMainWindow, form_class):
     def on_table1_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del producto
-            product = self.productsInfoNotAvailable[self.table1.selectedItems()[0].row()]
+            product = self.db.getProductByNameOrID(self.table1.selectedItems()[0].text())[0]
 
             kwargs = [
-                ("Nombre",      product[1]),
-                ("Precio",      naturalFormat(product[2])),
-                ("Categoria",   product[3]),
-                ("Lotes",       str(product[4])),
-                ("Disp. total", str(product[5])),
+                ("Nombre",      product.product_name),
+                ("Precio",      naturalFormat(product.price)),
+                ("Categoria",   product.category),
+                ("Lotes",       str(product.remaining_lots)),
+                ("Disp. total", str(product.remaining)),
             ]
 
             detailsPopUp(kwargs, self).exec_()
@@ -2958,14 +2958,14 @@ class guiManager(QMainWindow, form_class):
     def on_table2_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del producto
-            product = self.productsInfo[self.table2.selectedItems()[0].row()]
+            product = self.db.getProductByNameOrID(self.table2.selectedItems()[0].text())[0]
 
             kwargs = [
-                ("Nombre",      product[1]),
-                ("Precio",      naturalFormat(product[2])),
-                ("Categoria",   product[3]),
-                ("Lotes",       str(product[4])),
-                ("Disp. total", str(product[5])),
+                ("Nombre",      product.product_name),
+                ("Precio",      naturalFormat(product.price)),
+                ("Categoria",   product.category),
+                ("Lotes",       str(product.remaining_lots)),
+                ("Disp. total", str(product.remaining)),
             ]
 
             detailsPopUp(kwargs, self).exec_()
@@ -3122,7 +3122,7 @@ class guiManager(QMainWindow, form_class):
     def on_table13_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa de la transferencia
-            provider = self.providersTableItems[self.table13.selectedItems()[0].row()]
+            provider = self.db.getProvider(self.table13.selectedItems()[0].text())
 
             kwargs = [
                 ("Proveedor",           provider.provider_name),
@@ -3663,7 +3663,14 @@ class guiManager(QMainWindow, form_class):
     def on_table14_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa de la transferencia
-            transfer = self.transferTableItems[self.table14.selectedItems()[0].row()]
+            item = self.table14.selectedItems()
+
+            kwargs = {
+                "bank"              : item[3].text(),
+                "confirmation_code" : item[4].text()
+            }
+
+            transfer = self.db.getTransfers(**kwargs)[0]
 
             kwargs = [
                 ("Registrado por", str(transfer.clerk)),
@@ -3681,7 +3688,7 @@ class guiManager(QMainWindow, form_class):
     def on_table16_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del depósito
-            deposit = self.depositsTableItems[self.table16.selectedItems()[0].row()]
+            deposit = self.db.getDeposits(self.table16.selectedItems()[0].text())[0]
 
             kwargs = [
                 ("Registrado por", str(deposit.clerk)),
