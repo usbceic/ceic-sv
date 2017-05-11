@@ -3175,10 +3175,10 @@ class guiManager(QMainWindow, form_class):
                 ("Proveedor",          provider.provider_name),
                 ("Teléfono",           provider.phone),
                 ("Correo",             provider.email),
-                ("Fecha - registro",   dateFormat(provider.creation_date)),
-                ("Hora - registro",    timeFormat(provider.creation_date)),
+                ("Descripción",        paragraphFormat(provider.description)),
                 ("Info. de pago",      paragraphFormat(provider.pay_information)),
-                ("Descripción",        paragraphFormat(provider.description))
+                ("Fecha de registro",  dateFormat(provider.creation_date)),
+                ("Hora de registro",   timeFormat(provider.creation_date))
             ]
 
             detailsPopUp(kwargs, self).exec_()
