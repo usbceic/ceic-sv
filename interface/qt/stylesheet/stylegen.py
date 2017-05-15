@@ -27,8 +27,8 @@ from os.path import isfile, isdir, join     # Funciones para manejos de paths y 
 
 currentPath  = getcwd()
 palettePath  = join(currentPath, "palettes")
-objectNames  = ["MainWindow", "LoginWindow", "errorPopUp", "warningPopUp", "successPopUp", "confirmationPopUp", "authorizationPopUp", "detailsPopUp"]
-templatesID  = ["main", "login", "error-popup", "warning-popup", "success-popup", "confirmation-popup", "authorization-popup", "details-popup"]
+objectNames  = ["MainWindow", "LoginWindow", "errorPopUp", "warningPopUp", "successPopUp", "confirmationPopUp", "authorizationPopUp", "detailsPopUp", "especialPopUp0"]
+templatesID  = ["main", "login", "error-popup", "warning-popup", "success-popup", "confirmation-popup", "authorization-popup", "details-popup", "especial-popup-0"]
 templatesExt = "-gen.qss"
 regexColor   = '#[0-9A-F]{6}'
 

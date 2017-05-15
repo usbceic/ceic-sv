@@ -691,7 +691,8 @@ class dbManager(object):
      - Retorna un queryset con el resultado de la búsqueda
     """
     def getProductByNameOrID(self, product_name=None, product_id=None, available=None):
-        product_name = product_name.title().strip()
+        if product_name != None: product_name = product_name.title().strip()
+
         filters = and_()
         if (product_name and product_id) != None: filters = and_(filters, or_(Product.product_name == product_name, Product.product_id == product_id))
         elif product_name != None: filters = and_(filters, Product.product_name == product_name)
@@ -1582,6 +1583,22 @@ class dbManager(object):
     def checkInClient(self, ci):
         return self.updateClient(ci, last_seen=datetime.now())
 
+    """
+    Método para obtener las compras con deudas sin pagar de un cliente especifico
+     - Retorna un queryset con los id de las compras
+    """
+    def getClientPurchasesWithDebt(self, ci):
+        query = self.session.query(Purchase.purchase_id)\
+        .join(Debt, Purchase.purchase_id == Debt.purchase_id)\
+        .filter(Debt.pay_date == None, Purchase.ci == ci)\
+        .all()
+
+        purchases = []
+        for purchase in query:
+            purchases.append(purchase[0])
+
+        return purchases
+
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE ORDENES DE COMPRAS (PURCHASE):
     #==============================================================================================================================================================================
@@ -1633,6 +1650,49 @@ class dbManager(object):
     """
     def getPurchaseCI(self, purchase_id):
         return self.session.query(Purchase.ci).filter_by(purchase_id=purchase_id).all()[0]
+
+    """
+    Método para obtener un resumen de la info de una compra
+     - Retorna la cédula del cliente que realizo la compra especificada
+    """
+    def getPurchaseResume(self, purchase_id):
+        purchase      = self.session.query(Purchase).filter_by(purchase_id=purchase_id).one()
+        product_lists = self.session.query(Product_list).filter_by(purchase_id=purchase_id).all()
+        checkouts     = self.session.query(Checkout).filter_by(purchase_id=purchase_id).all()
+        debt          = self.session.query(Debt).filter_by(purchase_id=purchase_id).one()
+
+        productsInfo = ""
+        for product_list in product_lists:
+            product_id   = product_list.product_id
+            price        = str(product_list.price)
+            amount       = str(product_list.amount) if product_list.amount > 1 else "un"
+            subtotal     = str(product_list.price*product_list.amount)
+            product_name = self.getProductByNameOrID(product_id=product_id)[0].product_name
+
+            # Añadir información de la lista de productos
+            productsInfo += subtotal + " producto de " + amount + " " + product_name + " a " + price + ". "
+
+        checkoutsInfo = ""
+        for checkout in checkouts:
+            amount  = str(checkout.amount)
+            payType = "saldo" if checkout.with_balance else "efectivo"
+
+            # Añadir información del pago
+            if not checkout.with_balance or (debt != None and checkout.amount != debt.amount):
+                checkoutsInfo += "Un pago en " + payType + " por " + amount + ". "
+
+        resume = {
+            "clerk"     : purchase.clerk,
+            "client"    : purchase.ci,
+            "total"     : purchase.total,
+            "date"      : purchase.purchase_date,
+            "products"  : productsInfo,
+            "checkouts" : checkoutsInfo
+        }
+
+        if debt != None: resume["debt"] = debt.amount
+
+        return resume
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LISTAS DE PRODUCTOS:

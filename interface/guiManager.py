@@ -54,7 +54,7 @@ from math import ceil
 from db_manager import dbManager
 
 # Módulo con las clases para los popUp
-from popUps import errorPopUp, warningPopUp, successPopUp, confirmationPopUp, authorizationPopUp, detailsPopUp
+from popUps import errorPopUp, warningPopUp, successPopUp, confirmationPopUp, authorizationPopUp, detailsPopUp, especialPopUp0
 
 # Módulo con los validadores para campos de texto
 from validators import intValidator, floatValidator, anyCharacterValidator, validatePhoneNumber, validateEmail, validateName
@@ -1719,7 +1719,7 @@ class guiManager(QMainWindow, form_class):
     # TABLAS
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    # Clickera una fila de la tabla de movimientos
+    # Clickear una fila de la tabla de movimientos
     def on_table15_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del movimiento
@@ -2969,7 +2969,7 @@ class guiManager(QMainWindow, form_class):
     # TABLAS
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    # Clickera una fila de la tabla de productos diponibles
+    # Clickear una fila de la tabla de productos diponibles
     def on_table0_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del producto
@@ -2985,7 +2985,7 @@ class guiManager(QMainWindow, form_class):
 
             detailsPopUp(kwargs, self).exec_()
 
-    # Clickera una fila de la tabla de productos diponibles
+    # Clickear una fila de la tabla de productos no diponibles
     def on_table1_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del producto
@@ -3001,7 +3001,7 @@ class guiManager(QMainWindow, form_class):
 
             detailsPopUp(kwargs, self).exec_()
 
-    # Clickera una fila de la tabla de productos diponibles
+    # Clickear una fila de la tabla de todos los productos
     def on_table2_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del producto
@@ -3136,7 +3136,7 @@ class guiManager(QMainWindow, form_class):
             else:
                 errorPopUp("Falta nombre de proveedor",self).exec_()
 
-    #Botón cancelar de editar proveedor
+    # Botón cancelar de editar proveedor
     def on_cancelpb23_pressed(self):
         self.clearLEs(self.providersLE1)
         self.clearTEs(self.providersTE1)
@@ -3165,10 +3165,10 @@ class guiManager(QMainWindow, form_class):
     # TABLAS
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    # Clickera una fila de la tabla de transferencias
+    # Clickear una fila de la tabla de proveedores
     def on_table13_itemClicked(self, item):
         if self.rowChanged():
-            # Obtener la información completa de la transferencia
+            # Obtener la información completa del proveedor
             provider = self.db.getProvider(self.table13.selectedItems()[0].text())
 
             kwargs = [
@@ -3530,6 +3530,35 @@ class guiManager(QMainWindow, form_class):
             else:
                 self.clearLEs(self.clientsLE4)
 
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # TABLAS
+    #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    # Clickear una fila de la tabla de clientes endeudados
+    def on_table6_itemClicked(self, item):
+        if self.rowChanged():
+            # Obtener la información completa del cliente
+            ci = self.table6.selectedItems()[0].text()
+            especialPopUp0(ci, self.db, self).exec_()
+
+    # Clickear una fila de la tabla de clientes No endeudados
+    def on_table7_itemClicked(self, item):
+        if self.rowChanged():
+            # Obtener la información completa del cliente
+            client = self.db.getClients(self.table7.selectedItems()[0].text())[0]
+
+            kwargs = [
+                ("Cédula",        str(client.ci)),
+                ("Nombre",        client.firstname),
+                ("Apellido",      client.lastname),
+                ("Teléfono",      client.phone),
+                ("Correo",        client.email),
+                ("Saldo",         str(client.balance)),
+                ("Última visita", dateTimeFormat(client.last_seen)),
+            ]
+
+            detailsPopUp(kwargs, self).exec_()
+
     #==============================================================================================================================================================================
     # VISTA DE RECARGAS
     #==============================================================================================================================================================================
@@ -3583,7 +3612,7 @@ class guiManager(QMainWindow, form_class):
             table.setItem(i, 4, QTableWidgetItem(timeFormat(self.depositsTableItems[i].deposit_date))) # Hora
 
         self.elem_actual = 0                                                     # Definir la fila que se seleccionará
-        if len(self.depositsTableItems) > 0: table.selectRow(self.elem_actual)    # Seleccionar fila
+        if len(self.depositsTableItems) > 0: table.selectRow(self.elem_actual)   # Seleccionar fila
         table.resizeColumnsToContents()                                          # Redimensionar columnas según el contenido
         self.setupTable(table, 3)                                                # Reconfigurar tabla
 
@@ -3713,7 +3742,7 @@ class guiManager(QMainWindow, form_class):
     # TABLAS
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    # Clickera una fila de la tabla de transferencias
+    # Clickear una fila de la tabla de transferencias
     def on_table14_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa de la transferencia
@@ -3739,7 +3768,7 @@ class guiManager(QMainWindow, form_class):
 
             detailsPopUp(kwargs, self).exec_()
 
-    # Clickera una fila de la tabla de depósitos
+    # Clickear una fila de la tabla de depósitos
     def on_table16_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del depósito
@@ -3968,7 +3997,7 @@ class guiManager(QMainWindow, form_class):
     # TABLAS
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    # Clickera una fila de la tabla de colaboradores
+    # Clickear una fila de la tabla de colaboradores
     def on_table10_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del colaborador
@@ -3986,7 +4015,7 @@ class guiManager(QMainWindow, form_class):
 
             detailsPopUp(kwargs, self).exec_()
 
-    # Clickera una fila de la tabla de vendedores
+    # Clickear una fila de la tabla de vendedores
     def on_table9_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del vendedor
@@ -4004,7 +4033,7 @@ class guiManager(QMainWindow, form_class):
 
             detailsPopUp(kwargs, self).exec_()
 
-    # Clickera una fila de la tabla de administradores
+    # Clickear una fila de la tabla de administradores
     def on_table8_itemClicked(self, item):
         if self.rowChanged():
             # Obtener la información completa del administrador

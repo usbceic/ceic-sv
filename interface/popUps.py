@@ -30,10 +30,10 @@ for current in path:
 ## MODÚLOS:
 ###################################################################################################################################################################################
 
-from PyQt4.uic import loadUiType         # Módulo con las herramientas parar trabajar los archivos .ui
-from PyQt4.QtGui import QDialog, QLabel  # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject # Módulo con estructuras de Qt
-from app_utilities import getStyle       # Módulo con los validadores para campos de texto
+from PyQt4.uic import loadUiType                   # Módulo con las herramientas parar trabajar los archivos .ui
+from PyQt4.QtGui import QDialog, QLabel            # Módulo con procedimientos de Qt
+from PyQt4.QtCore import Qt, QMetaObject           # Módulo con estructuras de Qt
+from app_utilities import getStyle, dateTimeFormat # Módulo con los validadores para campos de texto
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -45,6 +45,7 @@ popUp2 = loadUiType(join(UIpath, "successPopUp.ui"))[0]        # Cargar platilla
 popUp3 = loadUiType(join(UIpath, "confirmationPopUp.ui"))[0]   # Cargar platilla para el confirmationPopup
 popUp4 = loadUiType(join(UIpath, "authorizationPopUp.ui"))[0]  # Cargar platilla para el authorizationPopup
 popUp5 = loadUiType(join(UIpath, "detailsPopUp.ui"))[0]        # Cargar platilla para el detailsPopup
+popUp6 = loadUiType(join(UIpath, "especialPopUp0.ui"))[0]      # Cargar platilla para el detailsPopup2
 
 # Flags para los elementos del marco de la ventana
 dialogFlags = (Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint) & ~Qt.WindowMaximizeButtonHint
@@ -424,6 +425,85 @@ class detailsPopUp(QDialog, popUp5):
             title.setStyleSheet("font-weight: 600;")
             content = QLabel(str(item[1]))
             self.detailsLayout.addRow(title, content)
+
+    # Acción al presionar el botón de continuar
+    def on_dpbutton0_pressed(self):
+        if self.click():
+            self.accept()
+
+###################################################################################################################################################################################
+## DECLARACIÓN DEL POPUP PARA MOSTRAR INFORMACIÓN DETALLADA PARA CLIENTES ENDEUDADOS
+###################################################################################################################################################################################
+
+class especialPopUp0(QDialog, popUp6):
+    #==============================================================================================================================================================================
+    # CONSTRUCTOR DE LA CLASE
+    #==============================================================================================================================================================================
+    def __init__(self, ci, db, parent=None):
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # INICIAR Y CONFIGURAR EL POPUP
+        #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        # Crear y configurar los objetos del ui
+        super(especialPopUp0, self).__init__(parent)
+        self.setupUi(self)
+
+        # Guardar identificador de cliente y referencia al manejador de la base de datos
+        self.ci = ci
+        self.db = db
+
+        # Configurar mensaje del popUp
+        self.loadDetails()
+
+        # Configurar resolucion del popUp
+        self.setFixedSize(self.sizeHint())
+        self.setWindowFlags(dialogFlags)
+
+        # Configurar tema
+        #self.stylePath = join(stylesPath, "detailsPopUp")
+        #self.setStyle(parent.theme)
+
+        # Variable de control para saber cuando se hcae click sobre un botón
+        self.clicked = False
+
+        # Conectar los eventos mediante los nombres de los métodos
+        QMetaObject.connectSlotsByName(self)
+
+    #==============================================================================================================================================================================
+    # MÉTODOS DE LA CLASE
+    #==============================================================================================================================================================================
+
+    # Definición de click sobre un QPushButton
+    def click(self):
+        if self.clicked:
+            self.clicked = False
+            return True
+        else:
+            self.clicked = True
+            return False
+
+    # Cambiar el tema de la interfáz
+    def setStyle(self, theme):
+        style = getStyle(join(self.stylePath, theme))
+        if style != None:
+            self.setStyleSheet(style)
+
+    # Cargar la información que se mostrará en el popUp
+    def loadDetails(self):
+        client = self.db.getClients(self.ci)[0]
+
+        self.text0.setText(str(client.ci))
+        self.text1.setText(client.firstname)
+        self.text2.setText(client.lastname)
+        self.text3.setText(client.phone)
+        self.text4.setText(client.email)
+        self.text5.setText(str(client.balance))
+        self.text6.setText(str(client.debt))
+        self.text7.setText(dateTimeFormat(client.last_seen))
+
+        purchases = self.db.getClientPurchasesWithDebt(self.ci)
+        for purchase in purchases:
+            print(self.db.getPurchaseResume(purchase))
 
     # Acción al presionar el botón de continuar
     def on_dpbutton0_pressed(self):

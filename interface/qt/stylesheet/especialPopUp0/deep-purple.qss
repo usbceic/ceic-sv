@@ -1,0 +1,139 @@
+/*#########################################################
+##                     QDialog                           ##
+##########################################################*/
+
+QDialog {
+    background: #FFFFFF;
+    min-width: 200px;
+}
+
+/***********************************
+* Global
+***********************************/
+
+/*Efecto al seleccionar texto*/
+* {
+    selection-color: #212121;
+    selection-background-color: #D1C4E9;
+}
+
+/***********************************
+* Botones
+***********************************/
+
+/*Estilo por defecto del  boton para continuar/aceptar*/
+QPushButton {
+    color: #FFFFFF;
+    border: 1px outline #BDBDBD;
+    border-radius: 2px;
+    background: #673AB7;
+    min-height: 30px;
+    min-width: 80px;
+    padding: 2px;
+}
+
+/*Estilo al pasar por encima y presionar el boton para continuar/aceptar*/
+QPushButton:hover, QPushButton:pressed{
+   background: #512DA8;
+}
+
+/***********************************
+* Labels
+***********************************/
+
+/*Configuración de los label para el contenido del dialog*/
+QLabel {
+    color: #212121;
+    background: transparent;
+    font-family: Open Sans;
+    font-size: 11pt;
+    qproperty-alignment: 'AlignTop | AlignLeft';
+}
+
+/*Configuración especial para los titulos de los contenidos del dialog*/
+#title0, #title1, #title2, #title3, #title4, #title5, #title6, #title7, #title8, #title9, #title10, #title11, #title12, #title13, #title14, #title15 {
+    font-weight: 600;
+}
+
+/***********************************
+* ComboBox
+***********************************/
+
+/*Configuración del estilo por defecto del comboBox*/
+#cbox0 {
+    color: #212121;
+    border: 1px solid #BDBDBD;
+    border-radius: 2px;
+    padding: 1px 1px 1px 4px;
+    min-width: 9em;
+    min-height: 1.25em;
+}
+
+/*Configuración del estilo por defecto del comboBox desactivados*/
+#cbox0[enabled="false"] {
+    border: 1px solid silver;
+    background: #F5F5F5;
+}
+
+/*Configuración del estilo del comboBox cuando estan en uso*/
+#cbox0::on {
+    padding-top: 10px;
+    padding-left: 4px;
+}
+
+/*Configuración del estilo del comboBox cuando se despliegan*/
+#cbox0::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+    border-left: 1px solid #BDBDBD;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+/*Configuración del estilo de la flecha del comboBox*/
+#cbox0::down-arrow {
+    image: url(:/arrows/down);
+}
+
+/*Configuración del estilo de la flecha del comboBox cuando se despliegan*/
+#cbox0::drop-arrow::on {
+    top: 1px;
+    left: 1px;
+}
+
+/*Configuración del estilo del menu desplegado del comboBox*/
+#cbox0 QAbstractItemView {
+    background: #FFFFFF;
+    border: 1px solid #BDBDBD;
+    border-radius: 2px;
+    padding: 1px 6px 1px 1px;
+    min-width: 14em;
+}
+
+/***********************************
+* QTabWidget
+***********************************/
+
+QTabWidget::pane {
+    border: 1px solid #BDBDBD;
+    backgorund: transparent;
+}
+
+QTabWidget::tab-bar {
+    left: 5px;
+}
+
+QTabBar::tab {
+    color: #212121;
+    border: 1px solid #BDBDBD;
+    border-bottom-color: transparent;
+    min-width: 5em;
+    min-height: 1.5em;
+    padding: 2px;
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px;
+    background: #F5F5F5;
+}
