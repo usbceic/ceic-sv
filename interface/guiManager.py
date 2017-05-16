@@ -3578,6 +3578,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.transfersLE2)
         self.clearLEs(self.transfersLE3)
         self.clearTE(self.textE7)
+        self.clearTE(self.textE8)
         self.getTransfersTotalPages()
         self.updateTranfersTable()
         self.updateDepositsTable()
@@ -3703,6 +3704,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.transfersLE2)
         self.clearLEs(self.transfersLE3)
         self.clearTE(self.textE7)
+        self.clearTE(self.textE8)
         self.lineE47.setFocus()
 
     #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
