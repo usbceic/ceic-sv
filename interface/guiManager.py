@@ -2048,11 +2048,16 @@ class guiManager(QMainWindow, form_class):
                                     # Setear variables y refrescar la interfaz
                                     self.refreshSales()
 
-                        elif client.debt_permission and client.balance < total - efectivo:
+                        elif client.debt_permission:
                             saldo = float(client.balance)
 
-                            deuda = total - efectivo
-                            message = "Se le cargará una deuda de " + naturalFormat(deuda) + " al cliente"
+                            if saldo == 0:
+                                deuda = total - efectivo
+                                message = "Se le cargará una deuda de " + naturalFormat(deuda) + " al cliente"
+
+                            else:
+                                deuda = total - efectivo - saldo
+                                message = "Se descontarán " + naturalFormat(saldo) + " del saldo del cliente y se creará una deuda de " + naturalFormat(deuda)
 
                             popUp = confirmationPopUp(message, self)
                             if popUp.exec_():

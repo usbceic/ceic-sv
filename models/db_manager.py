@@ -1662,27 +1662,26 @@ class dbManager(object):
         debt          = self.session.query(Debt).filter_by(purchase_id=purchase_id).one()
 
         productsInfo = ""
-        for product_list in product_lists:
-            product_id   = product_list.product_id
-            price        = str(product_list.price)
-            amount       = str(product_list.amount) if product_list.amount > 1 else "un"
-            subtotal     = str(product_list.price*product_list.amount)
+        for i in range(len(product_lists)):
+            product_id   = product_lists[i].product_id
+            price        = str(product_lists[i].price)
+            amount       = str(product_lists[i].amount) if product_lists[i].amount > 1 else "un"
+            subtotal     = str(product_lists[i].price*product_lists[i].amount)
             product_name = self.getProductByNameOrID(product_id=product_id)[0].product_name
 
             # Añadir información de la lista de productos
-            productsInfo += amount + " items de " + product_name.lower() + " a " + price + "\n"
+            productsInfo += amount + " items de " + product_name.lower() + " a " + price
+            if i < len(product_lists) - 1: productsInfo += "\n"
 
         checkoutsInfo = ""
-        for checkout in checkouts:
-            amount  = str(checkout.amount)
-            payType = "saldo" if checkout.with_balance else "efectivo"
+        for i in range(len(checkouts)):
+            amount  = str(checkouts[i].amount)
+            payType = "saldo" if checkouts[i].with_balance else "efectivo"
 
             # Añadir información del pago
-            if not checkout.with_balance or (debt != None and checkout.amount != debt.amount):
-                checkoutsInfo += amount + " pagado con " + payType + "\n"
-
-        if len(productsInfo.split("\n")) == 2: productsInfo = productsInfo.replace("\n", "")
-        if len(checkoutsInfo.split("\n")) == 2: checkoutsInfo = checkoutsInfo.replace("\n", "")
+            if not checkouts[i].with_balance or (debt != None and checkouts[i].amount != debt.amount):
+                checkoutsInfo += amount + " pagado con " + payType
+                if i < len(checkouts) - 1: checkoutsInfo += "\n"
 
         resume = {
             "clerk"     : purchase.clerk,

@@ -548,7 +548,7 @@ class especialPopUp0(QDialog, popUp6):
             if self.currentPurchase != self.cobox0.currentText():
                 self.currentPurchase = self.cobox0.currentText()
                 purchase_id = self.purchases[self.currentPurchase]
-                self.Purchase(purchase_id)
+                self.selectPurchase(purchase_id)
 
 ###################################################################################################################################################################################
 ## FIN :)
