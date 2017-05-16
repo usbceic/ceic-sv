@@ -1670,7 +1670,7 @@ class dbManager(object):
             product_name = self.getProductByNameOrID(product_id=product_id)[0].product_name
 
             # Añadir información de la lista de productos
-            productsInfo += subtotal + " producto de " + amount + " " + product_name + " a " + price + ". "
+            productsInfo += amount + " items de " + product_name.lower() + " a " + price + "\n"
 
         checkoutsInfo = ""
         for checkout in checkouts:
@@ -1679,7 +1679,10 @@ class dbManager(object):
 
             # Añadir información del pago
             if not checkout.with_balance or (debt != None and checkout.amount != debt.amount):
-                checkoutsInfo += "Un pago en " + payType + " por " + amount + ". "
+                checkoutsInfo += amount + " pagado con " + payType + "\n"
+
+        if len(productsInfo.split("\n")) == 2: productsInfo = productsInfo.replace("\n", "")
+        if len(checkoutsInfo.split("\n")) == 2: checkoutsInfo = checkoutsInfo.replace("\n", "")
 
         resume = {
             "clerk"     : purchase.clerk,

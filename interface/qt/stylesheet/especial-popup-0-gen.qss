@@ -51,7 +51,7 @@ QLabel {
 }
 
 /*Configuración especial para los titulos de los contenidos del dialog*/
-#title0, #title1, #title2, #title3, #title4, #title5, #title6, #title7, #title8, #title9, #title10, #title11, #title12, #title13, #title14, #title15 {
+#dtitle0, #dtitle1, #dtitle2, #dtitle3, #dtitle4, #dtitle5, #dtitle6, #dtitle7, #dtitle8, #dtitle9, #dtitle10, #dtitle11, #dtitle12, #dtitle13, #dtitle14, #dtitle15 {
     font-weight: 600;
 }
 
@@ -60,7 +60,7 @@ QLabel {
 ***********************************/
 
 /*Configuración del estilo por defecto del comboBox*/
-#cbox0 {
+#cobox0 {
     color: primary-text-color;
     border: 1px solid divider-color;
     border-radius: 2px;
@@ -70,19 +70,19 @@ QLabel {
 }
 
 /*Configuración del estilo por defecto del comboBox desactivados*/
-#cbox0[enabled="false"] {
+#cobox0[enabled="false"] {
     border: 1px solid silver;
     background: #F5F5F5;
 }
 
 /*Configuración del estilo del comboBox cuando estan en uso*/
-#cbox0::on {
+#cobox0::on {
     padding-top: 10px;
     padding-left: 4px;
 }
 
 /*Configuración del estilo del comboBox cuando se despliegan*/
-#cbox0::drop-down {
+#cobox0::drop-down {
     subcontrol-origin: padding;
     subcontrol-position: top right;
     width: 15px;
@@ -92,18 +92,18 @@ QLabel {
 }
 
 /*Configuración del estilo de la flecha del comboBox*/
-#cbox0::down-arrow {
+#cobox0::down-arrow {
     image: url(:/arrows/down);
 }
 
 /*Configuración del estilo de la flecha del comboBox cuando se despliegan*/
-#cbox0::drop-arrow::on {
+#cobox0::drop-arrow::on {
     top: 1px;
     left: 1px;
 }
 
 /*Configuración del estilo del menu desplegado del comboBox*/
-#cbox0 QAbstractItemView {
+#cobox0 QAbstractItemView {
     background: #FFFFFF;
     border: 1px solid divider-color;
     border-radius: 2px;
@@ -115,15 +115,18 @@ QLabel {
 * QTabWidget
 ***********************************/
 
+/*Configuración del estilo del panel para el contenido de las pestañas*/
 QTabWidget::pane {
     border: 1px solid divider-color;
-    backgorund: transparent;
+    background: #FFFFFF;
 }
 
+/*Configuración del estilo de la barra de pestañas*/
 QTabWidget::tab-bar {
     left: 5px;
 }
 
+/*Configuración del estilo por defecto de las pestañas*/
 QTabBar::tab {
     color: primary-text-color;
     border: 1px solid divider-color;
@@ -133,6 +136,12 @@ QTabBar::tab {
     padding: 2px;
 }
 
+/*Configuración del estilo de la pestaña seleccionada*/
+QTabBar::tab:selected {
+    background: #FFFFFF;
+}
+
+/*Configuración del estilo de las pestañas no seleccionadas*/
 QTabBar::tab:!selected {
     margin-top: 2px;
     background: #F5F5F5;

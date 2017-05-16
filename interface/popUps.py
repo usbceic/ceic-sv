@@ -30,10 +30,10 @@ for current in path:
 ## MODÚLOS:
 ###################################################################################################################################################################################
 
-from PyQt4.uic import loadUiType                   # Módulo con las herramientas parar trabajar los archivos .ui
-from PyQt4.QtGui import QDialog, QLabel            # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject           # Módulo con estructuras de Qt
-from app_utilities import getStyle, dateTimeFormat # Módulo con los validadores para campos de texto
+from PyQt4.uic import loadUiType                           # Módulo con las herramientas parar trabajar los archivos .ui
+from PyQt4.QtGui import QDialog, QLabel                    # Módulo con procedimientos de Qt
+from PyQt4.QtCore import Qt, QMetaObject                   # Módulo con estructuras de Qt
+from app_utilities import getStyle, dateTimeFormat, dateFormat, timeFormat # Módulo con funciones útiles
 
 ###################################################################################################################################################################################
 ## CONSTANTES:
@@ -317,7 +317,7 @@ class authorizationPopUp(QDialog, popUp4):
         self.value0, self.value1 = None, None
 
         # Configurar resolucion del popUp
-        self.setFixedSize(self.sizeHint())
+        #self.setFixedSize(self.sizeHint())
         self.setWindowFlags(dialogFlags)
 
         # Configurar tema
@@ -452,6 +452,12 @@ class especialPopUp0(QDialog, popUp6):
         self.ci = ci
         self.db = db
 
+        # Inicializar variables
+        self.mutex = False
+        self.newIndex = False
+        self.purchases = {}
+        self.currentPurchase = "Compra #1"
+
         # Configurar mensaje del popUp
         self.loadDetails()
 
@@ -460,8 +466,8 @@ class especialPopUp0(QDialog, popUp6):
         self.setWindowFlags(dialogFlags)
 
         # Configurar tema
-        #self.stylePath = join(stylesPath, "detailsPopUp")
-        #self.setStyle(parent.theme)
+        self.stylePath = join(stylesPath, "especialPopUp0")
+        self.setStyle(parent.theme)
 
         # Variable de control para saber cuando se hcae click sobre un botón
         self.clicked = False
@@ -482,33 +488,67 @@ class especialPopUp0(QDialog, popUp6):
             self.clicked = True
             return False
 
+    # Cambio de texto en un QLineEdit
+    def indexChanged(self):
+        if self.newIndex:
+            self.newIndex = False
+            return True
+        else:
+            self.newIndex = True
+            return False
+
     # Cambiar el tema de la interfáz
     def setStyle(self, theme):
         style = getStyle(join(self.stylePath, theme))
         if style != None:
             self.setStyleSheet(style)
 
+    # Función para recargar la información de la vista de compras dependiendo de la selección
+    def selectPurchase(self, purchase_id):
+        resume = self.db.getPurchaseResume(purchase_id)  # Cargar datos
+        self.dtext8.setText(resume["clerk"])             # Registrado por
+        self.dtext9.setText(str(resume["total"]))        # Total
+        self.dtext10.setText(dateFormat(resume["date"])) # Fecha
+        self.dtext11.setText(timeFormat(resume["date"])) # Hora
+        self.dtext12.setText(resume["products"])         # Productos
+        self.dtext13.setText(resume["checkouts"])        # Pagos
+        self.dtext14.setText(str(resume["debt"]))        # Deuda
+
     # Cargar la información que se mostrará en el popUp
     def loadDetails(self):
+
+        # Cargar información básica del cliente
         client = self.db.getClients(self.ci)[0]
+        self.dtext0.setText(str(client.ci))
+        self.dtext1.setText(client.firstname)
+        self.dtext2.setText(client.lastname)
+        self.dtext3.setText(client.phone)
+        self.dtext4.setText(client.email)
+        self.dtext5.setText(str(client.balance))
+        self.dtext6.setText(str(client.debt))
+        self.dtext7.setText(dateTimeFormat(client.last_seen))
 
-        self.text0.setText(str(client.ci))
-        self.text1.setText(client.firstname)
-        self.text2.setText(client.lastname)
-        self.text3.setText(client.phone)
-        self.text4.setText(client.email)
-        self.text5.setText(str(client.balance))
-        self.text6.setText(str(client.debt))
-        self.text7.setText(dateTimeFormat(client.last_seen))
-
+        # Cargar información de las compras con deudas del cliente
         purchases = self.db.getClientPurchasesWithDebt(self.ci)
-        for purchase in purchases:
-            print(self.db.getPurchaseResume(purchase))
+        for i in range(1, len(purchases)+1):
+            key = "Compra #" + str(i)
+            self.cobox0.addItem(key)
+            self.purchases[key] = purchases[i-1]
+        self.selectPurchase(purchases[0])
+        self.mutex = True
 
     # Acción al presionar el botón de continuar
     def on_dpbutton0_pressed(self):
         if self.click():
             self.accept()
+
+    # ComboBox para seleccionar una compra
+    def on_cobox0_currentIndexChanged(self):
+        if self.indexChanged() and self.mutex:
+            if self.currentPurchase != self.cobox0.currentText():
+                self.currentPurchase = self.cobox0.currentText()
+                purchase_id = self.purchases[self.currentPurchase]
+                self.Purchase(purchase_id)
 
 ###################################################################################################################################################################################
 ## FIN :)
