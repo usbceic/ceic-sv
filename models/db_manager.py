@@ -3092,7 +3092,7 @@ class dbManager(object):
         - Retorna True: Cuando el libro existe en el sistema.
         - Retorna False: Cuando el libro NO existe en el sistema.
     """
-    def existBook(self,book_id):
+    def existBook(self, book_id):
         count = self.session.query(Book).filter_by(product_id=book_id).count()
         if count == 0:
             print("El libro asociado al ID " + str(book_id) + " NO existe")
@@ -3106,17 +3106,14 @@ class dbManager(object):
      - Retorna True:
         * Cuando el libro es creado satisfactoreamente.
      - Retorna False:
-        * Cuando no se puede crear el libro o cuando el libro ya existe.
+        * Cuando no se puede crear el libro.
     """
-    def createBook(self,book_id,title,edition,book_year,lang,isbn=None):
-        if (self.existBook(book_id)):
-            return False
+    def createBook(self, title, edition, book_year, lang, isbn=None):
         kwargs = {
-            'book_id'   : book_id,
-            'title'     : title,
+            'title'     : title.strip().title(),
             'edition'   : edition,
             'book_year' : book_year,
-            'lang'      : lang
+            'lang'      : lang.strip().title()
         }
         if isbn is not None:
             kwargs['isbn'] = isbn
@@ -3133,13 +3130,43 @@ class dbManager(object):
             return False
 
     """
+    Método para buscar Libros en sistema.
+     - Retorna queryset de los Book que cumplan el filtro
+    """
+    def getBook(self, book_id=None, title=None, edition=None, book_year_start=None, book_year_end=None, lang=None, isbn=None):
+        if book_id is None and title is None and edition is None and book_year_start is None \
+                and book_year_end in None and lang is None and isbn is None:
+            return self.session.query(Book).all()
+
+        filters = and_()
+        if book_id is not None:
+            filters = and_(filters, Book.book_id == book_id)
+
+        if title is not None:
+            filters = and_(filters, Book.title.ilike("%"+title.strip().title()+"%"))
+
+        if edition is not None:
+            filters = and_(filters, Book.edition == edition)
+
+        if book_year_start is not None:
+            filters = and_(filters, Book.book_year >= book_year_start)
+
+        if book_year_end is not None:
+            filters = and_(filters, Book.book_year <= book_year_end)
+
+        if lang is not None:
+            filters = and_(filters, Book.lang == lang.strip().title())
+
+        return self.session.query(Book).filter(*filters).all()
+
+
+    """
     Método para actualizar la información de un libro
         - Retorna True:
             Cuando la información del libro es actualizada exitosamente
         - Retorna False:
             Cuando el libro no existe u ocurrió un error actualizando la información
     """
-
     def updateBookInfo(self,oldID,newID=None,title=None,isbn=None,edition=None,book_year=None,lang=None,quantity=None,quantity_lent=None):
         kwargs = {}
         if newID is not None:
@@ -3181,6 +3208,32 @@ class dbManager(object):
             return False
         return False
 
+
+    """
+    Método para eliminar un Libro en sistema
+     - Retorna True:
+        * Cuando el Libro es eliminado del sistema
+     - Retorna False:
+        * Cuando el Libro NO es eliminado del sistema
+    """
+    def deleteBook(self, book_id):
+        obj_list = self.getBook(book_id=book_id)
+
+        if len(obj_list) == 0:
+            print("El libro con ID " + str(book_id) + " NO existe en sistema")
+            return False
+
+        self.session.delete(obj_list[0])
+        try:
+            self.session.commit()
+            print("El libro con ID " + str(book_id) + " fue elimidado del sistema")
+            return True
+        except Exception as e:
+            print("Error desconocido al intentar eliminar El libro con ID " + str(book_id) + ":", e)
+            self.session.rollback()
+            return False  
+
+    
 ###################################################################################################################################################################################
 ## PRUEBAS:
 ###################################################################################################################################################################################
