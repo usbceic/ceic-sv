@@ -3345,7 +3345,8 @@ if __name__ == '__main__':
 
     import datetime
     m.createBook("Prueba", 1, datetime.date.today(), "Español")
-    print(m.getBook())
+    books = m.getBook()
+    print(books)
 
     """print(m.getBalance())
 
