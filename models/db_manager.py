@@ -3108,13 +3108,19 @@ class dbManager(object):
      - Retorna False:
         * Cuando no se puede crear el libro.
     """
-    def createBook(self, title, edition, book_year, lang, isbn=None):
+    def createBook(self, title, edition, book_year, lang, isbn=None, book_id=None):
         kwargs = {
             'title'     : title.strip().title(),
             'edition'   : edition,
             'book_year' : book_year,
             'lang'      : lang.strip().title()
         }
+        if book_id is not None:
+            if self.existBook(book_id):
+                return False
+            kwargs['book_id'] = book_id
+
+
         if isbn is not None:
             kwargs['isbn'] = isbn
 
@@ -3135,7 +3141,7 @@ class dbManager(object):
     """
     def getBook(self, book_id=None, title=None, edition=None, book_year_start=None, book_year_end=None, lang=None, isbn=None):
         if book_id is None and title is None and edition is None and book_year_start is None \
-                and book_year_end in None and lang is None and isbn is None:
+                and book_year_end is None and lang is None and isbn is None:
             return self.session.query(Book).all()
 
         filters = and_()
@@ -3167,7 +3173,7 @@ class dbManager(object):
         - Retorna False:
             Cuando el libro no existe u ocurrió un error actualizando la información
     """
-    def updateBookInfo(self,oldID,newID=None,title=None,isbn=None,edition=None,book_year=None,lang=None,quantity=None,quantity_lent=None):
+    def updateBookInfo(self, oldID, newID=None, title=None, isbn=None, edition=None, book_year=None, lang=None, quantity=None, quantity_lent=None):
         kwargs = {}
         if newID is not None:
             kwargs['book_id'] = newID
@@ -3336,8 +3342,10 @@ if __name__ == '__main__':
 
     m.createLanguage("Español")
     print(m.getLanguage("es"))
-    m.deleteLanguage("Español")
-    print(m.getLanguage())
+
+    import datetime
+    m.createBook("Prueba", 1, datetime.date.today(), "Español")
+    print(m.getBook())
 
     """print(m.getBalance())
 
