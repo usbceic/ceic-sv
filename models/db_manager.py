@@ -3226,14 +3226,95 @@ class dbManager(object):
         self.session.delete(obj_list[0])
         try:
             self.session.commit()
-            print("El libro con ID " + str(book_id) + " fue elimidado del sistema")
+            print("El libro con ID " + str(book_id) + " fue eliminado del sistema")
             return True
         except Exception as e:
             print("Error desconocido al intentar eliminar El libro con ID " + str(book_id) + ":", e)
             self.session.rollback()
             return False  
 
-    
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE LENGUAJES:
+    #==============================================================================================================================================================================
+
+    """
+    Método para verificar la existencia de un lenguaje.
+        - Retorna True: Cuando el lenguaje existe en el sistema.
+        - Retorna False: Cuando el lenguaje NO existe en el sistema.
+    """
+    def existLanguage(self, lang_name):
+        count = self.session.query(Valid_language).filter_by(lang_name=lang_name.strip().title()).count()
+        if count == 0:
+            print("El lenguaje " + lang_name.strip().title() + " NO existe")
+            return False
+        else:
+            print("El lenguaje " + lang_name.strip().title() + " existe")
+            return True
+
+
+    """
+    Método para crear un lenguaje
+     - Retorna True:
+        * Cuando el lenguaje es creado satisfactoreamente.
+     - Retorna False:
+        * Cuando no se puede crear el lenguaje.
+    """
+    def createLanguage(self, lang_name):
+        if self.existLanguage(lang_name):
+            return False
+
+        kwargs = {
+            'lang_name'     : lang_name.strip().title(),
+        }
+
+        newLang = Valid_language(**kwargs)
+        self.session.add(newLang)
+        try:
+            self.session.commit()
+            print("Se ha creado correctamente el lenguaje " + lang_name.strip().title())
+            return True
+        except Exception as e:
+            print("Error al crear el lenguaje " + lang_name.strip().title() +":", e)
+            self.session.rollback()
+            return False
+
+
+    """
+    Método para buscar un lenguaje en el sistema o todos los lenguajes si no se especifica cual se busca
+     - Siempre devuelve un arreglo
+    """
+    def getLanguage(self, lang_name=None):
+        if lang_name is None:
+            return self.session.query(Valid_language).all()
+
+        return self.session.query(Valid_language).filter(Valid_language.lang_name.ilike("%"+lang_name.strip().title()+"%")).all()
+
+
+    """
+    Método para eliminar un Lenguaje en sistema
+     - Retorna True:
+        * Cuando el Lenguaje es eliminado del sistema
+     - Retorna False:
+        * Cuando el Lenguaje NO es eliminado del sistema
+    """
+    def deleteLanguage(self, lang_name=None):
+        obj_list = self.getLanguage(lang_name=lang_name)
+
+        if len(obj_list) == 0:
+            print("El lenguaje " + lang_name.strip().title() + " NO existe")
+            return False
+
+        self.session.delete(obj_list[0])
+        try:
+            self.session.commit()
+            print("El lenguaje " + lang_name.strip().title() + " fue eliminado del sistema")
+            return True
+        except Exception as e:
+            print("Error desconocido al intentar eliminarEl lenguaje " + lang_name.strip().title() + ":", e)
+            self.session.rollback()
+            return False  
+
+
 ###################################################################################################################################################################################
 ## PRUEBAS:
 ###################################################################################################################################################################################
@@ -3252,6 +3333,11 @@ if __name__ == '__main__':
     }
 
     m.createClient(**kwargs)
+
+    m.createLanguage("Español")
+    print(m.getLanguage("es"))
+    m.deleteLanguage("Español")
+    print(m.getLanguage())
 
     """print(m.getBalance())
 
