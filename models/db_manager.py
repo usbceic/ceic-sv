@@ -199,7 +199,7 @@ class dbManager(object):
                 print("Se ha creado correctamente el usuario " + username)
                 return True
             except Exception as e:
-                print("Error desconocido al crear el usuario " + username +":", e)
+                print("Error desconocido al crear el usuario " + username +": ", e)
                 self.session.rollback()
                 return False
         else:
@@ -364,9 +364,9 @@ class dbManager(object):
     def updateUserInfo(self, username, firstname=None, lastname=None, email=None):
         if self.existUser(username):
             values = {}
-            if firstname != None: values["firstname"] = firstname
-            if lastname != None: values["lastname"] = lastname
-            if email != None: values["email"] = email
+            if firstname is not None: values["firstname"] = firstname
+            if lastname is not None: values["lastname"] = lastname
+            if email is not None: values["email"] = email
             try:
                 self.session.query(User).filter_by(username=username).update(values)
                 self.session.commit()
@@ -402,15 +402,15 @@ class dbManager(object):
     """
     def getUsers(self, username = None, firstname = None, lastname = None, email = None, permission_mask = None, limit = None, page = 1):
         filters = {}
-        if username != None: filters["username"] = username
-        if firstname != None: filters["firstname"] = firstname
-        if lastname != None: filters["lastname"] = lastname
-        if email != None: filters["email"] = email
-        if permission_mask != None: filters["permission_mask"] = permission_mask
+        if username is not None: filters["username"] = username
+        if firstname is not None: filters["firstname"] = firstname
+        if lastname is not None: filters["lastname"] = lastname
+        if email is not None: filters["email"] = email
+        if permission_mask is not None: filters["permission_mask"] = permission_mask
 
         query = self.session.query(User).filter_by(**filters).order_by(desc(User.last_login))
 
-        if limit != None:
+        if limit is not None:
             query = self.session.query(User).filter_by(**filters).order_by(desc(User.last_login)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -421,7 +421,7 @@ class dbManager(object):
     """
     def getUsersCount(self, permission_mask = None):
         filters = {}
-        if permission_mask != None: filters["permission_mask"] = permission_mask
+        if permission_mask is not None: filters["permission_mask"] = permission_mask
 
         return self.session.query(User).filter_by(**filters).count()
 
@@ -492,7 +492,7 @@ class dbManager(object):
             print("Se ha creado correctamente el proveedor " + provider_name)
             return True
         except Exception as e:
-            print("Error al crear el proveedor " + provider_name +":", e)
+            print("Error al crear el proveedor " + provider_name +": ", e)
             self.session.rollback()
             return False
 
@@ -568,7 +568,7 @@ class dbManager(object):
     def getAllProviders(self, limit = None, page = 1):
         query = self.session.query(Provider).order_by(Provider.creation_date)
 
-        if limit != None:
+        if limit is not None:
             query = self.session.query(Provider).order_by(desc(Provider.creation_date)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -643,8 +643,8 @@ class dbManager(object):
         product_name = product_name.title().strip()
 
         values = {"product_name" : product_name}
-        if available != None: values["available"] = available
-        if active != None: values["active"] = active
+        if available is not None: values["available"] = available
+        if active is not None: values["active"] = active
 
         count = self.session.query(Product).filter_by(**values).count()
 
@@ -674,7 +674,7 @@ class dbManager(object):
                 print("Se ha creado correctamente el producto: " + product_name)
                 return True
             except Exception as e:
-                print("Error desconocido al crear el producto: " + product_name +":", e)
+                print("Error desconocido al crear el producto: " + product_name +": ", e)
                 self.session.rollback()
                 return False
         elif self.existProduct(product_name, active=False):
@@ -691,13 +691,13 @@ class dbManager(object):
      - Retorna un queryset con el resultado de la búsqueda
     """
     def getProductByNameOrID(self, product_name=None, product_id=None, available=None):
-        if product_name != None: product_name = product_name.title().strip()
+        if product_name is not None: product_name = product_name.title().strip()
 
         filters = and_()
-        if (product_name and product_id) != None: filters = and_(filters, or_(Product.product_name == product_name, Product.product_id == product_id))
-        elif product_name != None: filters = and_(filters, Product.product_name == product_name)
+        if (product_name and product_id) is not None: filters = and_(filters, or_(Product.product_name == product_name, Product.product_id == product_id))
+        elif product_name is not None: filters = and_(filters, Product.product_name == product_name)
         else: filters = and_(filters, Product.product_id == product_id)
-        if available != None: filters = and_(filters, Product.available == available)
+        if available is not None: filters = and_(filters, Product.available == available)
         return self.session.query(Product).filter(*filters).all()
 
     """
@@ -724,20 +724,20 @@ class dbManager(object):
     """
     def getProducts(self, product_id=None, product_name=None, price=None, remaining=None, remaining_lots=None, category=None, available=None, active=None, limit=None, page=1):
         columns = []
-        if product_id != None: columns.append(Product.product_id)
-        if product_name != None: columns.append(Product.product_name)
-        if price != None: columns.append(Product.price)
-        if remaining != None: columns.append(Product.remaining)
-        if remaining_lots != None: columns.append(Product.remaining_lots)
-        if category != None: columns.append(Product.category)
+        if product_id is not None: columns.append(Product.product_id)
+        if product_name is not None: columns.append(Product.product_name)
+        if price is not None: columns.append(Product.price)
+        if remaining is not None: columns.append(Product.remaining)
+        if remaining_lots is not None: columns.append(Product.remaining_lots)
+        if category is not None: columns.append(Product.category)
 
         filters = {}
-        if available != None: filters["available"] = available
-        if active != None: filters["active"] = active
+        if available is not None: filters["available"] = available
+        if active is not None: filters["active"] = active
 
         query = self.session.query(*columns).filter_by(**filters).order_by(Product.product_name)
 
-        if limit != None:
+        if limit is not None:
             query = self.session.query(*columns).filter_by(**filters).order_by(Product.product_name).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -748,8 +748,8 @@ class dbManager(object):
     """
     def getProductsCount(self, available=None, active=True):
         filters = {}
-        if available != None: filters["available"] = available
-        if active != None: filters["active"] = active
+        if available is not None: filters["available"] = available
+        if active is not None: filters["active"] = active
 
         return self.session.query(Product).filter_by(**filters).count()
 
@@ -766,12 +766,12 @@ class dbManager(object):
 
         if self.existProduct(product_name, active = None):
             values = {}
-            if new_product_name != None:
+            if new_product_name is not None:
                 new_product_name = new_product_name.title().strip()
                 values["product_name"] = new_product_name.title().strip()
-            if price != None: values["price"] = price
-            if category != None: values["category"] = category
-            if active != None: values["active"] = active
+            if price is not None: values["price"] = price
+            if category is not None: values["category"] = category
+            if active is not None: values["active"] = active
             try:
                 self.session.query(Product).filter_by(product_name=product_name).update(values)
                 self.session.commit()
@@ -964,7 +964,7 @@ class dbManager(object):
                 "remaining"   : quantity
             }
 
-            if expiration_date != None:
+            if expiration_date is not None:
                 kwargs["perishable"] = True
                 kwargs["expiration_date"] = expiration_date
 
@@ -1022,30 +1022,30 @@ class dbManager(object):
             values = {}
             remainingTrigger = False
 
-            if product_name != None:
+            if product_name is not None:
                 product_name = product_name.title().strip()
                 if self.existProduct(product_name):
                     values["product_id"] = self.getProductID(product_name)
 
-            if provider_id != None:
+            if provider_id is not None:
                 provider_id = provider_id.title().strip()
                 if self.existProvider(provider_id):
                     values["provider_id"] = provider_id
 
-            if cost != None:
+            if cost is not None:
                 values["cost"] = cost
 
-            if quantity != None and quantity > 0:
+            if quantity is not None and quantity > 0:
                 values["quantity"] = quantity
 
-            if remaining != None and remaining <= quantity:
+            if remaining is not None and remaining <= quantity:
                 values["remaining"] = remaining
                 if remaining <= 0: remainingTrigger = True
 
             elif remaining == None and quantity > 0:
                 values["remaining"] = quantity
 
-            if expiration_date != None:
+            if expiration_date is not None:
                 if expiration_date > datetime.now().date():
                     values["expiration_date"] = expiration_date
                     values["perishable"] = True
@@ -1101,9 +1101,9 @@ class dbManager(object):
      - No retorna nada
     """
     def afterUpdateCurrentLotRemaining(self, lot_id = None, product_id = None):
-        if (lot_id or product_id) != None:
+        if (lot_id or product_id) is not None:
 
-            if lot_id != None and product_id == None:
+            if lot_id is not None and product_id == None:
                 product_id = self.session.query(Lot.product_id).filter_by(lot_id=lot_id).scalar()
 
             values = {"available" : False, "current" : False}
@@ -1186,10 +1186,10 @@ class dbManager(object):
     """
     def getLots(self, lot_id = None, product_id = None, provider_id = None, available = None):
         values = {}
-        if lot_id != None: values["lot_id"] = lot_id
-        if product_id != None: values["product_id"] = product_id
-        if provider_id != None: values["provider_id"] = provider_id
-        if available != None: values["available"] = available
+        if lot_id is not None: values["lot_id"] = lot_id
+        if product_id is not None: values["product_id"] = product_id
+        if provider_id is not None: values["provider_id"] = provider_id
+        if available is not None: values["available"] = available
 
         return self.session.query(Lot).filter_by(**values).all()
 
@@ -1325,7 +1325,7 @@ class dbManager(object):
             print("Se ha creado correctamente el servicio " + str(newService))
             return True
         except Exception as e:
-            print("Error al crear el servicio " + str(newService) +":", e)
+            print("Error al crear el servicio " + str(newService) +": ", e)
             self.session.rollback()
             return False
 
@@ -1334,17 +1334,17 @@ class dbManager(object):
      - Retorna True:
         * Cuando logra actualizar la información correctamente
      - Retorna False:
-        * Cuando el servicioo no existe
+        * Cuando el servicio no existe
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
     def updateService(self, service_id, service_name=None, price=None, available=None, description=None, category=None):
         if self.existService(service_id):
             values = {}
-            if service_name != None: values["service_name"] = service_name
-            if price != None: values["price"] = price
-            if available != None: values["available"] = available
-            if description != None: values["description"] = description
-            if category != None: values["category"] = category
+            if service_name is not None: values["service_name"] = service_name
+            if price is not None: values["price"] = price
+            if available is not None: values["available"] = available
+            if description is not None: values["description"] = description
+            if category is not None: values["category"] = category
             try:
                 self.session.query(Service).filter(Service.service_id == service_id).update(values)
                 self.session.commit()
@@ -1411,7 +1411,7 @@ class dbManager(object):
 
         query = self.session.query(Client).filter(*filters).order_by(desc(Client.last_seen))
 
-        if limit != None:
+        if limit is not None:
             query = self.session.query(Client).filter(*filters).order_by(desc(Client.last_seen)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -1463,7 +1463,7 @@ class dbManager(object):
             print("Se ha creado correctamente el cliente " + str(newClient))
             return True
         except Exception as e:
-            print("Error al crear el cliente " + str(newClient) +":", e)
+            print("Error al crear el cliente " + str(newClient) +": ", e)
             self.session.rollback()
             return False
 
@@ -1478,15 +1478,15 @@ class dbManager(object):
     def updateClient(self, ciOriginal, ci=None, firstname=None, lastname=None, phone=None, email=None, debt_permission=None, book_permission=None, blocked=None, last_seen=None):
         if self.existClient(ciOriginal):
             values = {}
-            if ci != None: values["ci"] = ci
-            if firstname != None: values["firstname"] = firstname
-            if lastname != None: values["lastname"] = lastname
-            if phone != None: values["phone"] = phone
-            if email != None: values["email"] = email
-            if debt_permission != None: values["debt_permission"] = debt_permission
-            if book_permission != None: values["book_permission"] = book_permission
-            if blocked != None: values["blocked"] = blocked
-            if last_seen != None: values["last_seen"] = last_seen
+            if ci is not None: values["ci"] = ci
+            if firstname is not None: values["firstname"] = firstname
+            if lastname is not None: values["lastname"] = lastname
+            if phone is not None: values["phone"] = phone
+            if email is not None: values["email"] = email
+            if debt_permission is not None: values["debt_permission"] = debt_permission
+            if book_permission is not None: values["book_permission"] = book_permission
+            if blocked is not None: values["blocked"] = blocked
+            if last_seen is not None: values["last_seen"] = last_seen
             try:
                 self.session.query(Client).filter(Client.ci == ciOriginal).update(values)
                 self.session.commit()
@@ -1535,7 +1535,7 @@ class dbManager(object):
                 print("No se pudo actualizar el saldo del cliente", e)
                 return None
 
-        elif purchase_id != None:
+        elif purchase_id is not None:
             self.createDebt(purchase_id, amount)
             return balance
 
@@ -1679,7 +1679,7 @@ class dbManager(object):
             payType = "saldo" if checkouts[i].with_balance else "efectivo"
 
             # Añadir información del pago
-            if not checkouts[i].with_balance or (debt != None and checkouts[i].amount != debt.amount):
+            if not checkouts[i].with_balance or (debt is not None and checkouts[i].amount != debt.amount):
                 checkoutsInfo += amount + " pagado con " + payType
                 if i < len(checkouts) - 1: checkoutsInfo += "\n"
 
@@ -1692,7 +1692,7 @@ class dbManager(object):
             "checkouts" : checkoutsInfo
         }
 
-        if debt != None: resume["debt"] = debt.amount
+        if debt is not None: resume["debt"] = debt.amount
 
         return resume
 
@@ -2123,7 +2123,7 @@ class dbManager(object):
         balance = self.addToClientBalance(ci, amount)
 
         # Si no hubo errores
-        if balance != None:
+        if balance is not None:
             # Se calculan todas las deudas sin pagar del cliente que sean menor o igual a lo que posee en su saldo
             debts = self.session.query(Debt.debt_id.label("debt_id"), Debt.amount.label("amount"))\
                 .join(Purchase, Debt.purchase_id == Purchase.purchase_id)\
@@ -2141,7 +2141,7 @@ class dbManager(object):
                     balance = self.substractFromClientBalance(ci, debt.amount)  # Actualizar saldo del cleinte
 
             # Si no hubo errores o y aun hay saldo
-            if balance != None:
+            if balance is not None:
                 # Se calculan todos los incrementos sin pagar del cliente que sean menor o igual a lo que posee en su saldo
                 increases = self.session.query(Increase.increase_id, Increase.amount)\
                     .filter(Increase.pay_date == None, Increase.amount <= balance, Increase.ci == ci)\
@@ -2162,15 +2162,15 @@ class dbManager(object):
             return self.session.query(Transfer).order_by(desc(Transfer.transfer_date)).all()
 
         kwargs = {}
-        if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
-        if ci != None and self.existClient(ci): kwargs['ci'] = ci
-        if amount != None: kwargs['amount'] = amount
-        if bank != None: kwargs['bank'] = bank
-        if confirmation_code != None: kwargs['confirmation_code'] = confirmation_code
+        if clerk is not None and self.existUser(clerk): kwargs['clerk'] = clerk
+        if ci is not None and self.existClient(ci): kwargs['ci'] = ci
+        if amount is not None: kwargs['amount'] = amount
+        if bank is not None: kwargs['bank'] = bank
+        if confirmation_code is not None: kwargs['confirmation_code'] = confirmation_code
 
         query = self.session.query(Transfer).filter_by(**kwargs).order_by(desc(Transfer.transfer_date))
 
-        if limit != None:
+        if limit is not None:
             query = self.session.query(Transfer).filter_by(**kwargs).order_by(desc(Transfer.transfer_date)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -2184,8 +2184,8 @@ class dbManager(object):
             return self.session.query(Transfer).count()
 
         kwargs = {}
-        if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
-        if ci != None and self.existClient(ci): kwargs['ci'] = ci
+        if clerk is not None and self.existUser(clerk): kwargs['clerk'] = clerk
+        if ci is not None and self.existClient(ci): kwargs['ci'] = ci
 
         return self.session.query(Transfer).filter_by(**kwargs).count()
 
@@ -2238,7 +2238,7 @@ class dbManager(object):
         balance = self.addToClientBalance(ci, amount)
 
         # Si no hubo errores
-        if balance != None:
+        if balance is not None:
             # Se calculan todas las deudas sin pagar del cliente que sean menor o igual a lo que posee en su saldo
             debts = self.session.query(Debt.debt_id.label("debt_id"), Debt.amount.label("amount"))\
                 .join(Purchase, Debt.purchase_id == Purchase.purchase_id)\
@@ -2256,7 +2256,7 @@ class dbManager(object):
                     balance = self.substractFromClientBalance(ci, debt.amount)  # Actualizar saldo del cleinte
 
             # Si no hubo errores o y aun hay saldo
-            if balance != None:
+            if balance is not None:
                 # Se calculan todos los incrementos sin pagar del cliente que sean menor o igual a lo que posee en su saldo
                 increases = self.session.query(Increase.increase_id, Increase.amount)\
                     .filter(Increase.pay_date == None, Increase.amount <= balance, Increase.ci == ci)\
@@ -2279,15 +2279,15 @@ class dbManager(object):
             return self.session.query(Deposit).order_by(desc(Deposit.deposit_date)).all()
 
         kwargs = {}
-        if deposit_id != None and self.existDeposit(deposit_id): kwargs['deposit_id'] = deposit_id
-        if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
-        if ci != None and self.existClient(ci): kwargs['ci'] = ci
-        if amount != None: kwargs['amount'] = amount
-        if deposit_date != None: kwargs['deposit_date'] = deposit_date
+        if deposit_id is not None and self.existDeposit(deposit_id): kwargs['deposit_id'] = deposit_id
+        if clerk is not None and self.existUser(clerk): kwargs['clerk'] = clerk
+        if ci is not None and self.existClient(ci): kwargs['ci'] = ci
+        if amount is not None: kwargs['amount'] = amount
+        if deposit_date is not None: kwargs['deposit_date'] = deposit_date
 
         query = self.session.query(Deposit).filter_by(**kwargs).order_by(desc(Deposit.deposit_date))
 
-        if limit != None:
+        if limit is not None:
             query = self.session.query(Deposit).filter_by(**kwargs).order_by(desc(Deposit.deposit_date)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -2301,8 +2301,8 @@ class dbManager(object):
             return self.session.query(Deposit).count()
 
         kwargs = {}
-        if clerk != None and self.existUser(clerk): kwargs['clerk'] = clerk
-        if ci != None and self.existClient(ci): kwargs['ci'] = ci
+        if clerk is not None and self.existUser(clerk): kwargs['clerk'] = clerk
+        if ci is not None and self.existClient(ci): kwargs['ci'] = ci
 
         return self.session.query(Deposit).filter_by(**kwargs).count()
 
@@ -3055,7 +3055,7 @@ class dbManager(object):
             print("La Moneda / Billete de " + str(amount) + " fue creada")
             return True
         except Exception as e:
-            print("Error desconocido al intentar crear La Moneda / Billete de " + str(amount) + ":", e)
+            print("Error desconocido al intentar crear La Moneda / Billete de " + str(amount) + ": ", e)
             self.session.rollback()
             return False
 
@@ -3079,7 +3079,7 @@ class dbManager(object):
             print("La Moneda / Billete de " + str(amount) + " fue eliminada")
             return True
         except Exception as e:
-            print("Error desconocido al intentar eliminar La Moneda / Billete de " + str(amount) + ":", e)
+            print("Error desconocido al intentar eliminar La Moneda / Billete de " + str(amount) + ": ", e)
             self.session.rollback()
             return False
 
@@ -3131,7 +3131,7 @@ class dbManager(object):
             print("Se ha creado correctamente el libro " + title)
             return True
         except Exception as e:
-            print("Error al crear el libro " + title +":", e)
+            print("Error al crear el libro " + title +": ", e)
             self.session.rollback()
             return False
 
@@ -3161,7 +3161,7 @@ class dbManager(object):
             filters = and_(filters, Book.book_year <= book_year_end)
 
         if lang is not None:
-            filters = and_(filters, Book.lang == lang.strip().title())
+            filters = and_(filters, Book.lang.ilike("%"+lang.strip().title()+"%"))
 
         return self.session.query(Book).filter(*filters).all()
 
@@ -3235,7 +3235,7 @@ class dbManager(object):
             print("El libro con ID " + str(book_id) + " fue eliminado del sistema")
             return True
         except Exception as e:
-            print("Error desconocido al intentar eliminar El libro con ID " + str(book_id) + ":", e)
+            print("Error desconocido al intentar eliminar El libro con ID " + str(book_id) + ": ", e)
             self.session.rollback()
             return False  
 
@@ -3269,18 +3269,19 @@ class dbManager(object):
         if self.existLanguage(lang_name):
             return False
 
+        lang_name = lang_name.strip().title()
         kwargs = {
-            'lang_name'     : lang_name.strip().title(),
+            'lang_name'     : lang_name,
         }
 
         newLang = Valid_language(**kwargs)
         self.session.add(newLang)
         try:
             self.session.commit()
-            print("Se ha creado correctamente el lenguaje " + lang_name.strip().title())
+            print("Se ha creado correctamente el lenguaje " + lang_name)
             return True
         except Exception as e:
-            print("Error al crear el lenguaje " + lang_name.strip().title() +":", e)
+            print("Error al crear el lenguaje " + lang_name + ": ", e)
             self.session.rollback()
             return False
 
@@ -3303,7 +3304,7 @@ class dbManager(object):
      - Retorna False:
         * Cuando el Lenguaje NO es eliminado del sistema
     """
-    def deleteLanguage(self, lang_name=None):
+    def deleteLanguage(self, lang_name):
         obj_list = self.getLanguage(lang_name=lang_name)
 
         if len(obj_list) == 0:
@@ -3316,7 +3317,125 @@ class dbManager(object):
             print("El lenguaje " + lang_name.strip().title() + " fue eliminado del sistema")
             return True
         except Exception as e:
-            print("Error desconocido al intentar eliminarEl lenguaje " + lang_name.strip().title() + ":", e)
+            print("Error desconocido al intentar eliminar El lenguaje " + lang_name.strip().title() + ": ", e)
+            self.session.rollback()
+            return False  
+
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE MATERIAS:
+    #==============================================================================================================================================================================
+
+    """
+    Método para verificar la existencia de una materia.
+        - Retorna True: Cuando la materia existe en el sistema.
+        - Retorna False: Cuando la materia NO existe en el sistema.
+    """
+    def existSubject(self, subject_code):
+        subject_code = subject_code.strip().upper()
+        count = self.session.query(Subject).filter_by(subject_code=subject_code).count()
+        if count == 0:
+            print("La materia " + subject_code + " NO existe")
+            return False
+        else:
+            print("La materia " + subject_code + " existe")
+            return True
+
+
+    """
+    Método para crear una materia
+     - Retorna True:
+        * Cuando la materia es creado satisfactoreamente.
+     - Retorna False:
+        * Cuando no se puede crear la materia.
+    """
+    def createSubject(self, subject_code, subject_name):
+        if self.existSubject(subject_code):
+            return False
+
+        subject_code = subject_code.strip().upper()
+        kwargs = {
+            'subject_code'     : subject_code,
+            'subject_name'     : subject_name.strip().title(),
+        }
+
+        newSubj = Subject(**kwargs)
+        self.session.add(newSubj)
+        try:
+            self.session.commit()
+            print("Se ha creado correctamente la materia " + subject_code)
+            return True
+        except Exception as e:
+            print("Error al crear la materia " + subject_code +": ", e)
+            self.session.rollback()
+            return False
+
+
+    """
+    Método para buscar un lenguaje en el sistema o todos los lenguajes si no se especifica cual se busca
+     - Siempre devuelve un arreglo
+    """
+    def getSubject(self, subject_code=None, subject_name=None):
+        if subject_code is None and subject_name is None:
+            return self.session.query(Subject).all()
+
+        filters = and_()
+
+        if subject_code is not None:
+            filters = and_(filters, Subject.subject_code.ilike("%"+subject_code.strip().upper()+"%"))
+
+        if subject_name is not None:
+            filters = and_(filters, Subject.subject_name.ilike("%"+subject_name.strip().title()+"%"))
+
+        return self.session.query(Subject).filter(*filters).all()
+
+
+    """
+    Método para actualizar información de una materia
+     - Retorna True:
+        * Cuando logra actualizar la información correctamente
+     - Retorna False:
+        * Cuando la materia no existe
+        * Cuando no pudo actualizarse la infromación por alguna otra razón
+    """
+    def updateSubject(self, subject_code, subject_name=None):
+        subject_code = subject_code.strip().upper() 
+        if subject_name is not None and self.existSubject(subject_code):
+            values = {}
+            if subject_name is not None: values["subject_name"] = subject_name.strip().title()
+            try:
+                self.session.query(Subject).filter_by(subject_code=subject_code).update(values)
+                self.session.commit()
+                print("Se ha actualizado la información de la materia " + subject_code + " satisfactoriamente")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar actualizar la información de la materia " + subject_code + ": ", e)
+                self.session.rollback()
+                return False
+        return False
+
+    """
+    Método para eliminar una Materia en sistema
+     - Retorna True:
+        * Cuando la Materia es eliminada del sistema
+     - Retorna False:
+        * Cuando la Materia NO es eliminada del sistema
+    """
+    def deleteSubject(self, subject_code):
+        subject_code = subject_code.strip().upper()
+        obj_list = self.getSubject(subject_code=subject_code)
+
+        if len(obj_list) == 0:
+            print("La Materia " + subject_code + " NO existe")
+            return False
+
+        self.session.delete(obj_list[0])
+        try:
+            self.session.commit()
+            print("La Materia " + subject_code + " fue eliminada del sistema")
+            return True
+        except Exception as e:
+            print("Error desconocido al intentar eliminar La Materia " + subject_code + ": ", e)
             self.session.rollback()
             return False  
 
@@ -3347,6 +3466,13 @@ if __name__ == '__main__':
     m.createBook("Prueba", 1, datetime.date.today(), "Español")
     books = m.getBook()
     print(books)
+
+    m.createSubject("ci12345", "radio Revolution                            ")
+    print(m.getSubject(subject_name="radio"))
+    m.updateSubject("ci12345", "Radio Revolution 2")
+    print(m.getSubject(subject_code="ci12345"))
+
+    
 
     """print(m.getBalance())
 
