@@ -40,6 +40,20 @@ from str_random import str_random
 from app_utilities import noneToZero
 
 ###################################################################################################################################################################################
+## FUNCIONES UTILITIES:
+###################################################################################################################################################################################
+
+"""
+Función para convertir un String a un Titulo
+ - En caso de None, retorna None
+"""
+def toTitle(word):
+    if word is not None:
+        return word.strip().title()
+    else:
+        return None
+
+###################################################################################################################################################################################
 ## DECLARACIÓN DEL MANEJADOR:
 ###################################################################################################################################################################################
 
@@ -3372,7 +3386,7 @@ class dbManager(object):
 
 
     """
-    Método para buscar un lenguaje en el sistema o todos los lenguajes si no se especifica cual se busca
+    Método para buscar una materia en el sistema o todas las materias si no se especifica cual se busca
      - Siempre devuelve un arreglo
     """
     def getSubject(self, subject_code=None, subject_name=None):
@@ -3439,6 +3453,177 @@ class dbManager(object):
             self.session.rollback()
             return False  
 
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE AUTORES:
+    #==============================================================================================================================================================================
+
+    """
+    Método para verificar la existencia de un autor.
+        - Retorna True: Cuando el autor existe en el sistema.
+        - Retorna False: Cuando el autor NO existe en el sistema.
+    """
+    def existAuthor(self, firstname, lastname, middlename=None, second_lastname=None, birthdate=None, nationality=None):
+
+        kwargs = {
+            'firstname' : toTitle(firstname),
+            'lastname' : toTitle(lastname),
+            'middlename' : toTitle(middlename),
+            'second_lastname' : toTitle(second_lastname),
+            'birthdate' : birthdate,
+            'nationality' : toTitle(nationality),
+        }
+        
+        count = self.session.query(Author).filter_by(**kwargs).count()
+        if count == 0:
+            print("El Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + " NO existe")
+            return False
+        else:
+            print("El Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + " existe")
+            return True
+
+
+    """
+    Método para crear un autor
+     - Retorna True:
+        * Cuando el autor es creado satisfactoreamente.
+     - Retorna False:
+        * Cuando no se puede crear el autor.
+    """
+    def createAuthor(self, firstname, lastname, middlename=None, second_lastname=None, birthdate=None, nationality=None):
+
+        if self.existAuthor(firstname, lastname, middlename, second_lastname, birthdate, nationality):
+            return False
+
+        kwargs = {
+            'firstname' : toTitle(firstname),
+            'lastname' : toTitle(lastname),
+            'middlename' : toTitle(middlename),
+            'second_lastname' : toTitle(second_lastname),
+            'birthdate' : birthdate,
+            'nationality' : toTitle(nationality),
+        }
+
+        newAuthor = Author(**kwargs)
+        self.session.add(newAuthor)
+        try:
+            self.session.commit()
+            print("Se ha creado correctamente El Autor " + kwargs['firstname'] + " " + kwargs['lastname'])
+            return True
+        except Exception as e:
+            print("Error al crear El Autor " + kwargs['firstname'] + " " + kwargs['lastname'] +": ", e)
+            self.session.rollback()
+            return False
+
+
+    """
+    Método para buscar un autor en el sistema o todos los autores si no se especifica cual se busca
+     - Siempre devuelve un arreglo
+    """
+    def getAuthor(self, firstname=None, lastname=None, middlename=None, second_lastname=None, birthdate_start=None, birthdate_end=None, nationality=None):
+        if firstname is None and lastname is None and middlename is None and second_lastname is None and birthdate_start is None and birthdate_end is None \
+            and nationality is None:
+            return self.session.query(Author).all()
+
+        filters = and_()
+
+        if firstname is not None:
+            filters = and_(filters, Author.firstname.ilike("%"+toTitle(firstname)+"%"))
+
+        if lastname is not None:
+            filters = and_(filters, Author.lastname.ilike("%"+toTitle(lastname)+"%"))
+
+        if middlename is not None:
+            filters = and_(filters, Author.middlename.ilike("%"+toTitle(middlename)+"%"))
+
+        if second_lastname is not None:
+            filters = and_(filters, Author.second_lastname.ilike("%"+toTitle(second_lastname)+"%"))
+
+        if birthdate_start is not None:
+            filters = and_(filters, Author.birthdate >= birthdate_start)
+
+        if birthdate_end is not None:
+            filters = and_(filters, Author.birthdate <= birthdate_end)
+
+        if nationality is not None:
+            filters = and_(filters, Author.nationality.ilike("%"+toTitle(nationality)+"%"))
+
+        return self.session.query(Author).filter(*filters).all()
+
+
+    """
+    Método para actualizar información de un autor
+     - Retorna True:
+        * Cuando logra actualizar la información correctamente
+     - Retorna False:
+        * Cuando el autor no existe
+        * Cuando no pudo actualizarse la infromación por alguna otra razón
+    """
+    def updateAuthor(self, firstname, lastname, new_firstname=None, new_lastname=None, \
+            middlename=None, new_middlename=None, second_lastname=None, new_second_lastname=None, \
+            birthdate=None, new_birthdate=None, nationality=None, new_nationality=None):
+        if self.existAuthor(firstname, lastname, middlename, second_lastname, birthdate, nationality):
+            kwargs = {
+                'firstname' : toTitle(firstname),
+                'lastname' : toTitle(lastname),
+                'middlename' : toTitle(middlename),
+                'second_lastname' : toTitle(second_lastname),
+                'birthdate' : birthdate,
+                'nationality' : toTitle(nationality),
+            }
+            values = {}
+            if new_firstname is not None: values["firstname"] = toTitle(new_firstname)
+            if new_lastname is not None: values["lastname"] = toTitle(new_lastname)
+            if new_middlename is not None: values["middlename"] = toTitle(new_middlename)
+            if new_second_lastname is not None: values["second_lastname"] = toTitle(new_second_lastname)
+            if new_birthdate is not None: values["birthdate"] = birthdate
+            if new_nationality is not None: values["nationality"] = toTitle(new_nationality)
+            try:
+                self.session.query(Author).filter_by(**kwargs).update(values)
+                self.session.commit()
+                print("Se ha actualizado la información del Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + " satisfactoriamente")
+                return True
+            except Exception as e:
+                print("Ha ocurrido un error desconocido al intentar actualizar la información del Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + ": ", e)
+                self.session.rollback()
+                return False
+        return False
+
+    """
+    Método para eliminar un Autor en sistema
+     - Retorna True:
+        * Cuando el Autor es eliminado del sistema
+     - Retorna False:
+        * Cuando el Autor NO es eliminado del sistema
+    """
+    def deleteAuthor(self, firstname, lastname, middlename=None, second_lastname=None, birthdate=None, nationality=None):
+        kwargs = {
+                'firstname' : toTitle(firstname),
+                'lastname' : toTitle(lastname),
+                'middlename' : toTitle(middlename),
+                'second_lastname' : toTitle(second_lastname),
+                'birthdate' : birthdate,
+                'nationality' : toTitle(nationality),
+            }
+        obj_list = self.getAuthor(**kwargs)
+
+        if len(obj_list) == 0:
+            print("El Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + " NO existe")
+            return False
+
+        if len(obj_list) > 1:
+            print("Hay muchos autores que son idénticas con la identificación del Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + " a eliminar")
+            return False
+
+        self.session.delete(obj_list[0])
+        try:
+            self.session.commit()
+            print("El Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + " fue eliminado del sistema")
+            return True
+        except Exception as e:
+            print("Error desconocido al intentar eliminar El Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + ": ", e)
+            self.session.rollback()
+            return False  
 
 ###################################################################################################################################################################################
 ## PRUEBAS:
