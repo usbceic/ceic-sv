@@ -3680,6 +3680,51 @@ class dbManager(object):
                 return False  
         return True
 
+    """
+    Método para relacionar un Libro con un Autor o un Autor con un Libro
+     - Es requerido el objeto Book y el objecto Author de los modelos
+     - Retorna True:
+        * Cuando se relacionans o ya estaban relacionadas
+     - Retorna False:
+        * Cuando no se pueden relacionar
+    """
+    def relateBookToAuthor(self, book, author):
+        if author not in book.authors:
+            book.authors.append(author)
+            try:
+                self.session.commit()
+                print("El Libro con ID " + str(book.book_id) + " se relacionó con el Autor " + str(author))
+                return True
+            except Exception as e:
+                print("Error desconocido al intentar relacionar el Libro con ID " + str(book.book_id) \
+                    + " con el Autor " + str(author) + ": ", e)
+                self.session.rollback()
+                return False  
+        return True
+
+
+    """
+    Método para quiter la relación entre un Libro con una Materia o una Materia con un Libro
+     - Es requerido el objeto Book y el objecto Subject de los modelos
+     - Retorna True:
+        * Cuando ya no se relacionans o si no estaban relacionadas
+     - Retorna False:
+        * Cuando no se puede quitar la relación
+    """
+    def unrelateBookToAuthor(self, book, author):
+        if author in book.authors:
+            book.authors.remove(author)
+            try:
+                self.session.commit()
+                print("El Libro con ID " + str(book.book_id) + " se le quitó la relación con el Autor " + str(author))
+                return True
+            except Exception as e:
+                print("Error desconocido al intentar quitar la relación del Libro con ID " + str(book.book_id) \
+                    + " con el Autor " + str(author) + ": ", e)
+                self.session.rollback()
+                return False  
+        return True
+
 ###################################################################################################################################################################################
 ## PRUEBAS:
 ###################################################################################################################################################################################
@@ -3722,7 +3767,7 @@ if __name__ == '__main__':
     m.deleteAuthor(firstname="El", lastname="Autor", middlename="", second_lastname="", nationality="")
     print(m.getAuthor("El"))
 
-    subjects = m.getSubject()
+    """    subjects = m.getSubject()
 
     subjects[0].books.append(books[0])
 
@@ -3738,7 +3783,7 @@ if __name__ == '__main__':
 
     subjects[0].books.remove(books[0])
     print("\nMateria:", subjects[0], "Libro:", books[0].subjects)
-    
+    """
 
     """print(m.getBalance())
 
