@@ -45,13 +45,13 @@ from app_utilities import noneToZero
 
 """
 Función para convertir un String a un Titulo
- - En caso de None, retorna None
+ - En caso de None, retorna string vacio
 """
 def toTitle(word):
     if word is not None:
         return word.strip().title()
     else:
-        return None
+        return ""
 
 ###################################################################################################################################################################################
 ## DECLARACIÓN DEL MANEJADOR:
@@ -87,7 +87,7 @@ class dbManager(object):
         try:
             self.session = startSession(self.name, self.password, debug, dropAll)
         except Exception as e:
-            print("Error desconocido al intentar iniciar la sesión en la base")
+            print("Error desconocido al intentar iniciar la sesión en la base: " + str(e))
 
     """
     Método para cerrar la sesión en la base de datos
@@ -3463,14 +3463,13 @@ class dbManager(object):
         - Retorna True: Cuando el autor existe en el sistema.
         - Retorna False: Cuando el autor NO existe en el sistema.
     """
-    def existAuthor(self, firstname, lastname, middlename=None, second_lastname=None, birthdate=None, nationality=None):
+    def existAuthor(self, firstname, lastname, middlename=None, second_lastname=None, nationality=None):
 
         kwargs = {
             'firstname' : toTitle(firstname),
             'lastname' : toTitle(lastname),
             'middlename' : toTitle(middlename),
             'second_lastname' : toTitle(second_lastname),
-            'birthdate' : birthdate,
             'nationality' : toTitle(nationality),
         }
         
@@ -3492,7 +3491,7 @@ class dbManager(object):
     """
     def createAuthor(self, firstname, lastname, middlename=None, second_lastname=None, birthdate=None, nationality=None):
 
-        if self.existAuthor(firstname, lastname, middlename, second_lastname, birthdate, nationality):
+        if self.existAuthor(firstname, lastname, middlename, second_lastname, nationality):
             return False
 
         kwargs = {
@@ -3534,10 +3533,16 @@ class dbManager(object):
             filters = and_(filters, Author.lastname.ilike("%"+toTitle(lastname)+"%"))
 
         if middlename is not None:
-            filters = and_(filters, Author.middlename.ilike("%"+toTitle(middlename)+"%"))
+            if middlename != "":
+                filters = and_(filters, Author.middlename.ilike("%"+toTitle(middlename)+"%"))
+            else:
+                filters = and_(filters, Author.middlename == "")
 
         if second_lastname is not None:
-            filters = and_(filters, Author.second_lastname.ilike("%"+toTitle(second_lastname)+"%"))
+            if second_lastname != "":
+                filters = and_(filters, Author.second_lastname.ilike("%"+toTitle(second_lastname)+"%"))
+            else:
+                filters = and_(filters, Author.second_lastname == "")
 
         if birthdate_start is not None:
             filters = and_(filters, Author.birthdate >= birthdate_start)
@@ -3546,7 +3551,10 @@ class dbManager(object):
             filters = and_(filters, Author.birthdate <= birthdate_end)
 
         if nationality is not None:
-            filters = and_(filters, Author.nationality.ilike("%"+toTitle(nationality)+"%"))
+            if nationality != "":
+                filters = and_(filters, Author.nationality.ilike("%"+toTitle(nationality)+"%"))
+            else:
+                filters = and_(filters, Author.nationality == "")
 
         return self.session.query(Author).filter(*filters).all()
 
@@ -3561,14 +3569,13 @@ class dbManager(object):
     """
     def updateAuthor(self, firstname, lastname, new_firstname=None, new_lastname=None, \
             middlename=None, new_middlename=None, second_lastname=None, new_second_lastname=None, \
-            birthdate=None, new_birthdate=None, nationality=None, new_nationality=None):
-        if self.existAuthor(firstname, lastname, middlename, second_lastname, birthdate, nationality):
+            new_birthdate=None, nationality=None, new_nationality=None):
+        if self.existAuthor(firstname, lastname, middlename, second_lastname, nationality):
             kwargs = {
                 'firstname' : toTitle(firstname),
                 'lastname' : toTitle(lastname),
                 'middlename' : toTitle(middlename),
                 'second_lastname' : toTitle(second_lastname),
-                'birthdate' : birthdate,
                 'nationality' : toTitle(nationality),
             }
             values = {}
@@ -3596,17 +3603,15 @@ class dbManager(object):
      - Retorna False:
         * Cuando el Autor NO es eliminado del sistema
     """
-    def deleteAuthor(self, firstname, lastname, middlename=None, second_lastname=None, birthdate=None, nationality=None):
+    def deleteAuthor(self, firstname, lastname, middlename=None, second_lastname=None, nationality=None):
         kwargs = {
                 'firstname' : toTitle(firstname),
                 'lastname' : toTitle(lastname),
                 'middlename' : toTitle(middlename),
                 'second_lastname' : toTitle(second_lastname),
-                'birthdate' : birthdate,
                 'nationality' : toTitle(nationality),
             }
         obj_list = self.getAuthor(**kwargs)
-
         if len(obj_list) == 0:
             print("El Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + " NO existe")
             return False
@@ -3624,6 +3629,56 @@ class dbManager(object):
             print("Error desconocido al intentar eliminar El Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + ": ", e)
             self.session.rollback()
             return False  
+
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL DE RELACIONES ENTRE MATERIAS, AUTORES Y LIBROS:
+    #==============================================================================================================================================================================
+
+    """
+    Método para relacionar un Libro con una Materia o una Materia con un Libro
+     - Es requerido el objeto Book y el objecto Subject de los modelos
+     - Retorna True:
+        * Cuando se relacionans o ya estaban relacionadas
+     - Retorna False:
+        * Cuando no se pueden relacionar
+    """
+    def relateBookToSubject(self, book, subject):
+        if subject not in book.subjects:
+            book.subjects.append(subject)
+            try:
+                self.session.commit()
+                print("El Libro con ID " + str(book.book_id) + " se relacionó con la Materia " + str(subject.subject_code))
+                return True
+            except Exception as e:
+                print("Error desconocido al intentar relacionar el Libro con ID " + str(book.book_id) \
+                    + " con la Materia " + str(subject.subject_code) + ": ", e)
+                self.session.rollback()
+                return False  
+        return True
+
+
+    """
+    Método para quiter la relación entre un Libro con una Materia o una Materia con un Libro
+     - Es requerido el objeto Book y el objecto Subject de los modelos
+     - Retorna True:
+        * Cuando ya no se relacionans o si no estaban relacionadas
+     - Retorna False:
+        * Cuando no se puede quitar la relación
+    """
+    def unrelateBookToSubject(self, book, subject):
+        if subject in book.subjects:
+            book.subjects.remove(subject)
+            try:
+                self.session.commit()
+                print("El Libro con ID " + str(book.book_id) + " se le quitó la relación con la Materia " + str(subject.subject_code))
+                return True
+            except Exception as e:
+                print("Error desconocido al intentar quitar la relación del Libro con ID " + str(book.book_id) \
+                    + " con la Materia " + str(subject.subject_code) + ": ", e)
+                self.session.rollback()
+                return False  
+        return True
 
 ###################################################################################################################################################################################
 ## PRUEBAS:
@@ -3657,6 +3712,32 @@ if __name__ == '__main__':
     m.updateSubject("ci12345", "Radio Revolution 2")
     print(m.getSubject(subject_code="ci12345"))
 
+    m.createAuthor(" el", "AUtor                   ")
+    m.createAuthor(" el", "AUtor                   ", "otro")
+
+    m.updateAuthor( firstname="El", lastname="Autor", middlename="otro", new_nationality="Venezolano")
+    print(m.getAuthor("El"))
+    m.deleteAuthor(firstname="El", lastname="Autor")
+    print(m.getAuthor("El"))
+    m.deleteAuthor(firstname="El", lastname="Autor", middlename="", second_lastname="", nationality="")
+    print(m.getAuthor("El"))
+
+    subjects = m.getSubject()
+
+    subjects[0].books.append(books[0])
+
+    print("\nMateria:", subjects[0], "Libro:", books[0].subjects)
+
+    #subjects[0].books.append(books[0])
+
+    print("\nMateria:", subjects[0], "Libro:", books[0].subjects)
+
+    
+    subjects[0].books.remove(subjects[0].books[0])
+    print("\nMateria:", subjects[0], "Libro:", books[0].subjects)
+
+    subjects[0].books.remove(books[0])
+    print("\nMateria:", subjects[0], "Libro:", books[0].subjects)
     
 
     """print(m.getBalance())
