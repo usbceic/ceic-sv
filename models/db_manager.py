@@ -38,6 +38,7 @@ from sqlalchemy import func, distinct, update, event, and_, or_, desc
 from passlib.hash import bcrypt
 from str_random import str_random
 from app_utilities import noneToZero
+from datetime import datetime
 
 ###################################################################################################################################################################################
 ## FUNCIONES UTILITIES:
@@ -3659,7 +3660,7 @@ class dbManager(object):
 
 
     """
-    Método para quiter la relación entre un Libro con una Materia o una Materia con un Libro
+    Método para quitar la relación entre un Libro con una Materia o una Materia con un Libro
      - Es requerido el objeto Book y el objecto Subject de los modelos
      - Retorna True:
         * Cuando ya no se relacionans o si no estaban relacionadas
@@ -3679,6 +3680,7 @@ class dbManager(object):
                 self.session.rollback()
                 return False  
         return True
+
 
     """
     Método para relacionar un Libro con un Autor o un Autor con un Libro
@@ -3704,7 +3706,7 @@ class dbManager(object):
 
 
     """
-    Método para quiter la relación entre un Libro con una Materia o una Materia con un Libro
+    Método para quitar la relación entre un Libro con una Materia o una Materia con un Libro
      - Es requerido el objeto Book y el objecto Subject de los modelos
      - Retorna True:
         * Cuando ya no se relacionans o si no estaban relacionadas
@@ -3724,6 +3726,148 @@ class dbManager(object):
                 self.session.rollback()
                 return False  
         return True
+
+
+    #==============================================================================================================================================================================
+    # MÉTODOS PARA EL CONTROL PRÉSTAMO DE LIBROS:
+    #==============================================================================================================================================================================
+
+    """
+    Método prestar un libro a una persona
+     - Retorna True:
+        * Cuando se presta el libro con éxito
+     - Retorna False:
+        * Cuando no se puede prestar el libro con éxito
+    """
+    def lentBookTo(self, book_id, ci, lender_clerk, start_description, estimated_return_time):
+        
+        client = self.getClients(ci=ci)
+
+        if len(client) == 0 or not client[0].book_permission:
+            print("No existe el cliente o no tiene permiso para pedir libros prestados")
+            return False
+
+        book = self.getBook(book_id=book_id)
+
+        if len(book) == 0 or book[0].quantity <= book[0].quantity_lent:
+            print("No existe el libro o no se encuentra disponible para prestar")
+            return False
+
+        kwargs = {
+            'book_id' : book_id,
+            'ci' : ci,
+            'lender_clerk' : lender_clerk,
+            'start_description' : start_description.strip(),
+            'estimated_return_time' : estimated_return_time,
+        }
+
+        newLendLease = Lent_to(**kwargs)
+        self.session.add(newLendLease)
+        book[0].quantity_lent = book[0].quantity_lent + 1 
+        try:
+            self.session.commit()
+            print("Se ha creado correctamente El Prestamo del Libro " + str(newLendLease))
+            return True
+        except Exception as e:
+            print("Error al crear El Prestamo del Libro " + str(newLendLease) +": ", e)
+            self.session.rollback()
+            return False
+
+
+    """
+    Método para buscar un préstamo en el sistema o todos los prestamos si no se especifica nada
+     - include_returned representa devolver los préstamos ya devueltos
+    """
+    def getLents(self, book_id=None, ci=None, lender_clerk=None, receiver_clerk=None, include_returned=False, \
+            start_time_start=None, start_time_end=None, estimated_return_time_start=None, estimated_return_time_end=None, \
+            return_time_start=None, return_time_end=None):
+        if book_id is None and ci is None and lender_clerk is None and receiver_clerk is None and start_time_start is None \
+            and start_time_end is None and estimated_return_time_start is None and estimated_return_time_end is None \
+            and return_time_start is None and return_time_end is None:
+            if not include_returned:
+                return self.session.query(Lent_to).filter(Lent_to.return_time == None).all()
+            else:
+                return self.session.query(Lent_to).all()
+
+        filters = and_()
+
+        if book_id is not None:
+            filters = and_(filters, Lent_to.book_id == book_id)
+
+        if ci is not None:
+            filters = and_(filters, Lent_to.ci == ci)
+
+        if lender_clerk is not None:
+            filters = and_(filters, Lent_to.lender_clerk == lender_clerk)
+
+        if receiver_clerk is not None:
+            filters = and_(filters, Lent_to.receiver_clerk == receiver_clerk)
+
+        if start_time_start is not None:
+            filters = and_(filters, Lent_to.start_time >= start_time_start)
+
+        if start_time_end is not None:
+            filters = and_(filters, Lent_to.start_time <= start_time_end)
+
+        if estimated_return_time_start is not None:
+            filters = and_(filters, Lent_to.estimated_return_time >= estimated_return_time_start)
+
+        if estimated_return_time_end is not None:
+            filters = and_(filters, Lent_to.estimated_return_time <= estimated_return_time_end)
+
+        if not include_returned:
+            filters = and_(filters, Lent_to.return_time == None)
+        else:
+            if return_time_start is not None:
+                filters = and_(filters, Lent_to.return_time >= return_time_start)
+
+            if return_time_end is not None:
+                filters = and_(filters, Lent_to.return_time <= return_time_end)
+
+        return self.session.query(Lent_to).filter(*filters).all()
+
+    """
+    Método devolver un libro prestado a una persona
+     - Retorna True:
+        * Cuando se presta el libro con éxito
+     - Retorna False:
+        * Cuando no se puede prestar el libro con éxito
+    """
+    def returnBook(self, book_id, ci, lender_clerk, start_time, receiver_clerk, return_description):
+
+        book = self.getBook(book_id=book_id)
+
+        if len(book) == 0 or book[0].quantity <= book[0].quantity_lent:
+            print("No existe el libro o no se encuentra disponible para prestar")
+            return False
+
+
+        kwargs = {
+            'book_id' : book_id,
+            'ci' : ci,
+            'lender_clerk' : lender_clerk,
+            'start_time' : start_time,
+        }
+
+        lendLease = self.session.query(Lent_to).filter_by(**kwargs).all()
+
+        if len(lendLease) ==  0 or lendLease[0].return_time is not None:
+            print("No existe ese prestamo o ya fue devuelto")
+            return False
+
+        book[0].quantity_lent = book[0].quantity_lent - 1
+
+        lendLease[0].receiver_clerk = receiver_clerk
+        lendLease[0].return_time = datetime.now()
+        lendLease[0].return_description = return_description
+        try:
+            self.session.commit()
+            print("Se ha devuelto correctamente El Prestamo del Libro " + str(newLendLease))
+            return True
+        except Exception as e:
+            print("Error al devolver El Prestamo del Libro " + str(newLendLease) +": ", e)
+            self.session.rollback()
+            return False
 
 ###################################################################################################################################################################################
 ## PRUEBAS:
