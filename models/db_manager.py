@@ -3837,7 +3837,7 @@ class dbManager(object):
 
         book = self.getBook(book_id=book_id)
 
-        if len(book) == 0 or book[0].quantity <= book[0].quantity_lent:
+        if len(book) == 0 or book[0].quantity_lent <= 0:
             print("No existe el libro o no se encuentra disponible para prestar")
             return False
 
@@ -3858,14 +3858,14 @@ class dbManager(object):
         book[0].quantity_lent = book[0].quantity_lent - 1
 
         lendLease[0].receiver_clerk = receiver_clerk
-        lendLease[0].return_time = datetime.now()
+        lendLease[0].return_time = datetime.datetime.now()
         lendLease[0].return_description = return_description
         try:
             self.session.commit()
-            print("Se ha devuelto correctamente El Prestamo del Libro " + str(newLendLease))
+            print("Se ha devuelto correctamente El Prestamo del Libro " + str(lendLease))
             return True
         except Exception as e:
-            print("Error al devolver El Prestamo del Libro " + str(newLendLease) +": ", e)
+            print("Error al devolver El Prestamo del Libro " + str(lendLease) +": ", e)
             self.session.rollback()
             return False
 
@@ -3884,6 +3884,16 @@ if __name__ == '__main__':
         "lastname"        : "",
         "debt_permission" : False,
         "book_permission" : False
+    }
+
+    m.createClient(**kwargs)
+
+    kwargs = {
+        "ci"              : 1,
+        "firstname"       : "PRUEBA",
+        "lastname"        : "",
+        "debt_permission" : False,
+        "book_permission" : True
     }
 
     m.createClient(**kwargs)
@@ -3910,6 +3920,18 @@ if __name__ == '__main__':
     print(m.getAuthor("El"))
     m.deleteAuthor(firstname="El", lastname="Autor", middlename="", second_lastname="", nationality="")
     print(m.getAuthor("El"))
+
+    m.lentBookTo(books[0].book_id, 1, "Hola", "   Prueba    ", datetime.datetime.now() + datetime.timedelta(days=1))
+    print(m.getLents())
+
+    m.lentBookTo(books[0].book_id, 1, "Hola", "   Prueba    ", datetime.datetime.now() + datetime.timedelta(days=1))
+    print(m.getLents())
+    lent = m.getLents()[0]
+    print("-----------------------------------------------------------------")
+    m.returnBook(lent.book_id, lent.ci, lent.lender_clerk, lent.start_time, "Hola", "Todo NICE")
+    print(m.getLents())
+    print(m.getLents(include_returned=True))
+
 
     """    subjects = m.getSubject()
 
