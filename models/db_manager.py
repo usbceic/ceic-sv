@@ -1,22 +1,22 @@
 # -*- encoding: utf-8 -*-
 
-###################################################################################################################################################################################
+#######################################################################################################################
 ## DESCRIPCIÓN:
-###################################################################################################################################################################################
+#######################################################################################################################
 
 # Modúlo con la implementación del manejador de la base de datos de CEIC Suite
 
-###################################################################################################################################################################################
+#######################################################################################################################
 ## AUTORES:
-###################################################################################################################################################################################
+#######################################################################################################################
 
 # Carlos Serrada, cserradag96@gmail.com
 # Christian Oliveros, 01christianol01@gmail.com
 # Pablo Betancourt, pablodbc30@gmail.com
 
-###################################################################################################################################################################################
+#######################################################################################################################
 ## PATH:
-###################################################################################################################################################################################
+#######################################################################################################################
 
 from sys import path                          # Importación del path del sistema
 from os.path import join, dirname, basename   # Importación de funciones para unir y separar paths con el formato del sistema
@@ -27,9 +27,9 @@ for current in path:
         path.append(join(dirname(current), "modules"))  # Agregar la carpeta modules al path
         break
 
-###################################################################################################################################################################################
+#######################################################################################################################
 ## DEPENDENCIAS:
-###################################################################################################################################################################################
+#######################################################################################################################
 
 from models import *
 from session import startSession, resetDataBase
@@ -40,9 +40,9 @@ from str_random import str_random
 from app_utilities import noneToZero
 from datetime import datetime
 
-###################################################################################################################################################################################
+#######################################################################################################################
 ## FUNCIONES UTILITIES:
-###################################################################################################################################################################################
+#######################################################################################################################
 
 """
 Función para convertir un String a un Titulo
@@ -54,9 +54,9 @@ def toTitle(word):
     else:
         return ""
 
-###################################################################################################################################################################################
+#######################################################################################################################
 ## DECLARACIÓN DEL MANEJADOR:
-###################################################################################################################################################################################
+#######################################################################################################################
 
 class dbManager(object):
     #==============================================================================================================================================================================
@@ -3252,7 +3252,7 @@ class dbManager(object):
         except Exception as e:
             print("Error desconocido al intentar eliminar El libro con ID " + str(book_id) + ": ", e)
             self.session.rollback()
-            return False  
+            return False
 
     #==============================================================================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LENGUAJES:
@@ -3334,7 +3334,7 @@ class dbManager(object):
         except Exception as e:
             print("Error desconocido al intentar eliminar El lenguaje " + lang_name.strip().title() + ": ", e)
             self.session.rollback()
-            return False  
+            return False
 
 
     #==============================================================================================================================================================================
@@ -3414,7 +3414,7 @@ class dbManager(object):
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
     def updateSubject(self, subject_code, subject_name=None):
-        subject_code = subject_code.strip().upper() 
+        subject_code = subject_code.strip().upper()
         if subject_name is not None and self.existSubject(subject_code):
             values = {}
             if subject_name is not None: values["subject_name"] = subject_name.strip().title()
@@ -3452,7 +3452,7 @@ class dbManager(object):
         except Exception as e:
             print("Error desconocido al intentar eliminar La Materia " + subject_code + ": ", e)
             self.session.rollback()
-            return False  
+            return False
 
 
     #==============================================================================================================================================================================
@@ -3473,7 +3473,7 @@ class dbManager(object):
             'second_lastname' : toTitle(second_lastname),
             'nationality' : toTitle(nationality),
         }
-        
+
         count = self.session.query(Author).filter_by(**kwargs).count()
         if count == 0:
             print("El Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + " NO existe")
@@ -3629,7 +3629,7 @@ class dbManager(object):
         except Exception as e:
             print("Error desconocido al intentar eliminar El Autor " + kwargs['firstname'] + " " + kwargs['lastname'] + ": ", e)
             self.session.rollback()
-            return False  
+            return False
 
 
     #==============================================================================================================================================================================
@@ -3655,7 +3655,7 @@ class dbManager(object):
                 print("Error desconocido al intentar relacionar el Libro con ID " + str(book.book_id) \
                     + " con la Materia " + str(subject.subject_code) + ": ", e)
                 self.session.rollback()
-                return False  
+                return False
         return True
 
 
@@ -3678,7 +3678,7 @@ class dbManager(object):
                 print("Error desconocido al intentar quitar la relación del Libro con ID " + str(book.book_id) \
                     + " con la Materia " + str(subject.subject_code) + ": ", e)
                 self.session.rollback()
-                return False  
+                return False
         return True
 
 
@@ -3701,7 +3701,7 @@ class dbManager(object):
                 print("Error desconocido al intentar relacionar el Libro con ID " + str(book.book_id) \
                     + " con el Autor " + str(author) + ": ", e)
                 self.session.rollback()
-                return False  
+                return False
         return True
 
 
@@ -3724,7 +3724,7 @@ class dbManager(object):
                 print("Error desconocido al intentar quitar la relación del Libro con ID " + str(book.book_id) \
                     + " con el Autor " + str(author) + ": ", e)
                 self.session.rollback()
-                return False  
+                return False
         return True
 
 
@@ -3740,7 +3740,7 @@ class dbManager(object):
         * Cuando no se puede prestar el libro con éxito
     """
     def lentBookTo(self, book_id, ci, lender_clerk, start_description, estimated_return_time):
-        
+
         client = self.getClients(ci=ci)
 
         if len(client) == 0 or not client[0].book_permission:
@@ -3763,7 +3763,7 @@ class dbManager(object):
 
         newLendLease = Lent_to(**kwargs)
         self.session.add(newLendLease)
-        book[0].quantity_lent = book[0].quantity_lent + 1 
+        book[0].quantity_lent = book[0].quantity_lent + 1
         try:
             self.session.commit()
             print("Se ha creado correctamente El Prestamo del Libro " + str(newLendLease))
@@ -3869,9 +3869,9 @@ class dbManager(object):
             self.session.rollback()
             return False
 
-###################################################################################################################################################################################
+#######################################################################################################################
 ## PRUEBAS:
-###################################################################################################################################################################################
+#######################################################################################################################
 
 # Prueba
 if __name__ == '__main__':
@@ -3943,7 +3943,7 @@ if __name__ == '__main__':
 
     print("\nMateria:", subjects[0], "Libro:", books[0].subjects)
 
-    
+
     subjects[0].books.remove(subjects[0].books[0])
     print("\nMateria:", subjects[0], "Libro:", books[0].subjects)
 
