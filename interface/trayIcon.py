@@ -43,23 +43,29 @@ class trayIcon(QSystemTrayIcon):
         # MENU
         #--------------------------------------------------------------------------------------------------------------
 
-        self.menu = QMenu(self.parent)                          # Definir menú para el trayIcon
-        self.setContextMenu(self.menu)                          # Enlazar menú con el trayIcon
+        self.menu = QMenu(self.parent)                       # Definir menú para el trayIcon
+        self.setContextMenu(self.menu)                       # Enlazar menú con el trayIcon
 
-        self.showWindow = QAction("Mostrar", self)              # Crear acción para mostrar la ventana de la aplicación en el menu
-        self.showWindow.triggered.connect(self.parent.show)     # Conectar la acción de mostrar con la función para mostrar la ventana de login
-        self.menu.addAction(self.showWindow)                    # Añadir la acción al menú
+        self.showWindow = QAction("Mostrar", self)           # Crear acción para mostrar la aplicación
+        self.showWindow.triggered.connect(self.parent.show)  # Conectarla con mostrar la ventana de login
+        self.menu.addAction(self.showWindow)                 # Añadir la acción al menú
 
-        self.kill = QAction("Salir", self)                      # Crear acción para cerrar la aplicación
-        self.kill.triggered.connect(self.killApp)               # Conectar la acción de cerrar con la función para cerrar el programa
-        self.menu.addAction(self.kill)                          # Añadir la acción al menú
+        self.logout = QAction("Cerrar sesión", self)                     # Crear acción para logout
+        self.logout.triggered.connect(self.parent.closeSession_pressed)  # Conectarla con mostrar la ventana de login
+
+        self.kill = QAction("Salir", self)                   # Crear acción para cerrar la aplicación
+        self.kill.triggered.connect(self.killApp)            # Conectarla con cerrar el programa
+        self.menu.addAction(self.kill)                       # Añadir la acción al menú
 
         #--------------------------------------------------------------------------------------------------------------
         # SEÑALES
         #--------------------------------------------------------------------------------------------------------------
 
-        self.parent.sessionClosed.connect(self.sessionClosed)   # Conectar la señal de cerrar la ventana principal y cerrar la sesióm
-        self.parent.sessionAlive.connect(self.sessionAlive)     # Conectar la señal de cerrar la ventana principal y NO cerrar la sesióm
+        # Conectar la señal de cerrar la ventana principal y cerrar la sesióm
+        self.parent.sessionClosed.connect(self.sessionClosed)
+
+        # Conectar la señal de cerrar la ventana principal y NO cerrar la sesióm
+        self.parent.sessionAlive.connect(self.sessionAlive)
 
     #==================================================================================================================
     # MÉTODOS
@@ -67,13 +73,15 @@ class trayIcon(QSystemTrayIcon):
 
     # Método para atrapar la señal de cerrar la ventana principal y cerrar la sesióm
     def sessionClosed(self):
-        self.showWindow.triggered.disconnect()                          # Desconectar la acción de mostrar de cualquier función
-        self.showWindow.triggered.connect(self.parent.show)             # Conectar la acción de mostrar con la función para mostrar la ventana de login
+        self.showWindow.triggered.disconnect()               # Desconectar la acción
+        self.showWindow.triggered.connect(self.parent.show)  # Y reconectar con mostrar la ventana de login
+        self.menu.removeAction(self.logout)                  # Añadir la acción al menú
 
     # Método para atrapar la señal de cerrar la ventana principal y NO cerrar la sesióm
     def sessionAlive(self):
-        self.showWindow.triggered.disconnect()                          # Desconectar la acción de mostrar de cualquier función
-        self.showWindow.triggered.connect(self.parent.mainWindow.show)  # Conectar la acción de mostrar con la función para mostrar la ventana principal
+        self.showWindow.triggered.disconnect()                          # Desconectar la acción
+        self.showWindow.triggered.connect(self.parent.mainWindow.show)  # Y reconectar con mostrar la ventana principal
+        self.menu.insertAction(self.kill, self.logout)                  # Añadir la acción al menú
 
     # Método para terminar el programa
     def killApp(self):

@@ -348,6 +348,7 @@ class guiManager(QMainWindow, form_class):
 
         # Se connectan los botones entre otras cosas con algunos de los métodos definidos a continuación
         QMetaObject.connectSlotsByName(self)
+        self.table11.itemClicked.connect(self.on_removeRow_clicked)
 
         # Crear respaldo de la base de datos
         self.db.backup()
@@ -1804,11 +1805,9 @@ class guiManager(QMainWindow, form_class):
             table.setItem(i, 3, QTableWidgetItem(str(itemsList[i][3]))) # Subtotal
 
             # Añadir boton para eliminar la fila
-            removeButton = QPushButton()
+            removeButton = QTableWidgetItem()
             removeButton.setIcon(QIcon(':/buttons/cross'))
-            removeButton.setStyleSheet("background: transparent; border: none;")
-            removeButton.clicked.connect(self.on_removeRow_clicked)
-            table.setCellWidget(i, 4, removeButton)
+            table.setItem(i, 4, removeButton)
 
             # Sumar subtotal al total
             total += float(itemsList[i][3])
@@ -2120,18 +2119,19 @@ class guiManager(QMainWindow, form_class):
                 self.clearSpinLine(self.spinLine0)                  # Setear en 0 el lineEdit del contador
 
     # Botones para eliminar listas de productos
-    def on_removeRow_clicked(self):
-        key = self.table11.selectedItems()[0].text()
-        del self.selectedProducts[key]
+    def on_removeRow_clicked(self, item):
+        if self.table11.column(item) == 4:
+            key = self.table11.item(self.table11.row(item), 0).text()
+            del self.selectedProducts[key]
 
-        selectedList = []
-        for key, value in self.selectedProducts.items():
-            selectedList.append([key, value[0], value[1], value[2]])
+            selectedList = []
+            for key, value in self.selectedProducts.items():
+                selectedList.append([key, value[0], value[1], value[2]])
 
-        self.selectedProductName = ""
+            self.selectedProductName = ""
 
-        # Refrescar interfaz
-        self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
+            # Refrescar interfaz
+            self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
 
     # Boton para cancelar una compra
     def on_cancelpb0_pressed(self):
