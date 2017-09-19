@@ -3875,8 +3875,8 @@ class dbManager(object):
 
 # Prueba
 if __name__ == '__main__':
-    m = dbManager("sistema_ventas", "hola", dropAll=True)
-    m.createUser("Hola", "hola", "Naruto", "Uzumaki", "seventh.hokage@konoha.com", 3)
+    m = dbManager("sistema_ventas", "hola", dropAll=False)
+    m.createUser("usbceic", "pizzabrownie", "CEIC", "USB", "usbceic@gmail.com", 3)
 
     kwargs = {
         "ci"              : 0,
@@ -3888,7 +3888,7 @@ if __name__ == '__main__':
 
     m.createClient(**kwargs)
 
-    kwargs = {
+    """kwargs = {
         "ci"              : 1,
         "firstname"       : "PRUEBA",
         "lastname"        : "",
@@ -3930,7 +3930,7 @@ if __name__ == '__main__':
     print("-----------------------------------------------------------------")
     m.returnBook(lent.book_id, lent.ci, lent.lender_clerk, lent.start_time, "Hola", "Todo NICE")
     print(m.getLents())
-    print(m.getLents(include_returned=True))
+    print(m.getLents(include_returned=True))"""
 
 
     """    subjects = m.getSubject()

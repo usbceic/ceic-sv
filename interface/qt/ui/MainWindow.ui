@@ -1096,6 +1096,9 @@ QWidget:item:unchecked {
              </item>
              <item>
               <widget class="QPushButton" name="querys">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -1131,6 +1134,9 @@ QWidget:item:unchecked {
              </item>
              <item>
               <widget class="QPushButton" name="loans">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -1166,6 +1172,9 @@ QWidget:item:unchecked {
              </item>
              <item>
               <widget class="QPushButton" name="books">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>

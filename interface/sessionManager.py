@@ -138,6 +138,19 @@ class sessionManager(QMainWindow, loginWindow):
         self.theme = "blue.qss"
 
         #--------------------------------------------------------------------------------------------------------------
+        # LISTAS DE PROPOSITO GENERAL
+        #--------------------------------------------------------------------------------------------------------------
+
+        # Campos del formulario de login:
+        self.loginLEs = [self.lineEd0, self.lineEd1]
+
+        # Campos del formulario de registro:
+        self.registerLEs = [self.lineEd2, self.lineEd3, self.lineEd4, self.lineEd5, self.lineEd6, self.lineEd7]
+
+        # Campos del formulario de recuperación de contraseña:
+        self.recoveryLEs = [self.lineEd8]
+
+        #--------------------------------------------------------------------------------------------------------------
         # CARGAR CONFIGURACIONES INICIALES
         #--------------------------------------------------------------------------------------------------------------
 
@@ -172,6 +185,10 @@ class sessionManager(QMainWindow, loginWindow):
         if self.theme != theme:
             self.theme = theme
             self.setStyle(self.theme)
+
+    # Borrar contenido de una lista de LineEdit:
+    def clearLEs(self, listLE):
+        for lineE in listLE: lineE.setText("")
 
     # Configuración inicial para la vista de inicio de sesión
     def setupPage0(self):
@@ -234,8 +251,7 @@ class sessionManager(QMainWindow, loginWindow):
         if self.userDef and self.passDef:
             successLogin = self.db.loginUser(user, password)
             if successLogin == 0:
-                self.lineEd0.setText("")
-                self.lineEd1.setText("")
+                self.clearLEs(self.loginLEs)
                 self.footer.setFocus()
                 if not self.guiExist:
                     self.mainWindow = guiManager(user, self.db, self)
@@ -262,6 +278,7 @@ class sessionManager(QMainWindow, loginWindow):
     # Boton para ir a la vista de olvide mi contraseña
     def on_button3_pressed(self):
         if self.click():
+            self.clearLEs(self.loginLEs)
             self.LoginStacked.setCurrentIndex(2)
             self.header.setIcon(QIcon(':/login/conf'))
 
@@ -273,6 +290,7 @@ class sessionManager(QMainWindow, loginWindow):
     # Boton para ir a la vista de registro
     def on_button5_pressed(self):
         if self.click():
+            self.clearLEs(self.loginLEs)
             self.LoginStacked.setCurrentIndex(1)
             self.header.setIcon(QIcon(':/login/camera'))
 
@@ -320,7 +338,7 @@ class sessionManager(QMainWindow, loginWindow):
                 user = self.db.getUsers(email=email)[0]
                 newPass = self.db.resetPassword(user.username)
                 self.mail.sendPRM(email, newPass)
-                self.lineEd8.setText("")
+                self.clearLEs(self.recoveryLEs)
 
                 successPopUp("Correo de recuperación enviado", self).exec_()
 
@@ -333,9 +351,10 @@ class sessionManager(QMainWindow, loginWindow):
     # BOTONES
     #------------------------------------------------------------------------------------------------------------------
 
-    # Boton para volver a la vista de inicio de sesión
-    def on_button7_pressed(self):
+    # Boton para descartar el registro
+    def on_button9_pressed(self):
         if self.click():
+            self.clearLEs(self.recoveryLEs)
             self.LoginStacked.setCurrentIndex(0)
             self.header.setIcon(QIcon(':/login/users'))
 
@@ -401,15 +420,17 @@ class sessionManager(QMainWindow, loginWindow):
                             if userRange == "Administrador" or userRange == "Dios":
                                 self.db.createUser(**kwargs) # Crear usuario
                                 successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
+                                self.clearLEs(self.registerLEs)
                                 self.LoginStacked.setCurrentIndex(0)
                             else:
                                 errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                         else:
                             errorPopUp("Datos incorrectos", self).exec_()
 
-    # Boton para descartar el registro
-    def on_button9_pressed(self):
+    # Boton para volver a la vista de inicio de sesión
+    def on_button7_pressed(self):
         if self.click():
+            self.clearLEs(self.registerLEs)
             self.LoginStacked.setCurrentIndex(0)
             self.header.setIcon(QIcon(':/login/users'))
 

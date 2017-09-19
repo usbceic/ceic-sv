@@ -60,7 +60,7 @@ from popUps import errorPopUp, warningPopUp, successPopUp, confirmationPopUp, au
 from validators import intValidator, floatValidator, anyCharacterValidator, validatePhoneNumber, validateEmail, validateName
 
 # Módulo con los validadores para campos de texto
-from app_utilities import getStyle, naturalFormat, paragraphFormat, dateTimeFormat, dateFormat, timeFormat, openLink
+from app_utilities import getHomePath, getStyle, naturalFormat, paragraphFormat, dateTimeFormat, dateFormat, timeFormat, openLink
 
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
@@ -69,7 +69,7 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QDate
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDate
 
 # Módulo con estructuras de Qt
 from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton
@@ -348,7 +348,6 @@ class guiManager(QMainWindow, form_class):
 
         # Se connectan los botones entre otras cosas con algunos de los métodos definidos a continuación
         QMetaObject.connectSlotsByName(self)
-        self.table11.itemClicked.connect(self.on_removeRow_clicked)
 
         # Crear respaldo de la base de datos
         self.db.backup()
@@ -691,7 +690,7 @@ class guiManager(QMainWindow, form_class):
     def on_inventory_pressed(self):
         if self.click():
             # Si el usuario tiene rango mayor a Colaborador
-            if self.db.getUserPermissionMask(self.user) > 1:
+            if self.db.getUserPermissionMask(self.user) > 0:
                 # Si no hay cierres olvidados:
                 if not self.closeForgotten:
                     # Si hay dia y periodo abierto:
@@ -749,7 +748,7 @@ class guiManager(QMainWindow, form_class):
     def on_providers_pressed(self):
         if self.click():
             # Si el usuario tiene rango mayor a Colaborador
-            if self.db.getUserPermissionMask(self.user) > 1:
+            if self.db.getUserPermissionMask(self.user) > 0:
                 self.setPage(self.MainStacked, 6)
                 self.MainTitle.setText("Proveedores")
 
@@ -2118,21 +2117,6 @@ class guiManager(QMainWindow, form_class):
                 self.clearLEs(self.selectedProductLE1)              # Limpiar los lineEdit de este apartado
                 self.clearSpinLine(self.spinLine0)                  # Setear en 0 el lineEdit del contador
 
-    # Botones para eliminar listas de productos
-    def on_removeRow_clicked(self, item):
-        if self.table11.column(item) == 4:
-            key = self.table11.item(self.table11.row(item), 0).text()
-            del self.selectedProducts[key]
-
-            selectedList = []
-            for key, value in self.selectedProducts.items():
-                selectedList.append([key, value[0], value[1], value[2]])
-
-            self.selectedProductName = ""
-
-            # Refrescar interfaz
-            self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
-
     # Boton para cancelar una compra
     def on_cancelpb0_pressed(self):
         if self.click():
@@ -2358,11 +2342,21 @@ class guiManager(QMainWindow, form_class):
     def on_table11_itemClicked(self, item):
         if self.rowChanged():
             if item.column() != 4:
-                # Cargar información
-                items = self.table11.selectedItems()
-
                 # Actualizar los campos
-                self.lineE23.setText(items[0].text())
+                self.lineE23.setText(self.table11.item(item.row(), 0).text())
+
+            else:
+                key = self.table11.item(item.row(), 0).text()
+                del self.selectedProducts[key]
+
+                selectedList = []
+                for key, value in self.selectedProducts.items():
+                    selectedList.append([key, value[0], value[1], value[2]])
+
+                self.selectedProductName = ""
+
+                # Refrescar interfaz
+                self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
 
     #==================================================================================================================
     # VISTA DE INVENTARIO
@@ -2848,7 +2842,7 @@ class guiManager(QMainWindow, form_class):
     def on_selectedItem1_pressed(self):
         if self.click():
             if self.rbutton5.isChecked() or self.rbutton7.isChecked():
-                filePath = QFileDialog.getOpenFileName(self, 'Seleccionar imágen', QDir.currentPath(), "Imágenes (*.bmp *.jpg *.jpeg *.png)")
+                filePath = QFileDialog.getOpenFileName(self, 'Seleccionar imágen', getHomePath(), "Imágenes (*.bmp *.jpg *.jpeg *.png)")
                 if filePath != "":
                     self.selectedItem1.setIcon(QIcon(filePath))
                     self.tempImage = filePath
