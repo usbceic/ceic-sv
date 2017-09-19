@@ -348,7 +348,6 @@ class guiManager(QMainWindow, form_class):
 
         # Se connectan los botones entre otras cosas con algunos de los métodos definidos a continuación
         QMetaObject.connectSlotsByName(self)
-        self.table11.itemClicked.connect(self.on_removeRow_clicked)
 
         # Crear respaldo de la base de datos
         self.db.backup()
@@ -2118,21 +2117,6 @@ class guiManager(QMainWindow, form_class):
                 self.clearLEs(self.selectedProductLE1)              # Limpiar los lineEdit de este apartado
                 self.clearSpinLine(self.spinLine0)                  # Setear en 0 el lineEdit del contador
 
-    # Botones para eliminar listas de productos
-    def on_removeRow_clicked(self, item):
-        if self.table11.column(item) == 4:
-            key = self.table11.item(self.table11.row(item), 0).text()
-            del self.selectedProducts[key]
-
-            selectedList = []
-            for key, value in self.selectedProducts.items():
-                selectedList.append([key, value[0], value[1], value[2]])
-
-            self.selectedProductName = ""
-
-            # Refrescar interfaz
-            self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
-
     # Boton para cancelar una compra
     def on_cancelpb0_pressed(self):
         if self.click():
@@ -2358,11 +2342,21 @@ class guiManager(QMainWindow, form_class):
     def on_table11_itemClicked(self, item):
         if self.rowChanged():
             if item.column() != 4:
-                # Cargar información
-                items = self.table11.selectedItems()
-
                 # Actualizar los campos
-                self.lineE23.setText(items[0].text())
+                self.lineE23.setText(self.table11.item(item.row(), 0).text())
+
+            else:
+                key = self.table11.item(item.row(), 0).text()
+                del self.selectedProducts[key]
+
+                selectedList = []
+                for key, value in self.selectedProducts.items():
+                    selectedList.append([key, value[0], value[1], value[2]])
+
+                self.selectedProductName = ""
+
+                # Refrescar interfaz
+                self.updateInvoiceTable(self.table11, selectedList) # Actualizar la factura
 
     #==================================================================================================================
     # VISTA DE INVENTARIO
