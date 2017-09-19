@@ -60,7 +60,7 @@ from popUps import errorPopUp, warningPopUp, successPopUp, confirmationPopUp, au
 from validators import intValidator, floatValidator, anyCharacterValidator, validatePhoneNumber, validateEmail, validateName
 
 # Módulo con los validadores para campos de texto
-from app_utilities import getStyle, naturalFormat, paragraphFormat, dateTimeFormat, dateFormat, timeFormat, openLink
+from app_utilities import getHomePath, getStyle, naturalFormat, paragraphFormat, dateTimeFormat, dateFormat, timeFormat, openLink
 
 # Módulo que contiene los recursos de la interfaz
 import gui_rc
@@ -69,7 +69,7 @@ import gui_rc
 from PyQt4.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDir, QDate
+from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDate
 
 # Módulo con estructuras de Qt
 from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton
@@ -690,7 +690,7 @@ class guiManager(QMainWindow, form_class):
     def on_inventory_pressed(self):
         if self.click():
             # Si el usuario tiene rango mayor a Colaborador
-            if self.db.getUserPermissionMask(self.user) > 1:
+            if self.db.getUserPermissionMask(self.user) > 0:
                 # Si no hay cierres olvidados:
                 if not self.closeForgotten:
                     # Si hay dia y periodo abierto:
@@ -748,7 +748,7 @@ class guiManager(QMainWindow, form_class):
     def on_providers_pressed(self):
         if self.click():
             # Si el usuario tiene rango mayor a Colaborador
-            if self.db.getUserPermissionMask(self.user) > 1:
+            if self.db.getUserPermissionMask(self.user) > 0:
                 self.setPage(self.MainStacked, 6)
                 self.MainTitle.setText("Proveedores")
 
@@ -2842,7 +2842,7 @@ class guiManager(QMainWindow, form_class):
     def on_selectedItem1_pressed(self):
         if self.click():
             if self.rbutton5.isChecked() or self.rbutton7.isChecked():
-                filePath = QFileDialog.getOpenFileName(self, 'Seleccionar imágen', QDir.currentPath(), "Imágenes (*.bmp *.jpg *.jpeg *.png)")
+                filePath = QFileDialog.getOpenFileName(self, 'Seleccionar imágen', getHomePath(), "Imágenes (*.bmp *.jpg *.jpeg *.png)")
                 if filePath != "":
                     self.selectedItem1.setIcon(QIcon(filePath))
                     self.tempImage = filePath

@@ -17,12 +17,29 @@
 ## DEPENDENCIAS:
 #######################################################################################################################
 
+import os
 from webbrowser import open_new_tab # Módulo con funciones para el manejo de los navegadores web
 from datetime import datetime
 
 #######################################################################################################################
 ## FUNCIONES:
 #######################################################################################################################
+
+"""
+Function to get the home path
+"""
+def getHomePath():
+    if "HOME" in os.environ:
+        return os.environ["HOME"]
+
+    elif os.name == "posix":
+        return os.path.expanduser("~/")
+
+    elif os.name == "nt" and ("HOMEPATH" and "HOMEDRIVE") in os.environ:
+        return os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
+
+    else:
+        return os.environ["HOMEPATH"]
 
 # Devuelve un string con el stylesheet especificado por el parametro name
 def getStyle(path):

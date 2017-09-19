@@ -107,3 +107,4 @@ Backup_Old*
 /models/Backup_Old*
 /models/Backup_Old/*
 /models/Backup_Old/*.sql
+/interface/images/*
