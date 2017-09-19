@@ -2622,6 +2622,7 @@ class guiManager(QMainWindow, form_class):
                             # Refrescar toda la interfaz
                             self.refreshInventory()
                             self.refreshNew10()
+                            self.refreshTop10()
 
                             # Enfocar
                             self.lineE26.setFocus()
@@ -2664,6 +2665,8 @@ class guiManager(QMainWindow, form_class):
 
                         # Refrescar toda la interfaz
                         self.refreshInventory()
+                        self.refreshNew10()
+                        self.refreshTop10()
 
                         # Enfocar
                         self.lineE26.setFocus()
@@ -2688,6 +2691,8 @@ class guiManager(QMainWindow, form_class):
 
                         # Refrescar toda la interfaz
                         self.refreshInventory()
+                        self.refreshNew10()
+                        self.refreshTop10()
 
                         # Enfocar
                         self.lineE26.setFocus()
