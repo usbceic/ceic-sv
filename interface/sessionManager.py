@@ -104,8 +104,8 @@ class sessionManager(QMainWindow, loginWindow):
         # INICIAR LOS MANEJADORES PARA LA BASE DE DATOS Y EL CORREO ELECTRÓNICO
         #--------------------------------------------------------------------------------------------------------------
 
-        self.db = dbManager("sistema_ventas", "hola", parent=self)  # Iniciar el manejador de la base de datos
-        self.mail = emailManager()                                  # Iniciar el manejador del correo electrónico
+        self.db = dbManager(parent=self)  # Iniciar el manejador de la base de datos
+        self.mail = emailManager()        # Iniciar el manejador del correo electrónico
 
         #--------------------------------------------------------------------------------------------------------------
         # CREAR Y DESPLEGAR LA IMAGEN SPLASH

@@ -67,7 +67,7 @@ class dbManager(object):
     Método de creación de la clase
      - Inicia la sesión con la base de datos
     """
-    def __init__(self, name, password, debug=False, dropAll=False, parent=None):
+    def __init__(self, name="ceicsv", password="hola", debug=False, dropAll=False, parent=None):
         super(dbManager, self).__init__()
         self.name = name
         self.password = password
@@ -3875,7 +3875,7 @@ class dbManager(object):
 
 # Prueba
 if __name__ == '__main__':
-    m = dbManager("sistema_ventas", "hola", dropAll=False)
+    m = dbManager(dropAll=False)
     m.createUser("usbceic", "pizzabrownie", "CEIC", "USB", "usbceic@gmail.com", 3)
 
     kwargs = {
