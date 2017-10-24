@@ -555,7 +555,8 @@ class especialPopUp0(QDialog, popUp6):
             key = "Incremento #" + str(i)
             self.cobox1.addItem(key)
             self.increases[key] = increases[i-1]
-        self.selectIncrease(increases[0])
+        if (len(increases) > 0): self.selectIncrease(increases[0])
+        else: self.tabWidget.setTabEnabled(2, False)
         self.mutex1 = True
 
     # Acción al presionar el botón de continuar

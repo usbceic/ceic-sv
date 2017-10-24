@@ -32,7 +32,7 @@ def startConnection(name, password, debug=False):
 		print("Iniciando Engine")
 		name = str(name)
 		password = str(password)
-		conn_string = 'postgresql://'+ name + ':' + password + '@localhost/ceicsv'
+		conn_string = 'postgresql://'+ name + ':' + password + '@localhost/ceic_suite'
 		this.Engine = create_engine(conn_string, echo=debug)
 		this.Engine.connect()
 	else:
