@@ -16517,9 +16517,9 @@ QWidget:item:unchecked {
             <property name="geometry">
              <rect>
               <x>20</x>
-              <y>120</y>
+              <y>70</y>
               <width>291</width>
-              <height>331</height>
+              <height>431</height>
              </rect>
             </property>
             <property name="title">
@@ -17733,6 +17733,55 @@ QWidget:item:unchecked {
                           </size>
                          </property>
                         </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <layout class="QGridLayout" name="gridLayout_84">
+                       <item row="0" column="0">
+                        <spacer name="horizontalSpacer_49">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="2">
+                        <spacer name="horizontalSpacer_95">
+                         <property name="orientation">
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                       <item row="0" column="1">
+                        <widget class="QLabel" name="text225">
+                         <property name="font">
+                          <font>
+                           <family>Open Sans</family>
+                           <pointsize>11</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">background-color: transparent;</string>
+                         </property>
+                         <property name="text">
+                          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Descripcion&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="1">
+                        <widget class="QPlainTextEdit" name="textE9"/>
                        </item>
                       </layout>
                      </item>
@@ -22496,7 +22545,7 @@ p, li { white-space: pre-wrap; }
               <x>20</x>
               <y>20</y>
               <width>761</width>
-              <height>371</height>
+              <height>411</height>
              </rect>
             </property>
             <property name="title">
