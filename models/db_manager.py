@@ -425,7 +425,7 @@ class dbManager(object):
 
         query = self.session.query(User).filter_by(**filters).order_by(desc(User.last_login))
 
-        if limit is not None and page >= 1:
+        if limit is not None:
             query = self.session.query(User).filter_by(**filters).order_by(desc(User.last_login)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -583,7 +583,7 @@ class dbManager(object):
     def getAllProviders(self, limit = None, page = 1):
         query = self.session.query(Provider).order_by(Provider.creation_date)
 
-        if limit is not None and page >= 1:
+        if limit is not None:
             query = self.session.query(Provider).order_by(desc(Provider.creation_date)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -751,7 +751,7 @@ class dbManager(object):
 
         query = self.session.query(*columns).filter_by(**filters).order_by(Product.product_name)
 
-        if limit is not None and page >= 1:
+        if limit is not None:
             query = self.session.query(*columns).filter_by(**filters).order_by(Product.product_name).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -1452,7 +1452,7 @@ class dbManager(object):
 
         query = self.session.query(Client).filter(*filters).order_by(desc(Client.last_seen))
 
-        if limit is not None and page >= 1:
+        if limit is not None:
             query = self.session.query(Client).filter(*filters).order_by(desc(Client.last_seen)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -1466,8 +1466,8 @@ class dbManager(object):
             return self.session.query(Client).count()
 
         filters = and_()
-        if debt: filters = and_(filters, Client.balance < 0)
-        else: filters = and_(filters, Client.balance >= 0)
+        if debt: filters = and_(filters, Client.debt > 0)
+        else: filters = and_(filters, Client.debt == 0)
 
         return self.session.query(Client).filter(*filters).count()
 
@@ -2277,7 +2277,7 @@ class dbManager(object):
 
         query = self.session.query(Transfer).filter_by(**kwargs).order_by(desc(Transfer.transfer_date))
 
-        if limit is not None and page >= 1:
+        if limit is not None:
             query = self.session.query(Transfer).filter_by(**kwargs).order_by(desc(Transfer.transfer_date)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -2394,7 +2394,7 @@ class dbManager(object):
 
         query = self.session.query(Deposit).filter_by(**kwargs).order_by(desc(Deposit.deposit_date))
 
-        if limit is not None and page >= 1:
+        if limit is not None:
             query = self.session.query(Deposit).filter_by(**kwargs).order_by(desc(Deposit.deposit_date)).limit(limit).offset((page-1)*limit)
 
         return query.all()
