@@ -804,9 +804,17 @@ class dbManager(object):
                             name = product_name if new_product_name is None else new_product_name
                             kwargs = (name, str(res.price), str(price))
                             description = "Ajuste automatico por cambio de precio del producto %s (de %s a %s)."
-                            self.createIncrease(res.ci, clerk, (price-float(res.price))*int(res.amount), description % kwargs)
+                            description = description % kwargs
+                            amount = (price-float(res.price))*int(res.amount)
+                            increase_id = self.existAutoIncrease(res.ci, clerk, product_name)
 
-                    print("Se han efectuado los incrementos automáticos")
+                            if increase_id is None:
+                                self.createIncrease(res.ci, clerk, amount, description, True)
+
+                            else:
+                                self.updateIncrease(increase_id, amount, description)
+
+                        print("Se han efectuado los incrementos automáticos")
 
                 print("Se ha actualizado la información del producto " + product_name + " satisfactoriamente")
                 return True
@@ -2065,15 +2073,38 @@ class dbManager(object):
     #==================================================================================================================
 
     """
+    Método para verificar que un incremento existe.
+     - Retorna True:
+        * Cuando el incremento existe
+     - Retorna False:
+        * Cuando el incremento NO existe
+    """
+    def existAutoIncrease(self, ci, clerk, product):
+        query = self.session.query(Increase)\
+            .filter(
+                Increase.ci==ci,
+                Increase.clerk==clerk,
+                Increase.description.like("%" + product + "%"),
+                Increase.auto==True)\
+            .all()
+
+        if len(query) == 0:
+            print("El cliente " + str(ci) + " NO tiene un incremento de " + product)
+            return None
+        else:
+            print("El cliente " + str(ci) + " ya tiene un incremento de " + product)
+            return query[0].increase_id
+
+    """
     Método para crear un incremento nuevo
      - Retorna una cadena UUID:
         * Cuando el incremento es creado satisfactoreamente
      - Retorna None:
         * Cuando no se puede crear
     """
-    def createIncrease(self, ci, clerk, amount, description):
+    def createIncrease(self, ci, clerk, amount, description, auto=False):
         if self.existClient(ci) and self.existUser(clerk):
-            kwargs = {"ci" : ci, "clerk" : clerk, "amount" : amount, "description" : description}
+            kwargs = {"ci" : ci, "clerk" : clerk, "amount" : amount, "description" : description, "auto": auto}
             newIncrease = Increase(**kwargs)
             self.session.add(newIncrease)
             try:
@@ -2088,6 +2119,27 @@ class dbManager(object):
         else:
             print("No se puede crear el incremento porque NO existe el cliente")
             return None
+
+    """
+    Método para actualizar un incremento automatico
+     - Retorna True:
+        * Cuando logra actualizar el incremento
+     - Retorna False:
+        * Cuando no pudo actualizar el incremento
+    """
+    def updateIncrease(self, increase_id, amount, description):
+        try:
+            self.session.execute(update(Increase)\
+                .where(Increase.increase_id==increase_id)\
+                .values(amount=amount, description=description))
+
+            self.session.commit()
+            print("Se ha actualizado el incremento " + str(increase_id) + " satisfactoriamente")
+            return True
+        except Exception as e:
+            print("Ha ocurrido un error al intentar actualizar el incremento " + str(increase_id), e)
+            self.session.rollback()
+            return False
 
     """
     Pseudo-Trigger para actualizar el monto de la deuda de un cliente
@@ -3915,7 +3967,7 @@ class dbManager(object):
 
 # Prueba
 if __name__ == '__main__':
-    m = dbManager(dropAll=False)
+    m = dbManager()
     m.createUser("usbceic", "pizzabrownie", "CEIC", "USB", "usbceic@gmail.com", 3)
 
     kwargs = {
@@ -3929,6 +3981,9 @@ if __name__ == '__main__':
     m.createClient(**kwargs)
 
     """
+    increase_id = m.existAutoIncrease(23628903, "usbceic", "Cotufa")
+    m.updateIncrease(increase_id, 2600, "Ajuste automatico por cambio de precio del producto Cotufa (de 2000.0 a 2600.0).")
+
     product_name = "Monster Truck"
     product_id = m.getProductID(product_name)
     price = 500000000

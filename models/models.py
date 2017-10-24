@@ -429,6 +429,7 @@ class Increase(this.Base):
     description   = Column(String, nullable=False)
     creation_date = Column(DateTime, nullable=False, default=datetime.now)
     pay_date      = Column(DateTime)
+    auto          = Column(Boolean, nullable=False, default=False)
 
     # Constraints
     __table_args__ = (
@@ -442,8 +443,8 @@ class Increase(this.Base):
 
     # Representación de una instancia de la clase
     def __repr__(self):
-        kwargs = (str(self.increase_id), str(self.ci), str(self.clerk), str(self.amount), self.description, str(self.creation_date), str(self.pay_date))
-        template = "<Increase(increase_id='%s', ci='%s', clerk='%s', amount='%s', description='%s', creation_date='%s', pay_date='%s')>"
+        kwargs = (str(self.increase_id), str(self.ci), str(self.clerk), str(self.amount), self.description, str(self.creation_date), str(self.pay_date), str(self.auto))
+        template = "<Increase(increase_id='%s', ci='%s', clerk='%s', amount='%s', description='%s', creation_date='%s', pay_date='%s', auto='%s')>"
         return  template % kwargs
 
 #======================================================================================================================
