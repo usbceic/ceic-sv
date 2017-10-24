@@ -8,9 +8,9 @@ read ans
 if [ ans == "n" ]
 then
 	echo "Creando rol para la base de datos..."
-	sudo -u postgres createuser -PE -s ceicsv
+	sudo -u postgres createuser -PE -s ceic_suite
 	echo "Creando base de datos..."
-	sudo -u postgres createdb -O ceicsv -E UTF8 ceicsv
+	sudo -u postgres createdb -O ceic_suite -E UTF8 ceic_suite
 fi
 cd ..
 echo "Iniciando CEIC suite..."

@@ -267,6 +267,7 @@ class guiManager(QMainWindow, form_class):
         self.clientsLE2 = [self.lineE58, self.lineE59, self.lineE60, self.lineE61]
         self.clientsLE3 = [self.lineE16, self.lineE31, self.lineE32, self.lineE80, self.lineE67, self.lineE68]
         self.clientsLE4 = [self.lineE31, self.lineE32, self.lineE80, self.lineE67, self.lineE68]
+        self.clientsTE0 = [self.textE9]
 
         # LineEdits para solo números reales
         self.clientsOF = [self.lineE68]
@@ -2652,7 +2653,7 @@ class guiManager(QMainWindow, form_class):
 
                         if newName != "" and newPrice > 0:
                             # Actualizar información de producto
-                            if self.db.updateProduct(product_name, newName, newPrice, newCategory):
+                            if self.db.updateProduct(self.user, product_name, newName, newPrice, newCategory):
 
                                 if self.tempImage != "":
                                     if not isdir(productPath): mkdir(productPath)
@@ -2667,6 +2668,7 @@ class guiManager(QMainWindow, form_class):
                         self.refreshInventory()
                         self.refreshNew10()
                         self.refreshTop10()
+                        self.refreshClients()
 
                         # Enfocar
                         self.lineE26.setFocus()
@@ -3205,6 +3207,7 @@ class guiManager(QMainWindow, form_class):
         self.clearLEs(self.clientsLE0)
         self.clearLEs(self.clientsLE1)
         self.clearLEs(self.clientsLE3)
+        self.clearTEs(self.clientsTE0)
 
         # Setear los comboBox
         self.resetClientsCBs()
@@ -3444,32 +3447,36 @@ class guiManager(QMainWindow, form_class):
                         amount = self.lineE68.text()
                         if amount != "":
                             amount = float(amount)
-                            popUp = authorizationPopUp(parent=self)
-                            if popUp.exec_():
-                                adminUsername, adminPassword = popUp.getValues()
-                                if (adminUsername and adminPassword) != None:
-                                    if self.db.checkPassword(adminUsername, adminPassword):
-                                        userRange = self.db.getUserRange(adminUsername)
-                                        if userRange == "Administrador" or userRange == "Dios":
+                            description = self.textE9.toPlainText()
+                            if description != "":
+                                popUp = authorizationPopUp(parent=self)
+                                if popUp.exec_():
+                                    adminUsername, adminPassword = popUp.getValues()
+                                    if (adminUsername and adminPassword) != None:
+                                        if self.db.checkPassword(adminUsername, adminPassword):
+                                            userRange = self.db.getUserRange(adminUsername)
+                                            if userRange == "Administrador" or userRange == "Dios":
 
-                                            # Registrar deuda
-                                            if self.db.createIncrease(ci, self.user, amount):
-                                                # Operación exitosa
-                                                successPopUp(parent = self).exec_()
+                                                # Registrar deuda
+                                                if self.db.createIncrease(ci, self.user, amount, description):
+                                                    # Operación exitosa
+                                                    successPopUp(parent = self).exec_()
 
+                                                else:
+                                                    # Operación fallida
+                                                    errorPopUp(parent = self).exec_()
+
+                                                self.clearLEs(self.clientsLE3) # Limpiar formulario
+                                                self.refreshClients()          # Refrescar vista
+                                                self.lineE16.setFocus()        # Enfocar
                                             else:
-                                                # Operación fallida
-                                                errorPopUp(parent = self).exec_()
-
-                                            self.clearLEs(self.clientsLE3) # Limpiar formulario
-                                            self.refreshClients()          # Refrescar vista
-                                            self.lineE16.setFocus()        # Enfocar
+                                                errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
                                         else:
-                                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
-                                    else:
-                                        errorPopUp("Datos incorrectos", self).exec_()
+                                            errorPopUp("Datos incorrectos", self).exec_()
+                            else:
+                                errorPopUp("Falta la descripción", self).exec_()
                         else:
-                           errorPopUp("Incremento no específicado", self).exec_()
+                            errorPopUp("Incremento no específicado", self).exec_()
                     else:
                         errorPopUp("El cliente no está endeudado", self).exec_()
                 else:

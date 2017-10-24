@@ -59,15 +59,15 @@ def toTitle(word):
 #######################################################################################################################
 
 class dbManager(object):
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LA CLASE dbManager:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método de creación de la clase
      - Inicia la sesión con la base de datos
     """
-    def __init__(self, name="ceicsv", password="hola", debug=False, dropAll=False, parent=None):
+    def __init__(self, name="ceic_suite", password="42", debug=False, dropAll=False, parent=None):
         super(dbManager, self).__init__()
         self.name = name
         self.password = password
@@ -128,9 +128,9 @@ class dbManager(object):
     def deleteLastBackup(self):
         return DBBackup().deleteLastBackup()
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE USUARIOS:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar que un rango es válido
@@ -425,7 +425,7 @@ class dbManager(object):
 
         query = self.session.query(User).filter_by(**filters).order_by(desc(User.last_login))
 
-        if limit is not None:
+        if limit is not None and page >= 1:
             query = self.session.query(User).filter_by(**filters).order_by(desc(User.last_login)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -455,9 +455,9 @@ class dbManager(object):
     def getUserPermissionMask(self, username):
         return self.session.query(User.permission_mask).filter_by(username=username).scalar()
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PROVEEDORES:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     '''
     Método para verificar la existencia de un proveedor
@@ -583,7 +583,7 @@ class dbManager(object):
     def getAllProviders(self, limit = None, page = 1):
         query = self.session.query(Provider).order_by(Provider.creation_date)
 
-        if limit is not None:
+        if limit is not None and page >= 1:
             query = self.session.query(Provider).order_by(desc(Provider.creation_date)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -643,9 +643,9 @@ class dbManager(object):
     def getAllActiveProvidersByCreationDate(self):
         return self.session.query(Provider.provider_name).filter(Provider.active == False).order_by(Provider.creation_date).all()
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PRODUCTOS:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar que un producto existe.
@@ -729,9 +729,8 @@ class dbManager(object):
     Método para obtener el nombre de cada producto
      - Retorna un queryset con lós resultados de la búsqueda
     """
-    def getProductsNames(self, product_name, acitve=True):
-        product_name = product_name.title().strip()
-        return self.session.query(Product.product_name).filter_by(active=active).order_by(Product.product_name).all()
+    def getProductsID(self):
+        return self.session.query(Product.product_id).all()
 
     """
     Método para obtener los atributos especificados de todos los productos que cumplan con el filtro especificado
@@ -752,7 +751,7 @@ class dbManager(object):
 
         query = self.session.query(*columns).filter_by(**filters).order_by(Product.product_name)
 
-        if limit is not None:
+        if limit is not None and page >= 1:
             query = self.session.query(*columns).filter_by(**filters).order_by(Product.product_name).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -776,8 +775,9 @@ class dbManager(object):
         * Cuando el producto no existe
         * Cuando no pudo actualizarse la infromación por alguna otra razón
     """
-    def updateProduct(self, product_name, new_product_name=None, price=None, category=None, active = None):
+    def updateProduct(self, clerk, product_name, new_product_name=None, price=None, category=None, active = None):
         product_name = product_name.title().strip()
+        product_id = self.getProductID(product_name)
 
         if self.existProduct(product_name, active = None):
             values = {}
@@ -790,6 +790,24 @@ class dbManager(object):
             try:
                 self.session.query(Product).filter_by(product_name=product_name).update(values)
                 self.session.commit()
+
+                if price is not None:
+                    query = self.session.query(Purchase.ci, Product_list.price, func.sum(Product_list.amount).label("amount"))\
+                        .join(Debt, Purchase.purchase_id == Debt.purchase_id)\
+                        .join(Product_list, Purchase.purchase_id == Product_list.purchase_id)\
+                        .filter(Debt.pay_date == None, Product_list.product_id == product_id)\
+                        .group_by(Purchase.ci, Product_list.price)\
+                        .all()
+
+                    for res in query:
+                        if (price > float(res.price)):
+                            name = product_name if new_product_name is None else new_product_name
+                            kwargs = (name, str(res.price), str(price))
+                            description = "Ajuste automatico por cambio de precio del producto %s (de %s a %s)."
+                            self.createIncrease(res.ci, clerk, (price-float(res.price))*int(res.amount), description % kwargs)
+
+                    print("Se han efectuado los incrementos automáticos")
+
                 print("Se ha actualizado la información del producto " + product_name + " satisfactoriamente")
                 return True
             except Exception as e:
@@ -902,9 +920,9 @@ class dbManager(object):
     def getNew10(self):
         return self.session.query(Product.product_name, Product.price).order_by(desc(Product.creation_date)).limit(10).all()
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LOTES:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar que un lote existe.
@@ -1276,9 +1294,9 @@ class dbManager(object):
                 self.session.rollback()
                 print("No se pudo actualizar el producto")
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE SERVICIOS:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     # Método para verificar que un servicio existe.
     # Retorna true cuando el servicio existe y false en caso contario
@@ -1371,9 +1389,9 @@ class dbManager(object):
                 return False
         return False
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE CLIENTES:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     '''
     Método para verificar que un cliente existe.
@@ -1426,7 +1444,7 @@ class dbManager(object):
 
         query = self.session.query(Client).filter(*filters).order_by(desc(Client.last_seen))
 
-        if limit is not None:
+        if limit is not None and page >= 1:
             query = self.session.query(Client).filter(*filters).order_by(desc(Client.last_seen)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -1600,7 +1618,7 @@ class dbManager(object):
 
     """
     Método para obtener las compras con deudas sin pagar de un cliente especifico
-     - Retorna un queryset con los id de las compras
+     - Retorna un arreglo con los id de las compras
     """
     def getClientPurchasesWithDebt(self, ci):
         query = self.session.query(Purchase.purchase_id)\
@@ -1614,9 +1632,24 @@ class dbManager(object):
 
         return purchases
 
-    #==============================================================================================================================================================================
+    """
+    Método para obtener incrementos sin pagar de un cliente especifico
+     - Retorna un arrelgo con los id de los incrementos
+    """
+    def getClientIncreases(self, ci):
+        query = self.session.query(Increase.increase_id)\
+        .filter(Increase.pay_date == None, Increase.ci == ci)\
+        .all()
+
+        increases = []
+        for increase in query:
+            increases.append(increase[0])
+
+        return increases
+
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE ORDENES DE COMPRAS (PURCHASE):
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar que una compra existe.
@@ -1711,9 +1744,9 @@ class dbManager(object):
 
         return resume
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LISTAS DE PRODUCTOS:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar que una lista de productos existe
@@ -1823,9 +1856,9 @@ class dbManager(object):
             return []
         return self.session.query(Product_list).filter_by(**kwargs).all()
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LISTAS DE SERVICIOS:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar que una lista de servicios existe
@@ -1901,9 +1934,9 @@ class dbManager(object):
             return []
         return self.session.query(Service_list).filter_by(**kwargs).all()
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE PAGOS (CHECKOUT):
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para crear un pago nuevo
@@ -1972,9 +2005,9 @@ class dbManager(object):
                     self.session.rollback()
                     print("No se pudo actualizar la compra")
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE DEUDAS (DEBT):
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para crear una deuda nuevo
@@ -2027,9 +2060,9 @@ class dbManager(object):
             print("No se pudo pagar la deuda " + str(debt_id), e)
             return False
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE INCREMENTO EN DEUDA (INCREASE):
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para crear un incremento nuevo
@@ -2038,9 +2071,9 @@ class dbManager(object):
      - Retorna None:
         * Cuando no se puede crear
     """
-    def createIncrease(self, ci, clerk, amount):
+    def createIncrease(self, ci, clerk, amount, description):
         if self.existClient(ci) and self.existUser(clerk):
-            kwargs = {"ci" : ci, "clerk" : clerk, "amount" : amount}
+            kwargs = {"ci" : ci, "clerk" : clerk, "amount" : amount, "description" : description}
             newIncrease = Increase(**kwargs)
             self.session.add(newIncrease)
             try:
@@ -2081,9 +2114,16 @@ class dbManager(object):
             print("No se pudo pagar el incremento " + str(increase_id), e)
             return False
 
-    #==============================================================================================================================================================================
+    '''
+    Método para buscar incrementos.
+        - Retorna queryset de los incrementos que cumplan el filtro
+    '''
+    def getIncrease(self, increase_id):
+        return self.session.query(Increase).filter(Increase.increase_id == increase_id).one()
+
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE TRANSFERENCIAS:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar que una transferencia existe
@@ -2185,7 +2225,7 @@ class dbManager(object):
 
         query = self.session.query(Transfer).filter_by(**kwargs).order_by(desc(Transfer.transfer_date))
 
-        if limit is not None:
+        if limit is not None and page >= 1:
             query = self.session.query(Transfer).filter_by(**kwargs).order_by(desc(Transfer.transfer_date)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -2204,9 +2244,9 @@ class dbManager(object):
 
         return self.session.query(Transfer).filter_by(**kwargs).count()
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE DEPÓSITOS:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar que un depósito existe
@@ -2302,7 +2342,7 @@ class dbManager(object):
 
         query = self.session.query(Deposit).filter_by(**kwargs).order_by(desc(Deposit.deposit_date))
 
-        if limit is not None:
+        if limit is not None and page >= 1:
             query = self.session.query(Deposit).filter_by(**kwargs).order_by(desc(Deposit.deposit_date)).limit(limit).offset((page-1)*limit)
 
         return query.all()
@@ -2321,9 +2361,9 @@ class dbManager(object):
 
         return self.session.query(Deposit).filter_by(**kwargs).count()
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE REVERSE PRODUCT LIST:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar que existe una devolución de lista de productos
@@ -2389,9 +2429,9 @@ class dbManager(object):
             self.session.rollback()
             return False
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE REVERSE SERVICE LIST:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar que existe una devolución de lista de servicios
@@ -2457,9 +2497,9 @@ class dbManager(object):
             self.session.rollback()
             return False
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DEL LOG DE OPERACIONES:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para Obtener el ÚLTIMO inicio y fin de período de ventas (Generalmente un Trimestre)
@@ -3012,9 +3052,9 @@ class dbManager(object):
     def getMovementsCount(self):
         return self.session.query(Operation_log).filter(Operation_log.op_type != 2).count()
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE MONEDAS / BILLETES PARA PAGO:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar que existe una Moneda / Billete en sistema
@@ -3098,9 +3138,9 @@ class dbManager(object):
             self.session.rollback()
             return False
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LIBROS:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar la existencia de un libro.
@@ -3254,9 +3294,9 @@ class dbManager(object):
             self.session.rollback()
             return False
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LENGUAJES:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar la existencia de un lenguaje.
@@ -3337,9 +3377,9 @@ class dbManager(object):
             return False
 
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE MATERIAS:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar la existencia de una materia.
@@ -3455,9 +3495,9 @@ class dbManager(object):
             return False
 
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE AUTORES:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para verificar la existencia de un autor.
@@ -3632,9 +3672,9 @@ class dbManager(object):
             return False
 
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE RELACIONES ENTRE MATERIAS, AUTORES Y LIBROS:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método para relacionar un Libro con una Materia o una Materia con un Libro
@@ -3728,9 +3768,9 @@ class dbManager(object):
         return True
 
 
-    #==============================================================================================================================================================================
+    #==================================================================================================================
     # MÉTODOS PARA EL CONTROL PRÉSTAMO DE LIBROS:
-    #==============================================================================================================================================================================
+    #==================================================================================================================
 
     """
     Método prestar un libro a una persona
@@ -3888,7 +3928,28 @@ if __name__ == '__main__':
 
     m.createClient(**kwargs)
 
-    """kwargs = {
+    """
+    product_name = "Monster Truck"
+    product_id = m.getProductID(product_name)
+    price = 500000000
+
+    query = m.session.query(Purchase.ci, Product_list.price, func.sum(Product_list.amount).label("amount"))\
+            .join(Debt, Purchase.purchase_id == Debt.purchase_id)\
+            .join(Product_list, Purchase.purchase_id == Product_list.purchase_id)\
+            .filter(Debt.pay_date == None, Product_list.product_id == product_id)\
+            .group_by(Purchase.ci, Product_list.price)\
+            .all()
+
+    for res in query:
+        if (price > res.price):
+            kwargs = (product_name, str(res.price), str(price))
+            description = "Ajuste automatico por cambio de precio del producto %s (de %s a %s)."
+            self.createIncrease(res.ci, clerk, (price-res.price)*res.amount, description % kwargs)
+
+
+    print(query)
+
+    kwargs = {
         "ci"              : 1,
         "firstname"       : "PRUEBA",
         "lastname"        : "",

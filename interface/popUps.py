@@ -454,9 +454,12 @@ class especialPopUp0(QDialog, popUp6):
 
         # Inicializar variables
         self.mutex = False
+        self.mutex1 = False
         self.newIndex = False
         self.purchases = {}
+        self.increases = {}
         self.currentPurchase = "Compra #1"
+        self.currentIncrease = "Increase #1"
 
         # Configurar mensaje del popUp
         self.loadDetails()
@@ -510,9 +513,18 @@ class especialPopUp0(QDialog, popUp6):
         self.dtext9.setText(str(resume["total"]))        # Total
         self.dtext10.setText(dateFormat(resume["date"])) # Fecha
         self.dtext11.setText(timeFormat(resume["date"])) # Hora
-        self.dtext12.setText(resume["products"])         # Productos
         self.dtext13.setText(resume["checkouts"])        # Pagos
         self.dtext14.setText(str(resume["debt"]))        # Deuda
+        self.dtextE0.setPlainText(resume["products"])    # Productos
+
+    # Función para recargar la información de la vista de compras dependiendo de la selección
+    def selectIncrease(self, increase_id):
+        increase = self.db.getIncrease(increase_id)              # Cargar datos
+        self.dtext15.setText(increase.clerk)                     # Registrado por
+        self.dtext16.setText(str(increase.amount))               # Monto
+        self.dtext17.setText(dateFormat(increase.creation_date)) # Fecha
+        self.dtext18.setText(timeFormat(increase.creation_date)) # Hora
+        self.dtextE1.setPlainText(increase.description)          # Description
 
     # Cargar la información que se mostrará en el popUp
     def loadDetails(self):
@@ -537,6 +549,15 @@ class especialPopUp0(QDialog, popUp6):
         self.selectPurchase(purchases[0])
         self.mutex = True
 
+        # Cargar información de las compras con deudas del cliente
+        increases = self.db.getClientIncreases(self.ci)
+        for i in range(1, len(increases)+1):
+            key = "Incremento #" + str(i)
+            self.cobox1.addItem(key)
+            self.increases[key] = increases[i-1]
+        self.selectIncrease(increases[0])
+        self.mutex1 = True
+
     # Acción al presionar el botón de continuar
     def on_dpbutton0_pressed(self):
         if self.click():
@@ -549,6 +570,14 @@ class especialPopUp0(QDialog, popUp6):
                 self.currentPurchase = self.cobox0.currentText()
                 purchase_id = self.purchases[self.currentPurchase]
                 self.selectPurchase(purchase_id)
+
+    # ComboBox para seleccionar un incremento
+    def on_cobox1_currentIndexChanged(self):
+        if self.indexChanged() and self.mutex1:
+            if self.currentIncrease != self.cobox1.currentText():
+                self.currentIncrease = self.cobox1.currentText()
+                increase_id = self.increases[self.currentIncrease]
+                self.selectIncrease(increase_id)
 
 #######################################################################################################################
 ## FIN :)
