@@ -3981,8 +3981,6 @@ if __name__ == '__main__':
 
     m.createClient(**kwargs)"""
 
-    print(m.existAutoIncrease(22900616, "Torta"))
-
     """
     increase_id = m.existAutoIncrease(23628903, "Cotufa")
     m.updateIncrease(increase_id, 2600, "Ajuste automatico por cambio de precio del producto Cotufa (de 2000.0 a 2600.0).")
