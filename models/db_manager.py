@@ -806,7 +806,7 @@ class dbManager(object):
                             description = "Ajuste automatico por cambio de precio del producto %s (de %s a %s)."
                             description = description % kwargs
                             amount = (price-float(res.price))*int(res.amount)
-                            increase_id = self.existAutoIncrease(res.ci, clerk, product_name)
+                            increase_id = self.existAutoIncrease(res.ci, product_name)
 
                             if increase_id is None:
                                 self.createIncrease(res.ci, clerk, amount, description, True)
@@ -2079,11 +2079,10 @@ class dbManager(object):
      - Retorna False:
         * Cuando el incremento NO existe
     """
-    def existAutoIncrease(self, ci, clerk, product):
+    def existAutoIncrease(self, ci, product):
         query = self.session.query(Increase)\
             .filter(
                 Increase.ci==ci,
-                Increase.clerk==clerk,
                 Increase.description.like("%" + product + "%"),
                 Increase.auto==True)\
             .all()
@@ -2236,7 +2235,7 @@ class dbManager(object):
                 .join(Purchase, Debt.purchase_id == Purchase.purchase_id)\
                 .join(Client, Purchase.ci == Client.ci)\
                 .filter(Debt.pay_date == None, Debt.amount <= balance, Client.ci == ci)\
-                .order_by(Debt.amount)\
+                .order_by(Purchase.purchase_date)\
                 .all()
 
             # Se pagan todas las deudas que se puedan
@@ -2252,6 +2251,7 @@ class dbManager(object):
                 # Se calculan todos los incrementos sin pagar del cliente que sean menor o igual a lo que posee en su saldo
                 increases = self.session.query(Increase.increase_id, Increase.amount)\
                     .filter(Increase.pay_date == None, Increase.amount <= balance, Increase.ci == ci)\
+                    .order_by(Increase.creation_date)\
                     .all()
 
                 # Se pagan todas las deudas que se puedan
@@ -2351,7 +2351,7 @@ class dbManager(object):
                 .join(Purchase, Debt.purchase_id == Purchase.purchase_id)\
                 .join(Client, Purchase.ci == Client.ci)\
                 .filter(Debt.pay_date == None, Debt.amount <= balance, Client.ci == ci)\
-                .order_by(Debt.amount)\
+                .order_by(Purchase.purchase_date)\
                 .all()
 
             # Se pagan todas las deudas que se puedan
@@ -2367,6 +2367,7 @@ class dbManager(object):
                 # Se calculan todos los incrementos sin pagar del cliente que sean menor o igual a lo que posee en su saldo
                 increases = self.session.query(Increase.increase_id, Increase.amount)\
                     .filter(Increase.pay_date == None, Increase.amount <= balance, Increase.ci == ci)\
+                    .order_by(Increase.creation_date)\
                     .all()
 
                 # Se pagan todas las deudas que se puedan
@@ -3968,7 +3969,7 @@ class dbManager(object):
 # Prueba
 if __name__ == '__main__':
     m = dbManager()
-    m.createUser("usbceic", "pizzabrownie", "CEIC", "USB", "usbceic@gmail.com", 3)
+    """m.createUser("usbceic", "pizzabrownie", "CEIC", "USB", "usbceic@gmail.com", 3)
 
     kwargs = {
         "ci"              : 0,
@@ -3978,10 +3979,12 @@ if __name__ == '__main__':
         "book_permission" : False
     }
 
-    m.createClient(**kwargs)
+    m.createClient(**kwargs)"""
+
+    print(m.existAutoIncrease(22900616, "Torta"))
 
     """
-    increase_id = m.existAutoIncrease(23628903, "usbceic", "Cotufa")
+    increase_id = m.existAutoIncrease(23628903, "Cotufa")
     m.updateIncrease(increase_id, 2600, "Ajuste automatico por cambio de precio del producto Cotufa (de 2000.0 a 2600.0).")
 
     product_name = "Monster Truck"
