@@ -546,7 +546,8 @@ class especialPopUp0(QDialog, popUp6):
             key = "Compra #" + str(i)
             self.cobox0.addItem(key)
             self.purchases[key] = purchases[i-1]
-        self.selectPurchase(purchases[0])
+        if (len(purchases) > 0): self.selectPurchase(purchases[0])
+        else: self.tabWidget.setTabEnabled(1, False)
         self.mutex = True
 
         # Cargar información de las compras con deudas del cliente
