@@ -2822,7 +2822,7 @@ class guiManager(QMainWindow, form_class):
 
                         if self.db.existProvider(provider_name):
 
-                            lot_id = self.currentLots[self.currentLot]  # Lote
+                            lot_id = self.currentLots[self.cbox5.currentText()]  # Lote
 
                             if self.db.deleteLot(lot_id):
                                 successPopUp(parent = self).exec_()
