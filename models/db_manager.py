@@ -919,14 +919,14 @@ class dbManager(object):
     def getTop10(self):
         subQuery = self.session.query(Product_list.product_id.label("product_id"), func.sum(Product_list.amount).label("total")).group_by(Product_list.product_id).order_by(desc("total")).limit(10).subquery("subQuery")
 
-        return self.session.query(Product.product_name.label("product_name"), Product.price.label("price")).join(subQuery, Product.product_id == subQuery.c.product_id).order_by(desc("total")).all()
+        return self.session.query(Product.product_name.label("product_name"), Product.price.label("price")).join(subQuery, Product.product_id == subQuery.c.product_id).filter(Product.active == True).order_by(desc("total")).all()
 
     """
     Método para obtener los 10 productos más nuevos
      - Retorna un queryset con los 10 productos más nuevos
     """
     def getNew10(self):
-        return self.session.query(Product.product_name, Product.price).order_by(desc(Product.creation_date)).limit(10).all()
+        return self.session.query(Product.product_name, Product.price).filter(Product.active == True).order_by(desc(Product.creation_date)).limit(10).all()
 
     #==================================================================================================================
     # MÉTODOS PARA EL CONTROL DE LOTES:
@@ -2088,11 +2088,11 @@ class dbManager(object):
             .all()
 
         if len(query) == 0:
-            print("El cliente " + str(ci) + " NO tiene un incremento de " + product)
+            #print("El cliente " + str(ci) + " NO tiene un incremento de " + product)
             return None
         else:
-            print("El cliente " + str(ci) + " ya tiene un incremento de " + product)
-            return query[0].increase_id
+            #print("El cliente " + str(ci) + " ya tiene un incremento de " + product)
+            return query
 
     """
     Método para crear un incremento nuevo
