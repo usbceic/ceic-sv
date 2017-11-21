@@ -2766,8 +2766,8 @@ class guiManager(QMainWindow, form_class):
                 provider_name = self.lineE34.text()                 # Proveedor
                 cost =  self.lineE35.text()                         # Costo
                 expiration_date = self.dtE2.date().toPyDate()   # Fecha de expiración
-                quantity = self.lineE37.text()                      # Cantidad
-                remaining = self.lineE38.text()                     # Disponibles
+                quantity = self.lineE38.text()                      # Cantidad
+                remaining = self.lineE37.text()                     # Disponibles
 
                 if (product_name and provider_name and cost and quantity and remaining) != "":
 
