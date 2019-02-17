@@ -693,7 +693,7 @@ class dbManager(object):
                 self.session.rollback()
                 return False
         elif self.existProduct(product_name, active=False):
-            self.updateProduct(product_name, product_name, price, category, active = True)
+            self.updateProduct(None, product_name, product_name, price, category, active = True)
             print("Se ha actualizado el producto " + product_name + " y se reactivo.")
             return True
 
@@ -2109,7 +2109,7 @@ class dbManager(object):
             try:
                 self.session.commit()
                 print("Se ha creado correctamente el incremento")
-                self.afterInsertIncrease(ci)
+                self.afterInsertIncrease(ci, newIncrease.increase_id)
                 return str(newIncrease.increase_id)
             except Exception as e:
                 print("Error desconocido al intentar crear el incremento", e)
@@ -2144,7 +2144,8 @@ class dbManager(object):
     Pseudo-Trigger para actualizar el monto de la deuda de un cliente
      - No retorna nada
     """
-    def afterInsertIncrease(self, ci):
+    def afterInsertIncrease(self, ci, increase_id):
+        self.payIncrease(increase_id)
         self.refreshClientDebt(ci)
 
     """
