@@ -5473,7 +5473,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -5528,7 +5528,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -5577,7 +5577,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -5626,7 +5626,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -5675,7 +5675,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -5724,7 +5724,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -5773,7 +5773,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -5822,7 +5822,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -5871,7 +5871,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -5920,7 +5920,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -6012,7 +6012,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                            <property name="alignment">
                             <set>Qt::AlignCenter</set>
@@ -6070,7 +6070,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -6119,7 +6119,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -6168,7 +6168,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -6217,7 +6217,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -6266,7 +6266,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -6315,7 +6315,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -6364,7 +6364,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -6413,7 +6413,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
@@ -6462,7 +6462,7 @@ QWidget:item:unchecked {
                             <string notr="true">background-color: transparent;</string>
                            </property>
                            <property name="text">
-                            <string>0 Bs.F</string>
+                            <string>0 Bs.S</string>
                            </property>
                           </widget>
                          </item>
