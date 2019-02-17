@@ -3443,42 +3443,42 @@ class guiManager(QMainWindow, form_class):
                 ci = int(ci)
                 if self.db.existClient(ci):
                     client = self.db.getClients(ci)[0]
-                    if client.debt > 0:
-                        amount = self.lineE68.text()
-                        if amount != "":
-                            amount = float(amount)
-                            description = self.textE9.toPlainText()
-                            if description != "":
-                                popUp = authorizationPopUp(parent=self)
-                                if popUp.exec_():
-                                    adminUsername, adminPassword = popUp.getValues()
-                                    if (adminUsername and adminPassword) != None:
-                                        if self.db.checkPassword(adminUsername, adminPassword):
-                                            userRange = self.db.getUserRange(adminUsername)
-                                            if userRange == "Administrador" or userRange == "Dios":
+                    #if client.debt > 0:
+                    amount = self.lineE68.text()
+                    if amount != "":
+                        amount = float(amount)
+                        description = self.textE9.toPlainText()
+                        if description != "":
+                            popUp = authorizationPopUp(parent=self)
+                            if popUp.exec_():
+                                adminUsername, adminPassword = popUp.getValues()
+                                if (adminUsername and adminPassword) != None:
+                                    if self.db.checkPassword(adminUsername, adminPassword):
+                                        userRange = self.db.getUserRange(adminUsername)
+                                        if userRange == "Administrador" or userRange == "Dios":
 
-                                                # Registrar deuda
-                                                if self.db.createIncrease(ci, self.user, amount, description):
-                                                    # Operación exitosa
-                                                    successPopUp(parent = self).exec_()
+                                            # Registrar deuda
+                                            if self.db.createIncrease(ci, self.user, amount, description):
+                                                # Operación exitosa
+                                                successPopUp(parent = self).exec_()
 
-                                                else:
-                                                    # Operación fallida
-                                                    errorPopUp(parent = self).exec_()
-
-                                                self.clearLEs(self.clientsLE3) # Limpiar formulario
-                                                self.refreshClients()          # Refrescar vista
-                                                self.lineE16.setFocus()        # Enfocar
                                             else:
-                                                errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                                                # Operación fallida
+                                                errorPopUp(parent = self).exec_()
+
+                                            self.clearLEs(self.clientsLE3) # Limpiar formulario
+                                            self.refreshClients()          # Refrescar vista
+                                            self.lineE16.setFocus()        # Enfocar
                                         else:
-                                            errorPopUp("Datos incorrectos", self).exec_()
-                            else:
-                                errorPopUp("Falta la descripción", self).exec_()
+                                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                                    else:
+                                        errorPopUp("Datos incorrectos", self).exec_()
                         else:
-                            errorPopUp("Incremento no específicado", self).exec_()
+                            errorPopUp("Falta la descripción", self).exec_()
                     else:
-                        errorPopUp("El cliente no está endeudado", self).exec_()
+                        errorPopUp("Incremento no específicado", self).exec_()
+                    #else:
+                        #errorPopUp("El cliente no está endeudado", self).exec_()
                 else:
                    errorPopUp("Número de cédula no registrado", self).exec_()
             else:
