@@ -3892,7 +3892,6 @@ class guiManager(QMainWindow, form_class):
                                         "password"        : password,
                                         "permission_mask" : self.db.getPermissionMask(self.cbox8.currentText())
                                     }
-                                    flag = True
 
                                 else:
                                     errorPopUp("El usuario "+username+" ya existe",self).exec_()
@@ -3906,25 +3905,25 @@ class guiManager(QMainWindow, form_class):
                     errorPopUp("Formato incorrecto para nombre",self).exec_()
             else:
                 errorPopUp("Faltan datos",self).exec_()
-            if flag:
-                popUp = authorizationPopUp(parent=self)
-                if popUp.exec_():
-                    adminUsername, adminPassword = popUp.getValues()
-                    if (adminUsername and adminPassword) != None:
-                        if self.db.checkPassword(adminUsername, adminPassword):
-                            userRange = self.db.getUserRange(adminUsername)
-                            if userRange == "Administrador" or userRange == "Dios":
-                                if self.db.createUser(**kwargs):        # Crear usuario
-                                    successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
-                                else:
-                                    errorPopUp(parent = self).exec_()
 
-                                self.refreshUsers()          # Refrescar vista
-                                self.lineE69.setFocus()      # Enfocar
+            popUp = authorizationPopUp(parent=self)
+            if popUp.exec_():
+                adminUsername, adminPassword = popUp.getValues()
+                if (adminUsername and adminPassword) != None:
+                    if self.db.checkPassword(adminUsername, adminPassword):
+                        userRange = self.db.getUserRange(adminUsername)
+                        if userRange == "Administrador" or userRange == "Dios":
+                            if self.db.createUser(**kwargs):        # Crear usuario
+                                successPopUp("Se ha creado el usuario "+username+" exitosamente",self).exec_()
                             else:
-                                errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                                errorPopUp(parent = self).exec_()
+
+                            self.refreshUsers()          # Refrescar vista
+                            self.lineE69.setFocus()      # Enfocar
                         else:
-                            errorPopUp("Datos incorrectos", self).exec_()
+                            errorPopUp("El usuario "+ adminUsername +" no es administrador", self).exec_()
+                    else:
+                        errorPopUp("Datos incorrectos", self).exec_()
 
     #Botón para cancelar creación de usuario
     def on_cancelpb18_pressed(self):
