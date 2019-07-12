@@ -1384,7 +1384,7 @@ class guiManager(QMainWindow, form_class):
             else: movement = "Cierre de periodo"
         elif op_type == 1:
             if open_record: movement = "Apertura de caja"
-            else: movement = "Cierre caja"
+            else: movement = "Cierre de caja"
         elif op_type == 3:
             if cash_balance > 0: movement = "Ingreso en efectivo"
             else: movement = "Ingreso en banco"
