@@ -67,7 +67,7 @@ class dbManager(object):
     Método de creación de la clase
      - Inicia la sesión con la base de datos
     """
-    def __init__(self, name="ceic_suite", password="26272200gregor", debug=False, dropAll=False, parent=None):
+    def __init__(self, name="ceic_suite", password="compusort2324", debug=False, dropAll=False, parent=None):
         super(dbManager, self).__init__()
         self.name = name
         self.password = password
