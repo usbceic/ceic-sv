@@ -59,7 +59,7 @@ Requisitos
 * Resolución de pantalla mínima: 860x710
 * Resolución de pantalla recomendada: 1440x900
 * Instalar Python 3.4.x con las siguientes librerias:
-    - PyQt4
+    - PyQt5
     - SQLAlchemy
     - psycopg2
     - passlib

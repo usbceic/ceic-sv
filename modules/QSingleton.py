@@ -16,9 +16,9 @@
 ## DEPENDENCIAS:
 #######################################################################################################################
 
-from PyQt4.QtCore import QTextStream, pyqtSignal
-from PyQt4.QtGui import QApplication
-from PyQt4.QtNetwork import QLocalSocket, QLocalServer
+from PyQt5.QtCore import QTextStream, pyqtSignal
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtNetwork import QLocalSocket, QLocalServer
 
 #######################################################################################################################
 ## DECLARACIÓN DEL SINGLETON:

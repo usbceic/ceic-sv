@@ -56,7 +56,7 @@ class GUID(TypeDecorator):
         if value is None:
             return value
         else:
-            return uuid.UUID(value)
+            return str(value)
 
     @staticmethod
     def random_value():

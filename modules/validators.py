@@ -19,8 +19,8 @@
 #######################################################################################################################
 
 import re
-from PyQt4.QtCore import QRegExp
-from PyQt4.QtGui import QRegExpValidator
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
 
 #######################################################################################################################
 ## DECLARACIÓN DE LOS VALIDADORES:

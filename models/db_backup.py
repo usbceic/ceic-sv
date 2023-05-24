@@ -20,7 +20,7 @@
 import models
 from session import duplicateSession
 from sqlalchemy.ext.serializer import loads, dumps
-from sqlalchemy.util import KeyedTuple
+# from sqlalchemy.orm.util import KeyedTuple
 from queue import PriorityQueue
 from re import search
 from os.path import basename, join, isfile, exists
@@ -97,7 +97,7 @@ class DBBackup(object):
         MappedClass = self.get_mapped_class(file_handler.name)
         rows = loads(file_handler.read(), models.Base.metadata, self.session)
         for row in rows:
-            if isinstance(row, KeyedTuple):
+            if isinstance(row, dict):
                 row = MappedClass(**row._asdict())
             self.session.merge(row)
 

@@ -30,9 +30,9 @@ for current in path:
 ## MODÚLOS:
 #######################################################################################################################
 
-from PyQt4.uic import loadUiType                           # Módulo con las herramientas parar trabajar los archivos .ui
-from PyQt4.QtGui import QDialog, QLabel                    # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject                   # Módulo con estructuras de Qt
+from PyQt5.uic import loadUiType                           # Módulo con las herramientas parar trabajar los archivos .ui
+from PyQt5.QtWidgets import QDialog, QLabel                    # Módulo con procedimientos de Qt
+from PyQt5.QtCore import Qt, QMetaObject                   # Módulo con estructuras de Qt
 from app_utilities import getStyle, dateTimeFormat, dateFormat, timeFormat # Módulo con funciones útiles
 
 #######################################################################################################################

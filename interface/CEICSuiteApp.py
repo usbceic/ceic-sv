@@ -19,7 +19,7 @@
 from sys import exit                        # Método del sistema para finalizar la aplicación
 from sessionManager import sessionManager   # Manejador de sessiones
 from QSingleton import QSingleton           # Clase para crear singletones
-from PyQt4.QtCore import QTimer             # Temporizador para programar actividades
+from PyQt5.QtCore import QTimer             # Temporizador para programar actividades
 
 #######################################################################################################################
 ## DECLARACIÓN DE LA CLASE PARA EJECUTAR CEIC SUITE

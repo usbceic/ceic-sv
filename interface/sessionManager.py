@@ -39,13 +39,14 @@ for current in path:
 import gui_rc
 
 # Módulo con las herramientas parar trabajar los archivos .ui
-from PyQt4.uic import loadUiType
+from PyQt5.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QCursor, QSplashScreen, QPixmap, QIcon
+from PyQt5.QtWidgets import QMainWindow, QApplication, QSplashScreen
+from PyQt5.QtGui import QCursor, QPixmap, QIcon
 
 # Módulo con estructuras de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal
+from PyQt5.QtCore import Qt, QMetaObject, pyqtSignal
 
 # Manejador de la base de datos
 from db_manager import dbManager

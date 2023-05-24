@@ -66,13 +66,15 @@ from app_utilities import getHomePath, getStyle, naturalFormat, paragraphFormat,
 import gui_rc
 
 # Módulo con las herramientas parar trabajar los archivos .ui
-from PyQt4.uic import loadUiType
+from PyQt5.uic import loadUiType
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtCore import Qt, QMetaObject, pyqtSignal, QDate
+from PyQt5.QtCore import Qt, QMetaObject, pyqtSignal, QDate
 
 # Módulo con estructuras de Qt
-from PyQt4.QtGui import QMainWindow, QApplication, QStringListModel, QCompleter, QHeaderView, QTableWidgetItem, QFileDialog, QIcon, QLineEdit, QLabel, QPushButton
+from PyQt5.QtWidgets import QMainWindow, QApplication, QCompleter, QHeaderView, QTableWidgetItem, QFileDialog, QLineEdit, QLabel, QPushButton
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QStringListModel
 
 #######################################################################################################################
 ## CONSTANTES:
@@ -532,7 +534,7 @@ class guiManager(QMainWindow, form_class):
 
     # Aplicar configuración general de redimiensionamiento a una tabla
     def setupTable(self, table, column = 0):
-        table.horizontalHeader().setResizeMode(column, QHeaderView.Stretch)
+        table.horizontalHeader().setSectionResizeMode(column, QHeaderView.Stretch)
 
     # Aplicar configuración general de redimiensionamiento a una lista de tablas
     def setupTables(self, tables):

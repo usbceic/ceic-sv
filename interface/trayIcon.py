@@ -20,7 +20,7 @@
 from sys import exit
 
 # Módulo con procedimientos de Qt
-from PyQt4.QtGui import QSystemTrayIcon, QMenu, QAction
+from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction
 
 #######################################################################################################################
 ## MANEJADOR DEL ICONO PARA LA BARRA DE NOTIFICACIONES:
